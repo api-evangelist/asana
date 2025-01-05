@@ -5,20 +5,18 @@ Asana is a cloud-based task management solution that allows businesses to manage
 
 ## Scope
 
-- **Type:** Index 
-- **Position:** Consumer 
+- **Type:** Contract 
+- **Position:** Consuming 
 - **Access:** 3rd-Party 
 
-## Tags
+## Tags:
 
-- Tasks
-- Projects
-- Collaboration
+ - Tasks, Projects, Collaboration
 
 ## Timestamps
 
 - **Created:** 2023-11-01 
-- **Modified:** 2024-11-14 
+- **Modified:** 2024-12-22 
 
 ## APIs
 
@@ -26,11 +24,12 @@ Asana is a cloud-based task management solution that allows businesses to manage
 Asana is a cloud-based task management solution that allows businesses to manage, collaborate, communicate, and organize their tasks and projects.
 
 **Human URL:** [https://developers.asana.com/](https://developers.asana.com/)
-r
+
+
 
 #### Properties
 
-- [OpenAPI](properties/asana-openapi.yml)
+- [OpenAPI](openapi/asana-openapi.yml)
 
 ## Common Properties
 
