@@ -1,0 +1,241 @@
+openapi: 3.1.0
+info:
+  title: Asana Status Updates API
+  description: >-
+    The Asana Status Updates API allows users to manage progress updates on
+    projects, portfolios, and goals. Status updates include text and a
+    status_type indicating the overall state.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Status updates
+    description: Manage status updates on objects.
+paths:
+  /status_updates/{status_update_gid}:
+    get:
+      summary: Get a status update
+      operationId: getStatusUpdate
+      tags:
+        - Status updates
+      parameters:
+        - name: status_update_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the status update.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/StatusUpdateResponse'
+    delete:
+      summary: Delete a status update
+      operationId: deleteStatusUpdate
+      tags:
+        - Status updates
+      parameters:
+        - name: status_update_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the status update.
+  /status_updates:
+    get:
+      summary: Get status updates from an object
+      operationId: getStatusUpdatesForObject
+      tags:
+        - Status updates
+      parameters:
+        - name: parent
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: created_since
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved status updates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusUpdateCompact'
+    post:
+      summary: Create a status update
+      operationId: createStatusUpdateForObject
+      tags:
+        - Status updates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/StatusUpdateRequest'
+      responses:
+        '201':
+          description: Successfully created the status update.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/StatusUpdateResponse'
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    StatusUpdateCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: status_update
+        title:
+          type: string
+        resource_subtype:
+          type: string
+          enum:
+            - project_status_update
+            - portfolio_status_update
+            - goal_status_update
+    StatusUpdateRequest:
+      type: object
+      properties:
+        text:
+          type: string
+        html_text:
+          type: string
+        status_type:
+          type: string
+          enum:
+            - on_track
+            - at_risk
+            - off_track
+            - on_hold
+            - complete
+            - achieved
+            - partial
+            - missed
+            - dropped
+        parent:
+          type: string
+        title:
+          type: string
+      required:
+        - status_type
+        - parent
+    StatusUpdateResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: status_update
+        title:
+          type: string
+        text:
+          type: string
+        html_text:
+          type: string
+        status_type:
+          type: string
+          enum:
+            - on_track
+            - at_risk
+            - off_track
+            - on_hold
+            - complete
+            - achieved
+            - partial
+            - missed
+            - dropped
+        author:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        parent:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        resource_subtype:
+          type: string

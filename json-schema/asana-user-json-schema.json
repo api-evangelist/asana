@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developers.asana.com/schemas/user",
+  "title": "Asana User",
+  "description": "A user object represents an account in Asana that can be given access to various workspaces, projects, and tasks. The special string identifier 'me' can be used to refer to the current authenticated user.",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "type": "string",
+      "description": "Globally unique identifier of the resource.",
+      "readOnly": true,
+      "examples": ["12345"]
+    },
+    "resource_type": {
+      "type": "string",
+      "const": "user",
+      "description": "The base type of this resource.",
+      "readOnly": true
+    },
+    "name": {
+      "type": "string",
+      "description": "The user's name. Read-only except when same user as requester.",
+      "examples": ["Greg Sanchez"]
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "The user's email address.",
+      "readOnly": true,
+      "examples": ["gsanchez@example.com"]
+    },
+    "photo": {
+      "type": ["object", "null"],
+      "description": "A map of the user's profile photo in various sizes.",
+      "readOnly": true,
+      "properties": {
+        "image_21x21": { "type": "string", "format": "uri" },
+        "image_27x27": { "type": "string", "format": "uri" },
+        "image_36x36": { "type": "string", "format": "uri" },
+        "image_60x60": { "type": "string", "format": "uri" },
+        "image_128x128": { "type": "string", "format": "uri" },
+        "image_1024x1024": { "type": "string", "format": "uri" }
+      }
+    },
+    "workspaces": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/WorkspaceCompact" },
+      "description": "Workspaces and organizations this user may access.",
+      "readOnly": true
+    }
+  },
+  "required": ["gid", "resource_type"],
+  "$defs": {
+    "WorkspaceCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "workspace" },
+        "name": { "type": "string" }
+      }
+    }
+  }
+}

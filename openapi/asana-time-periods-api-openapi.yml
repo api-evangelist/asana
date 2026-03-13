@@ -1,0 +1,160 @@
+openapi: 3.1.0
+info:
+  title: Asana Time Periods API
+  description: >-
+    The Asana Time Periods API manages time periods that represent
+    domain-scoped date ranges set on goals.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Time periods
+    description: Manage time periods for goals.
+paths:
+  /time_periods/{time_period_gid}:
+    get:
+      summary: Get a time period
+      operationId: getTimePeriod
+      tags:
+        - Time periods
+      parameters:
+        - name: time_period_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the time period.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TimePeriodResponse'
+  /time_periods:
+    get:
+      summary: Get time periods
+      operationId: getTimePeriods
+      tags:
+        - Time periods
+      parameters:
+        - name: workspace
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: start_on
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: end_on
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved time periods.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TimePeriodCompact'
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    TimePeriodCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: time_period
+        display_name:
+          type: string
+        start_on:
+          type: string
+          format: date
+        end_on:
+          type: string
+          format: date
+        period:
+          type: string
+          enum:
+            - FY
+            - H1
+            - H2
+            - Q1
+            - Q2
+            - Q3
+            - Q4
+    TimePeriodResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: time_period
+        display_name:
+          type: string
+        start_on:
+          type: string
+          format: date
+        end_on:
+          type: string
+          format: date
+        period:
+          type: string
+        parent:
+          type: object
+          nullable: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            display_name:
+              type: string

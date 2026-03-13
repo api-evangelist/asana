@@ -1,0 +1,231 @@
+openapi: 3.1.0
+info:
+  title: Asana Workspaces API
+  description: >-
+    The Asana Workspaces API manages workspaces, the highest-level
+    organizational unit in Asana. An organization is a special kind of workspace
+    that represents a company.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Workspaces
+    description: Manage workspaces and organizations.
+paths:
+  /workspaces:
+    get:
+      summary: Get multiple workspaces
+      operationId: getWorkspaces
+      tags:
+        - Workspaces
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the requested workspaces.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkspaceCompact'
+  /workspaces/{workspace_gid}:
+    get:
+      summary: Get a workspace
+      operationId: getWorkspace
+      tags:
+        - Workspaces
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the workspace.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WorkspaceResponse'
+    put:
+      summary: Update a workspace
+      operationId: updateWorkspace
+      tags:
+        - Workspaces
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+      responses:
+        '200':
+          description: Successfully updated the workspace.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WorkspaceResponse'
+  /workspaces/{workspace_gid}/addUser:
+    post:
+      summary: Add a user to a workspace
+      operationId: addUserForWorkspace
+      tags:
+        - Workspaces
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    user:
+                      type: string
+                  required:
+                    - user
+      responses:
+        '200':
+          description: Successfully added the user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserCompact'
+  /workspaces/{workspace_gid}/removeUser:
+    post:
+      summary: Remove a user from a workspace
+      operationId: removeUserForWorkspace
+      tags:
+        - Workspaces
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    user:
+                      type: string
+                  required:
+                    - user
+      responses:
+        '204':
+          description: Successfully removed the user.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    WorkspaceCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: workspace
+        name:
+          type: string
+          example: My Company Workspace
+    WorkspaceResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: workspace
+        name:
+          type: string
+          example: My Company Workspace
+        is_organization:
+          type: boolean
+          readOnly: true
+        email_domains:
+          type: array
+          readOnly: true
+          items:
+            type: string
+    UserCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+        resource_type:
+          type: string
+        name:
+          type: string

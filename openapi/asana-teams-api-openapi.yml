@@ -1,0 +1,294 @@
+openapi: 3.1.0
+info:
+  title: Asana Teams API
+  description: >-
+    The Asana Teams API allows management of teams used to group related
+    projects and people within an organization.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Teams
+    description: Manage teams within organizations.
+paths:
+  /teams:
+    post:
+      summary: Create a team
+      operationId: createTeam
+      tags:
+        - Teams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/TeamRequest'
+      responses:
+        '201':
+          description: Successfully created the team.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TeamResponse'
+  /teams/{team_gid}:
+    get:
+      summary: Get a team
+      operationId: getTeam
+      tags:
+        - Teams
+      parameters:
+        - name: team_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the team.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TeamResponse'
+    put:
+      summary: Update a team
+      operationId: updateTeam
+      tags:
+        - Teams
+      parameters:
+        - name: team_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/TeamRequest'
+      responses:
+        '200':
+          description: Successfully updated the team.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TeamResponse'
+  /workspaces/{workspace_gid}/teams:
+    get:
+      summary: Get teams in a workspace
+      operationId: getTeamsForWorkspace
+      tags:
+        - Teams
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved teams.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TeamCompact'
+  /users/{user_gid}/teams:
+    get:
+      summary: Get teams for a user
+      operationId: getTeamsForUser
+      tags:
+        - Teams
+      parameters:
+        - name: user_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: organization
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved user's teams.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TeamCompact'
+  /teams/{team_gid}/addUser:
+    post:
+      summary: Add a user to a team
+      operationId: addUserForTeam
+      tags:
+        - Teams
+      parameters:
+        - name: team_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    user:
+                      type: string
+                  required:
+                    - user
+      responses:
+        '200':
+          description: Successfully added the user to the team.
+  /teams/{team_gid}/removeUser:
+    post:
+      summary: Remove a user from a team
+      operationId: removeUserForTeam
+      tags:
+        - Teams
+      parameters:
+        - name: team_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    user:
+                      type: string
+                  required:
+                    - user
+      responses:
+        '204':
+          description: Successfully removed the user from the team.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    TeamCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: team
+        name:
+          type: string
+          example: Marketing
+    TeamRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        html_description:
+          type: string
+        organization:
+          type: string
+        visibility:
+          type: string
+          enum:
+            - secret
+            - request_to_join
+            - public
+    TeamResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: team
+        name:
+          type: string
+        description:
+          type: string
+        html_description:
+          type: string
+        organization:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        permalink_url:
+          type: string
+          readOnly: true
+        visibility:
+          type: string

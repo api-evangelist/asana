@@ -1,0 +1,357 @@
+openapi: 3.1.0
+info:
+  title: Asana Allocations API
+  description: >-
+    The Asana Allocations API allows users to manage and allocate resources
+    within their Asana project management system. An allocation object
+    represents how much of a resource (e.g. person, team) is dedicated to a
+    specific work object (e.g. project, portfolio) over a specific period of
+    time. The effort value can be a percentage or number of hours.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Allocations
+    description: >-
+      An allocation object represents how much of a resource is dedicated to a
+      specific work object over a specific period of time.
+paths:
+  /allocations/{allocation_gid}:
+    get:
+      summary: Get an allocation
+      description: Returns the complete allocation record for a single allocation.
+      operationId: getAllocation
+      tags:
+        - Allocations
+      parameters:
+        - name: allocation_gid
+          in: path
+          required: true
+          description: Globally unique identifier for the allocation.
+          schema:
+            type: string
+          example: '77688'
+        - name: opt_fields
+          in: query
+          required: false
+          description: Comma-separated list of optional fields to include.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+      responses:
+        '200':
+          description: Successfully retrieved the record for a single allocation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AllocationResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    put:
+      summary: Update an allocation
+      description: Updates an existing allocation.
+      operationId: updateAllocation
+      tags:
+        - Allocations
+      parameters:
+        - name: allocation_gid
+          in: path
+          required: true
+          description: Globally unique identifier for the allocation.
+          schema:
+            type: string
+          example: '77688'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/AllocationRequest'
+      responses:
+        '200':
+          description: Successfully updated the allocation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AllocationResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    delete:
+      summary: Delete an allocation
+      description: Deletes a specific, existing allocation.
+      operationId: deleteAllocation
+      tags:
+        - Allocations
+      parameters:
+        - name: allocation_gid
+          in: path
+          required: true
+          description: Globally unique identifier for the allocation.
+          schema:
+            type: string
+          example: '77688'
+      responses:
+        '200':
+          description: Successfully deleted the specified allocation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /allocations:
+    get:
+      summary: Get multiple allocations
+      description: Returns a list of allocations filtered to a specific project or user.
+      operationId: getAllocations
+      tags:
+        - Allocations
+      parameters:
+        - name: parent
+          in: query
+          required: true
+          description: Globally unique identifier for the project to filter allocations.
+          schema:
+            type: string
+        - name: assignee
+          in: query
+          required: false
+          description: Globally unique identifier for the user to filter allocations.
+          schema:
+            type: string
+        - name: workspace
+          in: query
+          required: false
+          description: Globally unique identifier for the workspace.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the requested allocations.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AllocationResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Create an allocation
+      description: Creates a new allocation.
+      operationId: createAllocation
+      tags:
+        - Allocations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/AllocationRequest'
+      responses:
+        '201':
+          description: Successfully created a new allocation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AllocationResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    AllocationRequest:
+      type: object
+      properties:
+        assignee:
+          type: string
+          description: The user or team the allocation is for.
+          example: '12345'
+        start_date:
+          type: string
+          format: date
+          description: The localized day on which the allocation starts.
+          example: '2024-02-28'
+        end_date:
+          type: string
+          format: date
+          description: The localized day on which the allocation ends.
+          example: '2024-02-28'
+        effort:
+          type: object
+          nullable: true
+          description: The amount of time associated with the allocation.
+          properties:
+            type:
+              type: string
+              description: The units used for tracking effort, either "hours" or "percent".
+              enum:
+                - hours
+                - percent
+            value:
+              type: number
+              description: The numeric effort value.
+        parent:
+          type: string
+          description: The project or portfolio this allocation is for.
+          example: '12345'
+    AllocationResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          description: Globally unique identifier of the resource.
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          description: The base type of this resource.
+          example: allocation
+        assignee:
+          type: object
+          properties:
+            gid:
+              type: string
+            name:
+              type: string
+            resource_type:
+              type: string
+        start_date:
+          type: string
+          format: date
+          description: The localized day on which the allocation starts.
+          example: '2024-02-28'
+        end_date:
+          type: string
+          format: date
+          description: The localized day on which the allocation ends.
+          example: '2024-02-28'
+        effort:
+          type: object
+          nullable: true
+          description: The amount of time associated with the allocation.
+          properties:
+            type:
+              type: string
+              enum:
+                - hours
+                - percent
+            value:
+              type: number
+        parent:
+          type: object
+          properties:
+            gid:
+              type: string
+            name:
+              type: string
+            resource_type:
+              type: string
+        created_by:
+          type: object
+          properties:
+            gid:
+              type: string
+            name:
+              type: string
+            resource_type:
+              type: string

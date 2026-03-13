@@ -1,0 +1,306 @@
+openapi: 3.1.0
+info:
+  title: Asana Attachments API
+  description: >-
+    The Asana Attachments API allows developers to interact with and manage file
+    attachments within the Asana platform. An attachment object represents any
+    file attached to a task in Asana, whether it is an uploaded file or one
+    associated via a third-party service such as Dropbox or Google Drive.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Attachments
+    description: >-
+      An attachment object represents any file attached to a task in Asana.
+paths:
+  /attachments/{attachment_gid}:
+    get:
+      summary: Get an attachment
+      description: Returns the full record for a single attachment.
+      operationId: getAttachment
+      tags:
+        - Attachments
+      parameters:
+        - name: attachment_gid
+          in: path
+          required: true
+          description: Globally unique identifier for the attachment.
+          schema:
+            type: string
+          example: '12345'
+        - name: opt_fields
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+      responses:
+        '200':
+          description: Successfully retrieved the record for a single attachment.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AttachmentResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    delete:
+      summary: Delete an attachment
+      description: Deletes a specific, existing attachment.
+      operationId: deleteAttachment
+      tags:
+        - Attachments
+      parameters:
+        - name: attachment_gid
+          in: path
+          required: true
+          description: Globally unique identifier for the attachment.
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully deleted the specified attachment.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /attachments:
+    get:
+      summary: Get attachments from an object
+      description: >-
+        Returns the compact records for all attachments on the object.
+      operationId: getAttachmentsForObject
+      tags:
+        - Attachments
+      parameters:
+        - name: parent
+          in: query
+          required: true
+          description: Globally unique identifier for object to fetch attachments from.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the compact records for all attachments.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AttachmentCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Upload an attachment
+      description: >-
+        Upload an attachment. The file content must be sent as a multipart
+        form data request.
+      operationId: createAttachmentForObject
+      tags:
+        - Attachments
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The file to upload.
+                parent:
+                  type: string
+                  description: Globally unique identifier for the task to add the attachment to.
+                resource_subtype:
+                  type: string
+                  description: The type of the attachment.
+                  enum:
+                    - asana
+                    - dropbox
+                    - gdrive
+                    - onedrive
+                    - box
+                    - vimeo
+                    - external
+                name:
+                  type: string
+                  description: The name of the external resource being attached.
+                url:
+                  type: string
+                  format: uri
+                  description: The URL of the external resource being attached.
+              required:
+                - parent
+                - resource_subtype
+      responses:
+        '200':
+          description: Successfully uploaded the attachment.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AttachmentResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    AttachmentCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: attachment
+        name:
+          type: string
+          description: The name of the file.
+          example: Screenshot.png
+        resource_subtype:
+          type: string
+          description: The service hosting the attachment.
+          example: dropbox
+    AttachmentResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: attachment
+        name:
+          type: string
+          example: Screenshot.png
+        resource_subtype:
+          type: string
+          example: dropbox
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2012-02-22T02:06:58.147Z'
+        download_url:
+          type: string
+          format: uri
+          nullable: true
+          readOnly: true
+        host:
+          type: string
+          readOnly: true
+          example: dropbox
+        parent:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        permanent_url:
+          type: string
+          format: uri
+          readOnly: true
+        size:
+          type: integer
+          readOnly: true
+          description: The size of the attachment in bytes.
+        view_url:
+          type: string
+          format: uri
+          nullable: true
+          readOnly: true
+        connected_to_app:
+          type: boolean
+          readOnly: true

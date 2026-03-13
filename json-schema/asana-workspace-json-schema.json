@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developers.asana.com/schemas/workspace",
+  "title": "Asana Workspace",
+  "description": "A workspace is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace. An organization is a special kind of workspace that represents a company.",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "type": "string",
+      "description": "Globally unique identifier of the resource.",
+      "readOnly": true,
+      "examples": ["12345"]
+    },
+    "resource_type": {
+      "type": "string",
+      "const": "workspace",
+      "description": "The base type of this resource.",
+      "readOnly": true
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the workspace.",
+      "examples": ["My Company Workspace"]
+    },
+    "is_organization": {
+      "type": "boolean",
+      "description": "Whether the workspace is an organization.",
+      "readOnly": true
+    },
+    "email_domains": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "The email domains associated with this workspace.",
+      "readOnly": true
+    }
+  },
+  "required": ["gid", "resource_type"]
+}

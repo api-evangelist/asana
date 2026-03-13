@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developers.asana.com/schemas/task",
+  "title": "Asana Task",
+  "description": "The task is the basic object around which many operations in Asana are centered. Tasks represent units of work that can be assigned, prioritized, and tracked.",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "type": "string",
+      "description": "Globally unique identifier of the resource, as a string.",
+      "readOnly": true,
+      "examples": ["12345"]
+    },
+    "resource_type": {
+      "type": "string",
+      "const": "task",
+      "description": "The base type of this resource.",
+      "readOnly": true
+    },
+    "resource_subtype": {
+      "type": "string",
+      "enum": ["default_task", "milestone", "section", "approval"],
+      "description": "The subtype of this resource.",
+      "examples": ["default_task"]
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the task. Generally a short sentence fragment.",
+      "examples": ["Buy catnip"]
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected", "changes_requested"],
+      "description": "Conditional. Reflects the approval status of this task."
+    },
+    "completed": {
+      "type": "boolean",
+      "description": "True if the task is currently marked complete.",
+      "examples": [false]
+    },
+    "completed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The time at which this task was completed, or null if incomplete.",
+      "readOnly": true
+    },
+    "completed_by": {
+      "oneOf": [
+        { "$ref": "#/$defs/UserCompact" },
+        { "type": "null" }
+      ],
+      "description": "The user who completed this task.",
+      "readOnly": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which this resource was created.",
+      "readOnly": true
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which this task was last modified.",
+      "readOnly": true
+    },
+    "due_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The UTC date and time on which this task is due."
+    },
+    "due_on": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "The localized date on which this task is due (YYYY-MM-DD)."
+    },
+    "start_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Date and time on which work begins for the task."
+    },
+    "start_on": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "The day on which work begins for the task (YYYY-MM-DD)."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form textual information associated with the task."
+    },
+    "html_notes": {
+      "type": "string",
+      "description": "The notes of the text with formatting as HTML."
+    },
+    "assignee": {
+      "oneOf": [
+        { "$ref": "#/$defs/UserCompact" },
+        { "type": "null" }
+      ],
+      "description": "The user to whom this task is assigned."
+    },
+    "parent": {
+      "oneOf": [
+        { "$ref": "#/$defs/TaskCompact" },
+        { "type": "null" }
+      ],
+      "description": "The parent of this task, or null if not a subtask.",
+      "readOnly": true
+    },
+    "projects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ProjectCompact" },
+      "description": "Array of projects this task is associated with.",
+      "readOnly": true
+    },
+    "tags": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/TagCompact" },
+      "description": "Array of tags associated with this task.",
+      "readOnly": true
+    },
+    "followers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/UserCompact" },
+      "description": "Array of users following this task.",
+      "readOnly": true
+    },
+    "workspace": {
+      "$ref": "#/$defs/WorkspaceCompact",
+      "description": "The workspace this task is associated with.",
+      "readOnly": true
+    },
+    "custom_fields": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Array of custom field values applied to the task.",
+      "readOnly": true
+    },
+    "liked": {
+      "type": "boolean",
+      "description": "True if the task is liked by the authorized user."
+    },
+    "num_likes": {
+      "type": "integer",
+      "description": "The number of users who have liked this task.",
+      "readOnly": true
+    },
+    "num_subtasks": {
+      "type": "integer",
+      "description": "The number of subtasks on this task.",
+      "readOnly": true
+    },
+    "permalink_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "A URL that points directly to the object within Asana.",
+      "readOnly": true
+    },
+    "actual_time_minutes": {
+      "type": ["number", "null"],
+      "description": "Sum of all Time Tracking entries in the Actual Time field.",
+      "readOnly": true
+    },
+    "external": {
+      "type": "object",
+      "description": "OAuth Required. App-specific metadata on tasks.",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string"
+        }
+      }
+    },
+    "memberships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "project": { "$ref": "#/$defs/ProjectCompact" },
+          "section": { "$ref": "#/$defs/SectionCompact" }
+        }
+      },
+      "description": "Array of projects and sections this task belongs to.",
+      "readOnly": true
+    }
+  },
+  "required": ["gid", "resource_type"],
+  "$defs": {
+    "UserCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "user" },
+        "name": { "type": "string" }
+      }
+    },
+    "TaskCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "task" },
+        "name": { "type": "string" }
+      }
+    },
+    "ProjectCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "project" },
+        "name": { "type": "string" }
+      }
+    },
+    "TagCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "tag" },
+        "name": { "type": "string" }
+      }
+    },
+    "SectionCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "section" },
+        "name": { "type": "string" }
+      }
+    },
+    "WorkspaceCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "workspace" },
+        "name": { "type": "string" }
+      }
+    }
+  }
+}

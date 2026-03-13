@@ -1,0 +1,539 @@
+openapi: 3.1.0
+info:
+  title: Asana Goals API
+  description: >-
+    The Asana Goals API allows developers to programmatically interact with goals
+    in the goal-tracking system. Goals help organizations drive measurable results
+    and can include metrics, subgoals, and supporting relationships.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Goals
+    description: Manage goals in the goal-tracking system.
+paths:
+  /goals:
+    get:
+      summary: Get goals
+      description: Returns compact goal records.
+      operationId: getGoals
+      tags:
+        - Goals
+      parameters:
+        - name: workspace
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: team
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: project
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: is_workspace_level
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: time_periods
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the requested goals.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GoalCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Create a goal
+      description: Creates a new goal in a workspace.
+      operationId: createGoal
+      tags:
+        - Goals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/GoalRequest'
+      responses:
+        '201':
+          description: Successfully created a new goal.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+  /goals/{goal_gid}:
+    get:
+      summary: Get a goal
+      description: Returns the complete goal record for a single goal.
+      operationId: getGoal
+      tags:
+        - Goals
+      parameters:
+        - name: goal_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully retrieved the record for a single goal.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    put:
+      summary: Update a goal
+      description: Updates an existing goal.
+      operationId: updateGoal
+      tags:
+        - Goals
+      parameters:
+        - name: goal_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/GoalRequest'
+      responses:
+        '200':
+          description: Successfully updated the goal.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    delete:
+      summary: Delete a goal
+      description: Deletes a specific, existing goal.
+      operationId: deleteGoal
+      tags:
+        - Goals
+      parameters:
+        - name: goal_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully deleted the goal.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /goals/{goal_gid}/addFollowers:
+    post:
+      summary: Add a collaborator to a goal
+      description: Adds followers to a goal.
+      operationId: addFollowersForGoal
+      tags:
+        - Goals
+      parameters:
+        - name: goal_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    followers:
+                      type: array
+                      items:
+                        type: string
+      responses:
+        '200':
+          description: Successfully added followers to the goal.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /goals/{goal_gid}/removeFollowers:
+    post:
+      summary: Remove a collaborator from a goal
+      description: Removes followers from a goal.
+      operationId: removeFollowersForGoal
+      tags:
+        - Goals
+      parameters:
+        - name: goal_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    followers:
+                      type: array
+                      items:
+                        type: string
+      responses:
+        '200':
+          description: Successfully removed followers from the goal.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /goals/{goal_gid}/parentGoals:
+    get:
+      summary: Get parent goals from a goal
+      description: Returns a compact representation of all parent goals of a goal.
+      operationId: getParentGoalsForGoal
+      tags:
+        - Goals
+      parameters:
+        - name: goal_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the parent goals.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GoalCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    GoalCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: goal
+        name:
+          type: string
+          example: Grow web traffic by 30%
+        owner:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+    GoalRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Grow web traffic by 30%
+        notes:
+          type: string
+        html_notes:
+          type: string
+        due_on:
+          type: string
+          format: date
+          nullable: true
+        start_on:
+          type: string
+          format: date
+          nullable: true
+        liked:
+          type: boolean
+        team:
+          type: string
+        workspace:
+          type: string
+        time_period:
+          type: string
+        owner:
+          type: string
+        followers:
+          type: array
+          items:
+            type: string
+    GoalResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: goal
+        name:
+          type: string
+          example: Grow web traffic by 30%
+        owner:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        notes:
+          type: string
+        html_notes:
+          type: string
+        due_on:
+          type: string
+          format: date
+          nullable: true
+        start_on:
+          type: string
+          format: date
+          nullable: true
+        status:
+          type: string
+        liked:
+          type: boolean
+        num_likes:
+          type: integer
+          readOnly: true
+        team:
+          type: object
+          properties:
+            gid:
+              type: string
+            name:
+              type: string
+            resource_type:
+              type: string
+        workspace:
+          type: object
+          properties:
+            gid:
+              type: string
+            name:
+              type: string
+            resource_type:
+              type: string
+        followers:
+          type: array
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              resource_type:
+                type: string
+              name:
+                type: string
+        time_period:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+        metric:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            resource_subtype:
+              type: string
+            precision:
+              type: integer
+            unit:
+              type: string
+            currency_code:
+              type: string
+              nullable: true
+            current_number_value:
+              type: number
+            target_number_value:
+              type: number
+            initial_number_value:
+              type: number
+            progress_source:
+              type: string
+              enum:
+                - manual
+                - subgoal_progress
+                - project_task_completion
+                - project_milestone_completion
+                - task_completion
+                - external

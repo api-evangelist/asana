@@ -1,0 +1,89 @@
+openapi: 3.1.0
+info:
+  title: Asana Rule Triggers API
+  description: >-
+    The Asana Rule Triggers API allows developers to trigger rules via incoming
+    web requests, enabling external applications to connect to Asana through
+    rule-based automation.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Rules
+    description: Trigger rules via incoming web requests.
+paths:
+  /rule_triggers/{rule_trigger_gid}/run:
+    post:
+      summary: Trigger a rule
+      description: Trigger a rule which uses an incoming web request trigger.
+      operationId: triggerRule
+      tags:
+        - Rules
+      parameters:
+        - name: rule_trigger_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    resource:
+                      type: string
+                      description: The ID of the resource (e.g. task) to trigger the rule on.
+                  required:
+                    - resource
+      responses:
+        '200':
+          description: Successfully triggered the rule.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

@@ -1,0 +1,375 @@
+openapi: 3.1.0
+info:
+  title: Asana Webhooks API
+  description: >-
+    The Asana Webhooks API allows you to subscribe to notifications about events
+    on Asana resources. Webhooks use a confirmation handshake with X-Hook-Secret
+    headers and deliver events via HTTP POST to your target URL.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Webhooks
+    description: Manage webhook subscriptions for real-time event delivery.
+paths:
+  /webhooks:
+    get:
+      summary: Get multiple webhooks
+      description: >-
+        Get the compact representation of all webhooks your app has registered
+        for the authenticated user in the given workspace.
+      operationId: getWebhooks
+      tags:
+        - Webhooks
+      parameters:
+        - name: workspace
+          in: query
+          required: true
+          description: The workspace to query for webhooks in.
+          schema:
+            type: string
+          example: '1331'
+        - name: resource
+          in: query
+          description: Only return webhooks for the given resource.
+          schema:
+            type: string
+          example: '51648'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the requested webhooks.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WebhookResponse'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Establish a webhook
+      description: >-
+        Establishing a webhook is a two-part process. First, a simple HTTP POST
+        request initiates the creation. Then a confirmation handshake occurs
+        where we send a test POST to the target with an X-Hook-Secret header
+        that must be echoed back.
+      operationId: createWebhook
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/WebhookRequest'
+      responses:
+        '201':
+          description: Successfully created the webhook.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WebhookResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+  /webhooks/{webhook_gid}:
+    get:
+      summary: Get a webhook
+      description: Returns the full record for the given webhook.
+      operationId: getWebhook
+      tags:
+        - Webhooks
+      parameters:
+        - name: webhook_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully retrieved the record for a single webhook.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WebhookResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    put:
+      summary: Update a webhook
+      description: Updates an existing webhook.
+      operationId: updateWebhook
+      tags:
+        - Webhooks
+      parameters:
+        - name: webhook_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/WebhookUpdateRequest'
+      responses:
+        '200':
+          description: Successfully updated the webhook.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WebhookResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    delete:
+      summary: Delete a webhook
+      description: Deletes the specified webhook.
+      operationId: deleteWebhook
+      tags:
+        - Webhooks
+      parameters:
+        - name: webhook_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully deleted the webhook.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    WebhookRequest:
+      type: object
+      properties:
+        resource:
+          type: string
+          description: A resource ID to subscribe to.
+          example: '12345'
+        target:
+          type: string
+          format: uri
+          description: The URL to receive the HTTP POST.
+          example: https://example.com/receive-webhook/7654
+        filters:
+          type: array
+          description: An array of WebhookFilter objects to filter events.
+          items:
+            $ref: '#/components/schemas/WebhookFilter'
+      required:
+        - resource
+        - target
+    WebhookUpdateRequest:
+      type: object
+      properties:
+        filters:
+          type: array
+          description: An array of WebhookFilter objects to filter events.
+          items:
+            $ref: '#/components/schemas/WebhookFilter'
+    WebhookFilter:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          description: The type of resource to filter on (e.g., task).
+          example: task
+        resource_subtype:
+          type: string
+          description: The resource subtype to filter on.
+          example: milestone
+        action:
+          type: string
+          description: The type of change to filter on.
+          enum:
+            - changed
+            - added
+            - removed
+            - deleted
+            - undeleted
+          example: changed
+        fields:
+          type: array
+          description: Whitelist of fields for changed action events.
+          items:
+            type: string
+          example:
+            - due_at
+            - due_on
+            - dependencies
+    WebhookResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: webhook
+        active:
+          type: boolean
+          readOnly: true
+          example: false
+        resource:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        target:
+          type: string
+          format: uri
+          readOnly: true
+          example: https://example.com/receive-webhook/7654
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_failure_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        last_failure_content:
+          type: string
+          readOnly: true
+          nullable: true
+        last_success_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        delivery_retry_count:
+          type: integer
+          readOnly: true
+        next_attempt_after:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        failure_deletion_timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookFilter'
+    NextPage:
+      type: object
+      nullable: true
+      properties:
+        offset:
+          type: string
+        path:
+          type: string
+        uri:
+          type: string
+          format: uri

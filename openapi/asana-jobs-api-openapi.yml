@@ -1,0 +1,126 @@
+openapi: 3.1.0
+info:
+  title: Asana Jobs API
+  description: >-
+    The Asana Jobs API allows users to access job records representing
+    asynchronous processes such as project or task duplication.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Jobs
+    description: Track asynchronous operations like project or task duplication.
+paths:
+  /jobs/{job_gid}:
+    get:
+      summary: Get a job by id
+      description: Returns the full record for a job.
+      operationId: getJob
+      tags:
+        - Jobs
+      parameters:
+        - name: job_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully retrieved the record for a single job.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/JobResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    JobResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: job
+        resource_subtype:
+          type: string
+          readOnly: true
+          example: duplicate_task
+        status:
+          type: string
+          readOnly: true
+          enum:
+            - not_started
+            - in_progress
+            - succeeded
+            - failed
+          example: in_progress
+        new_project:
+          type: object
+          nullable: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        new_task:
+          type: object
+          nullable: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        new_project_template:
+          type: object
+          nullable: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string

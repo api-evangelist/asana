@@ -1,0 +1,327 @@
+openapi: 3.1.0
+info:
+  title: Asana Goal Relationships API
+  description: >-
+    The Asana Goal Relationships API allows users to create and manage
+    relationships between goals and other goals, projects, tasks, or portfolios.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Goal relationships
+    description: Manage relationships between goals and other objects.
+paths:
+  /goal_relationships/{goal_relationship_gid}:
+    get:
+      summary: Get a goal relationship
+      description: Returns the complete updated goal relationship record for a single goal relationship.
+      operationId: getGoalRelationship
+      tags:
+        - Goal relationships
+      parameters:
+        - name: goal_relationship_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully retrieved the record for a goal relationship.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalRelationshipResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    put:
+      summary: Update a goal relationship
+      description: Updates an existing goal relationship.
+      operationId: updateGoalRelationship
+      tags:
+        - Goal relationships
+      parameters:
+        - name: goal_relationship_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/GoalRelationshipRequest'
+      responses:
+        '200':
+          description: Successfully updated the goal relationship.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalRelationshipResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /goal_relationships:
+    get:
+      summary: Get goal relationships
+      description: Returns compact goal relationship records.
+      operationId: getGoalRelationships
+      tags:
+        - Goal relationships
+      parameters:
+        - name: supported_goal
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: resource_subtype
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the requested goal relationships.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GoalRelationshipCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+  /goals/{goal_gid}/addSupportingRelationship:
+    post:
+      summary: Add a supporting goal relationship
+      description: Creates a goal relationship by adding a supporting resource.
+      operationId: addSupportingRelationship
+      tags:
+        - Goal relationships
+      parameters:
+        - name: goal_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    supporting_resource:
+                      type: string
+                    contribution_weight:
+                      type: number
+                    insert_before:
+                      type: string
+                    insert_after:
+                      type: string
+                  required:
+                    - supporting_resource
+      responses:
+        '200':
+          description: Successfully created the goal relationship.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalRelationshipResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /goals/{goal_gid}/removeSupportingRelationship:
+    post:
+      summary: Removes a supporting goal relationship
+      description: Removes a goal relationship for a given parent goal.
+      operationId: removeSupportingRelationship
+      tags:
+        - Goal relationships
+      parameters:
+        - name: goal_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    supporting_resource:
+                      type: string
+                  required:
+                    - supporting_resource
+      responses:
+        '200':
+          description: Successfully removed the goal relationship.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    GoalRelationshipCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: goal_relationship
+        resource_subtype:
+          type: string
+          example: subgoal
+        supporting_resource:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        contribution_weight:
+          type: number
+          example: 1
+    GoalRelationshipRequest:
+      type: object
+      properties:
+        contribution_weight:
+          type: number
+        supporting_resource:
+          type: string
+    GoalRelationshipResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: goal_relationship
+        resource_subtype:
+          type: string
+        supported_goal:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        supporting_resource:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        contribution_weight:
+          type: number
+          example: 1

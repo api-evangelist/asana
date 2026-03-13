@@ -1,0 +1,489 @@
+openapi: 3.1.0
+info:
+  title: Asana Portfolios API
+  description: >-
+    The Asana Portfolios API allows developers to manage portfolios that give
+    a high-level overview of the status of multiple initiatives. Portfolios
+    have a max of 1500 items and a maximum of 20 custom fields.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Portfolios
+    description: Manage portfolios for high-level project oversight.
+paths:
+  /portfolios:
+    get:
+      summary: Get multiple portfolios
+      description: Returns a list of the portfolios in compact representation.
+      operationId: getPortfolios
+      tags:
+        - Portfolios
+      parameters:
+        - name: workspace
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: owner
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the requested portfolios.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PortfolioCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Create a portfolio
+      description: Creates a new portfolio in the given workspace.
+      operationId: createPortfolio
+      tags:
+        - Portfolios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/PortfolioRequest'
+      responses:
+        '201':
+          description: Successfully created a new portfolio.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PortfolioResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+  /portfolios/{portfolio_gid}:
+    get:
+      summary: Get a portfolio
+      description: Returns the complete portfolio record for a single portfolio.
+      operationId: getPortfolio
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolio_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully retrieved the record for a single portfolio.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PortfolioResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    put:
+      summary: Update a portfolio
+      description: Updates the portfolio.
+      operationId: updatePortfolio
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolio_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/PortfolioRequest'
+      responses:
+        '200':
+          description: Successfully updated the portfolio.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PortfolioResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    delete:
+      summary: Delete a portfolio
+      description: Deletes a specific, existing portfolio.
+      operationId: deletePortfolio
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolio_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the portfolio.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /portfolios/{portfolio_gid}/items:
+    get:
+      summary: Get portfolio items
+      description: Returns the compact project records for all items in the portfolio.
+      operationId: getItemsForPortfolio
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolio_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the portfolio items.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gid:
+                          type: string
+                        resource_type:
+                          type: string
+                        name:
+                          type: string
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /portfolios/{portfolio_gid}/addItem:
+    post:
+      summary: Add a portfolio item
+      description: Add an item to a portfolio.
+      operationId: addItemForPortfolio
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolio_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    item:
+                      type: string
+                    insert_before:
+                      type: string
+                    insert_after:
+                      type: string
+                  required:
+                    - item
+      responses:
+        '200':
+          description: Successfully added the item.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /portfolios/{portfolio_gid}/removeItem:
+    post:
+      summary: Remove a portfolio item
+      description: Remove an item from a portfolio.
+      operationId: removeItemForPortfolio
+      tags:
+        - Portfolios
+      parameters:
+        - name: portfolio_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    item:
+                      type: string
+                  required:
+                    - item
+      responses:
+        '200':
+          description: Successfully removed the item.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    PortfolioCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: portfolio
+        name:
+          type: string
+          example: Bug Portfolio
+    PortfolioRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Bug Portfolio
+        color:
+          type: string
+          enum:
+            - dark-pink
+            - dark-green
+            - dark-blue
+            - dark-red
+            - dark-teal
+            - dark-brown
+            - dark-orange
+            - dark-purple
+            - dark-warm-gray
+            - light-pink
+            - light-green
+            - light-blue
+            - light-red
+            - light-teal
+            - light-brown
+            - light-orange
+            - light-purple
+            - light-warm-gray
+            - none
+        workspace:
+          type: string
+          example: '12345'
+        public:
+          type: boolean
+    PortfolioResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: portfolio
+        name:
+          type: string
+          example: Bug Portfolio
+        color:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        owner:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        workspace:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              resource_type:
+                type: string
+              name:
+                type: string
+        permalink_url:
+          type: string
+          readOnly: true
+        due_on:
+          type: string
+          format: date
+          nullable: true
+        start_on:
+          type: string
+          format: date
+          nullable: true

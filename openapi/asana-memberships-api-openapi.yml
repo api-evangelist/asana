@@ -1,0 +1,314 @@
+openapi: 3.1.0
+info:
+  title: Asana Memberships API
+  description: >-
+    The Asana Memberships API manages the relationship between a team or user
+    and an object in Asana. Currently supports memberships for goals, projects,
+    and portfolios.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Memberships
+    description: Manage memberships for goals, projects, and portfolios.
+paths:
+  /memberships:
+    get:
+      summary: Get multiple memberships
+      description: Returns compact membership records.
+      operationId: getMemberships
+      tags:
+        - Memberships
+      parameters:
+        - name: parent
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: member
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the requested memberships.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MembershipCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Create a membership
+      description: Creates a new membership.
+      operationId: createMembership
+      tags:
+        - Memberships
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/CreateMembershipRequest'
+      responses:
+        '200':
+          description: Successfully created the membership.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MembershipResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+  /memberships/{membership_gid}:
+    get:
+      summary: Get a membership
+      description: Returns the complete record for a single membership.
+      operationId: getMembership
+      tags:
+        - Memberships
+      parameters:
+        - name: membership_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully retrieved the record for a single membership.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MembershipResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    put:
+      summary: Update a membership
+      description: Updates a membership's properties.
+      operationId: updateMembership
+      tags:
+        - Memberships
+      parameters:
+        - name: membership_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/MembershipUpdateRequest'
+      responses:
+        '200':
+          description: Successfully updated the membership.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MembershipResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    delete:
+      summary: Delete a membership
+      description: Deletes a membership.
+      operationId: deleteMembership
+      tags:
+        - Memberships
+      parameters:
+        - name: membership_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully deleted the membership.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    MembershipCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: membership
+    CreateMembershipRequest:
+      type: object
+      properties:
+        member:
+          type: string
+          example: '12345'
+        parent:
+          type: string
+          example: '12345'
+        role:
+          type: string
+          enum:
+            - editor
+            - commenter
+            - viewer
+        is_active:
+          type: boolean
+    MembershipUpdateRequest:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - editor
+            - commenter
+            - viewer
+        is_active:
+          type: boolean
+    MembershipResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: membership
+        member:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        parent:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        role:
+          type: string
+          enum:
+            - editor
+            - commenter
+            - viewer
+        is_active:
+          type: boolean
+        is_guest:
+          type: boolean
+          readOnly: true
+        is_editable:
+          type: boolean
+          readOnly: true
+        access_level:
+          type: string
+          readOnly: true

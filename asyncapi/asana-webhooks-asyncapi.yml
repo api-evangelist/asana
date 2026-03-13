@@ -1,0 +1,227 @@
+asyncapi: 2.6.0
+info:
+  title: Asana Webhooks Events API
+  version: '1.0'
+  description: >-
+    The Asana Webhooks Events API delivers real-time event notifications to
+    your application when changes occur on Asana resources. Webhooks use HTTP
+    POST to deliver events to a target URL you configure. Events are delivered
+    within a minute on average using an at-most-once delivery system.
+
+    Establishing a webhook requires a two-part handshake process. When a webhook
+    is created, Asana sends a test POST to the target URL with an X-Hook-Secret
+    header. The target must respond with a 200 OK or 204 No Content and echo
+    back the X-Hook-Secret header to confirm the subscription.
+
+    Subsequent event deliveries include an X-Hook-Signature header containing
+    an HMAC-SHA256 signature of the request body using the X-Hook-Secret as the
+    key, which can be used to verify event authenticity.
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  production:
+    url: https://app.asana.com/api/1.0
+    protocol: http
+    description: >-
+      Asana sends webhook events via HTTP POST to your configured target URL.
+      You configure the target URL when establishing a webhook via the REST API.
+
+channels:
+  /webhooks/events:
+    description: >-
+      Channel for receiving Asana webhook events. Events are delivered as HTTP
+      POST requests to the target URL configured when the webhook was created.
+      Events bubble up from child resources (e.g., subscribing to a project
+      will include events for tasks within that project).
+    subscribe:
+      operationId: receiveWebhookEvents
+      summary: Receive webhook events
+      description: >-
+        Receive real-time event notifications when changes occur on Asana
+        resources that match the webhook's subscription and filters.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/WebhookEvent'
+          - $ref: '#/components/messages/WebhookHandshake'
+
+components:
+  messages:
+    WebhookHandshake:
+      name: WebhookHandshake
+      title: Webhook Confirmation Handshake
+      summary: >-
+        Initial handshake request sent by Asana when a webhook is created.
+        The target must respond with a 200 OK and echo back the X-Hook-Secret.
+      headers:
+        type: object
+        properties:
+          X-Hook-Secret:
+            type: string
+            description: >-
+              A secret token that must be echoed back in the response header to
+              confirm the webhook subscription. Store this secret to verify
+              future event signatures.
+            example: b537207f20cbfa02357cf448134da559e8bd39d61597dcd5631b8012eae53e81
+      payload:
+        type: object
+        description: The handshake request has an empty body.
+
+    WebhookEvent:
+      name: WebhookEvent
+      title: Webhook Event Delivery
+      summary: >-
+        An event delivery containing one or more change events on Asana resources.
+      headers:
+        type: object
+        properties:
+          X-Hook-Signature:
+            type: string
+            description: >-
+              HMAC-SHA256 signature of the request body using the X-Hook-Secret
+              as the key. Use this to verify the authenticity of the event.
+            example: 4f537f6c83ee5425767b5b8f291a2c0df8b79ece6fca3440b42cf2d63fe58580
+      payload:
+        $ref: '#/components/schemas/WebhookEventPayload'
+
+  schemas:
+    WebhookEventPayload:
+      type: object
+      description: The payload delivered to the webhook target URL.
+      properties:
+        events:
+          type: array
+          description: Array of event objects representing changes to resources.
+          items:
+            $ref: '#/components/schemas/Event'
+
+    Event:
+      type: object
+      description: >-
+        An event representing a change to a resource observed by a webhook.
+        Pay close attention to the relationship between Event.action and
+        Event.change.action.
+      properties:
+        user:
+          type: object
+          nullable: true
+          description: >-
+            The user who triggered the event. May be null for system-generated events.
+          properties:
+            gid:
+              type: string
+              description: Globally unique identifier of the user.
+              example: '12345'
+            resource_type:
+              type: string
+              example: user
+        resource:
+          type: object
+          description: The resource that was modified and triggered the event.
+          properties:
+            gid:
+              type: string
+              description: Globally unique identifier of the resource.
+              example: '67890'
+            resource_type:
+              type: string
+              description: The type of the resource (e.g., task, project, story).
+              example: task
+            resource_subtype:
+              type: string
+              description: The subtype of the resource.
+              example: default_task
+        type:
+          type: string
+          description: >-
+            Deprecated. The type of resource that generated the event. Use
+            resource.resource_type instead.
+          example: task
+        action:
+          type: string
+          description: >-
+            The type of action taken on the resource. One of changed, added,
+            removed, deleted, or undeleted.
+          enum:
+            - changed
+            - added
+            - removed
+            - deleted
+            - undeleted
+          example: changed
+        parent:
+          type: object
+          nullable: true
+          description: >-
+            For added/removed events, the parent object that the resource was
+            added to or removed from. Null for other event types.
+          properties:
+            gid:
+              type: string
+              example: '11111'
+            resource_type:
+              type: string
+              example: project
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the event occurred.
+          example: '2024-01-15T10:30:00.000Z'
+        change:
+          type: object
+          nullable: true
+          description: >-
+            Information about the field-level change. Only present when the
+            event action is "changed".
+          properties:
+            field:
+              type: string
+              description: The name of the field that changed.
+              example: assignee
+            action:
+              type: string
+              description: >-
+                The type of action on the field. One of changed, added, or removed.
+              enum:
+                - changed
+                - added
+                - removed
+              example: changed
+            new_value:
+              type: object
+              nullable: true
+              description: >-
+                Present when change.action is "changed" and the new value is an
+                Asana resource. Contains only gid and resource_type from webhooks.
+              properties:
+                gid:
+                  type: string
+                resource_type:
+                  type: string
+            added_value:
+              type: object
+              nullable: true
+              description: >-
+                Present when change.action is "added" and the added value is an
+                Asana resource.
+              properties:
+                gid:
+                  type: string
+                resource_type:
+                  type: string
+            removed_value:
+              type: object
+              nullable: true
+              description: >-
+                Present when change.action is "removed" and the removed value is
+                an Asana resource.
+              properties:
+                gid:
+                  type: string
+                resource_type:
+                  type: string

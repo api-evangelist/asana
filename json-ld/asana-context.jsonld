@@ -1,0 +1,349 @@
+{
+  "@context": {
+    "@vocab": "https://developers.asana.com/schemas/",
+    "asana": "https://developers.asana.com/schemas/",
+    "schema": "https://schema.org/",
+    "gid": {
+      "@id": "asana:gid",
+      "@type": "schema:Text",
+      "description": "Globally unique identifier of the Asana resource"
+    },
+    "resource_type": {
+      "@id": "asana:resource_type",
+      "@type": "schema:Text",
+      "description": "The base type of this Asana resource"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "schema:Text"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "schema:Text"
+    },
+    "Task": {
+      "@id": "asana:Task",
+      "@context": {
+        "assignee": {
+          "@id": "asana:assignee",
+          "@type": "@id",
+          "description": "The user to whom this task is assigned"
+        },
+        "completed": {
+          "@id": "asana:completed",
+          "@type": "schema:Boolean",
+          "description": "Whether the task is completed"
+        },
+        "completed_at": {
+          "@id": "asana:completed_at",
+          "@type": "schema:DateTime"
+        },
+        "created_at": {
+          "@id": "schema:dateCreated",
+          "@type": "schema:DateTime"
+        },
+        "modified_at": {
+          "@id": "schema:dateModified",
+          "@type": "schema:DateTime"
+        },
+        "due_at": {
+          "@id": "asana:due_at",
+          "@type": "schema:DateTime"
+        },
+        "due_on": {
+          "@id": "asana:due_on",
+          "@type": "schema:Date"
+        },
+        "start_on": {
+          "@id": "asana:start_on",
+          "@type": "schema:Date"
+        },
+        "start_at": {
+          "@id": "asana:start_at",
+          "@type": "schema:DateTime"
+        },
+        "notes": {
+          "@id": "asana:notes",
+          "@type": "schema:Text"
+        },
+        "html_notes": {
+          "@id": "asana:html_notes",
+          "@type": "schema:Text"
+        },
+        "parent": {
+          "@id": "asana:parent",
+          "@type": "@id"
+        },
+        "projects": {
+          "@id": "asana:projects",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "tags": {
+          "@id": "asana:tags",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "followers": {
+          "@id": "asana:followers",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "workspace": {
+          "@id": "asana:workspace",
+          "@type": "@id"
+        },
+        "permalink_url": {
+          "@id": "schema:url",
+          "@type": "schema:URL"
+        }
+      }
+    },
+    "Project": {
+      "@id": "asana:Project",
+      "@context": {
+        "archived": {
+          "@id": "asana:archived",
+          "@type": "schema:Boolean"
+        },
+        "color": {
+          "@id": "asana:color",
+          "@type": "schema:Text"
+        },
+        "created_at": {
+          "@id": "schema:dateCreated",
+          "@type": "schema:DateTime"
+        },
+        "modified_at": {
+          "@id": "schema:dateModified",
+          "@type": "schema:DateTime"
+        },
+        "due_on": {
+          "@id": "asana:due_on",
+          "@type": "schema:Date"
+        },
+        "start_on": {
+          "@id": "asana:start_on",
+          "@type": "schema:Date"
+        },
+        "owner": {
+          "@id": "asana:owner",
+          "@type": "@id"
+        },
+        "team": {
+          "@id": "asana:team",
+          "@type": "@id"
+        },
+        "workspace": {
+          "@id": "asana:workspace",
+          "@type": "@id"
+        },
+        "members": {
+          "@id": "schema:member",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "permalink_url": {
+          "@id": "schema:url",
+          "@type": "schema:URL"
+        }
+      }
+    },
+    "User": {
+      "@id": "asana:User",
+      "@context": {
+        "email": {
+          "@id": "schema:email",
+          "@type": "schema:Text"
+        },
+        "photo": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "workspaces": {
+          "@id": "asana:workspaces",
+          "@type": "@id",
+          "@container": "@set"
+        }
+      }
+    },
+    "Workspace": {
+      "@id": "asana:Workspace",
+      "@context": {
+        "is_organization": {
+          "@id": "asana:is_organization",
+          "@type": "schema:Boolean"
+        },
+        "email_domains": {
+          "@id": "asana:email_domains",
+          "@container": "@set"
+        }
+      }
+    },
+    "Team": {
+      "@id": "asana:Team",
+      "@context": {
+        "organization": {
+          "@id": "asana:organization",
+          "@type": "@id"
+        },
+        "permalink_url": {
+          "@id": "schema:url",
+          "@type": "schema:URL"
+        }
+      }
+    },
+    "Goal": {
+      "@id": "asana:Goal",
+      "@context": {
+        "owner": {
+          "@id": "asana:owner",
+          "@type": "@id"
+        },
+        "due_on": {
+          "@id": "asana:due_on",
+          "@type": "schema:Date"
+        },
+        "start_on": {
+          "@id": "asana:start_on",
+          "@type": "schema:Date"
+        },
+        "status": {
+          "@id": "asana:status",
+          "@type": "schema:Text"
+        },
+        "workspace": {
+          "@id": "asana:workspace",
+          "@type": "@id"
+        },
+        "team": {
+          "@id": "asana:team",
+          "@type": "@id"
+        }
+      }
+    },
+    "Portfolio": {
+      "@id": "asana:Portfolio",
+      "@context": {
+        "owner": {
+          "@id": "asana:owner",
+          "@type": "@id"
+        },
+        "workspace": {
+          "@id": "asana:workspace",
+          "@type": "@id"
+        },
+        "members": {
+          "@id": "schema:member",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "permalink_url": {
+          "@id": "schema:url",
+          "@type": "schema:URL"
+        }
+      }
+    },
+    "Webhook": {
+      "@id": "asana:Webhook",
+      "@context": {
+        "active": {
+          "@id": "asana:active",
+          "@type": "schema:Boolean"
+        },
+        "resource": {
+          "@id": "asana:resource",
+          "@type": "@id"
+        },
+        "target": {
+          "@id": "asana:target",
+          "@type": "schema:URL"
+        },
+        "created_at": {
+          "@id": "schema:dateCreated",
+          "@type": "schema:DateTime"
+        }
+      }
+    },
+    "Event": {
+      "@id": "asana:Event",
+      "@context": {
+        "action": {
+          "@id": "asana:action",
+          "@type": "schema:Text"
+        },
+        "resource": {
+          "@id": "asana:resource",
+          "@type": "@id"
+        },
+        "user": {
+          "@id": "asana:user",
+          "@type": "@id"
+        },
+        "parent": {
+          "@id": "asana:parent",
+          "@type": "@id"
+        },
+        "created_at": {
+          "@id": "schema:dateCreated",
+          "@type": "schema:DateTime"
+        }
+      }
+    },
+    "Section": {
+      "@id": "asana:Section",
+      "@context": {
+        "project": {
+          "@id": "asana:project",
+          "@type": "@id"
+        },
+        "created_at": {
+          "@id": "schema:dateCreated",
+          "@type": "schema:DateTime"
+        }
+      }
+    },
+    "Tag": {
+      "@id": "asana:Tag",
+      "@context": {
+        "color": {
+          "@id": "asana:color",
+          "@type": "schema:Text"
+        },
+        "workspace": {
+          "@id": "asana:workspace",
+          "@type": "@id"
+        },
+        "created_at": {
+          "@id": "schema:dateCreated",
+          "@type": "schema:DateTime"
+        }
+      }
+    },
+    "Attachment": {
+      "@id": "asana:Attachment",
+      "@context": {
+        "download_url": {
+          "@id": "schema:contentUrl",
+          "@type": "schema:URL"
+        },
+        "host": {
+          "@id": "asana:host",
+          "@type": "schema:Text"
+        },
+        "parent": {
+          "@id": "asana:parent",
+          "@type": "@id"
+        },
+        "created_at": {
+          "@id": "schema:dateCreated",
+          "@type": "schema:DateTime"
+        },
+        "size": {
+          "@id": "schema:contentSize",
+          "@type": "schema:Integer"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,291 @@
+openapi: 3.1.0
+info:
+  title: Asana Tags API
+  description: >-
+    The Asana Tags API allows developers to manage tags that can be attached to
+    any task in Asana. A tag exists in a single workspace or organization.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Tags
+    description: Manage tags for tasks.
+paths:
+  /tags:
+    get:
+      summary: Get multiple tags
+      operationId: getTags
+      tags:
+        - Tags
+      parameters:
+        - name: workspace
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved tags.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TagCompact'
+    post:
+      summary: Create a tag
+      operationId: createTag
+      tags:
+        - Tags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/TagRequest'
+      responses:
+        '201':
+          description: Successfully created a new tag.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TagResponse'
+  /tags/{tag_gid}:
+    get:
+      summary: Get a tag
+      operationId: getTag
+      tags:
+        - Tags
+      parameters:
+        - name: tag_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the tag.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TagResponse'
+    put:
+      summary: Update a tag
+      operationId: updateTag
+      tags:
+        - Tags
+      parameters:
+        - name: tag_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/TagRequest'
+      responses:
+        '200':
+          description: Successfully updated the tag.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TagResponse'
+    delete:
+      summary: Delete a tag
+      operationId: deleteTag
+      tags:
+        - Tags
+      parameters:
+        - name: tag_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the tag.
+  /workspaces/{workspace_gid}/tags:
+    get:
+      summary: Get tags in a workspace
+      operationId: getTagsForWorkspace
+      tags:
+        - Tags
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved tags for the workspace.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TagCompact'
+    post:
+      summary: Create a tag in a workspace
+      operationId: createTagForWorkspace
+      tags:
+        - Tags
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/TagRequest'
+      responses:
+        '201':
+          description: Successfully created the tag.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TagResponse'
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    TagCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: tag
+        name:
+          type: string
+          example: Stuff to buy
+    TagRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+          nullable: true
+        workspace:
+          type: string
+        followers:
+          type: array
+          items:
+            type: string
+    TagResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: tag
+        name:
+          type: string
+        color:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        followers:
+          type: array
+          readOnly: true
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              resource_type:
+                type: string
+              name:
+                type: string
+        workspace:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        permalink_url:
+          type: string
+          readOnly: true

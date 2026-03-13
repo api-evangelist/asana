@@ -1,0 +1,394 @@
+openapi: 3.1.0
+info:
+  title: Asana Sections API
+  description: >-
+    The Asana Sections API allows developers to manage sections within projects.
+    A section is a subdivision of a project that groups tasks together, appearing
+    as a header in list view or a column in board view.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Sections
+    description: Manage sections within projects.
+paths:
+  /sections/{section_gid}:
+    get:
+      summary: Get a section
+      description: Returns the complete record for a single section.
+      operationId: getSection
+      tags:
+        - Sections
+      parameters:
+        - name: section_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '321654'
+      responses:
+        '200':
+          description: Successfully retrieved section.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SectionResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    put:
+      summary: Update a section
+      description: Updates an existing section.
+      operationId: updateSection
+      tags:
+        - Sections
+      parameters:
+        - name: section_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/SectionRequest'
+      responses:
+        '200':
+          description: Successfully updated the section.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SectionResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    delete:
+      summary: Delete a section
+      description: Deletes a specific, existing section.
+      operationId: deleteSection
+      tags:
+        - Sections
+      parameters:
+        - name: section_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the section.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /projects/{project_gid}/sections:
+    get:
+      summary: Get sections in a project
+      description: Returns the compact records for all sections in the specified project.
+      operationId: getSectionsForProject
+      tags:
+        - Sections
+      parameters:
+        - name: project_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved sections.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SectionCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Create a section in a project
+      description: Creates a new section in a project.
+      operationId: createSectionForProject
+      tags:
+        - Sections
+      parameters:
+        - name: project_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/SectionRequest'
+      responses:
+        '201':
+          description: Successfully created the section.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SectionResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /sections/{section_gid}/addTask:
+    post:
+      summary: Add task to section
+      description: Add a task to a specific, existing section.
+      operationId: addTaskForSection
+      tags:
+        - Sections
+      parameters:
+        - name: section_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    task:
+                      type: string
+                    insert_before:
+                      type: string
+                    insert_after:
+                      type: string
+                  required:
+                    - task
+      responses:
+        '200':
+          description: Successfully added the task.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /projects/{project_gid}/sections/insert:
+    post:
+      summary: Move or insert sections
+      description: Move sections relative to each other in a board view.
+      operationId: insertSectionForProject
+      tags:
+        - Sections
+      parameters:
+        - name: project_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    section:
+                      type: string
+                    before_section:
+                      type: string
+                    after_section:
+                      type: string
+                  required:
+                    - section
+      responses:
+        '200':
+          description: Successfully moved the section.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    SectionCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '321654'
+        resource_type:
+          type: string
+          readOnly: true
+          example: section
+        name:
+          type: string
+          example: Next Actions
+    SectionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Next Actions
+        insert_before:
+          type: string
+        insert_after:
+          type: string
+    SectionResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '321654'
+        resource_type:
+          type: string
+          readOnly: true
+          example: section
+        name:
+          type: string
+          example: Next Actions
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        project:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        projects:
+          type: array
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              resource_type:
+                type: string
+              name:
+                type: string

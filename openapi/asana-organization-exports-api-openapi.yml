@@ -1,0 +1,154 @@
+openapi: 3.1.0
+info:
+  title: Asana Organization Exports API
+  description: >-
+    The Asana Organization Exports API allows users to export the complete data
+    of an organization in JSON format. Only available to Service Accounts of
+    Enterprise organizations.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Organization exports
+    description: Export organization data in JSON format.
+paths:
+  /organization_exports:
+    post:
+      summary: Create an organization export request
+      description: Creates an organization export request for the given organization.
+      operationId: createOrganizationExport
+      tags:
+        - Organization exports
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    organization:
+                      type: string
+                      description: Globally unique identifier for the workspace or organization.
+                      example: '1331'
+                  required:
+                    - organization
+      responses:
+        '201':
+          description: Successfully created an organization export request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/OrganizationExportResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+  /organization_exports/{organization_export_gid}:
+    get:
+      summary: Get details on an org export request
+      description: Returns details of a previously-requested organization export.
+      operationId: getOrganizationExport
+      tags:
+        - Organization exports
+      parameters:
+        - name: organization_export_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully retrieved the requested organization export.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/OrganizationExportResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    OrganizationExportResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: organization_export
+        state:
+          type: string
+          readOnly: true
+          description: The state of the export.
+          enum:
+            - pending
+            - started
+            - finished
+            - error
+          example: started
+        download_url:
+          type: string
+          format: uri
+          readOnly: true
+          nullable: true
+          description: Download URL when the export is finished.
+        organization:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true

@@ -1,0 +1,270 @@
+openapi: 3.1.0
+info:
+  title: Asana Users API
+  description: >-
+    The Asana Users API allows developers to interact with user data. A user
+    object represents an account in Asana that can be given access to various
+    workspaces, projects, and tasks. The special string identifier "me" can
+    be used to refer to the current authenticated user.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Users
+    description: Manage and retrieve user information.
+paths:
+  /users:
+    get:
+      summary: Get multiple users
+      operationId: getUsers
+      tags:
+        - Users
+      parameters:
+        - name: workspace
+          in: query
+          schema:
+            type: string
+        - name: team
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the requested users.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserCompact'
+  /users/{user_gid}:
+    get:
+      summary: Get a user
+      operationId: getUser
+      tags:
+        - Users
+      parameters:
+        - name: user_gid
+          in: path
+          required: true
+          description: A string identifying a user. Can be "me", an email, or a gid.
+          schema:
+            type: string
+          example: me
+      responses:
+        '200':
+          description: Successfully retrieved the record for a single user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserResponse'
+  /users/{user_gid}/favorites:
+    get:
+      summary: Get a user's favorites
+      operationId: getFavoritesForUser
+      tags:
+        - Users
+      parameters:
+        - name: user_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: resource_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - project
+              - portfolio
+              - tag
+              - task
+              - user
+        - name: workspace
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the user's favorites.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gid:
+                          type: string
+                        resource_type:
+                          type: string
+                        name:
+                          type: string
+  /teams/{team_gid}/users:
+    get:
+      summary: Get users in a team
+      operationId: getUsersForTeam
+      tags:
+        - Users
+      parameters:
+        - name: team_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the users in the team.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserCompact'
+  /workspaces/{workspace_gid}/users:
+    get:
+      summary: Get users in a workspace or organization
+      operationId: getUsersForWorkspace
+      tags:
+        - Users
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the users in the workspace.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserCompact'
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    UserCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: user
+        name:
+          type: string
+          example: Greg Sanchez
+    UserResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: user
+        name:
+          type: string
+          example: Greg Sanchez
+        email:
+          type: string
+          format: email
+          readOnly: true
+          example: gsanchez@example.com
+        photo:
+          type: object
+          nullable: true
+          readOnly: true
+          properties:
+            image_21x21:
+              type: string
+              format: uri
+            image_27x27:
+              type: string
+              format: uri
+            image_36x36:
+              type: string
+              format: uri
+            image_60x60:
+              type: string
+              format: uri
+            image_128x128:
+              type: string
+              format: uri
+            image_1024x1024:
+              type: string
+              format: uri
+        workspaces:
+          type: array
+          readOnly: true
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              resource_type:
+                type: string
+              name:
+                type: string

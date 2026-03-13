@@ -1,0 +1,120 @@
+openapi: 3.1.0
+info:
+  title: Asana User Task Lists API
+  description: >-
+    The Asana User Task Lists API manages user task lists, which represent
+    the tasks assigned to a particular user (their "My Tasks" view).
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: User task lists
+    description: Manage user task lists (My Tasks).
+paths:
+  /user_task_lists/{user_task_list_gid}:
+    get:
+      summary: Get a user task list
+      operationId: getUserTaskList
+      tags:
+        - User task lists
+      parameters:
+        - name: user_task_list_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the user task list.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserTaskListResponse'
+  /users/{user_gid}/user_task_list:
+    get:
+      summary: Get a user's task list
+      operationId: getUserTaskListForUser
+      tags:
+        - User task lists
+      parameters:
+        - name: user_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: workspace
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the user's task list.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserTaskListResponse'
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    UserTaskListResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: user_task_list
+        name:
+          type: string
+          example: My Tasks in My Workspace
+        owner:
+          type: object
+          readOnly: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        workspace:
+          type: object
+          readOnly: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string

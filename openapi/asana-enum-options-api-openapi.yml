@@ -1,0 +1,221 @@
+openapi: 3.1.0
+info:
+  title: Asana Enum Options API
+  description: >-
+    The Asana Enum Options API allows users to retrieve and manage enum options
+    for custom fields. Enum options are pre-defined choices that users can
+    select from when filling out custom field values.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Enum Options
+    description: Manage enum options for custom fields.
+paths:
+  /custom_fields/{custom_field_gid}/enum_options:
+    post:
+      summary: Create an enum option
+      description: Creates an enum option and adds it to this custom field's list of enum options.
+      operationId: createEnumOptionForCustomField
+      tags:
+        - Enum Options
+      parameters:
+        - name: custom_field_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/EnumOptionRequest'
+      responses:
+        '201':
+          description: Successfully created the enum option.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EnumOption'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /custom_fields/{custom_field_gid}/enum_options/insert:
+    post:
+      summary: Reorder a custom field's enum
+      description: Moves a particular enum option to be either before or after another specified enum option.
+      operationId: insertEnumOptionForCustomField
+      tags:
+        - Enum Options
+      parameters:
+        - name: custom_field_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/EnumOptionInsertRequest'
+      responses:
+        '200':
+          description: Successfully reordered the enum option.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EnumOption'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /enum_options/{enum_option_gid}:
+    put:
+      summary: Update an enum option
+      description: Updates an existing enum option.
+      operationId: updateEnumOption
+      tags:
+        - Enum Options
+      parameters:
+        - name: enum_option_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '97514'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/EnumOptionRequest'
+      responses:
+        '200':
+          description: Successfully updated the enum option.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EnumOption'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    EnumOption:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: enum_option
+        name:
+          type: string
+          example: Low
+        enabled:
+          type: boolean
+          example: true
+        color:
+          type: string
+          example: blue
+    EnumOptionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Low
+        color:
+          type: string
+          example: blue
+        enabled:
+          type: boolean
+          example: true
+        insert_before:
+          type: string
+          description: An existing enum option within this custom field before which the new enum option should be inserted.
+        insert_after:
+          type: string
+          description: An existing enum option within this custom field after which the new enum option should be inserted.
+    EnumOptionInsertRequest:
+      type: object
+      properties:
+        enum_option:
+          type: string
+          description: The gid of the enum option to relocate.
+          example: '97285'
+        before_enum_option:
+          type: string
+          description: An existing enum option to insert before.
+        after_enum_option:
+          type: string
+          description: An existing enum option to insert after.
+      required:
+        - enum_option

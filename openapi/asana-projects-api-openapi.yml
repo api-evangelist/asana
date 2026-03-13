@@ -1,0 +1,710 @@
+openapi: 3.1.0
+info:
+  title: Asana Projects API
+  description: >-
+    The Asana Projects API allows users to create, update, and manage projects.
+    A project represents a prioritized list of tasks in Asana or a board with
+    columns of tasks represented as cards.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Projects
+    description: Manage projects, memberships, and task organization.
+paths:
+  /projects:
+    get:
+      summary: Get multiple projects
+      description: Returns the compact project records for some filtered set of projects.
+      operationId: getProjects
+      tags:
+        - Projects
+      parameters:
+        - name: workspace
+          in: query
+          schema:
+            type: string
+        - name: team
+          in: query
+          schema:
+            type: string
+        - name: archived
+          in: query
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved projects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Create a project
+      description: Creates a new project in a workspace or team.
+      operationId: createProject
+      tags:
+        - Projects
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '201':
+          description: Successfully created a new project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+  /projects/{project_gid}:
+    get:
+      summary: Get a project
+      description: Returns the complete project record for a single project.
+      operationId: getProject
+      tags:
+        - Projects
+      parameters:
+        - name: project_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully retrieved the record for a single project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    put:
+      summary: Update a project
+      description: Updates an existing project.
+      operationId: updateProject
+      tags:
+        - Projects
+      parameters:
+        - name: project_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '200':
+          description: Successfully updated the project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    delete:
+      summary: Delete a project
+      description: Deletes a project. Tasks in the project are not deleted.
+      operationId: deleteProject
+      tags:
+        - Projects
+      parameters:
+        - name: project_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the specified project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /projects/{project_gid}/duplicate:
+    post:
+      summary: Duplicate a project
+      description: Creates a new project by duplicating an existing project asynchronously.
+      operationId: duplicateProject
+      tags:
+        - Projects
+      parameters:
+        - name: project_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    team:
+                      type: string
+                    include:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                          - members
+                          - notes
+                          - forms
+                          - task_notes
+                          - task_assignee
+                          - task_subtasks
+                          - task_attachments
+                          - task_dates
+                          - task_dependencies
+                          - task_followers
+                          - task_tags
+                          - task_projects
+                    schedule_dates:
+                      type: object
+                      properties:
+                        should_skip_weekends:
+                          type: boolean
+                        due_on:
+                          type: string
+                          format: date
+                        start_on:
+                          type: string
+                          format: date
+                  required:
+                    - name
+      responses:
+        '201':
+          description: Successfully started the duplication job.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      gid:
+                        type: string
+                      resource_type:
+                        type: string
+                      status:
+                        type: string
+                      new_project:
+                        type: object
+                        properties:
+                          gid:
+                            type: string
+                          name:
+                            type: string
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /projects/{project_gid}/task_counts:
+    get:
+      summary: Get task count of a project
+      description: Returns the task count for a project.
+      operationId: getTaskCountsForProject
+      tags:
+        - Projects
+      parameters:
+        - name: project_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the task count.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      num_tasks:
+                        type: integer
+                      num_incomplete_tasks:
+                        type: integer
+                      num_completed_tasks:
+                        type: integer
+                      num_milestones:
+                        type: integer
+                      num_incomplete_milestones:
+                        type: integer
+                      num_completed_milestones:
+                        type: integer
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /teams/{team_gid}/projects:
+    get:
+      summary: Get a team's projects
+      description: Returns the compact project records for all projects in the team.
+      operationId: getProjectsForTeam
+      tags:
+        - Projects
+      parameters:
+        - name: team_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: archived
+          in: query
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the team's projects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Create a project in a team
+      description: Creates a project shared with the given team.
+      operationId: createProjectForTeam
+      tags:
+        - Projects
+      parameters:
+        - name: team_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '201':
+          description: Successfully created the specified project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /workspaces/{workspace_gid}/projects:
+    get:
+      summary: Get all projects in a workspace
+      description: Returns the compact project records for all projects in the workspace.
+      operationId: getProjectsForWorkspace
+      tags:
+        - Projects
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: archived
+          in: query
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the workspace's projects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    post:
+      summary: Create a project in a workspace
+      description: Creates a project in the workspace.
+      operationId: createProjectForWorkspace
+      tags:
+        - Projects
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '201':
+          description: Successfully created the specified project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    ProjectCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: project
+        name:
+          type: string
+          example: Stuff to buy
+    ProjectRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        archived:
+          type: boolean
+        color:
+          type: string
+          nullable: true
+        default_view:
+          type: string
+          enum:
+            - list
+            - board
+            - calendar
+            - timeline
+        due_on:
+          type: string
+          format: date
+          nullable: true
+        notes:
+          type: string
+        html_notes:
+          type: string
+        owner:
+          type: string
+          nullable: true
+        privacy_setting:
+          type: string
+          enum:
+            - public_to_workspace
+            - private_to_team
+            - private
+        start_on:
+          type: string
+          format: date
+          nullable: true
+        team:
+          type: string
+        workspace:
+          type: string
+    ProjectResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: project
+        name:
+          type: string
+          example: Stuff to buy
+        archived:
+          type: boolean
+        color:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+        due_on:
+          type: string
+          format: date
+          nullable: true
+        start_on:
+          type: string
+          format: date
+          nullable: true
+        default_view:
+          type: string
+          enum:
+            - list
+            - board
+            - calendar
+            - timeline
+        notes:
+          type: string
+        html_notes:
+          type: string
+        privacy_setting:
+          type: string
+        completed:
+          type: boolean
+          readOnly: true
+        completed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        owner:
+          type: object
+          nullable: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        team:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        workspace:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        members:
+          type: array
+          readOnly: true
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              resource_type:
+                type: string
+              name:
+                type: string
+        followers:
+          type: array
+          readOnly: true
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              resource_type:
+                type: string
+              name:
+                type: string
+        permalink_url:
+          type: string
+          readOnly: true
+        icon:
+          type: string
+          nullable: true

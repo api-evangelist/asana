@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developers.asana.com/schemas/project",
+  "title": "Asana Project",
+  "description": "A project represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization.",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "type": "string",
+      "description": "Globally unique identifier of the resource.",
+      "readOnly": true,
+      "examples": ["12345"]
+    },
+    "resource_type": {
+      "type": "string",
+      "const": "project",
+      "description": "The base type of this resource.",
+      "readOnly": true
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the project.",
+      "examples": ["Stuff to buy"]
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "True if the project is archived."
+    },
+    "color": {
+      "type": ["string", "null"],
+      "enum": [
+        "dark-pink", "dark-green", "dark-blue", "dark-red", "dark-teal",
+        "dark-brown", "dark-orange", "dark-purple", "dark-warm-gray",
+        "light-pink", "light-green", "light-blue", "light-red", "light-teal",
+        "light-brown", "light-orange", "light-purple", "light-warm-gray",
+        "none", null
+      ],
+      "description": "Color of the project."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which this resource was created.",
+      "readOnly": true
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which this project was last modified.",
+      "readOnly": true
+    },
+    "due_on": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "The day on which this project is due (YYYY-MM-DD)."
+    },
+    "start_on": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "The day on which work begins for this project (YYYY-MM-DD)."
+    },
+    "default_view": {
+      "type": "string",
+      "enum": ["list", "board", "calendar", "timeline"],
+      "description": "The default view of a project."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form textual information associated with the project."
+    },
+    "html_notes": {
+      "type": "string",
+      "description": "The notes of the project with formatting as HTML."
+    },
+    "privacy_setting": {
+      "type": "string",
+      "enum": ["public_to_workspace", "private_to_team", "private"],
+      "description": "The privacy setting of the project."
+    },
+    "default_access_level": {
+      "type": "string",
+      "enum": ["admin", "editor", "commenter", "viewer"],
+      "description": "The default access for users or teams who join the project."
+    },
+    "completed": {
+      "type": "boolean",
+      "description": "True if the project is currently marked complete.",
+      "readOnly": true
+    },
+    "completed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The time at which this project was completed.",
+      "readOnly": true
+    },
+    "owner": {
+      "oneOf": [
+        { "$ref": "#/$defs/UserCompact" },
+        { "type": "null" }
+      ],
+      "description": "The current owner of the project."
+    },
+    "team": {
+      "$ref": "#/$defs/TeamCompact",
+      "description": "The team that this project is shared with."
+    },
+    "workspace": {
+      "$ref": "#/$defs/WorkspaceCompact",
+      "description": "The workspace or organization this project is associated with.",
+      "readOnly": true
+    },
+    "members": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/UserCompact" },
+      "description": "Array of users who are members of this project.",
+      "readOnly": true
+    },
+    "followers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/UserCompact" },
+      "description": "Array of users following this project.",
+      "readOnly": true
+    },
+    "icon": {
+      "type": ["string", "null"],
+      "description": "The icon for a project."
+    },
+    "permalink_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "A URL that points directly to the object within Asana.",
+      "readOnly": true
+    }
+  },
+  "required": ["gid", "resource_type"],
+  "$defs": {
+    "UserCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "user" },
+        "name": { "type": "string" }
+      }
+    },
+    "TeamCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "team" },
+        "name": { "type": "string" }
+      }
+    },
+    "WorkspaceCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "workspace" },
+        "name": { "type": "string" }
+      }
+    }
+  }
+}

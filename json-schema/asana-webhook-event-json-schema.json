@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developers.asana.com/schemas/webhook-event",
+  "title": "Asana Webhook Event",
+  "description": "An event object representing a change to a resource, delivered asynchronously to the target location of an active webhook subscription.",
+  "type": "object",
+  "properties": {
+    "user": {
+      "oneOf": [
+        { "$ref": "#/$defs/UserCompact" },
+        { "type": "null" }
+      ],
+      "description": "The user who triggered the event. May be null for system-generated events."
+    },
+    "resource": {
+      "$ref": "#/$defs/AsanaNamedResource",
+      "description": "The resource that triggered the event by being modified."
+    },
+    "type": {
+      "type": "string",
+      "description": "Deprecated. The type of the resource that generated the event.",
+      "examples": ["task"]
+    },
+    "action": {
+      "type": "string",
+      "enum": ["changed", "added", "removed", "deleted", "undeleted"],
+      "description": "The type of action taken on the resource.",
+      "examples": ["changed"]
+    },
+    "parent": {
+      "oneOf": [
+        { "$ref": "#/$defs/AsanaNamedResource" },
+        { "type": "null" }
+      ],
+      "description": "For added/removed events, the parent object. Null for other event types."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the event occurred.",
+      "examples": ["2024-01-15T10:30:00.000Z"]
+    },
+    "change": {
+      "type": ["object", "null"],
+      "description": "Information about the field-level change. Only present when action is 'changed'.",
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "The name of the field that has changed.",
+          "examples": ["assignee"]
+        },
+        "action": {
+          "type": "string",
+          "enum": ["changed", "added", "removed"],
+          "description": "The type of action taken on the field.",
+          "examples": ["changed"]
+        },
+        "new_value": {
+          "type": ["object", "null"],
+          "description": "The new value when change.action is 'changed' and value is an Asana resource.",
+          "properties": {
+            "gid": { "type": "string" },
+            "resource_type": { "type": "string" }
+          }
+        },
+        "added_value": {
+          "type": ["object", "null"],
+          "description": "The added value when change.action is 'added' and value is an Asana resource.",
+          "properties": {
+            "gid": { "type": "string" },
+            "resource_type": { "type": "string" }
+          }
+        },
+        "removed_value": {
+          "type": ["object", "null"],
+          "description": "The removed value when change.action is 'removed' and value is an Asana resource.",
+          "properties": {
+            "gid": { "type": "string" },
+            "resource_type": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "required": ["resource", "action", "created_at"],
+  "$defs": {
+    "UserCompact": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string", "const": "user" },
+        "name": { "type": "string" }
+      }
+    },
+    "AsanaNamedResource": {
+      "type": "object",
+      "properties": {
+        "gid": { "type": "string" },
+        "resource_type": { "type": "string" },
+        "name": { "type": "string" }
+      }
+    }
+  }
+}

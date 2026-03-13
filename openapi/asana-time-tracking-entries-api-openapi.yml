@@ -1,0 +1,253 @@
+openapi: 3.1.0
+info:
+  title: Asana Time Tracking Entries API
+  description: >-
+    The Asana Time Tracking Entries API allows users to record and track time
+    spent on tasks using Asana's native time tracking feature.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Time tracking entries
+    description: Record and manage time spent on tasks.
+paths:
+  /tasks/{task_gid}/time_tracking_entries:
+    get:
+      summary: Get time tracking entries for a task
+      operationId: getTimeTrackingEntriesForTask
+      tags:
+        - Time tracking entries
+      parameters:
+        - name: task_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved time tracking entries.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TimeTrackingEntryCompact'
+    post:
+      summary: Create a time tracking entry
+      operationId: createTimeTrackingEntry
+      tags:
+        - Time tracking entries
+      parameters:
+        - name: task_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/CreateTimeTrackingEntryRequest'
+      responses:
+        '201':
+          description: Successfully created the time tracking entry.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TimeTrackingEntryBase'
+  /time_tracking_entries/{time_tracking_entry_gid}:
+    get:
+      summary: Get a time tracking entry
+      operationId: getTimeTrackingEntry
+      tags:
+        - Time tracking entries
+      parameters:
+        - name: time_tracking_entry_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the time tracking entry.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TimeTrackingEntryBase'
+    put:
+      summary: Update a time tracking entry
+      operationId: updateTimeTrackingEntry
+      tags:
+        - Time tracking entries
+      parameters:
+        - name: time_tracking_entry_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/UpdateTimeTrackingEntryRequest'
+      responses:
+        '200':
+          description: Successfully updated the time tracking entry.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TimeTrackingEntryBase'
+    delete:
+      summary: Delete a time tracking entry
+      operationId: deleteTimeTrackingEntry
+      tags:
+        - Time tracking entries
+      parameters:
+        - name: time_tracking_entry_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the time tracking entry.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    TimeTrackingEntryCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: time_tracking_entry
+        duration_minutes:
+          type: integer
+          example: 12
+        entered_on:
+          type: string
+          format: date
+          example: '2015-03-14'
+        created_by:
+          type: object
+          readOnly: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+    TimeTrackingEntryBase:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: time_tracking_entry
+        duration_minutes:
+          type: integer
+        entered_on:
+          type: string
+          format: date
+        created_by:
+          type: object
+          readOnly: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        task:
+          type: object
+          readOnly: true
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    CreateTimeTrackingEntryRequest:
+      type: object
+      properties:
+        duration_minutes:
+          type: integer
+          example: 12
+        entered_on:
+          type: string
+          format: date
+          example: '2015-03-14'
+      required:
+        - duration_minutes
+        - entered_on
+    UpdateTimeTrackingEntryRequest:
+      type: object
+      properties:
+        duration_minutes:
+          type: integer
+        entered_on:
+          type: string
+          format: date

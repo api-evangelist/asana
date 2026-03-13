@@ -1,0 +1,287 @@
+openapi: 3.1.0
+info:
+  title: Asana Project Templates API
+  description: >-
+    The Asana Project Templates API allows users to manage project templates
+    that enable new projects to be created with a predefined setup.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Project templates
+    description: Manage project templates for repeatable workflows.
+paths:
+  /project_templates/{project_template_gid}:
+    get:
+      summary: Get a project template
+      operationId: getProjectTemplate
+      tags:
+        - Project templates
+      parameters:
+        - name: project_template_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the project template.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectTemplateResponse'
+    delete:
+      summary: Delete a project template
+      operationId: deleteProjectTemplate
+      tags:
+        - Project templates
+      parameters:
+        - name: project_template_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the project template.
+  /project_templates:
+    get:
+      summary: Get multiple project templates
+      operationId: getProjectTemplates
+      tags:
+        - Project templates
+      parameters:
+        - name: workspace
+          in: query
+          schema:
+            type: string
+        - name: team
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved project templates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectTemplateCompact'
+  /teams/{team_gid}/project_templates:
+    get:
+      summary: Get a team's project templates
+      operationId: getProjectTemplatesForTeam
+      tags:
+        - Project templates
+      parameters:
+        - name: team_gid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the team's project templates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectTemplateCompact'
+  /project_templates/{project_template_gid}/instantiateProject:
+    post:
+      summary: Instantiate a project from a project template
+      operationId: instantiateProject
+      tags:
+        - Project templates
+      parameters:
+        - name: project_template_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    team:
+                      type: string
+                    public:
+                      type: boolean
+                    is_strict:
+                      type: boolean
+                    requested_dates:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          gid:
+                            type: string
+                          value:
+                            type: string
+                            format: date
+                    requested_roles:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          gid:
+                            type: string
+                          value:
+                            type: string
+                  required:
+                    - name
+      responses:
+        '201':
+          description: Successfully instantiated the project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      gid:
+                        type: string
+                      resource_type:
+                        type: string
+                      status:
+                        type: string
+                      new_project:
+                        type: object
+                        properties:
+                          gid:
+                            type: string
+                          name:
+                            type: string
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    ProjectTemplateCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: project_template
+        name:
+          type: string
+    ProjectTemplateResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: project_template
+        name:
+          type: string
+        description:
+          type: string
+        html_description:
+          type: string
+        color:
+          type: string
+          nullable: true
+        owner:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        team:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        public:
+          type: boolean
+        requested_dates:
+          type: array
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+        requested_roles:
+          type: array
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              name:
+                type: string

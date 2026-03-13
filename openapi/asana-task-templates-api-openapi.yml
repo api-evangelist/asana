@@ -1,0 +1,200 @@
+openapi: 3.1.0
+info:
+  title: Asana Task Templates API
+  description: >-
+    The Asana Task Templates API manages task templates that allow new tasks
+    to be created with a predefined setup including followers, dependencies,
+    and custom fields.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Task templates
+    description: Manage task templates for repeatable workflows.
+paths:
+  /task_templates:
+    get:
+      summary: Get multiple task templates
+      operationId: getTaskTemplates
+      tags:
+        - Task templates
+      parameters:
+        - name: project
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved task templates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskTemplateCompact'
+  /task_templates/{task_template_gid}:
+    get:
+      summary: Get a task template
+      operationId: getTaskTemplate
+      tags:
+        - Task templates
+      parameters:
+        - name: task_template_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the task template.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TaskTemplateResponse'
+    delete:
+      summary: Delete a task template
+      operationId: deleteTaskTemplate
+      tags:
+        - Task templates
+      parameters:
+        - name: task_template_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the task template.
+  /task_templates/{task_template_gid}/instantiateTask:
+    post:
+      summary: Instantiate a task from a task template
+      operationId: instantiateTask
+      tags:
+        - Task templates
+      parameters:
+        - name: task_template_gid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+      responses:
+        '201':
+          description: Successfully instantiated the task.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      gid:
+                        type: string
+                      resource_type:
+                        type: string
+                      status:
+                        type: string
+                      new_task:
+                        type: object
+                        properties:
+                          gid:
+                            type: string
+                          name:
+                            type: string
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    TaskTemplateCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: task_template
+        name:
+          type: string
+    TaskTemplateResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+        resource_type:
+          type: string
+          readOnly: true
+          example: task_template
+        name:
+          type: string
+        project:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        created_by:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true

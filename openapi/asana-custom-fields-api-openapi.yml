@@ -1,0 +1,353 @@
+openapi: 3.1.0
+info:
+  title: Asana Custom Fields API
+  description: >-
+    The Asana Custom Fields API allows developers to create and manage custom
+    fields within Asana. Custom fields provide extra information on tasks,
+    projects, and portfolios with types including text, number, enum,
+    multi_enum, date, and people.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://app.asana.com/api/1.0
+    description: Main endpoint.
+security:
+  - personalAccessToken: []
+  - oauth2: []
+tags:
+  - name: Custom fields
+    description: Manage custom field metadata and values.
+paths:
+  /custom_fields:
+    post:
+      summary: Create a custom field
+      description: Creates a new custom field in a workspace.
+      operationId: createCustomField
+      tags:
+        - Custom fields
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/CustomFieldRequest'
+      responses:
+        '201':
+          description: Successfully created a custom field.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CustomFieldResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+  /custom_fields/{custom_field_gid}:
+    get:
+      summary: Get a custom field
+      description: Returns the complete definition of a custom field.
+      operationId: getCustomField
+      tags:
+        - Custom fields
+      parameters:
+        - name: custom_field_gid
+          in: path
+          required: true
+          description: Globally unique identifier for the custom field.
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully retrieved the complete definition of a custom field.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CustomFieldResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    put:
+      summary: Update a custom field
+      description: Updates an existing custom field.
+      operationId: updateCustomField
+      tags:
+        - Custom fields
+      parameters:
+        - name: custom_field_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/CustomFieldRequest'
+      responses:
+        '200':
+          description: Successfully updated the custom field.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CustomFieldResponse'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+    delete:
+      summary: Delete a custom field
+      description: Deletes a specific, existing custom field.
+      operationId: deleteCustomField
+      tags:
+        - Custom fields
+      parameters:
+        - name: custom_field_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+      responses:
+        '200':
+          description: Successfully deleted the custom field.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /workspaces/{workspace_gid}/custom_fields:
+    get:
+      summary: Get a workspace's custom fields
+      description: Returns a list of the compact representation of all custom fields in a workspace.
+      operationId: getCustomFieldsForWorkspace
+      tags:
+        - Custom fields
+      parameters:
+        - name: workspace_gid
+          in: path
+          required: true
+          schema:
+            type: string
+          example: '12345'
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved all custom fields for the workspace.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CustomFieldCompact'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+components:
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.
+  schemas:
+    CustomFieldCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: custom_field
+        name:
+          type: string
+          example: Priority
+        resource_subtype:
+          type: string
+          enum:
+            - text
+            - enum
+            - multi_enum
+            - number
+            - date
+            - people
+          example: enum
+        type:
+          type: string
+          enum:
+            - text
+            - enum
+            - multi_enum
+            - number
+            - date
+            - people
+    CustomFieldRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Priority
+        resource_subtype:
+          type: string
+          enum:
+            - text
+            - enum
+            - multi_enum
+            - number
+            - date
+            - people
+        description:
+          type: string
+        workspace:
+          type: string
+          example: '12345'
+        precision:
+          type: integer
+          description: Only relevant for custom fields of type number.
+        enum_options:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              color:
+                type: string
+              enabled:
+                type: boolean
+    CustomFieldResponse:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: custom_field
+        name:
+          type: string
+          example: Priority
+        resource_subtype:
+          type: string
+          enum:
+            - text
+            - enum
+            - multi_enum
+            - number
+            - date
+            - people
+        description:
+          type: string
+        type:
+          type: string
+        display_value:
+          type: string
+          readOnly: true
+        precision:
+          type: integer
+        enum_options:
+          type: array
+          items:
+            type: object
+            properties:
+              gid:
+                type: string
+              name:
+                type: string
+              enabled:
+                type: boolean
+              color:
+                type: string
+        created_by:
+          type: object
+          properties:
+            gid:
+              type: string
+            name:
+              type: string
+            resource_type:
+              type: string
