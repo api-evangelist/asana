@@ -108,7 +108,7 @@ tags:
       An *attachment* object represents any file attached to a task in Asana,
       whether it’s an uploaded file or one associated via a third-party service
       such as Dropbox or Google Drive.
-  - name: Audit log API
+  - name: Audit Log API
     description: >-
       Asana's audit log is an immutable log of [important events](/docs/audit-log-events#supported-audit-log-events)
       in your organization's Asana instance.
@@ -234,7 +234,15 @@ tags:
       * Any SCIM operations
 
       * Nested calls to the batch API
-  - name: Custom fields
+  - name: Custom Field Settings
+    description: >-
+      Custom fields are attached to a particular project with the custom
+      field settings resource. This resource both represents the
+      many-to-many join of the custom field and project as well as stores
+      information that is relevant to that particular pairing. For instance,
+      the `is_important` property determines some possible
+      application-specific handling of that custom field.
+  - name: Custom Fields
     description: >-
       _Note: Custom fields are a premium feature. Integrations which work
       with custom fields need to handle an assortment of use cases for free and
@@ -499,14 +507,6 @@ tags:
       of the user and project. When building your application, it is best to be
       defensive and not assume the given user will have read or write access
       to a custom field, and fail gracefully when this occurs.
-  - name: Custom field settings
-    description: >-
-      Custom fields are attached to a particular project with the custom
-      field settings resource. This resource both represents the
-      many-to-many join of the custom field and project as well as stores
-      information that is relevant to that particular pairing. For instance,
-      the `is_important` property determines some possible
-      application-specific handling of that custom field.
   - name: Events
     description: >-
       An event is an object representing a change to a resource that was
@@ -554,14 +554,14 @@ tags:
 
       Sync tokens always expire after 24 hours, but may expire sooner,
       depending on load on the service.
+  - name: Goal Relationships
+    description: >-
+      A goal relationship is an object representing the relationship between a goal
+      and another goal, a project, a task, or a portfolio.
   - name: Goals
     description: >-
       A goal is an object in the goal-tracking system that helps your organization
       drive measurable results.
-  - name: Goal relationships
-    description: >-
-      A goal relationship is an object representing the relationship between a goal
-      and another goal, a project, a task, or a portfolio.
   - name: Jobs
     description: >-
       Jobs represent processes that handle asynchronous work. A job created when an
@@ -586,7 +586,7 @@ tags:
       A membership object represents the relationship between a team or user and an object in Asana. Currently, the
       supported types of memberships are for goals, projects, and portfolios. For example, a project membership
       can be used to add a user to a project.
-  - name: Organization exports
+  - name: Organization Exports
     description: >-
       An `organization_export` object represents a request to export the
       complete data of an organization in JSON format.
@@ -608,6 +608,9 @@ tags:
       *Note: These endpoints are only available to [Service
       Accounts](https://asana.com/guide/help/premium/service-accounts) of an
       [Enterprise](https://asana.com/enterprise) organization.*
+  - name: Portfolio Memberships
+    description: >-
+      This object determines if a user is a member of a portfolio.
   - name: Portfolios
     description: >-
       A portfolio gives a high-level overview of the status of multiple
@@ -617,9 +620,46 @@ tags:
 
       Portfolios have some restrictions on size. Each portfolio has a max of 1500
       items and, like projects, a maximum of 20 custom fields.
-  - name: Portfolio memberships
+  - name: Project Briefs
     description: >-
-      This object determines if a user is a member of a portfolio.
+      A project brief object represents a rich text document that describes
+      a project.
+
+
+      Please note that this API is in *preview*, and is expected to change.
+      This API is to be used for development and testing only as an advance
+      view into the upcoming rich text format experience in the task description.
+      For more information, see [this post](https://forum.asana.com/t/project-brief-api-now-available-as-a-preview/150885)
+      in the developer forum.
+  - name: Project Memberships
+    description: >-
+      With the introduction of “comment-only” projects in Asana, a user’s
+      membership in a project comes with associated permissions. These
+      permissions (i.e., whether a user has full access to the project or
+      comment-only access) are accessible through the project memberships
+      endpoints described here.
+  - name: Project Statuses
+    description: |-
+      *Deprecated: new integrations should prefer using [status updates](/reference/status-updates)*
+
+      A project status is an update on the progress of a particular project,
+      and is sent out to all project followers when created. These updates
+      include both text describing the update and a color code intended to
+      represent the overall state of the project: "green" for projects that
+      are on track, "yellow" for projects at risk, "red" for projects that
+      are behind, and "blue" for projects on hold.
+
+      Project statuses can be created and deleted, but not modified.
+  - name: Project Templates
+    description: |-
+      A project template is an object that allows new projects to be created
+      with a predefined setup, which may include tasks, sections, rules, etc.
+      It simplifies the process of running a workflow that involves a similar
+      set of work every time.
+
+
+      Project templates in organizations are shared with a single team. Currently, the
+      team of a project template cannot be changed via the API.
   - name: Projects
     description: >-
       A project represents a prioritized list of tasks in Asana or a board
@@ -651,46 +691,6 @@ tags:
       [Remove a custom field from a project](/reference/removecustomfieldsettingforproject)
       and
       [Get a project's custom fields](/reference/getcustomfieldsettingsforproject)
-  - name: Project briefs
-    description: >-
-      A project brief object represents a rich text document that describes
-      a project.
-
-
-      Please note that this API is in *preview*, and is expected to change.
-      This API is to be used for development and testing only as an advance
-      view into the upcoming rich text format experience in the task description.
-      For more information, see [this post](https://forum.asana.com/t/project-brief-api-now-available-as-a-preview/150885)
-      in the developer forum.
-  - name: Project memberships
-    description: >-
-      With the introduction of “comment-only” projects in Asana, a user’s
-      membership in a project comes with associated permissions. These
-      permissions (i.e., whether a user has full access to the project or
-      comment-only access) are accessible through the project memberships
-      endpoints described here.
-  - name: Project statuses
-    description: |-
-      *Deprecated: new integrations should prefer using [status updates](/reference/status-updates)*
-
-      A project status is an update on the progress of a particular project,
-      and is sent out to all project followers when created. These updates
-      include both text describing the update and a color code intended to
-      represent the overall state of the project: "green" for projects that
-      are on track, "yellow" for projects at risk, "red" for projects that
-      are behind, and "blue" for projects on hold.
-
-      Project statuses can be created and deleted, but not modified.
-  - name: Project templates
-    description: |-
-      A project template is an object that allows new projects to be created
-      with a predefined setup, which may include tasks, sections, rules, etc.
-      It simplifies the process of running a workflow that involves a similar
-      set of work every time.
-
-
-      Project templates in organizations are shared with a single team. Currently, the
-      team of a project template cannot be changed via the API.
   - name: Rules
     description: |-
       [Asana rules](https://help.asana.com/s/article/rules?language=en_US) allow you to automate common patterns
@@ -715,12 +715,7 @@ tags:
       The ‘memberships’ property when [getting a task](/reference/gettask)
       will return the information for the section or the column under
       ‘section’ in the response.
-  - name: SSPM
-    description: >-
-      SSPM (SaaS Security Posture Management) is a set of APIs which allows
-      centralized inspection and management of a customer's deployed SaaS apps
-      via an SSPM provider.
-  - name: Status updates
+  - name: Status Updates
     description: |-
       A status update is an update on the progress of a particular object,
       and is sent out to all followers when created. These updates
@@ -740,16 +735,15 @@ tags:
       Asana system. Stories are generated by the system whenever users take
       actions such as creating or assigning tasks, or moving tasks between
       projects. "Comments" are also a form of user-generated story.
-  - name: Tags
+  - name: Task Templates
     description: >-
-      A tag is a label that can be attached to any task in Asana. It exists in
-      a single workspace or organization.
+      A task template is an object that allows new tasks to be created
+      with a predefined setup, which may include followers, dependencies, custom fields,
+      etc.
+      It simplifies the process of running a workflow that involves a similar
+      set of work every time.
 
-
-      Tags have some metadata associated with them, but it is possible that
-      we will simplify them in the future so it is not encouraged to rely
-      too heavily on it. Unlike projects, tags do not provide any ordering
-      on the tasks they are associated with.
+      Task templates are contained within a single project.
   - name: Tasks
     description: >-
       The task is the basic object around which many operations in Asana are
@@ -770,27 +764,18 @@ tags:
       retrieve *all* fields or *specific set* of the fields, use
       [field selectors](/docs/inputoutput-options) to manipulate what data is included
       in a response.
-  - name: Task templates
+  - name: Team Memberships
     description: >-
-      A task template is an object that allows new tasks to be created
-      with a predefined setup, which may include followers, dependencies, custom fields,
-      etc.
-      It simplifies the process of running a workflow that involves a similar
-      set of work every time.
-
-      Task templates are contained within a single project.
+      This object determines if a user is a member of a team.
   - name: Teams
     description: >-
       A team is used to group related projects and people together within an
       organization. Each project in an organization is associated with a team.
-  - name: Team memberships
-    description: >-
-      This object determines if a user is a member of a team.
-  - name: Time periods
+  - name: Time Periods
     description: >-
       A time period is an object that represents a domain-scoped date range that can
       be set on [goals](/reference/goals).
-  - name: Time tracking entries
+  - name: Time Tracking Entries
     description: >-
       Asana’s native time tracking feature allows you to estimate the time needed
       to complete a task, as well as record the actual time spent.
@@ -798,6 +783,11 @@ tags:
     description: >-
       The typeahead search API provides search for objects from a single
       workspace.
+  - name: User Task Lists
+    description: >-
+      A user task list represents the tasks assigned to a particular user.
+      This list is the user's [My Tasks](https://asana.com/guide/help/fundamentals/my-tasks)
+      list.
   - name: Users
     description: >-
       A user object represents an account in Asana that can be given access to
@@ -808,11 +798,6 @@ tags:
       IDs. However, the special string identifier `me` can be used anywhere
       a user ID is accepted, to refer to the current authenticated user
       (e.g, `GET /users/me`).
-  - name: User task lists
-    description: >-
-      A user task list represents the tasks assigned to a particular user.
-      This list is the user's [My Tasks](https://asana.com/guide/help/fundamentals/my-tasks)
-      list.
   - name: Webhooks
     description: >-
       Webhooks allow you to subscribe to notifications about events that occur on
@@ -820,6 +805,9 @@ tags:
 
 
       For a more detailed explanation of webhooks see the [overview of webhooks](/docs/webhooks-guide).
+  - name: Workspace Memberships
+    description: >-
+      This object determines if a user is a member of a workspace.
   - name: Workspaces
     description: >-
       A *workspace* is the highest-level organizational unit in Asana. All
@@ -839,9 +827,6 @@ tags:
       until after some reasonable grace period following any further
       announcements, you can still reference organizations in any
       `workspace` parameter.
-  - name: Workspace memberships
-    description: >-
-      This object determines if a user is a member of a workspace.
 components:
   parameters:
     fields:
@@ -9425,7 +9410,7 @@ paths:
         recommend using a
         SIEM tool to ingest and store these logs.
       tags:
-        - Audit log API
+        - Audit Log API
       operationId: getAuditLogEvents
       responses:
         200:
@@ -9776,7 +9761,7 @@ paths:
         options](https://developers.asana.com/docs/inputoutput-options)
         for more information.
       tags:
-        - Custom field settings
+        - Custom Field Settings
       operationId: getCustomFieldSettingsForProject
       parameters:
         - name: opt_fields
@@ -10043,7 +10028,7 @@ paths:
         Returns a list of all of the custom fields settings on a portfolio, in
         compact form.
       tags:
-        - Custom field settings
+        - Custom Field Settings
       operationId: getCustomFieldSettingsForPortfolio
       parameters:
         - name: opt_fields
@@ -10315,7 +10300,7 @@ paths:
 
         Returns the full record of the newly created custom field.
       tags:
-        - Custom fields
+        - Custom Fields
       operationId: createCustomField
       parameters:
         - name: opt_fields
@@ -10569,7 +10554,7 @@ paths:
         the enum could represent. The examples below show some of these
         type-specific custom field definitions.
       tags:
-        - Custom fields
+        - Custom Fields
       operationId: getCustomField
       parameters:
         - name: opt_fields
@@ -10819,7 +10804,7 @@ paths:
 
         Returns the complete updated custom field record.
       tags:
-        - Custom fields
+        - Custom Fields
       operationId: updateCustomField
       parameters:
         - name: opt_fields
@@ -11070,7 +11055,7 @@ paths:
 
         Returns an empty data record.
       tags:
-        - Custom fields
+        - Custom Fields
       operationId: deleteCustomField
       responses:
         200:
@@ -11212,7 +11197,7 @@ paths:
         Returns a list of the compact representation of all of the custom fields
         in a workspace.
       tags:
-        - Custom fields
+        - Custom Fields
       operationId: getCustomFieldsForWorkspace
       parameters:
         - name: opt_fields
@@ -11472,7 +11457,7 @@ paths:
 
         Returns the full record of the newly created enum option.
       tags:
-        - Custom fields
+        - Custom Fields
       operationId: createEnumOptionForCustomField
       parameters:
         - name: opt_fields
@@ -11653,7 +11638,7 @@ paths:
 
         Locked custom fields can only be reordered by the user who locked the field.
       tags:
-        - Custom fields
+        - Custom Fields
       operationId: insertEnumOptionForCustomField
       parameters:
         - name: opt_fields
@@ -11843,7 +11828,7 @@ paths:
 
         Returns the full record of the updated enum option.
       tags:
-        - Custom fields
+        - Custom Fields
       operationId: updateEnumOption
       parameters:
         - name: opt_fields
@@ -12285,7 +12270,7 @@ paths:
       description: |-
         Returns the complete updated goal relationship record for a single goal relationship.
       tags:
-        - Goal relationships
+        - Goal Relationships
       operationId: getGoalRelationship
       parameters:
         - name: opt_fields
@@ -12460,7 +12445,7 @@ paths:
 
         Returns the complete updated goal relationship record.
       tags:
-        - Goal relationships
+        - Goal Relationships
       operationId: updateGoalRelationship
       parameters:
         - name: opt_fields
@@ -12646,7 +12631,7 @@ paths:
       description: |-
         Returns compact goal relationship records.
       tags:
-        - Goal relationships
+        - Goal Relationships
       operationId: getGoalRelationships
       parameters:
         - $ref: '#/components/parameters/pretty'
@@ -12856,7 +12841,7 @@ paths:
 
         Returns the newly created goal relationship record.
       tags:
-        - Goal relationships
+        - Goal Relationships
       operationId: addSupportingRelationship
       parameters:
         - name: opt_fields
@@ -13044,7 +13029,7 @@ paths:
       description: |-
         Removes a goal relationship for a given parent goal.
       tags:
-        - Goal relationships
+        - Goal Relationships
       operationId: removeSupportingRelationship
       requestBody:
         description: The supporting resource to be removed from the goal
@@ -16553,7 +16538,7 @@ paths:
         This method creates a request to export an Organization. Asana will
         complete the export at some point after you create the request.
       tags:
-        - Organization exports
+        - Organization Exports
       operationId: createOrganizationExport
       parameters:
         - name: opt_fields
@@ -16732,7 +16717,7 @@ paths:
       description: >-
         Returns details of a previously-requested Organization export.
       tags:
-        - Organization exports
+        - Organization Exports
       operationId: getOrganizationExport
       parameters:
         - name: opt_fields
@@ -16906,7 +16891,7 @@ paths:
         Returns a list of portfolio memberships in compact representation. You must
         specify `portfolio`, `portfolio` and `user`, or `workspace` and `user`.
       tags:
-        - Portfolio memberships
+        - Portfolio Memberships
       operationId: getPortfolioMemberships
       parameters:
         - name: opt_fields
@@ -17093,7 +17078,7 @@ paths:
       description: >-
         Returns the complete portfolio record for a single portfolio membership.
       tags:
-        - Portfolio memberships
+        - Portfolio Memberships
       operationId: getPortfolioMembership
       parameters:
         - name: opt_fields
@@ -17266,7 +17251,7 @@ paths:
       description: >-
         Returns the compact portfolio membership records for the portfolio.
       tags:
-        - Portfolio memberships
+        - Portfolio Memberships
       operationId: getPortfolioMembershipsForPortfolio
       parameters:
         - name: opt_fields
@@ -20821,7 +20806,7 @@ paths:
       summary: Asana Get a project brief
       description: Get the full record for a project brief.
       tags:
-        - Project briefs
+        - Project Briefs
       operationId: getProjectBrief
       parameters:
         - name: opt_fields
@@ -21002,7 +20987,7 @@ paths:
 
         Returns the complete updated project brief record.
       tags:
-        - Project briefs
+        - Project Briefs
       operationId: updateProjectBrief
       parameters:
         - name: opt_fields
@@ -21185,7 +21170,7 @@ paths:
 
         Returns an empty data record.
       tags:
-        - Project briefs
+        - Project Briefs
       operationId: deleteProjectBrief
       responses:
         200:
@@ -21326,7 +21311,7 @@ paths:
 
         Returns the full record of the newly created project brief.
       tags:
-        - Project briefs
+        - Project Briefs
       operationId: createProjectBrief
       parameters:
         - name: opt_fields
@@ -21511,7 +21496,7 @@ paths:
       description: >-
         Returns the complete project record for a single project membership.
       tags:
-        - Project memberships
+        - Project Memberships
       operationId: getProjectMembership
       parameters:
         - name: opt_fields
@@ -21694,7 +21679,7 @@ paths:
       description: >-
         Returns the compact project membership records for the project.
       tags:
-        - Project memberships
+        - Project Memberships
       operationId: getProjectMembershipsForProject
       parameters:
         - name: opt_fields
@@ -21883,7 +21868,7 @@ paths:
 
         Returns the complete record for a single status update.
       tags:
-        - Project statuses
+        - Project Statuses
       operationId: getProjectStatus
       parameters:
         - name: opt_fields
@@ -22062,7 +22047,7 @@ paths:
 
         Returns an empty data record.
       tags:
-        - Project statuses
+        - Project Statuses
       operationId: deleteProjectStatus
       responses:
         200:
@@ -22203,7 +22188,7 @@ paths:
 
         Returns the compact project status update records for all updates on the project.
       tags:
-        - Project statuses
+        - Project Statuses
       operationId: getProjectStatusesForProject
       parameters:
         - $ref: '#/components/parameters/project_path_gid'
@@ -22400,7 +22385,7 @@ paths:
 
         Returns the full record of the newly created project status update.
       tags:
-        - Project statuses
+        - Project Statuses
       operationId: createProjectStatusForProject
       parameters:
         - name: opt_fields
@@ -22591,7 +22576,7 @@ paths:
       summary: Asana Get a project template
       description: Returns the complete project template record for a single project template.
       tags:
-        - Project templates
+        - Project Templates
       operationId: getProjectTemplate
       parameters:
         - name: opt_fields
@@ -22777,7 +22762,7 @@ paths:
 
         Returns an empty data record.
       tags:
-        - Project templates
+        - Project Templates
       operationId: deleteProjectTemplate
       responses:
         200:
@@ -22879,7 +22864,7 @@ paths:
         Returns the compact project template records for all project templates in
         the given team or workspace.
       tags:
-        - Project templates
+        - Project Templates
       operationId: getProjectTemplates
       parameters:
         - $ref: '#/components/parameters/workspace_query_param'
@@ -23088,7 +23073,7 @@ paths:
         Returns the compact project template records for all project templates in
         the team.
       tags:
-        - Project templates
+        - Project Templates
       operationId: getProjectTemplatesForTeam
       parameters:
         - $ref: '#/components/parameters/limit'
@@ -23305,7 +23290,7 @@ paths:
         To determine if your workspace is an organization, use the
         [is_organization](/reference/workspaces) parameter._
       tags:
-        - Project templates
+        - Project Templates
       operationId: instantiateProject
       parameters:
         - name: opt_fields
@@ -31391,7 +31376,7 @@ paths:
       description: >-
         Returns the complete record for a single status update.
       tags:
-        - Status updates
+        - Status Updates
       operationId: getStatus
       parameters:
         - name: opt_fields
@@ -31592,7 +31577,7 @@ paths:
 
         Returns an empty data record.
       tags:
-        - Status updates
+        - Status Updates
       operationId: deleteStatus
       responses:
         200:
@@ -31731,7 +31716,7 @@ paths:
       description: >-
         Returns the compact status update records for all updates on the object.
       tags:
-        - Status updates
+        - Status Updates
       operationId: getStatusesForObject
       parameters:
         - name: parent
@@ -31968,7 +31953,7 @@ paths:
 
         Returns the full record of the newly created status update.
       tags:
-        - Status updates
+        - Status Updates
       operationId: createStatusForObject
       parameters:
         - name: opt_fields
@@ -34079,8 +34064,7 @@ paths:
       description: >-
         Returns the compact tag records for some filtered set of tags.
         Use one or more of the parameters provided to filter the tags returned.
-      tags:
-        - Tags
+      tags: []
       operationId: getTags
       parameters:
         - $ref: '#/components/parameters/limit'
@@ -34280,8 +34264,7 @@ paths:
         organization.
 
         Returns the full record of the newly created tag.
-      tags:
-        - Tags
+      tags: []
       operationId: createTag
       parameters:
         - name: opt_fields
@@ -34465,8 +34448,7 @@ paths:
     get:
       summary: Asana Get a tag
       description: Returns the complete tag record for a single tag.
-      tags:
-        - Tags
+      tags: []
       operationId: getTag
       parameters:
         - name: opt_fields
@@ -34643,8 +34625,7 @@ paths:
         you last retrieved the tag.
 
         Returns the complete updated tag record.
-      tags:
-        - Tags
+      tags: []
       operationId: updateTag
       parameters:
         - name: opt_fields
@@ -34819,8 +34800,7 @@ paths:
         the URL for that tag.
 
         Returns an empty data record.
-      tags:
-        - Tags
+      tags: []
       operationId: deleteTag
       responses:
         200:
@@ -34958,8 +34938,7 @@ paths:
       summary: Asana Get a task's tags
       description: >-
         Get a compact representation of all of the tags the task has.
-      tags:
-        - Tags
+      tags: []
       operationId: getTagsForTask
       parameters:
         - name: opt_fields
@@ -35150,8 +35129,7 @@ paths:
       description: >-
         Returns the compact tag records for some filtered set of tags.
         Use one or more of the parameters provided to filter the tags returned.
-      tags:
-        - Tags
+      tags: []
       operationId: getTagsForWorkspace
       parameters:
         - $ref: '#/components/parameters/limit'
@@ -35345,8 +35323,7 @@ paths:
         organization.
 
         Returns the full record of the newly created tag.
-      tags:
-        - Tags
+      tags: []
       operationId: createTagForWorkspace
       parameters:
         - name: opt_fields
@@ -35535,7 +35512,7 @@ paths:
         Returns the compact task template records for some filtered set of task templates.
         You must specify a `project`
       tags:
-        - Task templates
+        - Task Templates
       operationId: getTaskTemplates
       parameters:
         - $ref: '#/components/parameters/limit'
@@ -35680,7 +35657,7 @@ paths:
       description: >-
         Returns the complete task template record for a single task template.
       tags:
-        - Task templates
+        - Task Templates
       operationId: getTaskTemplate
       parameters:
         - name: opt_fields
@@ -35806,7 +35783,7 @@ paths:
         on the URL for that task template.
         Returns an empty data record.
       tags:
-        - Task templates
+        - Task Templates
       operationId: deleteTaskTemplate
       responses:
         200:
@@ -35908,7 +35885,7 @@ paths:
       description: >-
         Creates and returns a job that will asynchronously handle the task instantiation.
       tags:
-        - Task templates
+        - Task Templates
       operationId: instantiateTask
       parameters:
         - name: opt_fields
@@ -44365,7 +44342,7 @@ paths:
       description: >-
         Returns the complete team membership record for a single team membership.
       tags:
-        - Team memberships
+        - Team Memberships
       operationId: getTeamMembership
       parameters:
         - name: opt_fields
@@ -44540,7 +44517,7 @@ paths:
       description: >-
         Returns compact team membership records.
       tags:
-        - Team memberships
+        - Team Memberships
       operationId: getTeamMemberships
       parameters:
         - name: team
@@ -44757,7 +44734,7 @@ paths:
       description: >-
         Returns the compact team memberships for the team.
       tags:
-        - Team memberships
+        - Team Memberships
       operationId: getTeamMembershipsForTeam
       parameters:
         - name: opt_fields
@@ -44947,7 +44924,7 @@ paths:
       description: >-
         Returns the compact team membership records for the user.
       tags:
-        - Team memberships
+        - Team Memberships
       operationId: getTeamMembershipsForUser
       parameters:
         - name: workspace
@@ -46495,7 +46472,7 @@ paths:
       summary: Asana Get a time period
       description: Returns the full record for a single time period.
       tags:
-        - Time periods
+        - Time Periods
       operationId: getTimePeriod
       parameters:
         - name: opt_fields
@@ -46671,7 +46648,7 @@ paths:
       description: >-
         Returns compact time period records.
       tags:
-        - Time periods
+        - Time Periods
       operationId: getTimePeriods
       parameters:
         - name: start_on
@@ -46889,7 +46866,7 @@ paths:
       summary: Asana Get time tracking entries for a task
       description: Returns time tracking entries for a given task.
       tags:
-        - Time tracking entries
+        - Time Tracking Entries
       operationId: getTimeTrackingEntriesForTask
       parameters:
         - $ref: '#/components/parameters/limit'
@@ -47030,7 +47007,7 @@ paths:
 
         Returns the record of the newly created time tracking entry.
       tags:
-        - Time tracking entries
+        - Time Tracking Entries
       operationId: createTimeTrackingEntry
       parameters:
         - name: opt_fields
@@ -47177,7 +47154,7 @@ paths:
       summary: Asana Get a time tracking entry
       description: Returns the complete time tracking entry record for a single time tracking entry.
       tags:
-        - Time tracking entries
+        - Time Tracking Entries
       operationId: getTimeTrackingEntry
       parameters:
         - name: opt_fields
@@ -47317,7 +47294,7 @@ paths:
 
         Returns the complete updated time tracking entry record.
       tags:
-        - Time tracking entries
+        - Time Tracking Entries
       operationId: updateTimeTrackingEntry
       parameters:
         - name: opt_fields
@@ -47464,7 +47441,7 @@ paths:
 
         Returns an empty data record.
       tags:
-        - Time tracking entries
+        - Time Tracking Entries
       operationId: deleteTimeTrackingEntry
       responses:
         200:
@@ -47832,7 +47809,7 @@ paths:
       description: >-
         Returns the full record for a user task list.
       tags:
-        - User task lists
+        - User Task Lists
       operationId: getUserTaskList
       parameters:
         - name: opt_fields
@@ -48006,7 +47983,7 @@ paths:
       description: >-
         Returns the full record for a user's task list.
       tags:
-        - User task lists
+        - User Task Lists
       operationId: getUserTaskListForUser
       parameters:
         - name: opt_fields
@@ -50174,7 +50151,7 @@ paths:
       description: >-
         Returns the complete workspace record for a single workspace membership.
       tags:
-        - Workspace memberships
+        - Workspace Memberships
       operationId: getWorkspaceMembership
       parameters:
         - name: opt_fields
@@ -50366,7 +50343,7 @@ paths:
       description: >-
         Returns the compact workspace membership records for the user.
       tags:
-        - Workspace memberships
+        - Workspace Memberships
       operationId: getWorkspaceMembershipsForUser
       parameters:
         - name: opt_fields
@@ -50573,7 +50550,7 @@ paths:
       description: >-
         Returns the compact workspace membership records for the workspace.
       tags:
-        - Workspace memberships
+        - Workspace Memberships
       operationId: getWorkspaceMembershipsForWorkspace
       parameters:
         - name: opt_fields
