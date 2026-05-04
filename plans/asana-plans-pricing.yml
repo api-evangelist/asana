@@ -1,0 +1,132 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Asana
+providerId: asana
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Project Management
+  - Work Management
+description: Asana per-user pricing across Personal, Starter, Advanced, Enterprise.
+sources:
+  - https://asana.com/pricing
+plans:
+  - id: asana-personal
+    name: Personal
+    type: freemium
+    description: Free forever, up to 2 users.
+    entries:
+      - label: Per user
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: true
+      - label: Users
+        name: users
+        type: quota
+        metric: user
+        limit: 2
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    elements:
+      - name: Unlimited tasks/projects
+      - name: List/board/calendar views
+      - name: Unlimited storage 100MB/file
+      - name: 100+ integrations
+  - id: asana-starter
+    name: Starter
+    type: paid
+    description: $10.99/user/mo annual ($13.49 monthly).
+    entries:
+      - label: Per user (annual)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '10.99'
+        userMultiplied: true
+      - label: Per user (monthly)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '13.49'
+        userMultiplied: true
+    elements:
+      - name: Unlimited team members
+      - name: Timeline/Gantt views
+      - name: Reporting dashboards
+      - name: Unlimited automations
+      - name: Forms
+      - name: AI Studio Basic 50K credits
+  - id: asana-advanced
+    name: Advanced
+    type: paid
+    description: $24.99/user/mo annual ($30.49 monthly).
+    entries:
+      - label: Per user (annual)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '24.99'
+        userMultiplied: true
+      - label: Per user (monthly)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '30.49'
+        userMultiplied: true
+    elements:
+      - name: Unlimited portfolios
+      - name: Goals tracking
+      - name: Workload management
+      - name: Approvals/proofing
+      - name: Salesforce/Tableau/Power BI
+      - name: AI Studio Basic 75K credits
+  - id: asana-enterprise
+    name: Enterprise
+    type: enterprise
+    description: Custom pricing.
+    entries:
+      - label: Per user (custom)
+        name: seat
+        type: subscription
+        metric: user
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: custom
+        userMultiplied: true
+    elements:
+      - name: SAML
+      - name: SCIM
+      - name: Universal workload
+      - name: Capacity planning
+      - name: Service accounts
+      - name: Project admin controls
+      - name: AI Studio Basic 200K credits

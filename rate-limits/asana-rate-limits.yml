@@ -1,0 +1,39 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Asana
+providerId: asana
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Rate Limiting
+  - Project Management
+description: 'Asana API: 1500 req/min for paid, 150/min for free domains.'
+sources:
+  - https://asana.com/pricing
+  - https://developers.asana.com/docs/rate-limits
+headers:
+  retryAfter: Retry-After
+responseCodes:
+  throttled: 429
+limits:
+  - name: REST API (Paid)
+    scope: domain
+    metric: requests_per_minute
+    limit: 1500
+    timeFrame: minute
+  - name: REST API (Free)
+    scope: domain
+    metric: requests_per_minute
+    limit: 150
+    timeFrame: minute
+  - name: Search API
+    scope: domain
+    metric: requests_per_minute
+    limit: 60
+    timeFrame: minute
+  - name: Concurrent requests
+    scope: domain
+    metric: concurrent
+    limit: 50
