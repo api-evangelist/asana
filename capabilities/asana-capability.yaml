@@ -1,0 +1,279 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana Allocations API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management
+    system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object
+    (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
+  tags:
+  - Asana
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: asana
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana Allocations API HTTP API.
+    authentication:
+      type: bearer
+      token: '{{ASANA_TOKEN}}'
+    resources:
+    - name: allocations-allocation-gid
+      path: /allocations/{allocation_gid}
+      operations:
+      - name: getallocation
+        method: GET
+        description: Asana Get an allocation
+        inputParameters:
+        - name: allocation_gid
+          in: path
+          type: string
+          required: true
+          description: Globally unique identifier for the allocation.
+        - name: opt_fields
+          in: query
+          type: array
+          description: Comma-separated list of optional fields to include.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateallocation
+        method: PUT
+        description: Asana Update an allocation
+        inputParameters:
+        - name: allocation_gid
+          in: path
+          type: string
+          required: true
+          description: Globally unique identifier for the allocation.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteallocation
+        method: DELETE
+        description: Asana Delete an allocation
+        inputParameters:
+        - name: allocation_gid
+          in: path
+          type: string
+          required: true
+          description: Globally unique identifier for the allocation.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: allocations
+      path: /allocations
+      operations:
+      - name: getallocations
+        method: GET
+        description: Asana Get multiple allocations
+        inputParameters:
+        - name: parent
+          in: query
+          type: string
+          required: true
+          description: Globally unique identifier for the project to filter allocations.
+        - name: assignee
+          in: query
+          type: string
+          description: Globally unique identifier for the user to filter allocations.
+        - name: workspace
+          in: query
+          type: string
+          description: Globally unique identifier for the workspace.
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createallocation
+        method: POST
+        description: Asana Create an allocation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: asana-rest
+    description: REST adapter for Asana Allocations API.
+    resources:
+    - path: /allocations/{allocation_gid}
+      name: getallocation
+      operations:
+      - method: GET
+        name: getallocation
+        description: Asana Get an allocation
+        call: asana.getallocation
+        with:
+          allocation_gid: rest.allocation_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /allocations/{allocation_gid}
+      name: updateallocation
+      operations:
+      - method: PUT
+        name: updateallocation
+        description: Asana Update an allocation
+        call: asana.updateallocation
+        with:
+          allocation_gid: rest.allocation_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /allocations/{allocation_gid}
+      name: deleteallocation
+      operations:
+      - method: DELETE
+        name: deleteallocation
+        description: Asana Delete an allocation
+        call: asana.deleteallocation
+        with:
+          allocation_gid: rest.allocation_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /allocations
+      name: getallocations
+      operations:
+      - method: GET
+        name: getallocations
+        description: Asana Get multiple allocations
+        call: asana.getallocations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /allocations
+      name: createallocation
+      operations:
+      - method: POST
+        name: createallocation
+        description: Asana Create an allocation
+        call: asana.createallocation
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: asana-mcp
+    transport: http
+    description: MCP adapter for Asana Allocations API for AI agent use.
+    tools:
+    - name: getallocation
+      description: Asana Get an allocation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana.getallocation
+      with:
+        allocation_gid: tools.allocation_gid
+        opt_fields: tools.opt_fields
+      inputParameters:
+      - name: allocation_gid
+        type: string
+        description: Globally unique identifier for the allocation.
+        required: true
+      - name: opt_fields
+        type: array
+        description: Comma-separated list of optional fields to include.
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateallocation
+      description: Asana Update an allocation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana.updateallocation
+      with:
+        allocation_gid: tools.allocation_gid
+      inputParameters:
+      - name: allocation_gid
+        type: string
+        description: Globally unique identifier for the allocation.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteallocation
+      description: Asana Delete an allocation
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana.deleteallocation
+      with:
+        allocation_gid: tools.allocation_gid
+      inputParameters:
+      - name: allocation_gid
+        type: string
+        description: Globally unique identifier for the allocation.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getallocations
+      description: Asana Get multiple allocations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana.getallocations
+      with:
+        parent: tools.parent
+        assignee: tools.assignee
+        workspace: tools.workspace
+        limit: tools.limit
+        offset: tools.offset
+      inputParameters:
+      - name: parent
+        type: string
+        description: Globally unique identifier for the project to filter allocations.
+        required: true
+      - name: assignee
+        type: string
+        description: Globally unique identifier for the user to filter allocations.
+      - name: workspace
+        type: string
+        description: Globally unique identifier for the workspace.
+      - name: limit
+        type: integer
+        description: limit
+      - name: offset
+        type: string
+        description: offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createallocation
+      description: Asana Create an allocation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana.createallocation
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    ASANA_TOKEN: ASANA_TOKEN
