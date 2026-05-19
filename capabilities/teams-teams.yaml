@@ -1,0 +1,356 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana Teams API — Teams
+  description: 'Asana Teams API — Teams. 7 operations. Lead operation: Asana Create a team. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Teams
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: teams-teams
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana Teams API — Teams business capability. Self-contained, no shared references.
+    resources:
+    - name: teams
+      path: /teams
+      operations:
+      - name: createteam
+        method: POST
+        description: Asana Create a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team_gid
+      path: /teams/{team_gid}
+      operations:
+      - name: getteam
+        method: GET
+        description: Asana Get a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_gid
+          in: path
+          type: string
+          required: true
+      - name: updateteam
+        method: PUT
+        description: Asana Update a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team_gid-addUser
+      path: /teams/{team_gid}/addUser
+      operations:
+      - name: adduserforteam
+        method: POST
+        description: Asana Add a user to a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: teams-team_gid-removeUser
+      path: /teams/{team_gid}/removeUser
+      operations:
+      - name: removeuserforteam
+        method: POST
+        description: Asana Remove a user from a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: team_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: users-user_gid-teams
+      path: /users/{user_gid}/teams
+      operations:
+      - name: getteamsforuser
+        method: GET
+        description: Asana Get teams for a user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_gid
+          in: path
+          type: string
+          required: true
+        - name: organization
+          in: query
+          type: string
+          required: true
+    - name: workspaces-workspace_gid-teams
+      path: /workspaces/{workspace_gid}/teams
+      operations:
+      - name: getteamsforworkspace
+        method: GET
+        description: Asana Get teams in a workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: workspace_gid
+          in: path
+          type: string
+          required: true
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: string
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: teams-teams-rest
+    port: 8080
+    description: REST adapter for Asana Teams API — Teams. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/teams
+      name: teams
+      description: REST surface for teams.
+      operations:
+      - method: POST
+        name: createteam
+        description: Asana Create a team
+        call: teams-teams.createteam
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-gid}
+      name: teams-team-gid
+      description: REST surface for teams-team_gid.
+      operations:
+      - method: GET
+        name: getteam
+        description: Asana Get a team
+        call: teams-teams.getteam
+        with:
+          team_gid: rest.team_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateteam
+        description: Asana Update a team
+        call: teams-teams.updateteam
+        with:
+          team_gid: rest.team_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-gid}/adduser
+      name: teams-team-gid-adduser
+      description: REST surface for teams-team_gid-addUser.
+      operations:
+      - method: POST
+        name: adduserforteam
+        description: Asana Add a user to a team
+        call: teams-teams.adduserforteam
+        with:
+          team_gid: rest.team_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-gid}/removeuser
+      name: teams-team-gid-removeuser
+      description: REST surface for teams-team_gid-removeUser.
+      operations:
+      - method: POST
+        name: removeuserforteam
+        description: Asana Remove a user from a team
+        call: teams-teams.removeuserforteam
+        with:
+          team_gid: rest.team_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-gid}/teams
+      name: users-user-gid-teams
+      description: REST surface for users-user_gid-teams.
+      operations:
+      - method: GET
+        name: getteamsforuser
+        description: Asana Get teams for a user
+        call: teams-teams.getteamsforuser
+        with:
+          user_gid: rest.user_gid
+          organization: rest.organization
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/workspaces/{workspace-gid}/teams
+      name: workspaces-workspace-gid-teams
+      description: REST surface for workspaces-workspace_gid-teams.
+      operations:
+      - method: GET
+        name: getteamsforworkspace
+        description: Asana Get teams in a workspace
+        call: teams-teams.getteamsforworkspace
+        with:
+          workspace_gid: rest.workspace_gid
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: teams-teams-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana Teams API — Teams. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-create-team
+      description: Asana Create a team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams-teams.createteam
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-team
+      description: Asana Get a team
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-teams.getteam
+      with:
+        team_gid: tools.team_gid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-team
+      description: Asana Update a team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: teams-teams.updateteam
+      with:
+        team_gid: tools.team_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-user-team
+      description: Asana Add a user to a team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams-teams.adduserforteam
+      with:
+        team_gid: tools.team_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-user-team
+      description: Asana Remove a user from a team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams-teams.removeuserforteam
+      with:
+        team_gid: tools.team_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-teams-user
+      description: Asana Get teams for a user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-teams.getteamsforuser
+      with:
+        user_gid: tools.user_gid
+        organization: tools.organization
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-teams-workspace
+      description: Asana Get teams in a workspace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: teams-teams.getteamsforworkspace
+      with:
+        workspace_gid: tools.workspace_gid
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.

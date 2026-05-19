@@ -1,0 +1,202 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Task Templates
+  description: 'Asana — Task Templates. 4 operations. Lead operation: Asana Get multiple task templates. Self-contained Naftiko
+    capability covering one Asana business surface.'
+  tags:
+  - Asana
+  - Task Templates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-task-templates
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Task Templates business capability. Self-contained, no shared references.
+    resources:
+    - name: task_templates
+      path: /task_templates
+      operations:
+      - name: gettasktemplates
+        method: GET
+        description: Asana Get multiple task templates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: project
+          in: query
+          type: string
+          description: The project to filter task templates on.
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: task_templates-task_template_gid
+      path: /task_templates/{task_template_gid}
+      operations:
+      - name: gettasktemplate
+        method: GET
+        description: Asana Get a task template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: deletetasktemplate
+        method: DELETE
+        description: Asana Delete a task template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: task_templates-task_template_gid-instantiateTask
+      path: /task_templates/{task_template_gid}/instantiateTask
+      operations:
+      - name: instantiatetask
+        method: POST
+        description: Asana Instantiate a task from a task template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-task-templates-rest
+    port: 8080
+    description: REST adapter for Asana — Task Templates. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/task-templates
+      name: task-templates
+      description: REST surface for task_templates.
+      operations:
+      - method: GET
+        name: gettasktemplates
+        description: Asana Get multiple task templates
+        call: asana-task-templates.gettasktemplates
+        with:
+          project: rest.project
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/task-templates/{task-template-gid}
+      name: task-templates-task-template-gid
+      description: REST surface for task_templates-task_template_gid.
+      operations:
+      - method: GET
+        name: gettasktemplate
+        description: Asana Get a task template
+        call: asana-task-templates.gettasktemplate
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletetasktemplate
+        description: Asana Delete a task template
+        call: asana-task-templates.deletetasktemplate
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/task-templates/{task-template-gid}/instantiatetask
+      name: task-templates-task-template-gid-instantiatetask
+      description: REST surface for task_templates-task_template_gid-instantiateTask.
+      operations:
+      - method: POST
+        name: instantiatetask
+        description: Asana Instantiate a task from a task template
+        call: asana-task-templates.instantiatetask
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-task-templates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Task Templates. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-multiple-task-templates
+      description: Asana Get multiple task templates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-task-templates.gettasktemplates
+      with:
+        project: tools.project
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-task-template
+      description: Asana Get a task template
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-task-templates.gettasktemplate
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-task-template
+      description: Asana Delete a task template
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana-task-templates.deletetasktemplate
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-instantiate-task-task-template
+      description: Asana Instantiate a task from a task template
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-task-templates.instantiatetask
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

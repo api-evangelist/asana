@@ -1,0 +1,385 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Custom Fields
+  description: 'Asana — Custom Fields. 8 operations. Lead operation: Asana Create a custom field. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Custom Fields
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-custom-fields
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Custom Fields business capability. Self-contained, no shared references.
+    resources:
+    - name: custom_fields
+      path: /custom_fields
+      operations:
+      - name: createcustomfield
+        method: POST
+        description: Asana Create a custom field
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: custom_fields-custom_field_gid
+      path: /custom_fields/{custom_field_gid}
+      operations:
+      - name: getcustomfield
+        method: GET
+        description: Asana Get a custom field
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: updatecustomfield
+        method: PUT
+        description: Asana Update a custom field
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletecustomfield
+        method: DELETE
+        description: Asana Delete a custom field
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: custom_fields-custom_field_gid-enum_options
+      path: /custom_fields/{custom_field_gid}/enum_options
+      operations:
+      - name: createenumoptionforcustomfield
+        method: POST
+        description: Asana Create an enum option
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: custom_fields-custom_field_gid-enum_options-insert
+      path: /custom_fields/{custom_field_gid}/enum_options/insert
+      operations:
+      - name: insertenumoptionforcustomfield
+        method: POST
+        description: Asana Reorder a custom field's enum
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: enum_options-enum_option_gid
+      path: /enum_options/{enum_option_gid}
+      operations:
+      - name: updateenumoption
+        method: PUT
+        description: Asana Update an enum option
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: workspaces-workspace_gid-custom_fields
+      path: /workspaces/{workspace_gid}/custom_fields
+      operations:
+      - name: getcustomfieldsforworkspace
+        method: GET
+        description: Asana Get a workspace's custom fields
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-custom-fields-rest
+    port: 8080
+    description: REST adapter for Asana — Custom Fields. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/custom-fields
+      name: custom-fields
+      description: REST surface for custom_fields.
+      operations:
+      - method: POST
+        name: createcustomfield
+        description: Asana Create a custom field
+        call: asana-custom-fields.createcustomfield
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/custom-fields/{custom-field-gid}
+      name: custom-fields-custom-field-gid
+      description: REST surface for custom_fields-custom_field_gid.
+      operations:
+      - method: GET
+        name: getcustomfield
+        description: Asana Get a custom field
+        call: asana-custom-fields.getcustomfield
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatecustomfield
+        description: Asana Update a custom field
+        call: asana-custom-fields.updatecustomfield
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletecustomfield
+        description: Asana Delete a custom field
+        call: asana-custom-fields.deletecustomfield
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/custom-fields/{custom-field-gid}/enum-options
+      name: custom-fields-custom-field-gid-enum-options
+      description: REST surface for custom_fields-custom_field_gid-enum_options.
+      operations:
+      - method: POST
+        name: createenumoptionforcustomfield
+        description: Asana Create an enum option
+        call: asana-custom-fields.createenumoptionforcustomfield
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/custom-fields/{custom-field-gid}/enum-options/insert
+      name: custom-fields-custom-field-gid-enum-options-insert
+      description: REST surface for custom_fields-custom_field_gid-enum_options-insert.
+      operations:
+      - method: POST
+        name: insertenumoptionforcustomfield
+        description: Asana Reorder a custom field's enum
+        call: asana-custom-fields.insertenumoptionforcustomfield
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/enum-options/{enum-option-gid}
+      name: enum-options-enum-option-gid
+      description: REST surface for enum_options-enum_option_gid.
+      operations:
+      - method: PUT
+        name: updateenumoption
+        description: Asana Update an enum option
+        call: asana-custom-fields.updateenumoption
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/workspaces/{workspace-gid}/custom-fields
+      name: workspaces-workspace-gid-custom-fields
+      description: REST surface for workspaces-workspace_gid-custom_fields.
+      operations:
+      - method: GET
+        name: getcustomfieldsforworkspace
+        description: Asana Get a workspace's custom fields
+        call: asana-custom-fields.getcustomfieldsforworkspace
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-custom-fields-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Custom Fields. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-create-custom-field
+      description: Asana Create a custom field
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-custom-fields.createcustomfield
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-custom-field
+      description: Asana Get a custom field
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-custom-fields.getcustomfield
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-custom-field
+      description: Asana Update a custom field
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana-custom-fields.updatecustomfield
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-custom-field
+      description: Asana Delete a custom field
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana-custom-fields.deletecustomfield
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-enum-option
+      description: Asana Create an enum option
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-custom-fields.createenumoptionforcustomfield
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-reorder-custom-field-s-enum
+      description: Asana Reorder a custom field's enum
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-custom-fields.insertenumoptionforcustomfield
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-enum-option
+      description: Asana Update an enum option
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana-custom-fields.updateenumoption
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-workspace-s-custom-fields
+      description: Asana Get a workspace's custom fields
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-custom-fields.getcustomfieldsforworkspace
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,255 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Workspaces
+  description: 'Asana — Workspaces. 5 operations. Lead operation: Asana Get multiple workspaces. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Workspaces
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-workspaces
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Workspaces business capability. Self-contained, no shared references.
+    resources:
+    - name: workspaces
+      path: /workspaces
+      operations:
+      - name: getworkspaces
+        method: GET
+        description: Asana Get multiple workspaces
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: workspaces-workspace_gid
+      path: /workspaces/{workspace_gid}
+      operations:
+      - name: getworkspace
+        method: GET
+        description: Asana Get a workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: updateworkspace
+        method: PUT
+        description: Asana Update a workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: workspaces-workspace_gid-addUser
+      path: /workspaces/{workspace_gid}/addUser
+      operations:
+      - name: adduserforworkspace
+        method: POST
+        description: Asana Add a user to a workspace or organization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: workspaces-workspace_gid-removeUser
+      path: /workspaces/{workspace_gid}/removeUser
+      operations:
+      - name: removeuserforworkspace
+        method: POST
+        description: Asana Remove a user from a workspace or organization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-workspaces-rest
+    port: 8080
+    description: REST adapter for Asana — Workspaces. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/workspaces
+      name: workspaces
+      description: REST surface for workspaces.
+      operations:
+      - method: GET
+        name: getworkspaces
+        description: Asana Get multiple workspaces
+        call: asana-workspaces.getworkspaces
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/workspaces/{workspace-gid}
+      name: workspaces-workspace-gid
+      description: REST surface for workspaces-workspace_gid.
+      operations:
+      - method: GET
+        name: getworkspace
+        description: Asana Get a workspace
+        call: asana-workspaces.getworkspace
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateworkspace
+        description: Asana Update a workspace
+        call: asana-workspaces.updateworkspace
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/workspaces/{workspace-gid}/adduser
+      name: workspaces-workspace-gid-adduser
+      description: REST surface for workspaces-workspace_gid-addUser.
+      operations:
+      - method: POST
+        name: adduserforworkspace
+        description: Asana Add a user to a workspace or organization
+        call: asana-workspaces.adduserforworkspace
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/workspaces/{workspace-gid}/removeuser
+      name: workspaces-workspace-gid-removeuser
+      description: REST surface for workspaces-workspace_gid-removeUser.
+      operations:
+      - method: POST
+        name: removeuserforworkspace
+        description: Asana Remove a user from a workspace or organization
+        call: asana-workspaces.removeuserforworkspace
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-workspaces-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Workspaces. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-multiple-workspaces
+      description: Asana Get multiple workspaces
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-workspaces.getworkspaces
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-workspace
+      description: Asana Get a workspace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-workspaces.getworkspace
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-workspace
+      description: Asana Update a workspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana-workspaces.updateworkspace
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-user-workspace-organization
+      description: Asana Add a user to a workspace or organization
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-workspaces.adduserforworkspace
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-user-workspace-organization
+      description: Asana Remove a user from a workspace or organization
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-workspaces.removeuserforworkspace
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,396 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana Goals API — Goals
+  description: 'Asana Goals API — Goals. 8 operations. Lead operation: Asana Get goals. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Goals
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: goals-goals
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana Goals API — Goals business capability. Self-contained, no shared references.
+    resources:
+    - name: goals
+      path: /goals
+      operations:
+      - name: getgoals
+        method: GET
+        description: Asana Get goals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: workspace
+          in: query
+          type: string
+        - name: team
+          in: query
+          type: string
+        - name: project
+          in: query
+          type: string
+        - name: is_workspace_level
+          in: query
+          type: boolean
+        - name: time_periods
+          in: query
+          type: array
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: string
+      - name: creategoal
+        method: POST
+        description: Asana Create a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: goals-goal_gid
+      path: /goals/{goal_gid}
+      operations:
+      - name: getgoal
+        method: GET
+        description: Asana Get a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: goal_gid
+          in: path
+          type: string
+          required: true
+      - name: updategoal
+        method: PUT
+        description: Asana Update a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: goal_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletegoal
+        method: DELETE
+        description: Asana Delete a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: goal_gid
+          in: path
+          type: string
+          required: true
+    - name: goals-goal_gid-addFollowers
+      path: /goals/{goal_gid}/addFollowers
+      operations:
+      - name: addfollowersforgoal
+        method: POST
+        description: Asana Add a collaborator to a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: goal_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: goals-goal_gid-parentGoals
+      path: /goals/{goal_gid}/parentGoals
+      operations:
+      - name: getparentgoalsforgoal
+        method: GET
+        description: Asana Get parent goals from a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: goal_gid
+          in: path
+          type: string
+          required: true
+    - name: goals-goal_gid-removeFollowers
+      path: /goals/{goal_gid}/removeFollowers
+      operations:
+      - name: removefollowersforgoal
+        method: POST
+        description: Asana Remove a collaborator from a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: goal_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: goals-goals-rest
+    port: 8080
+    description: REST adapter for Asana Goals API — Goals. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/goals
+      name: goals
+      description: REST surface for goals.
+      operations:
+      - method: GET
+        name: getgoals
+        description: Asana Get goals
+        call: goals-goals.getgoals
+        with:
+          workspace: rest.workspace
+          team: rest.team
+          project: rest.project
+          is_workspace_level: rest.is_workspace_level
+          time_periods: rest.time_periods
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: creategoal
+        description: Asana Create a goal
+        call: goals-goals.creategoal
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}
+      name: goals-goal-gid
+      description: REST surface for goals-goal_gid.
+      operations:
+      - method: GET
+        name: getgoal
+        description: Asana Get a goal
+        call: goals-goals.getgoal
+        with:
+          goal_gid: rest.goal_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updategoal
+        description: Asana Update a goal
+        call: goals-goals.updategoal
+        with:
+          goal_gid: rest.goal_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletegoal
+        description: Asana Delete a goal
+        call: goals-goals.deletegoal
+        with:
+          goal_gid: rest.goal_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/addfollowers
+      name: goals-goal-gid-addfollowers
+      description: REST surface for goals-goal_gid-addFollowers.
+      operations:
+      - method: POST
+        name: addfollowersforgoal
+        description: Asana Add a collaborator to a goal
+        call: goals-goals.addfollowersforgoal
+        with:
+          goal_gid: rest.goal_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/parentgoals
+      name: goals-goal-gid-parentgoals
+      description: REST surface for goals-goal_gid-parentGoals.
+      operations:
+      - method: GET
+        name: getparentgoalsforgoal
+        description: Asana Get parent goals from a goal
+        call: goals-goals.getparentgoalsforgoal
+        with:
+          goal_gid: rest.goal_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/removefollowers
+      name: goals-goal-gid-removefollowers
+      description: REST surface for goals-goal_gid-removeFollowers.
+      operations:
+      - method: POST
+        name: removefollowersforgoal
+        description: Asana Remove a collaborator from a goal
+        call: goals-goals.removefollowersforgoal
+        with:
+          goal_gid: rest.goal_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: goals-goals-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana Goals API — Goals. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-goals
+      description: Asana Get goals
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: goals-goals.getgoals
+      with:
+        workspace: tools.workspace
+        team: tools.team
+        project: tools.project
+        is_workspace_level: tools.is_workspace_level
+        time_periods: tools.time_periods
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-goal
+      description: Asana Create a goal
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: goals-goals.creategoal
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-goal
+      description: Asana Get a goal
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: goals-goals.getgoal
+      with:
+        goal_gid: tools.goal_gid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-goal
+      description: Asana Update a goal
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: goals-goals.updategoal
+      with:
+        goal_gid: tools.goal_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-goal
+      description: Asana Delete a goal
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: goals-goals.deletegoal
+      with:
+        goal_gid: tools.goal_gid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-collaborator-goal
+      description: Asana Add a collaborator to a goal
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: goals-goals.addfollowersforgoal
+      with:
+        goal_gid: tools.goal_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-parent-goals-goal
+      description: Asana Get parent goals from a goal
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: goals-goals.getparentgoalsforgoal
+      with:
+        goal_gid: tools.goal_gid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-collaborator-goal
+      description: Asana Remove a collaborator from a goal
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: goals-goals.removefollowersforgoal
+      with:
+        goal_gid: tools.goal_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

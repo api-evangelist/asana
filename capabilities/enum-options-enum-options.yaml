@@ -1,0 +1,182 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana Enum Options API — Enum Options
+  description: 'Asana Enum Options API — Enum Options. 3 operations. Lead operation: Asana Create an enum option. Self-contained
+    Naftiko capability covering one Asana business surface.'
+  tags:
+  - Asana
+  - Enum Options
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: enum-options-enum-options
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana Enum Options API — Enum Options business capability. Self-contained, no shared references.
+    resources:
+    - name: custom_fields-custom_field_gid-enum_options
+      path: /custom_fields/{custom_field_gid}/enum_options
+      operations:
+      - name: createenumoptionforcustomfield
+        method: POST
+        description: Asana Create an enum option
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: custom_field_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: custom_fields-custom_field_gid-enum_options-insert
+      path: /custom_fields/{custom_field_gid}/enum_options/insert
+      operations:
+      - name: insertenumoptionforcustomfield
+        method: POST
+        description: Asana Reorder a custom field's enum
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: custom_field_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: enum_options-enum_option_gid
+      path: /enum_options/{enum_option_gid}
+      operations:
+      - name: updateenumoption
+        method: PUT
+        description: Asana Update an enum option
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: enum_option_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: enum-options-enum-options-rest
+    port: 8080
+    description: REST adapter for Asana Enum Options API — Enum Options. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/custom-fields/{custom-field-gid}/enum-options
+      name: custom-fields-custom-field-gid-enum-options
+      description: REST surface for custom_fields-custom_field_gid-enum_options.
+      operations:
+      - method: POST
+        name: createenumoptionforcustomfield
+        description: Asana Create an enum option
+        call: enum-options-enum-options.createenumoptionforcustomfield
+        with:
+          custom_field_gid: rest.custom_field_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/custom-fields/{custom-field-gid}/enum-options/insert
+      name: custom-fields-custom-field-gid-enum-options-insert
+      description: REST surface for custom_fields-custom_field_gid-enum_options-insert.
+      operations:
+      - method: POST
+        name: insertenumoptionforcustomfield
+        description: Asana Reorder a custom field's enum
+        call: enum-options-enum-options.insertenumoptionforcustomfield
+        with:
+          custom_field_gid: rest.custom_field_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/enum-options/{enum-option-gid}
+      name: enum-options-enum-option-gid
+      description: REST surface for enum_options-enum_option_gid.
+      operations:
+      - method: PUT
+        name: updateenumoption
+        description: Asana Update an enum option
+        call: enum-options-enum-options.updateenumoption
+        with:
+          enum_option_gid: rest.enum_option_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: enum-options-enum-options-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana Enum Options API — Enum Options. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: asana-create-enum-option
+      description: Asana Create an enum option
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: enum-options-enum-options.createenumoptionforcustomfield
+      with:
+        custom_field_gid: tools.custom_field_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-reorder-custom-field-s-enum
+      description: Asana Reorder a custom field's enum
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: enum-options-enum-options.insertenumoptionforcustomfield
+      with:
+        custom_field_gid: tools.custom_field_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-enum-option
+      description: Asana Update an enum option
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: enum-options-enum-options.updateenumoption
+      with:
+        enum_option_gid: tools.enum_option_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

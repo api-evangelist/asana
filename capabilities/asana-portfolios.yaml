@@ -1,0 +1,553 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Portfolios
+  description: 'Asana — Portfolios. 12 operations. Lead operation: Asana Get multiple portfolios. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Portfolios
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-portfolios
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Portfolios business capability. Self-contained, no shared references.
+    resources:
+    - name: portfolios
+      path: /portfolios
+      operations:
+      - name: getportfolios
+        method: GET
+        description: Asana Get multiple portfolios
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: workspace
+          in: query
+          type: string
+          description: The workspace or organization to filter portfolios on.
+          required: true
+        - name: owner
+          in: query
+          type: string
+          description: The user who owns the portfolio. Currently, API users can only get a list of portfolios that they themselves
+            own, unless the request is made from a Service Acco
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: createportfolio
+        method: POST
+        description: Asana Create a portfolio
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: portfolios-portfolio_gid
+      path: /portfolios/{portfolio_gid}
+      operations:
+      - name: getportfolio
+        method: GET
+        description: Asana Get a portfolio
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: updateportfolio
+        method: PUT
+        description: Asana Update a portfolio
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteportfolio
+        method: DELETE
+        description: Asana Delete a portfolio
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: portfolios-portfolio_gid-addCustomFieldSetting
+      path: /portfolios/{portfolio_gid}/addCustomFieldSetting
+      operations:
+      - name: addcustomfieldsettingforportfolio
+        method: POST
+        description: Asana Add a custom field to a portfolio
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: portfolios-portfolio_gid-addItem
+      path: /portfolios/{portfolio_gid}/addItem
+      operations:
+      - name: additemforportfolio
+        method: POST
+        description: Asana Add a portfolio item
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: portfolios-portfolio_gid-addMembers
+      path: /portfolios/{portfolio_gid}/addMembers
+      operations:
+      - name: addmembersforportfolio
+        method: POST
+        description: Asana Add users to a portfolio
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: portfolios-portfolio_gid-items
+      path: /portfolios/{portfolio_gid}/items
+      operations:
+      - name: getitemsforportfolio
+        method: GET
+        description: Asana Get portfolio items
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: portfolios-portfolio_gid-removeCustomFieldSetting
+      path: /portfolios/{portfolio_gid}/removeCustomFieldSetting
+      operations:
+      - name: removecustomfieldsettingforportfolio
+        method: POST
+        description: Asana Remove a custom field from a portfolio
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: portfolios-portfolio_gid-removeItem
+      path: /portfolios/{portfolio_gid}/removeItem
+      operations:
+      - name: removeitemforportfolio
+        method: POST
+        description: Asana Remove a portfolio item
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: portfolios-portfolio_gid-removeMembers
+      path: /portfolios/{portfolio_gid}/removeMembers
+      operations:
+      - name: removemembersforportfolio
+        method: POST
+        description: Asana Remove users from a portfolio
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-portfolios-rest
+    port: 8080
+    description: REST adapter for Asana — Portfolios. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/portfolios
+      name: portfolios
+      description: REST surface for portfolios.
+      operations:
+      - method: GET
+        name: getportfolios
+        description: Asana Get multiple portfolios
+        call: asana-portfolios.getportfolios
+        with:
+          workspace: rest.workspace
+          owner: rest.owner
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createportfolio
+        description: Asana Create a portfolio
+        call: asana-portfolios.createportfolio
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/portfolios/{portfolio-gid}
+      name: portfolios-portfolio-gid
+      description: REST surface for portfolios-portfolio_gid.
+      operations:
+      - method: GET
+        name: getportfolio
+        description: Asana Get a portfolio
+        call: asana-portfolios.getportfolio
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateportfolio
+        description: Asana Update a portfolio
+        call: asana-portfolios.updateportfolio
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteportfolio
+        description: Asana Delete a portfolio
+        call: asana-portfolios.deleteportfolio
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/portfolios/{portfolio-gid}/addcustomfieldsetting
+      name: portfolios-portfolio-gid-addcustomfieldsetting
+      description: REST surface for portfolios-portfolio_gid-addCustomFieldSetting.
+      operations:
+      - method: POST
+        name: addcustomfieldsettingforportfolio
+        description: Asana Add a custom field to a portfolio
+        call: asana-portfolios.addcustomfieldsettingforportfolio
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/portfolios/{portfolio-gid}/additem
+      name: portfolios-portfolio-gid-additem
+      description: REST surface for portfolios-portfolio_gid-addItem.
+      operations:
+      - method: POST
+        name: additemforportfolio
+        description: Asana Add a portfolio item
+        call: asana-portfolios.additemforportfolio
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/portfolios/{portfolio-gid}/addmembers
+      name: portfolios-portfolio-gid-addmembers
+      description: REST surface for portfolios-portfolio_gid-addMembers.
+      operations:
+      - method: POST
+        name: addmembersforportfolio
+        description: Asana Add users to a portfolio
+        call: asana-portfolios.addmembersforportfolio
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/portfolios/{portfolio-gid}/items
+      name: portfolios-portfolio-gid-items
+      description: REST surface for portfolios-portfolio_gid-items.
+      operations:
+      - method: GET
+        name: getitemsforportfolio
+        description: Asana Get portfolio items
+        call: asana-portfolios.getitemsforportfolio
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/portfolios/{portfolio-gid}/removecustomfieldsetting
+      name: portfolios-portfolio-gid-removecustomfieldsetting
+      description: REST surface for portfolios-portfolio_gid-removeCustomFieldSetting.
+      operations:
+      - method: POST
+        name: removecustomfieldsettingforportfolio
+        description: Asana Remove a custom field from a portfolio
+        call: asana-portfolios.removecustomfieldsettingforportfolio
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/portfolios/{portfolio-gid}/removeitem
+      name: portfolios-portfolio-gid-removeitem
+      description: REST surface for portfolios-portfolio_gid-removeItem.
+      operations:
+      - method: POST
+        name: removeitemforportfolio
+        description: Asana Remove a portfolio item
+        call: asana-portfolios.removeitemforportfolio
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/portfolios/{portfolio-gid}/removemembers
+      name: portfolios-portfolio-gid-removemembers
+      description: REST surface for portfolios-portfolio_gid-removeMembers.
+      operations:
+      - method: POST
+        name: removemembersforportfolio
+        description: Asana Remove users from a portfolio
+        call: asana-portfolios.removemembersforportfolio
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-portfolios-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Portfolios. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-multiple-portfolios
+      description: Asana Get multiple portfolios
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-portfolios.getportfolios
+      with:
+        workspace: tools.workspace
+        owner: tools.owner
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-portfolio
+      description: Asana Create a portfolio
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-portfolios.createportfolio
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-portfolio
+      description: Asana Get a portfolio
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-portfolios.getportfolio
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-portfolio
+      description: Asana Update a portfolio
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana-portfolios.updateportfolio
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-portfolio
+      description: Asana Delete a portfolio
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana-portfolios.deleteportfolio
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-custom-field-portfolio
+      description: Asana Add a custom field to a portfolio
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-portfolios.addcustomfieldsettingforportfolio
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-portfolio-item
+      description: Asana Add a portfolio item
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-portfolios.additemforportfolio
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-users-portfolio
+      description: Asana Add users to a portfolio
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-portfolios.addmembersforportfolio
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-portfolio-items
+      description: Asana Get portfolio items
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-portfolios.getitemsforportfolio
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-custom-field-portfolio
+      description: Asana Remove a custom field from a portfolio
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-portfolios.removecustomfieldsettingforportfolio
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-portfolio-item
+      description: Asana Remove a portfolio item
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-portfolios.removeitemforportfolio
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-users-portfolio
+      description: Asana Remove users from a portfolio
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-portfolios.removemembersforportfolio
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

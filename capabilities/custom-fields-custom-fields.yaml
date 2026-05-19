@@ -1,0 +1,248 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana Custom Fields API — Custom Fields
+  description: 'Asana Custom Fields API — Custom Fields. 5 operations. Lead operation: Asana Create a custom field. Self-contained
+    Naftiko capability covering one Asana business surface.'
+  tags:
+  - Asana
+  - Custom Fields
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: custom-fields-custom-fields
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana Custom Fields API — Custom Fields business capability. Self-contained, no shared references.
+    resources:
+    - name: custom_fields
+      path: /custom_fields
+      operations:
+      - name: createcustomfield
+        method: POST
+        description: Asana Create a custom field
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: custom_fields-custom_field_gid
+      path: /custom_fields/{custom_field_gid}
+      operations:
+      - name: getcustomfield
+        method: GET
+        description: Asana Get a custom field
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: custom_field_gid
+          in: path
+          type: string
+          description: Globally unique identifier for the custom field.
+          required: true
+      - name: updatecustomfield
+        method: PUT
+        description: Asana Update a custom field
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: custom_field_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletecustomfield
+        method: DELETE
+        description: Asana Delete a custom field
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: custom_field_gid
+          in: path
+          type: string
+          required: true
+    - name: workspaces-workspace_gid-custom_fields
+      path: /workspaces/{workspace_gid}/custom_fields
+      operations:
+      - name: getcustomfieldsforworkspace
+        method: GET
+        description: Asana Get a workspace's custom fields
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: workspace_gid
+          in: path
+          type: string
+          required: true
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: string
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: custom-fields-custom-fields-rest
+    port: 8080
+    description: REST adapter for Asana Custom Fields API — Custom Fields. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/custom-fields
+      name: custom-fields
+      description: REST surface for custom_fields.
+      operations:
+      - method: POST
+        name: createcustomfield
+        description: Asana Create a custom field
+        call: custom-fields-custom-fields.createcustomfield
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/custom-fields/{custom-field-gid}
+      name: custom-fields-custom-field-gid
+      description: REST surface for custom_fields-custom_field_gid.
+      operations:
+      - method: GET
+        name: getcustomfield
+        description: Asana Get a custom field
+        call: custom-fields-custom-fields.getcustomfield
+        with:
+          custom_field_gid: rest.custom_field_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatecustomfield
+        description: Asana Update a custom field
+        call: custom-fields-custom-fields.updatecustomfield
+        with:
+          custom_field_gid: rest.custom_field_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletecustomfield
+        description: Asana Delete a custom field
+        call: custom-fields-custom-fields.deletecustomfield
+        with:
+          custom_field_gid: rest.custom_field_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/workspaces/{workspace-gid}/custom-fields
+      name: workspaces-workspace-gid-custom-fields
+      description: REST surface for workspaces-workspace_gid-custom_fields.
+      operations:
+      - method: GET
+        name: getcustomfieldsforworkspace
+        description: Asana Get a workspace's custom fields
+        call: custom-fields-custom-fields.getcustomfieldsforworkspace
+        with:
+          workspace_gid: rest.workspace_gid
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: custom-fields-custom-fields-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana Custom Fields API — Custom Fields. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: asana-create-custom-field
+      description: Asana Create a custom field
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: custom-fields-custom-fields.createcustomfield
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-custom-field
+      description: Asana Get a custom field
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: custom-fields-custom-fields.getcustomfield
+      with:
+        custom_field_gid: tools.custom_field_gid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-custom-field
+      description: Asana Update a custom field
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: custom-fields-custom-fields.updatecustomfield
+      with:
+        custom_field_gid: tools.custom_field_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-custom-field
+      description: Asana Delete a custom field
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: custom-fields-custom-fields.deletecustomfield
+      with:
+        custom_field_gid: tools.custom_field_gid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-workspace-s-custom-fields
+      description: Asana Get a workspace's custom fields
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: custom-fields-custom-fields.getcustomfieldsforworkspace
+      with:
+        workspace_gid: tools.workspace_gid
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.

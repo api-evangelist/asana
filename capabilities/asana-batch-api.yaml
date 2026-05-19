@@ -1,0 +1,87 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Batch API
+  description: 'Asana — Batch API. 1 operations. Lead operation: Asana Submit parallel requests. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Batch API
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-batch-api
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Batch API business capability. Self-contained, no shared references.
+    resources:
+    - name: batch
+      path: /batch
+      operations:
+      - name: createbatchrequest
+        method: POST
+        description: Asana Submit parallel requests
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-batch-api-rest
+    port: 8080
+    description: REST adapter for Asana — Batch API. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/batch
+      name: batch
+      description: REST surface for batch.
+      operations:
+      - method: POST
+        name: createbatchrequest
+        description: Asana Submit parallel requests
+        call: asana-batch-api.createbatchrequest
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-batch-api-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Batch API. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-submit-parallel-requests
+      description: Asana Submit parallel requests
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-batch-api.createbatchrequest
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

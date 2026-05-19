@@ -1,0 +1,247 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Users
+  description: 'Asana — Users. 5 operations. Lead operation: Asana Get users in a team. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Users
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-users
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Users business capability. Self-contained, no shared references.
+    resources:
+    - name: teams-team_gid-users
+      path: /teams/{team_gid}/users
+      operations:
+      - name: getusersforteam
+        method: GET
+        description: Asana Get users in a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: users
+      path: /users
+      operations:
+      - name: getusers
+        method: GET
+        description: Asana Get multiple users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: users-user_gid
+      path: /users/{user_gid}
+      operations:
+      - name: getuser
+        method: GET
+        description: Asana Get a user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: users-user_gid-favorites
+      path: /users/{user_gid}/favorites
+      operations:
+      - name: getfavoritesforuser
+        method: GET
+        description: Asana Get a user's favorites
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: workspaces-workspace_gid-users
+      path: /workspaces/{workspace_gid}/users
+      operations:
+      - name: getusersforworkspace
+        method: GET
+        description: Asana Get users in a workspace or organization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-users-rest
+    port: 8080
+    description: REST adapter for Asana — Users. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/teams/{team-gid}/users
+      name: teams-team-gid-users
+      description: REST surface for teams-team_gid-users.
+      operations:
+      - method: GET
+        name: getusersforteam
+        description: Asana Get users in a team
+        call: asana-users.getusersforteam
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users
+      name: users
+      description: REST surface for users.
+      operations:
+      - method: GET
+        name: getusers
+        description: Asana Get multiple users
+        call: asana-users.getusers
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-gid}
+      name: users-user-gid
+      description: REST surface for users-user_gid.
+      operations:
+      - method: GET
+        name: getuser
+        description: Asana Get a user
+        call: asana-users.getuser
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-gid}/favorites
+      name: users-user-gid-favorites
+      description: REST surface for users-user_gid-favorites.
+      operations:
+      - method: GET
+        name: getfavoritesforuser
+        description: Asana Get a user's favorites
+        call: asana-users.getfavoritesforuser
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/workspaces/{workspace-gid}/users
+      name: workspaces-workspace-gid-users
+      description: REST surface for workspaces-workspace_gid-users.
+      operations:
+      - method: GET
+        name: getusersforworkspace
+        description: Asana Get users in a workspace or organization
+        call: asana-users.getusersforworkspace
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-users-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Users. One tool per consumed operation, routed inline through this capability's consumes
+      block.
+    tools:
+    - name: asana-get-users-team
+      description: Asana Get users in a team
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-users.getusersforteam
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-multiple-users
+      description: Asana Get multiple users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-users.getusers
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-user
+      description: Asana Get a user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-users.getuser
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-user-s-favorites
+      description: Asana Get a user's favorites
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-users.getfavoritesforuser
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-users-workspace-organization
+      description: Asana Get users in a workspace or organization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-users.getusersforworkspace
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.

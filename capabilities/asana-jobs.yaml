@@ -1,0 +1,79 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Jobs
+  description: 'Asana — Jobs. 1 operations. Lead operation: Asana Get a job by id. Self-contained Naftiko capability covering
+    one Asana business surface.'
+  tags:
+  - Asana
+  - Jobs
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-jobs
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Jobs business capability. Self-contained, no shared references.
+    resources:
+    - name: jobs-job_gid
+      path: /jobs/{job_gid}
+      operations:
+      - name: getjob
+        method: GET
+        description: Asana Get a job by id
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-jobs-rest
+    port: 8080
+    description: REST adapter for Asana — Jobs. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/jobs/{job-gid}
+      name: jobs-job-gid
+      description: REST surface for jobs-job_gid.
+      operations:
+      - method: GET
+        name: getjob
+        description: Asana Get a job by id
+        call: asana-jobs.getjob
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-jobs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Jobs. One tool per consumed operation, routed inline through this capability's consumes
+      block.
+    tools:
+    - name: asana-get-job-id
+      description: Asana Get a job by id
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-jobs.getjob
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.

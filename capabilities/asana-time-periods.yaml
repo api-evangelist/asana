@@ -1,0 +1,141 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Time Periods
+  description: 'Asana — Time Periods. 2 operations. Lead operation: Asana Get time periods. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Time Periods
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-time-periods
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Time Periods business capability. Self-contained, no shared references.
+    resources:
+    - name: time_periods
+      path: /time_periods
+      operations:
+      - name: gettimeperiods
+        method: GET
+        description: Asana Get time periods
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: start_on
+          in: query
+          type: string
+          description: ISO 8601 date string
+        - name: end_on
+          in: query
+          type: string
+          description: ISO 8601 date string
+        - name: workspace
+          in: query
+          type: string
+          description: Globally unique identifier for the workspace.
+          required: true
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: time_periods-time_period_gid
+      path: /time_periods/{time_period_gid}
+      operations:
+      - name: gettimeperiod
+        method: GET
+        description: Asana Get a time period
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-time-periods-rest
+    port: 8080
+    description: REST adapter for Asana — Time Periods. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/time-periods
+      name: time-periods
+      description: REST surface for time_periods.
+      operations:
+      - method: GET
+        name: gettimeperiods
+        description: Asana Get time periods
+        call: asana-time-periods.gettimeperiods
+        with:
+          start_on: rest.start_on
+          end_on: rest.end_on
+          workspace: rest.workspace
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/time-periods/{time-period-gid}
+      name: time-periods-time-period-gid
+      description: REST surface for time_periods-time_period_gid.
+      operations:
+      - method: GET
+        name: gettimeperiod
+        description: Asana Get a time period
+        call: asana-time-periods.gettimeperiod
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-time-periods-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Time Periods. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-time-periods
+      description: Asana Get time periods
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-time-periods.gettimeperiods
+      with:
+        start_on: tools.start_on
+        end_on: tools.end_on
+        workspace: tools.workspace
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-time-period
+      description: Asana Get a time period
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-time-periods.gettimeperiod
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.

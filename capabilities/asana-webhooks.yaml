@@ -1,0 +1,244 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Webhooks
+  description: 'Asana — Webhooks. 5 operations. Lead operation: Asana Get multiple webhooks. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Webhooks
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-webhooks
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Webhooks business capability. Self-contained, no shared references.
+    resources:
+    - name: webhooks
+      path: /webhooks
+      operations:
+      - name: getwebhooks
+        method: GET
+        description: Asana Get multiple webhooks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: workspace
+          in: query
+          type: string
+          description: The workspace to query for webhooks in.
+          required: true
+        - name: resource
+          in: query
+          type: string
+          description: Only return webhooks for the given resource.
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: createwebhook
+        method: POST
+        description: Asana Establish a webhook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: webhooks-webhook_gid
+      path: /webhooks/{webhook_gid}
+      operations:
+      - name: getwebhook
+        method: GET
+        description: Asana Get a webhook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: updatewebhook
+        method: PUT
+        description: Asana Update a webhook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletewebhook
+        method: DELETE
+        description: Asana Delete a webhook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-webhooks-rest
+    port: 8080
+    description: REST adapter for Asana — Webhooks. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/webhooks
+      name: webhooks
+      description: REST surface for webhooks.
+      operations:
+      - method: GET
+        name: getwebhooks
+        description: Asana Get multiple webhooks
+        call: asana-webhooks.getwebhooks
+        with:
+          workspace: rest.workspace
+          resource: rest.resource
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createwebhook
+        description: Asana Establish a webhook
+        call: asana-webhooks.createwebhook
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/webhooks/{webhook-gid}
+      name: webhooks-webhook-gid
+      description: REST surface for webhooks-webhook_gid.
+      operations:
+      - method: GET
+        name: getwebhook
+        description: Asana Get a webhook
+        call: asana-webhooks.getwebhook
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatewebhook
+        description: Asana Update a webhook
+        call: asana-webhooks.updatewebhook
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletewebhook
+        description: Asana Delete a webhook
+        call: asana-webhooks.deletewebhook
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-webhooks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Webhooks. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-multiple-webhooks
+      description: Asana Get multiple webhooks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-webhooks.getwebhooks
+      with:
+        workspace: tools.workspace
+        resource: tools.resource
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-establish-webhook
+      description: Asana Establish a webhook
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-webhooks.createwebhook
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-webhook
+      description: Asana Get a webhook
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-webhooks.getwebhook
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-webhook
+      description: Asana Update a webhook
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana-webhooks.updatewebhook
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-webhook
+      description: Asana Delete a webhook
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana-webhooks.deletewebhook
+      outputParameters:
+      - type: object
+        mapping: $.

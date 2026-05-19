@@ -1,0 +1,330 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana Tags API
+  description: 'Asana Tags API. 7 operations. Lead operation: Asana Get multiple tags. Self-contained Naftiko capability covering
+    one Asana business surface.'
+  tags:
+  - Asana
+  - Asana Tags API
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: tags
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana Tags API business capability. Self-contained, no shared references.
+    resources:
+    - name: tags
+      path: /tags
+      operations:
+      - name: gettags
+        method: GET
+        description: Asana Get multiple tags
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: workspace
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: string
+      - name: createtag
+        method: POST
+        description: Asana Create a tag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: tags-tag_gid
+      path: /tags/{tag_gid}
+      operations:
+      - name: gettag
+        method: GET
+        description: Asana Get a tag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tag_gid
+          in: path
+          type: string
+          required: true
+      - name: updatetag
+        method: PUT
+        description: Asana Update a tag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tag_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletetag
+        method: DELETE
+        description: Asana Delete a tag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tag_gid
+          in: path
+          type: string
+          required: true
+    - name: workspaces-workspace_gid-tags
+      path: /workspaces/{workspace_gid}/tags
+      operations:
+      - name: gettagsforworkspace
+        method: GET
+        description: Asana Get tags in a workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: workspace_gid
+          in: path
+          type: string
+          required: true
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: string
+      - name: createtagforworkspace
+        method: POST
+        description: Asana Create a tag in a workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: workspace_gid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: tags-rest
+    port: 8080
+    description: REST adapter for Asana Tags API. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/tags
+      name: tags
+      description: REST surface for tags.
+      operations:
+      - method: GET
+        name: gettags
+        description: Asana Get multiple tags
+        call: tags.gettags
+        with:
+          workspace: rest.workspace
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtag
+        description: Asana Create a tag
+        call: tags.createtag
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tags/{tag-gid}
+      name: tags-tag-gid
+      description: REST surface for tags-tag_gid.
+      operations:
+      - method: GET
+        name: gettag
+        description: Asana Get a tag
+        call: tags.gettag
+        with:
+          tag_gid: rest.tag_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatetag
+        description: Asana Update a tag
+        call: tags.updatetag
+        with:
+          tag_gid: rest.tag_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletetag
+        description: Asana Delete a tag
+        call: tags.deletetag
+        with:
+          tag_gid: rest.tag_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/workspaces/{workspace-gid}/tags
+      name: workspaces-workspace-gid-tags
+      description: REST surface for workspaces-workspace_gid-tags.
+      operations:
+      - method: GET
+        name: gettagsforworkspace
+        description: Asana Get tags in a workspace
+        call: tags.gettagsforworkspace
+        with:
+          workspace_gid: rest.workspace_gid
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtagforworkspace
+        description: Asana Create a tag in a workspace
+        call: tags.createtagforworkspace
+        with:
+          workspace_gid: rest.workspace_gid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: tags-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana Tags API. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-multiple-tags
+      description: Asana Get multiple tags
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: tags.gettags
+      with:
+        workspace: tools.workspace
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-tag
+      description: Asana Create a tag
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: tags.createtag
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-tag
+      description: Asana Get a tag
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: tags.gettag
+      with:
+        tag_gid: tools.tag_gid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-tag
+      description: Asana Update a tag
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: tags.updatetag
+      with:
+        tag_gid: tools.tag_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-tag
+      description: Asana Delete a tag
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: tags.deletetag
+      with:
+        tag_gid: tools.tag_gid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-tags-workspace
+      description: Asana Get tags in a workspace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: tags.gettagsforworkspace
+      with:
+        workspace_gid: tools.workspace_gid
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-tag-workspace
+      description: Asana Create a tag in a workspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: tags.createtagforworkspace
+      with:
+        workspace_gid: tools.workspace_gid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

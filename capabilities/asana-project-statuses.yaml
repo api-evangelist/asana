@@ -1,0 +1,189 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Project Statuses
+  description: 'Asana — Project Statuses. 4 operations. Lead operation: Asana Get a project status. Self-contained Naftiko
+    capability covering one Asana business surface.'
+  tags:
+  - Asana
+  - Project Statuses
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-project-statuses
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Project Statuses business capability. Self-contained, no shared references.
+    resources:
+    - name: project_statuses-project_status_gid
+      path: /project_statuses/{project_status_gid}
+      operations:
+      - name: getprojectstatus
+        method: GET
+        description: Asana Get a project status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: deleteprojectstatus
+        method: DELETE
+        description: Asana Delete a project status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: projects-project_gid-project_statuses
+      path: /projects/{project_gid}/project_statuses
+      operations:
+      - name: getprojectstatusesforproject
+        method: GET
+        description: Asana Get statuses from a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: createprojectstatusforproject
+        method: POST
+        description: Asana Create a project status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-project-statuses-rest
+    port: 8080
+    description: REST adapter for Asana — Project Statuses. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/project-statuses/{project-status-gid}
+      name: project-statuses-project-status-gid
+      description: REST surface for project_statuses-project_status_gid.
+      operations:
+      - method: GET
+        name: getprojectstatus
+        description: Asana Get a project status
+        call: asana-project-statuses.getprojectstatus
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteprojectstatus
+        description: Asana Delete a project status
+        call: asana-project-statuses.deleteprojectstatus
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/project-statuses
+      name: projects-project-gid-project-statuses
+      description: REST surface for projects-project_gid-project_statuses.
+      operations:
+      - method: GET
+        name: getprojectstatusesforproject
+        description: Asana Get statuses from a project
+        call: asana-project-statuses.getprojectstatusesforproject
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createprojectstatusforproject
+        description: Asana Create a project status
+        call: asana-project-statuses.createprojectstatusforproject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-project-statuses-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Project Statuses. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-project-status
+      description: Asana Get a project status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-project-statuses.getprojectstatus
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-project-status
+      description: Asana Delete a project status
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana-project-statuses.deleteprojectstatus
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-statuses-project
+      description: Asana Get statuses from a project
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-project-statuses.getprojectstatusesforproject
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-project-status
+      description: Asana Create a project status
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-project-statuses.createprojectstatusforproject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,268 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Goal Relationships
+  description: 'Asana — Goal Relationships. 5 operations. Lead operation: Asana Get goal relationships. Self-contained Naftiko
+    capability covering one Asana business surface.'
+  tags:
+  - Asana
+  - Goal Relationships
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-goal-relationships
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Goal Relationships business capability. Self-contained, no shared references.
+    resources:
+    - name: goal_relationships
+      path: /goal_relationships
+      operations:
+      - name: getgoalrelationships
+        method: GET
+        description: Asana Get goal relationships
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: supported_goal
+          in: query
+          type: string
+          description: Globally unique identifier for the supported goal in the goal relationship.
+          required: true
+        - name: resource_subtype
+          in: query
+          type: string
+          description: If provided, filter to goal relationships with a given resource_subtype.
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: goal_relationships-goal_relationship_gid
+      path: /goal_relationships/{goal_relationship_gid}
+      operations:
+      - name: getgoalrelationship
+        method: GET
+        description: Asana Get a goal relationship
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: updategoalrelationship
+        method: PUT
+        description: Asana Update a goal relationship
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: goals-goal_gid-addSupportingRelationship
+      path: /goals/{goal_gid}/addSupportingRelationship
+      operations:
+      - name: addsupportingrelationship
+        method: POST
+        description: Asana Add a supporting goal relationship
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: goals-goal_gid-removeSupportingRelationship
+      path: /goals/{goal_gid}/removeSupportingRelationship
+      operations:
+      - name: removesupportingrelationship
+        method: POST
+        description: Asana Removes a supporting goal relationship
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-goal-relationships-rest
+    port: 8080
+    description: REST adapter for Asana — Goal Relationships. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/goal-relationships
+      name: goal-relationships
+      description: REST surface for goal_relationships.
+      operations:
+      - method: GET
+        name: getgoalrelationships
+        description: Asana Get goal relationships
+        call: asana-goal-relationships.getgoalrelationships
+        with:
+          supported_goal: rest.supported_goal
+          resource_subtype: rest.resource_subtype
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goal-relationships/{goal-relationship-gid}
+      name: goal-relationships-goal-relationship-gid
+      description: REST surface for goal_relationships-goal_relationship_gid.
+      operations:
+      - method: GET
+        name: getgoalrelationship
+        description: Asana Get a goal relationship
+        call: asana-goal-relationships.getgoalrelationship
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updategoalrelationship
+        description: Asana Update a goal relationship
+        call: asana-goal-relationships.updategoalrelationship
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/addsupportingrelationship
+      name: goals-goal-gid-addsupportingrelationship
+      description: REST surface for goals-goal_gid-addSupportingRelationship.
+      operations:
+      - method: POST
+        name: addsupportingrelationship
+        description: Asana Add a supporting goal relationship
+        call: asana-goal-relationships.addsupportingrelationship
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/removesupportingrelationship
+      name: goals-goal-gid-removesupportingrelationship
+      description: REST surface for goals-goal_gid-removeSupportingRelationship.
+      operations:
+      - method: POST
+        name: removesupportingrelationship
+        description: Asana Removes a supporting goal relationship
+        call: asana-goal-relationships.removesupportingrelationship
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-goal-relationships-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Goal Relationships. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-goal-relationships
+      description: Asana Get goal relationships
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-goal-relationships.getgoalrelationships
+      with:
+        supported_goal: tools.supported_goal
+        resource_subtype: tools.resource_subtype
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-goal-relationship
+      description: Asana Get a goal relationship
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-goal-relationships.getgoalrelationship
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-goal-relationship
+      description: Asana Update a goal relationship
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana-goal-relationships.updategoalrelationship
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-supporting-goal-relationship
+      description: Asana Add a supporting goal relationship
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-goal-relationships.addsupportingrelationship
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-removes-supporting-goal-relationship
+      description: Asana Removes a supporting goal relationship
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-goal-relationships.removesupportingrelationship
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

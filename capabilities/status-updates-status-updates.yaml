@@ -1,0 +1,204 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana Status Updates API — Status Updates
+  description: 'Asana Status Updates API — Status Updates. 4 operations. Lead operation: Asana Get status updates from an
+    object. Self-contained Naftiko capability covering one Asana business surface.'
+  tags:
+  - Asana
+  - Status Updates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: status-updates-status-updates
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana Status Updates API — Status Updates business capability. Self-contained, no shared references.
+    resources:
+    - name: status_updates
+      path: /status_updates
+      operations:
+      - name: getstatusupdatesforobject
+        method: GET
+        description: Asana Get status updates from an object
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: parent
+          in: query
+          type: string
+          required: true
+        - name: created_since
+          in: query
+          type: string
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: string
+      - name: createstatusupdateforobject
+        method: POST
+        description: Asana Create a status update
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: status_updates-status_update_gid
+      path: /status_updates/{status_update_gid}
+      operations:
+      - name: getstatusupdate
+        method: GET
+        description: Asana Get a status update
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: status_update_gid
+          in: path
+          type: string
+          required: true
+      - name: deletestatusupdate
+        method: DELETE
+        description: Asana Delete a status update
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: status_update_gid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: status-updates-status-updates-rest
+    port: 8080
+    description: REST adapter for Asana Status Updates API — Status Updates. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/status-updates
+      name: status-updates
+      description: REST surface for status_updates.
+      operations:
+      - method: GET
+        name: getstatusupdatesforobject
+        description: Asana Get status updates from an object
+        call: status-updates-status-updates.getstatusupdatesforobject
+        with:
+          parent: rest.parent
+          created_since: rest.created_since
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createstatusupdateforobject
+        description: Asana Create a status update
+        call: status-updates-status-updates.createstatusupdateforobject
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/status-updates/{status-update-gid}
+      name: status-updates-status-update-gid
+      description: REST surface for status_updates-status_update_gid.
+      operations:
+      - method: GET
+        name: getstatusupdate
+        description: Asana Get a status update
+        call: status-updates-status-updates.getstatusupdate
+        with:
+          status_update_gid: rest.status_update_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletestatusupdate
+        description: Asana Delete a status update
+        call: status-updates-status-updates.deletestatusupdate
+        with:
+          status_update_gid: rest.status_update_gid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: status-updates-status-updates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana Status Updates API — Status Updates. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: asana-get-status-updates-object
+      description: Asana Get status updates from an object
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: status-updates-status-updates.getstatusupdatesforobject
+      with:
+        parent: tools.parent
+        created_since: tools.created_since
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-status-update
+      description: Asana Create a status update
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: status-updates-status-updates.createstatusupdateforobject
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-status-update
+      description: Asana Get a status update
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: status-updates-status-updates.getstatusupdate
+      with:
+        status_update_gid: tools.status_update_gid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-status-update
+      description: Asana Delete a status update
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: status-updates-status-updates.deletestatusupdate
+      with:
+        status_update_gid: tools.status_update_gid
+      outputParameters:
+      - type: object
+        mapping: $.

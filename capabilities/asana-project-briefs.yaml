@@ -1,0 +1,196 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Project Briefs
+  description: 'Asana — Project Briefs. 4 operations. Lead operation: Asana Get a project brief. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Project Briefs
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-project-briefs
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Project Briefs business capability. Self-contained, no shared references.
+    resources:
+    - name: project_briefs-project_brief_gid
+      path: /project_briefs/{project_brief_gid}
+      operations:
+      - name: getprojectbrief
+        method: GET
+        description: Asana Get a project brief
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: updateprojectbrief
+        method: PUT
+        description: Asana Update a project brief
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteprojectbrief
+        method: DELETE
+        description: Asana Delete a project brief
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: projects-project_gid-project_briefs
+      path: /projects/{project_gid}/project_briefs
+      operations:
+      - name: createprojectbrief
+        method: POST
+        description: Asana Create a project brief
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-project-briefs-rest
+    port: 8080
+    description: REST adapter for Asana — Project Briefs. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/project-briefs/{project-brief-gid}
+      name: project-briefs-project-brief-gid
+      description: REST surface for project_briefs-project_brief_gid.
+      operations:
+      - method: GET
+        name: getprojectbrief
+        description: Asana Get a project brief
+        call: asana-project-briefs.getprojectbrief
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateprojectbrief
+        description: Asana Update a project brief
+        call: asana-project-briefs.updateprojectbrief
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteprojectbrief
+        description: Asana Delete a project brief
+        call: asana-project-briefs.deleteprojectbrief
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/project-briefs
+      name: projects-project-gid-project-briefs
+      description: REST surface for projects-project_gid-project_briefs.
+      operations:
+      - method: POST
+        name: createprojectbrief
+        description: Asana Create a project brief
+        call: asana-project-briefs.createprojectbrief
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-project-briefs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Project Briefs. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-project-brief
+      description: Asana Get a project brief
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-project-briefs.getprojectbrief
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-project-brief
+      description: Asana Update a project brief
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana-project-briefs.updateprojectbrief
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-project-brief
+      description: Asana Delete a project brief
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana-project-briefs.deleteprojectbrief
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-project-brief
+      description: Asana Create a project brief
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-project-briefs.createprojectbrief
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

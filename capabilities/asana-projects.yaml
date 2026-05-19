@@ -1,0 +1,880 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Projects
+  description: 'Asana — Projects. 19 operations. Lead operation: Asana Get multiple projects. Self-contained Naftiko capability
+    covering one Asana business surface.'
+  tags:
+  - Asana
+  - Projects
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-projects
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Projects business capability. Self-contained, no shared references.
+    resources:
+    - name: projects
+      path: /projects
+      operations:
+      - name: getprojects
+        method: GET
+        description: Asana Get multiple projects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: workspace
+          in: query
+          type: string
+          description: The workspace or organization to filter projects on.
+        - name: team
+          in: query
+          type: string
+          description: The team to filter projects on.
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: createproject
+        method: POST
+        description: Asana Create a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: projects-project_gid
+      path: /projects/{project_gid}
+      operations:
+      - name: getproject
+        method: GET
+        description: Asana Get a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: updateproject
+        method: PUT
+        description: Asana Update a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteproject
+        method: DELETE
+        description: Asana Delete a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: projects-project_gid-addCustomFieldSetting
+      path: /projects/{project_gid}/addCustomFieldSetting
+      operations:
+      - name: addcustomfieldsettingforproject
+        method: POST
+        description: Asana Add a custom field to a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: projects-project_gid-addFollowers
+      path: /projects/{project_gid}/addFollowers
+      operations:
+      - name: addfollowersforproject
+        method: POST
+        description: Asana Add followers to a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: projects-project_gid-addMembers
+      path: /projects/{project_gid}/addMembers
+      operations:
+      - name: addmembersforproject
+        method: POST
+        description: Asana Add users to a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: projects-project_gid-duplicate
+      path: /projects/{project_gid}/duplicate
+      operations:
+      - name: duplicateproject
+        method: POST
+        description: Asana Duplicate a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: projects-project_gid-removeCustomFieldSetting
+      path: /projects/{project_gid}/removeCustomFieldSetting
+      operations:
+      - name: removecustomfieldsettingforproject
+        method: POST
+        description: Asana Remove a custom field from a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: projects-project_gid-removeFollowers
+      path: /projects/{project_gid}/removeFollowers
+      operations:
+      - name: removefollowersforproject
+        method: POST
+        description: Asana Remove followers from a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: projects-project_gid-removeMembers
+      path: /projects/{project_gid}/removeMembers
+      operations:
+      - name: removemembersforproject
+        method: POST
+        description: Asana Remove users from a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: projects-project_gid-saveAsTemplate
+      path: /projects/{project_gid}/saveAsTemplate
+      operations:
+      - name: projectsaveastemplate
+        method: POST
+        description: Asana Create a project template from a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: projects-project_gid-task_counts
+      path: /projects/{project_gid}/task_counts
+      operations:
+      - name: gettaskcountsforproject
+        method: GET
+        description: Asana Get task count of a project
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: tasks-task_gid-projects
+      path: /tasks/{task_gid}/projects
+      operations:
+      - name: getprojectsfortask
+        method: GET
+        description: Asana Get projects a task is in
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: teams-team_gid-projects
+      path: /teams/{team_gid}/projects
+      operations:
+      - name: getprojectsforteam
+        method: GET
+        description: Asana Get a team's projects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: createprojectforteam
+        method: POST
+        description: Asana Create a project in a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: workspaces-workspace_gid-projects
+      path: /workspaces/{workspace_gid}/projects
+      operations:
+      - name: getprojectsforworkspace
+        method: GET
+        description: Asana Get all projects in a workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: createprojectforworkspace
+        method: POST
+        description: Asana Create a project in a workspace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-projects-rest
+    port: 8080
+    description: REST adapter for Asana — Projects. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/projects
+      name: projects
+      description: REST surface for projects.
+      operations:
+      - method: GET
+        name: getprojects
+        description: Asana Get multiple projects
+        call: asana-projects.getprojects
+        with:
+          workspace: rest.workspace
+          team: rest.team
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createproject
+        description: Asana Create a project
+        call: asana-projects.createproject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}
+      name: projects-project-gid
+      description: REST surface for projects-project_gid.
+      operations:
+      - method: GET
+        name: getproject
+        description: Asana Get a project
+        call: asana-projects.getproject
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateproject
+        description: Asana Update a project
+        call: asana-projects.updateproject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteproject
+        description: Asana Delete a project
+        call: asana-projects.deleteproject
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/addcustomfieldsetting
+      name: projects-project-gid-addcustomfieldsetting
+      description: REST surface for projects-project_gid-addCustomFieldSetting.
+      operations:
+      - method: POST
+        name: addcustomfieldsettingforproject
+        description: Asana Add a custom field to a project
+        call: asana-projects.addcustomfieldsettingforproject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/addfollowers
+      name: projects-project-gid-addfollowers
+      description: REST surface for projects-project_gid-addFollowers.
+      operations:
+      - method: POST
+        name: addfollowersforproject
+        description: Asana Add followers to a project
+        call: asana-projects.addfollowersforproject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/addmembers
+      name: projects-project-gid-addmembers
+      description: REST surface for projects-project_gid-addMembers.
+      operations:
+      - method: POST
+        name: addmembersforproject
+        description: Asana Add users to a project
+        call: asana-projects.addmembersforproject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/duplicate
+      name: projects-project-gid-duplicate
+      description: REST surface for projects-project_gid-duplicate.
+      operations:
+      - method: POST
+        name: duplicateproject
+        description: Asana Duplicate a project
+        call: asana-projects.duplicateproject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/removecustomfieldsetting
+      name: projects-project-gid-removecustomfieldsetting
+      description: REST surface for projects-project_gid-removeCustomFieldSetting.
+      operations:
+      - method: POST
+        name: removecustomfieldsettingforproject
+        description: Asana Remove a custom field from a project
+        call: asana-projects.removecustomfieldsettingforproject
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/removefollowers
+      name: projects-project-gid-removefollowers
+      description: REST surface for projects-project_gid-removeFollowers.
+      operations:
+      - method: POST
+        name: removefollowersforproject
+        description: Asana Remove followers from a project
+        call: asana-projects.removefollowersforproject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/removemembers
+      name: projects-project-gid-removemembers
+      description: REST surface for projects-project_gid-removeMembers.
+      operations:
+      - method: POST
+        name: removemembersforproject
+        description: Asana Remove users from a project
+        call: asana-projects.removemembersforproject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/saveastemplate
+      name: projects-project-gid-saveastemplate
+      description: REST surface for projects-project_gid-saveAsTemplate.
+      operations:
+      - method: POST
+        name: projectsaveastemplate
+        description: Asana Create a project template from a project
+        call: asana-projects.projectsaveastemplate
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/projects/{project-gid}/task-counts
+      name: projects-project-gid-task-counts
+      description: REST surface for projects-project_gid-task_counts.
+      operations:
+      - method: GET
+        name: gettaskcountsforproject
+        description: Asana Get task count of a project
+        call: asana-projects.gettaskcountsforproject
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tasks/{task-gid}/projects
+      name: tasks-task-gid-projects
+      description: REST surface for tasks-task_gid-projects.
+      operations:
+      - method: GET
+        name: getprojectsfortask
+        description: Asana Get projects a task is in
+        call: asana-projects.getprojectsfortask
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/teams/{team-gid}/projects
+      name: teams-team-gid-projects
+      description: REST surface for teams-team_gid-projects.
+      operations:
+      - method: GET
+        name: getprojectsforteam
+        description: Asana Get a team's projects
+        call: asana-projects.getprojectsforteam
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createprojectforteam
+        description: Asana Create a project in a team
+        call: asana-projects.createprojectforteam
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/workspaces/{workspace-gid}/projects
+      name: workspaces-workspace-gid-projects
+      description: REST surface for workspaces-workspace_gid-projects.
+      operations:
+      - method: GET
+        name: getprojectsforworkspace
+        description: Asana Get all projects in a workspace
+        call: asana-projects.getprojectsforworkspace
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createprojectforworkspace
+        description: Asana Create a project in a workspace
+        call: asana-projects.createprojectforworkspace
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-projects-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Projects. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-multiple-projects
+      description: Asana Get multiple projects
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-projects.getprojects
+      with:
+        workspace: tools.workspace
+        team: tools.team
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-project
+      description: Asana Create a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.createproject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-project
+      description: Asana Get a project
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-projects.getproject
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-project
+      description: Asana Update a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana-projects.updateproject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-project
+      description: Asana Delete a project
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana-projects.deleteproject
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-custom-field-project
+      description: Asana Add a custom field to a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.addcustomfieldsettingforproject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-followers-project
+      description: Asana Add followers to a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.addfollowersforproject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-users-project
+      description: Asana Add users to a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.addmembersforproject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-duplicate-project
+      description: Asana Duplicate a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.duplicateproject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-custom-field-project
+      description: Asana Remove a custom field from a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.removecustomfieldsettingforproject
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-followers-project
+      description: Asana Remove followers from a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.removefollowersforproject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-users-project
+      description: Asana Remove users from a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.removemembersforproject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-project-template-project
+      description: Asana Create a project template from a project
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.projectsaveastemplate
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-task-count-project
+      description: Asana Get task count of a project
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-projects.gettaskcountsforproject
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-projects-task-is
+      description: Asana Get projects a task is in
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-projects.getprojectsfortask
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-team-s-projects
+      description: Asana Get a team's projects
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-projects.getprojectsforteam
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-project-team
+      description: Asana Create a project in a team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.createprojectforteam
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-all-projects-workspace
+      description: Asana Get all projects in a workspace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-projects.getprojectsforworkspace
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-project-workspace
+      description: Asana Create a project in a workspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-projects.createprojectforworkspace
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

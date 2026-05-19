@@ -1,0 +1,197 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Attachments
+  description: 'Asana — Attachments. 4 operations. Lead operation: Asana Get attachments from an object. Self-contained Naftiko
+    capability covering one Asana business surface.'
+  tags:
+  - Asana
+  - Attachments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-attachments
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Attachments business capability. Self-contained, no shared references.
+    resources:
+    - name: attachments
+      path: /attachments
+      operations:
+      - name: getattachmentsforobject
+        method: GET
+        description: Asana Get attachments from an object
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: parent
+          in: query
+          type: string
+          description: Globally unique identifier for object to fetch statuses from. Must be a GID for a `project`, `project_brief`,
+            or `task`.
+          required: true
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: createattachmentforobject
+        method: POST
+        description: Asana Upload an attachment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: attachments-attachment_gid
+      path: /attachments/{attachment_gid}
+      operations:
+      - name: getattachment
+        method: GET
+        description: Asana Get an attachment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: deleteattachment
+        method: DELETE
+        description: Asana Delete an attachment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-attachments-rest
+    port: 8080
+    description: REST adapter for Asana — Attachments. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/attachments
+      name: attachments
+      description: REST surface for attachments.
+      operations:
+      - method: GET
+        name: getattachmentsforobject
+        description: Asana Get attachments from an object
+        call: asana-attachments.getattachmentsforobject
+        with:
+          parent: rest.parent
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createattachmentforobject
+        description: Asana Upload an attachment
+        call: asana-attachments.createattachmentforobject
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/attachments/{attachment-gid}
+      name: attachments-attachment-gid
+      description: REST surface for attachments-attachment_gid.
+      operations:
+      - method: GET
+        name: getattachment
+        description: Asana Get an attachment
+        call: asana-attachments.getattachment
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteattachment
+        description: Asana Delete an attachment
+        call: asana-attachments.deleteattachment
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-attachments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Attachments. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: asana-get-attachments-object
+      description: Asana Get attachments from an object
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-attachments.getattachmentsforobject
+      with:
+        parent: tools.parent
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-upload-attachment
+      description: Asana Upload an attachment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-attachments.createattachmentforobject
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-attachment
+      description: Asana Get an attachment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-attachments.getattachment
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-attachment
+      description: Asana Delete an attachment
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana-attachments.deleteattachment
+      outputParameters:
+      - type: object
+        mapping: $.

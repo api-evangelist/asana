@@ -1,0 +1,510 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Asana — Goals
+  description: 'Asana — Goals. 10 operations. Lead operation: Asana Get goals. Self-contained Naftiko capability covering
+    one Asana business surface.'
+  tags:
+  - Asana
+  - Goals
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    ASANA_API_KEY: ASANA_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: asana-goals
+    baseUri: https://app.asana.com/api/1.0
+    description: Asana — Goals business capability. Self-contained, no shared references.
+    resources:
+    - name: goals
+      path: /goals
+      operations:
+      - name: getgoals
+        method: GET
+        description: Asana Get goals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: portfolio
+          in: query
+          type: string
+          description: Globally unique identifier for supporting portfolio.
+        - name: project
+          in: query
+          type: string
+          description: Globally unique identifier for supporting project.
+        - name: task
+          in: query
+          type: string
+          description: Globally unique identifier for supporting task.
+        - name: is_workspace_level
+          in: query
+          type: boolean
+          description: Filter to goals with is_workspace_level set to query value. Must be used with the workspace parameter.
+        - name: team
+          in: query
+          type: string
+          description: Globally unique identifier for the team.
+        - name: workspace
+          in: query
+          type: string
+          description: Globally unique identifier for the workspace.
+        - name: time_periods
+          in: query
+          type: array
+          description: Globally unique identifiers for the time periods.
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: creategoal
+        method: POST
+        description: Asana Create a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: goals-goal_gid
+      path: /goals/{goal_gid}
+      operations:
+      - name: getgoal
+        method: GET
+        description: Asana Get a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+      - name: updategoal
+        method: PUT
+        description: Asana Update a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletegoal
+        method: DELETE
+        description: Asana Delete a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: goals-goal_gid-addFollowers
+      path: /goals/{goal_gid}/addFollowers
+      operations:
+      - name: addfollowers
+        method: POST
+        description: Asana Add a collaborator to a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: goals-goal_gid-parentGoals
+      path: /goals/{goal_gid}/parentGoals
+      operations:
+      - name: getparentgoalsforgoal
+        method: GET
+        description: Asana Get parent goals from a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+    - name: goals-goal_gid-removeFollowers
+      path: /goals/{goal_gid}/removeFollowers
+      operations:
+      - name: removefollowers
+        method: POST
+        description: Asana Remove a collaborator from a goal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: goals-goal_gid-setMetric
+      path: /goals/{goal_gid}/setMetric
+      operations:
+      - name: creategoalmetric
+        method: POST
+        description: Asana Create a goal metric
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: goals-goal_gid-setMetricCurrentValue
+      path: /goals/{goal_gid}/setMetricCurrentValue
+      operations:
+      - name: updategoalmetric
+        method: POST
+        description: Asana Update a goal metric
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: opt_fields
+          in: query
+          type: array
+          description: This endpoint returns a compact resource, which excludes some properties by default. To include those
+            optional properties, set this query parameter to a comma-s
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.ASANA_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: asana-goals-rest
+    port: 8080
+    description: REST adapter for Asana — Goals. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/goals
+      name: goals
+      description: REST surface for goals.
+      operations:
+      - method: GET
+        name: getgoals
+        description: Asana Get goals
+        call: asana-goals.getgoals
+        with:
+          portfolio: rest.portfolio
+          project: rest.project
+          task: rest.task
+          is_workspace_level: rest.is_workspace_level
+          team: rest.team
+          workspace: rest.workspace
+          time_periods: rest.time_periods
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: creategoal
+        description: Asana Create a goal
+        call: asana-goals.creategoal
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}
+      name: goals-goal-gid
+      description: REST surface for goals-goal_gid.
+      operations:
+      - method: GET
+        name: getgoal
+        description: Asana Get a goal
+        call: asana-goals.getgoal
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updategoal
+        description: Asana Update a goal
+        call: asana-goals.updategoal
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletegoal
+        description: Asana Delete a goal
+        call: asana-goals.deletegoal
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/addfollowers
+      name: goals-goal-gid-addfollowers
+      description: REST surface for goals-goal_gid-addFollowers.
+      operations:
+      - method: POST
+        name: addfollowers
+        description: Asana Add a collaborator to a goal
+        call: asana-goals.addfollowers
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/parentgoals
+      name: goals-goal-gid-parentgoals
+      description: REST surface for goals-goal_gid-parentGoals.
+      operations:
+      - method: GET
+        name: getparentgoalsforgoal
+        description: Asana Get parent goals from a goal
+        call: asana-goals.getparentgoalsforgoal
+        with:
+          opt_fields: rest.opt_fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/removefollowers
+      name: goals-goal-gid-removefollowers
+      description: REST surface for goals-goal_gid-removeFollowers.
+      operations:
+      - method: POST
+        name: removefollowers
+        description: Asana Remove a collaborator from a goal
+        call: asana-goals.removefollowers
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/setmetric
+      name: goals-goal-gid-setmetric
+      description: REST surface for goals-goal_gid-setMetric.
+      operations:
+      - method: POST
+        name: creategoalmetric
+        description: Asana Create a goal metric
+        call: asana-goals.creategoalmetric
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/goals/{goal-gid}/setmetriccurrentvalue
+      name: goals-goal-gid-setmetriccurrentvalue
+      description: REST surface for goals-goal_gid-setMetricCurrentValue.
+      operations:
+      - method: POST
+        name: updategoalmetric
+        description: Asana Update a goal metric
+        call: asana-goals.updategoalmetric
+        with:
+          opt_fields: rest.opt_fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: asana-goals-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Asana — Goals. One tool per consumed operation, routed inline through this capability's consumes
+      block.
+    tools:
+    - name: asana-get-goals
+      description: Asana Get goals
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-goals.getgoals
+      with:
+        portfolio: tools.portfolio
+        project: tools.project
+        task: tools.task
+        is_workspace_level: tools.is_workspace_level
+        team: tools.team
+        workspace: tools.workspace
+        time_periods: tools.time_periods
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-goal
+      description: Asana Create a goal
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-goals.creategoal
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-goal
+      description: Asana Get a goal
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-goals.getgoal
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-goal
+      description: Asana Update a goal
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: asana-goals.updategoal
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-delete-goal
+      description: Asana Delete a goal
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: asana-goals.deletegoal
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-add-collaborator-goal
+      description: Asana Add a collaborator to a goal
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-goals.addfollowers
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-get-parent-goals-goal
+      description: Asana Get parent goals from a goal
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: asana-goals.getparentgoalsforgoal
+      with:
+        opt_fields: tools.opt_fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-remove-collaborator-goal
+      description: Asana Remove a collaborator from a goal
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-goals.removefollowers
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-create-goal-metric
+      description: Asana Create a goal metric
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-goals.creategoalmetric
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: asana-update-goal-metric
+      description: Asana Update a goal metric
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: asana-goals.updategoalmetric
+      with:
+        opt_fields: tools.opt_fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
