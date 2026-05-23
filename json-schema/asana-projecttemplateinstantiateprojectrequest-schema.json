@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ProjectTemplateInstantiateProjectRequest",
+  "title": "ProjectTemplateInstantiateProjectRequest",
+  "type": "object",
+  "required": [
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "description": "The name of the new project.",
+      "type": "string",
+      "example": "New Project Name"
+    },
+    "team": {
+      "description": "*Optional*. Sets the team of the new project. If the project template exists in an _organization_, you may specify a value for `team`. If no value is provided then it defaults to the same team as the project template.",
+      "type": "string",
+      "example": "12345"
+    },
+    "public": {
+      "description": "*Deprecated:* new integrations use `privacy_setting` instead.",
+      "deprecated": true,
+      "type": "boolean",
+      "example": true
+    },
+    "privacy_setting": {
+      "description": "The privacy setting of the project. *Note: Administrators in your organization may restrict the values of `privacy_setting`.*",
+      "type": "string",
+      "enum": [
+        "public_to_workspace",
+        "private_to_team",
+        "private"
+      ],
+      "example": "public_to_workspace"
+    },
+    "is_strict": {
+      "description": "*Optional*. If set to `true`, the endpoint returns an \"Unprocessable Entity\" error if you fail to provide a calendar date value for any date variable. If set to `false`, a default date is used for each unfulfilled date variable (e.g., the current date is used as the Start Date of a project).",
+      "type": "boolean",
+      "example": true
+    },
+    "requested_dates": {
+      "description": "Array of mappings of date variables to calendar dates.",
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/DateVariableRequest"
+      }
+    },
+    "requested_roles": {
+      "description": "Array of mappings of template roles to user ids",
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RequestedRoleRequest"
+      }
+    }
+  }
+}

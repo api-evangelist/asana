@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ProjectMembershipNormalResponse",
+  "title": "ProjectMembershipNormalResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ProjectMembershipBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/components/schemas/UserCompact"
+        },
+        "project": {
+          "description": "[Opt In](/docs/inputoutput-options). The project the user is a member of.",
+          "$ref": "#/components/schemas/ProjectCompact"
+        },
+        "resource_type": {
+          "description": "The base type of this resource.",
+          "type": "string",
+          "example": "project_membership"
+        },
+        "write_access": {
+          "description": "Whether the member has full access or comment-only access to the project.",
+          "type": "string",
+          "enum": [
+            "full_write",
+            "comment_only"
+          ],
+          "readOnly": true,
+          "example": "full_write"
+        }
+      }
+    }
+  ]
+}

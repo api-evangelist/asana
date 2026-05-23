@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/EventResponse",
+  "title": "EventResponse",
+  "type": "object",
+  "description": "An event representing a change to a resource.",
+  "properties": {
+    "user": {
+      "type": "object",
+      "description": "The user who triggered the event.",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "description": "The resource that triggered the event.",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "type": {
+      "type": "string",
+      "readOnly": true,
+      "description": "Deprecated. Refer to the resource_type of the resource.",
+      "example": "task"
+    },
+    "action": {
+      "type": "string",
+      "readOnly": true,
+      "description": "The type of action taken on the resource. One of changed, added, removed, deleted, or undeleted.",
+      "enum": [
+        "changed",
+        "added",
+        "removed",
+        "deleted",
+        "undeleted"
+      ],
+      "example": "changed"
+    },
+    "parent": {
+      "type": "object",
+      "nullable": true,
+      "description": "For added/removed events, the parent object.",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true,
+      "example": "2012-02-22T02:06:58.147Z"
+    },
+    "change": {
+      "type": "object",
+      "readOnly": true,
+      "description": "Information about the type of change. Only present when action is changed.",
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "The name of the field that changed.",
+          "example": "assignee"
+        },
+        "action": {
+          "type": "string",
+          "description": "The type of action on the field.",
+          "enum": [
+            "changed",
+            "added",
+            "removed"
+          ],
+          "example": "changed"
+        },
+        "new_value": {
+          "type": "object",
+          "description": "The new value of the field, if an Asana resource.",
+          "properties": {
+            "gid": {
+              "type": "string"
+            },
+            "resource_type": {
+              "type": "string"
+            }
+          }
+        },
+        "added_value": {
+          "type": "object",
+          "description": "The added value, if the field change action is added.",
+          "properties": {
+            "gid": {
+              "type": "string"
+            },
+            "resource_type": {
+              "type": "string"
+            }
+          }
+        },
+        "removed_value": {
+          "type": "object",
+          "description": "The removed value, if the field change action is removed.",
+          "properties": {
+            "gid": {
+              "type": "string"
+            },
+            "resource_type": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

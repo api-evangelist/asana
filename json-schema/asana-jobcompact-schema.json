@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JobCompact",
+  "title": "JobCompact",
+  "description": "A *job* is an object representing a process that handles asynchronous work.",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "description": "Globally unique identifier of the resource, as a string.",
+      "type": "string",
+      "readOnly": true,
+      "example": "12345",
+      "x-insert-after": false
+    },
+    "resource_type": {
+      "description": "The base type of this resource.",
+      "type": "string",
+      "readOnly": true,
+      "example": "job",
+      "x-insert-after": "gid"
+    },
+    "resource_subtype": {
+      "description": "The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.",
+      "type": "string",
+      "readOnly": true,
+      "example": "duplicate_task"
+    },
+    "status": {
+      "description": "The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.",
+      "type": "string",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "succeeded",
+        "failed"
+      ],
+      "readOnly": true,
+      "example": "in_progress"
+    },
+    "new_project": {
+      "$ref": "#/components/schemas/ProjectCompact"
+    },
+    "new_task": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/TaskCompact"
+        },
+        {
+          "type": "object",
+          "nullable": true
+        }
+      ]
+    },
+    "new_project_template": {
+      "$ref": "#/components/schemas/ProjectTemplateCompact"
+    }
+  }
+}

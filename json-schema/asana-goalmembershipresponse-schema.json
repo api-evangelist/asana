@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/GoalMembershipResponse",
+  "title": "GoalMembershipResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/GoalMembershipBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "user": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/UserCompact"
+            },
+            {
+              "type": "object",
+              "deprecated": true,
+              "readOnly": true,
+              "description": "*Deprecated: new integrations should prefer the `member` field.* A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks."
+            }
+          ]
+        },
+        "workspace": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/WorkspaceCompact"
+            },
+            {
+              "type": "object",
+              "deprecated": true,
+              "readOnly": true,
+              "description": "*Deprecated:* A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

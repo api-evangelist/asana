@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ProjectUpdateRequest",
+  "title": "ProjectUpdateRequest",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ProjectBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "custom_fields": {
+          "description": "An object where each key is the GID of a custom field and its corresponding value is either an enum GID, string, number, or object (depending on the custom field type). See the [custom fields guide](/docs/custom-fields-guide) for details on creating and updating custom field values.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "description": "\"{custom_field_gid}\" => Value (can be text, a number, etc.). For date, use format \"YYYY-MM-DD\" (e.g., 2019-09-15). For date-time, use ISO 8601 date string in UTC (e.g., 2019-09-15T02:06:58.147Z)."
+          },
+          "example": {
+            "5678904321": "On Hold",
+            "4578152156": "Not Started"
+          }
+        },
+        "followers": {
+          "description": "*Create-only*. Comma separated string of users. Followers are a subset of members who have opted in to receive \"tasks added\" notifications for a project.",
+          "type": "string",
+          "example": "12345,23456"
+        },
+        "owner": {
+          "description": "The current owner of the project, may be null.",
+          "nullable": true,
+          "type": "string",
+          "example": "12345"
+        },
+        "team": {
+          "description": "The team that this project is shared with.",
+          "type": "string",
+          "example": "12345"
+        }
+      }
+    }
+  ]
+}

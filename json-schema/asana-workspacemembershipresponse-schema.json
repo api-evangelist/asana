@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/WorkspaceMembershipResponse",
+  "title": "WorkspaceMembershipResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/WorkspaceMembershipBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "user_task_list": {
+          "$ref": "#/components/schemas/UserTaskListResponse",
+          "description": "The user's \"My Tasks\" in the workspace.",
+          "readOnly": true
+        },
+        "is_active": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Reflects if this user still a member of the workspace."
+        },
+        "is_admin": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Reflects if this user is an admin of the workspace."
+        },
+        "is_guest": {
+          "type": "boolean",
+          "readOnly": true,
+          "description": "Reflects if this user is a guest of the workspace."
+        },
+        "vacation_dates": {
+          "type": "object",
+          "readOnly": true,
+          "nullable": true,
+          "description": "Contains keys `start_on` and `end_on` for the vacation dates for the user in this workspace. If `start_on` is null, the entire `vacation_dates` object will be null. If `end_on` is before today, the entire `vacation_dates` object will be null.",
+          "properties": {
+            "start_on": {
+              "description": "The day on which the user's vacation in this workspace starts. This is a date with `YYYY-MM-DD` format.",
+              "type": "string",
+              "example": "2022-11-05"
+            },
+            "end_on": {
+              "description": "The day on which the user's vacation in this workspace ends, or null if there is no end date. This is a date with `YYYY-MM-DD` format.",
+              "nullable": true,
+              "type": "string",
+              "example": "2022-11-07"
+            }
+          }
+        },
+        "created_at": {
+          "description": "The time at which this resource was created.",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "example": "2012-02-22T02:06:58.147Z"
+        }
+      }
+    }
+  ]
+}

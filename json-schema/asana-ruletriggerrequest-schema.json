@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RuleTriggerRequest",
+  "title": "RuleTriggerRequest",
+  "type": "object",
+  "properties": {
+    "resource": {
+      "description": "The ID of the resource. For the duration of the beta, this resource is always a task, and this task must exist in the project in which the rule is created.",
+      "type": "string",
+      "example": "12345"
+    },
+    "action_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "The dynamic keys and values of the request. These fields are intended to be used in the action for the rule associated with this trigger.",
+      "example": {
+        "jira_ticket_name": "Test",
+        "jira_ticket_id": "123"
+      }
+    }
+  },
+  "required": [
+    "resource",
+    "action_data"
+  ]
+}

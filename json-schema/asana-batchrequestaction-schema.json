@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BatchRequestAction",
+  "title": "BatchRequestAction",
+  "type": "object",
+  "properties": {
+    "relative_path": {
+      "type": "string",
+      "description": "The path of the desired endpoint relative to the API's base URL.",
+      "example": "/tasks/123"
+    },
+    "method": {
+      "type": "string",
+      "description": "The HTTP method for the action.",
+      "enum": [
+        "get",
+        "post",
+        "put",
+        "delete",
+        "patch"
+      ],
+      "example": "get"
+    },
+    "data": {
+      "type": "object",
+      "description": "For POST/PUT requests, an object containing the data for the action."
+    },
+    "options": {
+      "type": "object",
+      "description": "Pagination and other options for the action.",
+      "properties": {
+        "limit": {
+          "type": "integer"
+        },
+        "offset": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "relative_path",
+    "method"
+  ]
+}

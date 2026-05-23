@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CustomFieldResponse",
+  "title": "CustomFieldResponse",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "type": "string",
+      "readOnly": true,
+      "example": "12345"
+    },
+    "resource_type": {
+      "type": "string",
+      "readOnly": true,
+      "example": "custom_field"
+    },
+    "name": {
+      "type": "string",
+      "example": "Priority"
+    },
+    "resource_subtype": {
+      "type": "string",
+      "enum": [
+        "text",
+        "enum",
+        "multi_enum",
+        "number",
+        "date",
+        "people"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "display_value": {
+      "type": "string",
+      "readOnly": true
+    },
+    "precision": {
+      "type": "integer"
+    },
+    "enum_options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "gid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "color": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "created_by": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

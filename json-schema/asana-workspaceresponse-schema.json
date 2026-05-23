@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/WorkspaceResponse",
+  "title": "WorkspaceResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/WorkspaceBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "email_domains": {
+          "description": "The email domains that are associated with this workspace.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "example": [
+            "asana.com"
+          ]
+        },
+        "is_organization": {
+          "description": "Whether the workspace is an *organization*.",
+          "type": "boolean",
+          "example": false
+        }
+      }
+    }
+  ]
+}

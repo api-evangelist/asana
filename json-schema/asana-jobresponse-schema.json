@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JobResponse",
+  "title": "JobResponse",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "type": "string",
+      "readOnly": true,
+      "example": "12345"
+    },
+    "resource_type": {
+      "type": "string",
+      "readOnly": true,
+      "example": "job"
+    },
+    "resource_subtype": {
+      "type": "string",
+      "readOnly": true,
+      "example": "duplicate_task"
+    },
+    "status": {
+      "type": "string",
+      "readOnly": true,
+      "enum": [
+        "not_started",
+        "in_progress",
+        "succeeded",
+        "failed"
+      ],
+      "example": "in_progress"
+    },
+    "new_project": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "new_task": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "new_project_template": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

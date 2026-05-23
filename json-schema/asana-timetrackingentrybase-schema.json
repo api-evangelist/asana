@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TimeTrackingEntryBase",
+  "title": "TimeTrackingEntryBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/TimeTrackingEntryCompact"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "task": {
+          "$ref": "#/components/schemas/TaskCompact",
+          "readOnly": true
+        },
+        "created_at": {
+          "description": "The time at which this resource was created.",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "example": "2012-02-22T02:06:58.147Z"
+        }
+      }
+    }
+  ]
+}

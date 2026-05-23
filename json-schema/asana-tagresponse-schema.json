@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TagResponse",
+  "title": "TagResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/TagBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "description": "The time at which this resource was created.",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "example": "2012-02-22T02:06:58.147Z"
+        },
+        "followers": {
+          "description": "Array of users following this tag.",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/components/schemas/UserCompact"
+          }
+        },
+        "workspace": {
+          "$ref": "#/components/schemas/WorkspaceCompact"
+        },
+        "permalink_url": {
+          "type": "string",
+          "readOnly": true,
+          "description": "A url that points directly to the object within Asana.",
+          "example": "https://app.asana.com/0/resource/123456789/list"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/StatusUpdateBase",
+  "title": "StatusUpdateBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/StatusUpdateCompact"
+    },
+    {
+      "type": "object",
+      "required": [
+        "text",
+        "status_type"
+      ],
+      "properties": {
+        "text": {
+          "description": "The text content of the status update.",
+          "type": "string",
+          "example": "The project is moving forward according to plan..."
+        },
+        "html_text": {
+          "description": "[Opt In](/docs/inputoutput-options). The text content of the status update with formatting as HTML.",
+          "type": "string",
+          "example": "<body>The project <strong>is</strong> moving forward according to plan...</body>"
+        },
+        "status_type": {
+          "description": "The type associated with the status update. This represents the current state of the object this object is on.",
+          "type": "string",
+          "enum": [
+            "on_track",
+            "at_risk",
+            "off_track",
+            "on_hold",
+            "complete",
+            "achieved",
+            "partial",
+            "missed",
+            "dropped"
+          ]
+        }
+      }
+    }
+  ]
+}

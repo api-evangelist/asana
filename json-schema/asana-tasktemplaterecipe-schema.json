@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TaskTemplateRecipe",
+  "title": "TaskTemplateRecipe",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/TaskTemplateRecipeCompact"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "Description of the task that will be created from this template.",
+          "type": "string",
+          "example": "Please describe the bug you found and how to reproduce it."
+        },
+        "html_description": {
+          "description": "HTML description of the task that will be created from this template.",
+          "type": "string",
+          "example": "Please describe the bug you found and how to reproduce it."
+        },
+        "memberships": {
+          "description": "Array of projects that the task created from this template will be added to",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/ProjectCompact"
+          }
+        },
+        "relative_start_on": {
+          "nullable": true,
+          "description": "The number of days after the task has been instantiated on which that the task will start",
+          "type": "integer",
+          "example": 1
+        },
+        "relative_due_on": {
+          "nullable": true,
+          "description": "The number of days after the task has been instantiated on which that the task will be due",
+          "type": "integer",
+          "example": 2
+        },
+        "due_time": {
+          "nullable": true,
+          "description": "The time of day that the task will be due",
+          "type": "string",
+          "example": "13:15:00.000Z"
+        },
+        "dependencies": {
+          "description": "Array of task templates that the task created from this template will depend on",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/TaskTemplateRecipeCompact"
+          }
+        },
+        "dependents": {
+          "description": "Array of task templates that will depend on the task created from this template",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/TaskTemplateRecipeCompact"
+          }
+        },
+        "followers": {
+          "description": "Array of users that will be added as followers to the task created from this template",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/UserCompact"
+          }
+        },
+        "attachments": {
+          "description": "Array of attachments that will be added to the task created from this template",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/AttachmentCompact"
+          }
+        },
+        "subtasks": {
+          "description": "Array of subtasks that will be added to the task created from this template",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/TaskTemplateRecipeCompact"
+          }
+        },
+        "custom_fields": {
+          "description": "Array of custom fields that will be added to the task created from this template",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/CustomFieldCompact"
+          }
+        }
+      }
+    }
+  ]
+}

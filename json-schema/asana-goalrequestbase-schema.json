@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/GoalRequestBase",
+  "title": "GoalRequestBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/GoalBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "team": {
+          "type": "string",
+          "description": "*Conditional*. This property is only present when the `workspace` provided is an organization.",
+          "example": "12345",
+          "nullable": true
+        },
+        "workspace": {
+          "type": "string",
+          "description": "The `gid` of a workspace.",
+          "example": "12345"
+        },
+        "time_period": {
+          "type": "string",
+          "description": "The `gid` of a time period.",
+          "example": "12345",
+          "nullable": true
+        },
+        "owner": {
+          "type": "string",
+          "description": "The `gid` of a user.",
+          "example": "12345",
+          "nullable": true
+        }
+      }
+    }
+  ]
+}

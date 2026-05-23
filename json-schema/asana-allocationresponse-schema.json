@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AllocationResponse",
+  "title": "AllocationResponse",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "type": "string",
+      "readOnly": true,
+      "description": "Globally unique identifier of the resource.",
+      "example": "12345"
+    },
+    "resource_type": {
+      "type": "string",
+      "readOnly": true,
+      "description": "The base type of this resource.",
+      "example": "allocation"
+    },
+    "assignee": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        }
+      }
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The localized day on which the allocation starts.",
+      "example": "2024-02-28"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The localized day on which the allocation ends.",
+      "example": "2024-02-28"
+    },
+    "effort": {
+      "type": "object",
+      "nullable": true,
+      "description": "The amount of time associated with the allocation.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "hours",
+            "percent"
+          ]
+        },
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "parent": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        }
+      }
+    },
+    "created_by": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

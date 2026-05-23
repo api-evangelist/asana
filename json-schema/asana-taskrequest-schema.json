@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TaskRequest",
+  "title": "TaskRequest",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/TaskBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "assignee": {
+          "type": "string",
+          "readOnly": false,
+          "x-env-variable": true,
+          "description": "Gid of a user.",
+          "example": "12345",
+          "nullable": true
+        },
+        "assignee_section": {
+          "nullable": true,
+          "type": "string",
+          "description": "The *assignee section* is a subdivision of a project that groups tasks together in the assignee's \"My Tasks\" list. It can either be a header above a list of tasks in a list view or a column in a board view of \"My Tasks.\"\nThe `assignee_section` property will be returned in the response only if the request was sent by the user who is the assignee of the task. Note that you can only write to `assignee_section` with the gid of an existing section visible in the user's \"My Tasks\" list.",
+          "example": "12345"
+        },
+        "custom_fields": {
+          "description": "An object where each key is the GID of a custom field and its corresponding value is either an enum GID, string, number, object, or array (depending on the custom field type). See the [custom fields guide](/docs/custom-fields-guide) for details on creating and updating custom field values.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "description": "\"{custom_field_gid}\" => Value (can be text, a number, etc.). For date, use format \"YYYY-MM-DD\" (e.g., 2019-09-15). For date-time, use ISO 8601 date string in UTC (e.g., 2019-09-15T02:06:58.147Z)."
+          },
+          "example": {
+            "5678904321": "On Hold",
+            "4578152156": "Not Started"
+          }
+        },
+        "followers": {
+          "type": "array",
+          "description": "*Create-Only* An array of strings identifying users. These can either be the string \"me\", an email, or the gid of a user. In order to change followers on an existing task use `addFollowers` and `removeFollowers`.",
+          "items": {
+            "type": "string",
+            "description": "Gid of a user."
+          },
+          "example": [
+            "12345"
+          ]
+        },
+        "parent": {
+          "type": "string",
+          "readOnly": false,
+          "x-env-variable": true,
+          "description": "Gid of a task.",
+          "example": "12345",
+          "nullable": true
+        },
+        "projects": {
+          "type": "array",
+          "description": "*Create-Only* Array of project gids. In order to change projects on an existing task use `addProject` and `removeProject`.",
+          "items": {
+            "type": "string",
+            "description": "Gid of a project."
+          },
+          "example": [
+            "12345"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "description": "*Create-Only* Array of tag gids. In order to change tags on an existing task use `addTag` and `removeTag`.",
+          "items": {
+            "type": "string",
+            "description": "Gid of a tag."
+          },
+          "example": [
+            "12345"
+          ]
+        },
+        "workspace": {
+          "type": "string",
+          "readOnly": false,
+          "x-env-variable": true,
+          "description": "Gid of a workspace.",
+          "example": "12345"
+        }
+      }
+    }
+  ]
+}

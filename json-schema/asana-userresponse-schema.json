@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/UserResponse",
+  "title": "UserResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/UserBaseResponse"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "workspaces": {
+          "description": "Workspaces and organizations this user may access.\nNote\\: The API will only return workspaces and organizations that also contain the authenticated user.",
+          "readOnly": true,
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/WorkspaceCompact"
+          }
+        }
+      }
+    }
+  ]
+}

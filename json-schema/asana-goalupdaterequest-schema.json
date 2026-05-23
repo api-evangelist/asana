@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/GoalUpdateRequest",
+  "title": "GoalUpdateRequest",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/GoalRequestBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "The current status of this goal. When the goal is open, its status can be `green`, `yellow`, and `red` to reflect \"On Track\", \"At Risk\", and \"Off Track\", respectively. When the goal is closed, the value can be `missed`, `achieved`, `partial`, or `dropped`.\n*Note* you can only write to this property if `metric` is set.",
+          "example": "green",
+          "nullable": true
+        }
+      }
+    }
+  ]
+}

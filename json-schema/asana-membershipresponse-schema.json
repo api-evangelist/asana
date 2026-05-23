@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MembershipResponse",
+  "title": "MembershipResponse",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "type": "string",
+      "readOnly": true,
+      "example": "12345"
+    },
+    "resource_type": {
+      "type": "string",
+      "readOnly": true,
+      "example": "membership"
+    },
+    "member": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "parent": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "editor",
+        "commenter",
+        "viewer"
+      ]
+    },
+    "is_active": {
+      "type": "boolean"
+    },
+    "is_guest": {
+      "type": "boolean",
+      "readOnly": true
+    },
+    "is_editable": {
+      "type": "boolean",
+      "readOnly": true
+    },
+    "access_level": {
+      "type": "string",
+      "readOnly": true
+    }
+  }
+}

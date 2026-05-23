@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/StatusUpdateResponse",
+  "title": "StatusUpdateResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/StatusUpdateBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "author": {
+          "$ref": "#/components/schemas/UserCompact"
+        },
+        "created_at": {
+          "description": "The time at which this resource was created.",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "example": "2012-02-22T02:06:58.147Z"
+        },
+        "created_by": {
+          "$ref": "#/components/schemas/UserCompact"
+        },
+        "hearted": {
+          "description": "*Deprecated - please use liked instead* True if the status is hearted by the authorized user, false if not.",
+          "type": "boolean",
+          "example": true,
+          "readOnly": true
+        },
+        "hearts": {
+          "description": "*Deprecated - please use likes instead* Array of likes for users who have hearted this status.",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Like"
+          },
+          "readOnly": true
+        },
+        "liked": {
+          "description": "True if the status is liked by the authorized user, false if not.",
+          "type": "boolean",
+          "example": true
+        },
+        "likes": {
+          "description": "Array of likes for users who have liked this status.",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Like"
+          },
+          "readOnly": true
+        },
+        "modified_at": {
+          "description": "The time at which this project status was last modified.\n*Note: This does not currently reflect any changes in associations such as comments that may have been added or removed from the status.*",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "example": "2012-02-22T02:06:58.147Z"
+        },
+        "num_hearts": {
+          "description": "*Deprecated - please use likes instead* The number of users who have hearted this status.",
+          "type": "integer",
+          "example": 5,
+          "readOnly": true
+        },
+        "num_likes": {
+          "description": "The number of users who have liked this status.",
+          "type": "integer",
+          "example": 5,
+          "readOnly": true
+        },
+        "parent": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/ProjectCompact"
+            },
+            {
+              "type": "object",
+              "description": "The parent of the status update. This can be a project, goal or portfolio, and indicates that this status was sent on that object."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

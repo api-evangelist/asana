@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TaskTemplateResponse",
+  "title": "TaskTemplateResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/TaskTemplateBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the task template.",
+          "type": "string",
+          "example": "Bug Report Template"
+        },
+        "project": {
+          "description": "The project that this task template belongs to.",
+          "nullable": true,
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/ProjectCompact"
+            }
+          ]
+        },
+        "template": {
+          "description": "The configuration for the task that will be created from this template.",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/TaskTemplateRecipe"
+            }
+          ]
+        },
+        "created_by": {
+          "description": "The user who created this task template.",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/UserCompact"
+            }
+          ]
+        },
+        "created_at": {
+          "description": "The time at which this task template was created.",
+          "type": "string",
+          "format": "date-time",
+          "example": "2019-01-01T00:00:00.000Z"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CustomFieldRequest",
+  "title": "CustomFieldRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "example": "Priority"
+    },
+    "resource_subtype": {
+      "type": "string",
+      "enum": [
+        "text",
+        "enum",
+        "multi_enum",
+        "number",
+        "date",
+        "people"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "workspace": {
+      "type": "string",
+      "example": "12345"
+    },
+    "precision": {
+      "type": "integer",
+      "description": "Only relevant for custom fields of type number."
+    },
+    "enum_options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

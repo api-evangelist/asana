@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/UserCompact",
+  "title": "UserCompact",
+  "description": "A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "description": "Globally unique identifier of the resource, as a string.",
+      "type": "string",
+      "readOnly": true,
+      "example": "12345",
+      "x-insert-after": false
+    },
+    "resource_type": {
+      "description": "The base type of this resource.",
+      "type": "string",
+      "readOnly": true,
+      "example": "user",
+      "x-insert-after": "gid"
+    },
+    "name": {
+      "type": "string",
+      "description": "*Read-only except when same user as requester*. The user\u2019s name.",
+      "example": "Greg Sanchez"
+    }
+  }
+}

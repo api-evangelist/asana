@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ProjectResponse",
+  "title": "ProjectResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ProjectBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "custom_fields": {
+          "description": "Array of Custom Fields.",
+          "readOnly": true,
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/CustomFieldCompact"
+          }
+        },
+        "completed": {
+          "description": "True if the project is currently marked complete, false if not.",
+          "type": "boolean",
+          "readOnly": true,
+          "example": false
+        },
+        "completed_at": {
+          "description": "The time at which this project was completed, or null if the project is not completed.",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "nullable": true,
+          "example": "2012-02-22T02:06:58.147Z"
+        },
+        "completed_by": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/UserCompact"
+            },
+            {
+              "description": "The user that marked this project complete, or null if the project is not completed.",
+              "readOnly": true,
+              "nullable": true
+            }
+          ]
+        },
+        "followers": {
+          "description": "Array of users following this project. Followers are a subset of members who have opted in to receive \"tasks added\" notifications for a project.",
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/UserCompact"
+          },
+          "readOnly": true
+        },
+        "owner": {
+          "description": "The current owner of the project, may be null.",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/UserCompact"
+            },
+            {
+              "type": "object",
+              "nullable": true
+            }
+          ]
+        },
+        "team": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/TeamCompact"
+            },
+            {
+              "type": "object",
+              "description": "The team that this project is shared with."
+            }
+          ]
+        },
+        "icon": {
+          "description": "The icon for a project.",
+          "type": "string",
+          "nullable": true,
+          "enum": [
+            "list",
+            "board",
+            "timeline",
+            "calendar",
+            "rocket",
+            "people",
+            "graph",
+            "star",
+            "bug",
+            "light_bulb",
+            "globe",
+            "gear",
+            "notebook",
+            "computer",
+            "check",
+            "target",
+            "html",
+            "megaphone",
+            "chat_bubbles",
+            "briefcase",
+            "page_layout",
+            "mountain_flag",
+            "puzzle",
+            "presentation",
+            "line_and_symbols",
+            "speed_dial",
+            "ribbon",
+            "shoe",
+            "shopping_basket",
+            "map",
+            "ticket",
+            "coins"
+          ],
+          "example": "chat_bubbles"
+        },
+        "permalink_url": {
+          "type": "string",
+          "readOnly": true,
+          "description": "A url that points directly to the object within Asana.",
+          "example": "https://app.asana.com/0/resource/123456789/list"
+        },
+        "project_brief": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/ProjectBriefCompact"
+            },
+            {
+              "type": "object",
+              "description": "[Opt In](/docs/inputoutput-options). The project brief associated with this project.",
+              "nullable": true
+            }
+          ]
+        },
+        "created_from_template": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/ProjectTemplateCompact"
+            },
+            {
+              "type": "object",
+              "description": "[Opt In](/docs/inputoutput-options). The project template from which this project was created. If the project was not created from a template, this field will be null.",
+              "nullable": true
+            }
+          ]
+        },
+        "workspace": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/WorkspaceCompact"
+            },
+            {
+              "type": "object",
+              "readOnly": true,
+              "description": "*Create-only*. The workspace or organization this project is associated with. Once created, projects cannot be moved to a different workspace. This attribute can only be specified at creation time. If the workspace for your project is an organization, you must also supply a `team` in the request body."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

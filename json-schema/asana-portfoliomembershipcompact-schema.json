@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PortfolioMembershipCompact",
+  "title": "PortfolioMembershipCompact",
+  "description": "This object determines if a user is a member of a portfolio.",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "description": "Globally unique identifier of the resource, as a string.",
+      "type": "string",
+      "readOnly": true,
+      "example": "12345",
+      "x-insert-after": false
+    },
+    "resource_type": {
+      "description": "The base type of this resource.",
+      "type": "string",
+      "readOnly": true,
+      "example": "portfolio_membership",
+      "x-insert-after": "gid"
+    },
+    "parent": {
+      "description": "The portfolio the user is a member of.",
+      "$ref": "#/components/schemas/PortfolioCompact"
+    },
+    "member": {
+      "$ref": "#/components/schemas/UserCompact"
+    },
+    "access_level": {
+      "description": "Whether the member has admin, editor, or viewer access to the portfolio. Portfolios do not support commenter access yet.",
+      "type": "string",
+      "enum": [
+        "admin",
+        "editor",
+        "viewer"
+      ],
+      "readOnly": true,
+      "example": "admin"
+    }
+  }
+}

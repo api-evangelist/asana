@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AllocationRequest",
+  "title": "AllocationRequest",
+  "type": "object",
+  "properties": {
+    "assignee": {
+      "type": "string",
+      "description": "The user or team the allocation is for.",
+      "example": "12345"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The localized day on which the allocation starts.",
+      "example": "2024-02-28"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The localized day on which the allocation ends.",
+      "example": "2024-02-28"
+    },
+    "effort": {
+      "type": "object",
+      "nullable": true,
+      "description": "The amount of time associated with the allocation.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The units used for tracking effort, either \"hours\" or \"percent\".",
+          "enum": [
+            "hours",
+            "percent"
+          ]
+        },
+        "value": {
+          "type": "number",
+          "description": "The numeric effort value."
+        }
+      }
+    },
+    "parent": {
+      "type": "string",
+      "description": "The project or portfolio this allocation is for.",
+      "example": "12345"
+    }
+  }
+}

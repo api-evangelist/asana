@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/GoalRelationshipBase",
+  "title": "GoalRelationshipBase",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/GoalRelationshipCompact"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "supported_goal": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/GoalCompact"
+            },
+            {
+              "type": "object",
+              "readOnly": true,
+              "description": "The goal that the supporting resource supports."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

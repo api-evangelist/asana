@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SectionResponse",
+  "title": "SectionResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/SectionBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "description": "The time at which this resource was created.",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true,
+          "example": "2012-02-22T02:06:58.147Z"
+        },
+        "project": {
+          "$ref": "#/components/schemas/ProjectCompact"
+        },
+        "projects": {
+          "description": "*Deprecated - please use project instead*",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/components/schemas/ProjectCompact"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TeamRequest",
+  "title": "TeamRequest",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/TeamBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "The description of the team.\n",
+          "type": "string",
+          "example": "All developers should be members of this team."
+        },
+        "html_description": {
+          "description": "The description of the team with formatting as HTML.\n",
+          "type": "string",
+          "example": "<body><em>All</em> developers should be members of this team.</body>"
+        },
+        "organization": {
+          "type": "string",
+          "description": "The organization/workspace the team belongs to. This must be the same organization you are in and cannot be changed once set.\n",
+          "example": "123456789"
+        },
+        "visibility": {
+          "description": "The visibility of the team to users in the same organization\n",
+          "type": "string",
+          "enum": [
+            "secret",
+            "request_to_join",
+            "public"
+          ]
+        },
+        "edit_team_name_or_description_access_level": {
+          "description": "Controls who can edit team name and description\n",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "all_team_members",
+            "only_team_admins"
+          ]
+        },
+        "edit_team_visibility_or_trash_team_access_level": {
+          "description": "Controls who can edit team visibility and trash teams\n",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "all_team_members",
+            "only_team_admins"
+          ]
+        },
+        "member_invite_management_access_level": {
+          "description": "Controls who can accept or deny member invites for a given team\n",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "all_team_members",
+            "only_team_admins"
+          ]
+        },
+        "guest_invite_management_access_level": {
+          "description": "Controls who can accept or deny guest invites for a given team\n",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "all_team_members",
+            "only_team_admins"
+          ]
+        },
+        "join_request_management_access_level": {
+          "description": "Controls who can accept or deny join team requests for a Membership by Request team\n",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "all_team_members",
+            "only_team_admins"
+          ]
+        },
+        "team_member_removal_access_level": {
+          "description": "Controls who can remove team members\n",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "all_team_members",
+            "only_team_admins"
+          ]
+        },
+        "team_content_management_access_level": {
+          "description": "Controls who can create and share content with the team\n",
+          "type": "string",
+          "enum": [
+            "no_restriction",
+            "only_team_admins"
+          ]
+        }
+      }
+    }
+  ]
+}

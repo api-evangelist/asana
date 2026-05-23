@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/GoalResponse",
+  "title": "GoalResponse",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "type": "string",
+      "readOnly": true,
+      "example": "12345"
+    },
+    "resource_type": {
+      "type": "string",
+      "readOnly": true,
+      "example": "goal"
+    },
+    "name": {
+      "type": "string",
+      "example": "Grow web traffic by 30%"
+    },
+    "owner": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "html_notes": {
+      "type": "string"
+    },
+    "due_on": {
+      "type": "string",
+      "format": "date",
+      "nullable": true
+    },
+    "start_on": {
+      "type": "string",
+      "format": "date",
+      "nullable": true
+    },
+    "status": {
+      "type": "string"
+    },
+    "liked": {
+      "type": "boolean"
+    },
+    "num_likes": {
+      "type": "integer",
+      "readOnly": true
+    },
+    "team": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        }
+      }
+    },
+    "workspace": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        }
+      }
+    },
+    "followers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "gid": {
+            "type": "string"
+          },
+          "resource_type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "time_period": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "properties": {
+        "gid": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "resource_subtype": {
+          "type": "string"
+        },
+        "precision": {
+          "type": "integer"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "currency_code": {
+          "type": "string",
+          "nullable": true
+        },
+        "current_number_value": {
+          "type": "number"
+        },
+        "target_number_value": {
+          "type": "number"
+        },
+        "initial_number_value": {
+          "type": "number"
+        },
+        "progress_source": {
+          "type": "string",
+          "enum": [
+            "manual",
+            "subgoal_progress",
+            "project_task_completion",
+            "project_milestone_completion",
+            "task_completion",
+            "external"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ProjectBriefResponse",
+  "title": "ProjectBriefResponse",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ProjectBriefBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "text": {
+          "description": "[Opt In](/docs/inputoutput-options). The plain text of the project brief.",
+          "type": "string",
+          "example": "This is a project brief."
+        },
+        "permalink_url": {
+          "type": "string",
+          "readOnly": true,
+          "description": "A url that points directly to the object within Asana.",
+          "example": "https://app.asana.com/0/11111111/22222222"
+        },
+        "project": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/ProjectCompact"
+            },
+            {
+              "type": "object",
+              "description": "The project with which this project brief is associated."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

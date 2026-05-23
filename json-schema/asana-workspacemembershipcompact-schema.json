@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/WorkspaceMembershipCompact",
+  "title": "WorkspaceMembershipCompact",
+  "description": "This object determines if a user is a member of a workspace.",
+  "type": "object",
+  "properties": {
+    "gid": {
+      "description": "Globally unique identifier of the resource, as a string.",
+      "type": "string",
+      "readOnly": true,
+      "example": "12345",
+      "x-insert-after": false
+    },
+    "resource_type": {
+      "description": "The base type of this resource.",
+      "type": "string",
+      "readOnly": true,
+      "example": "workspace_membership",
+      "x-insert-after": "gid"
+    },
+    "user": {
+      "$ref": "#/components/schemas/UserCompact"
+    },
+    "workspace": {
+      "$ref": "#/components/schemas/WorkspaceCompact"
+    }
+  }
+}

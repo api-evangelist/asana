@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PortfolioRequest",
+  "title": "PortfolioRequest",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/PortfolioBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "members": {
+          "readOnly": true,
+          "type": "array",
+          "description": "An array of strings identifying users. These can either be the string \"me\", an email, or the gid of a user.",
+          "items": {
+            "type": "string",
+            "description": "Gid of an object."
+          },
+          "example": [
+            "52164",
+            "15363"
+          ]
+        },
+        "workspace": {
+          "type": "string",
+          "description": "Gid of an object.",
+          "example": "167589"
+        },
+        "public": {
+          "type": "boolean",
+          "description": "True if the portfolio is public to its workspace members.",
+          "example": false
+        }
+      }
+    }
+  ]
+}
