@@ -1,0 +1,125 @@
+arazzo: 1.0.1
+info:
+  title: Asana Bootstrap a Project Board
+  summary: Create a project in a team, add a section to it, drop a first task into the project, and open the discussion with a comment.
+  description: >-
+    A common kickoff pattern for Asana. The workflow creates a new project under
+    a team, adds a named section to organize work, creates a first task inside
+    the project, and posts an opening comment (story) on that task so the team
+    has context. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description. Because the
+    comment endpoint lives only in the full Asana description, all steps are
+    addressed through that single source to keep operation resolution
+    unambiguous.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: bootstrap-project-board
+  summary: Stand up a project with a section, a first task, and an opening comment.
+  description: >-
+    Creates a project for a team, adds a section, creates a task in the project,
+    and posts a comment on the task.
+  inputs:
+    type: object
+    required:
+    - teamGid
+    - workspaceGid
+    - projectName
+    - sectionName
+    - taskName
+    properties:
+      teamGid:
+        type: string
+        description: The team gid the new project belongs to.
+      workspaceGid:
+        type: string
+        description: The workspace gid the new task belongs to.
+      projectName:
+        type: string
+        description: Name of the project to create.
+      sectionName:
+        type: string
+        description: Name of the first section to add to the project.
+      taskName:
+        type: string
+        description: Name of the first task to create in the project.
+      taskNotes:
+        type: string
+        description: Optional plain-text notes for the first task.
+      commentText:
+        type: string
+        description: Opening comment to post on the first task.
+  steps:
+  - stepId: createProject
+    description: Create a new project under the supplied team.
+    operationId: $sourceDescriptions.asanaApi.createProjectForTeam
+    parameters:
+    - name: team_gid
+      in: path
+      value: $inputs.teamGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.projectName
+          team: $inputs.teamGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      projectGid: $response.body#/data/gid
+  - stepId: createSection
+    description: Add a named section to the newly created project.
+    operationId: $sourceDescriptions.asanaApi.createSectionForProject
+    parameters:
+    - name: project_gid
+      in: path
+      value: $steps.createProject.outputs.projectGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.sectionName
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      sectionGid: $response.body#/data/gid
+  - stepId: createTask
+    description: Create the first task inside the project.
+    operationId: $sourceDescriptions.asanaApi.createTask
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.taskName
+          notes: $inputs.taskNotes
+          workspace: $inputs.workspaceGid
+          projects:
+          - $steps.createProject.outputs.projectGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      taskGid: $response.body#/data/gid
+  - stepId: postComment
+    description: Post an opening comment (story) on the first task.
+    operationId: $sourceDescriptions.asanaApi.createStoryForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $steps.createTask.outputs.taskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          text: $inputs.commentText
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      storyGid: $response.body#/data/gid
+  outputs:
+    projectGid: $steps.createProject.outputs.projectGid
+    sectionGid: $steps.createSection.outputs.sectionGid
+    taskGid: $steps.createTask.outputs.taskGid
+    storyGid: $steps.postComment.outputs.storyGid

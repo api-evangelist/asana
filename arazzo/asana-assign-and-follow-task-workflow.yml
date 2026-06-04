@@ -1,0 +1,76 @@
+arazzo: 1.0.1
+info:
+  title: Asana Assign and Add Followers to a Task
+  summary: Create a task, assign it to an owner, and add followers who should be notified.
+  description: >-
+    A handoff flow. The workflow creates a task in a workspace, assigns it to an
+    owner, and then adds a set of followers who should receive notifications on
+    the task. Each request is written inline so the handoff can be read and
+    executed without opening the underlying OpenAPI description. The add-followers
+    endpoint lives only in the full Asana description, so every step is addressed
+    through that single source.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: assign-and-follow-task
+  summary: Create an assigned task and add followers to it.
+  description: >-
+    Creates a task assigned to an owner, then adds followers to it.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - taskName
+    - assigneeGid
+    - followerGids
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid the task belongs to.
+      taskName:
+        type: string
+        description: Name of the task to create.
+      assigneeGid:
+        type: string
+        description: User gid to assign the task to.
+      followerGids:
+        type: array
+        description: User gids to add as followers of the task.
+        items:
+          type: string
+  steps:
+  - stepId: createAssignedTask
+    description: Create the task and assign it to the owner.
+    operationId: $sourceDescriptions.asanaApi.createTask
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.taskName
+          workspace: $inputs.workspaceGid
+          assignee: $inputs.assigneeGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      taskGid: $response.body#/data/gid
+  - stepId: addFollowers
+    description: Add followers who should be notified on the task.
+    operationId: $sourceDescriptions.asanaApi.addFollowersForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $steps.createAssignedTask.outputs.taskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          followers: $inputs.followerGids
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      followerResult: $response.body#/data/followers
+  outputs:
+    taskGid: $steps.createAssignedTask.outputs.taskGid

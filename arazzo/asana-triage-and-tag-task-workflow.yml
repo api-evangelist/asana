@@ -1,0 +1,94 @@
+arazzo: 1.0.1
+info:
+  title: Asana Triage and Tag a Task
+  summary: Create a task, place it in a section, and label it with a tag in one triage pass.
+  description: >-
+    A focused intake flow. The workflow creates a task in a workspace, moves it
+    into a specific section of the board so it lands in the right column, and
+    applies a tag for categorization. Each request is written inline so the
+    triage sequence can be read and executed without opening the underlying
+    OpenAPI description. The section-move and tag endpoints are part of the full
+    Asana description, so every step is addressed through that one source.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: triage-and-tag-task
+  summary: Create a task, add it to a section, and apply a tag.
+  description: >-
+    Creates a task, places it into a board section, then tags it for
+    categorization.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - sectionGid
+    - tagGid
+    - taskName
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid the task belongs to.
+      sectionGid:
+        type: string
+        description: Section gid to drop the task into.
+      tagGid:
+        type: string
+        description: Tag gid to apply to the task.
+      taskName:
+        type: string
+        description: Name of the task to create.
+      taskNotes:
+        type: string
+        description: Optional plain-text notes for the task.
+  steps:
+  - stepId: createTask
+    description: Create the task in the workspace.
+    operationId: $sourceDescriptions.asanaApi.createTask
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.taskName
+          notes: $inputs.taskNotes
+          workspace: $inputs.workspaceGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      taskGid: $response.body#/data/gid
+  - stepId: addToSection
+    description: Move the new task into the target section.
+    operationId: $sourceDescriptions.asanaApi.addTaskForSection
+    parameters:
+    - name: section_gid
+      in: path
+      value: $inputs.sectionGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          task: $steps.createTask.outputs.taskGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      sectionResult: $response.body#/data
+  - stepId: applyTag
+    description: Apply the tag to the task for categorization.
+    operationId: $sourceDescriptions.asanaApi.addTagForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $steps.createTask.outputs.taskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          tag: $inputs.tagGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      tagResult: $response.body#/data
+  outputs:
+    taskGid: $steps.createTask.outputs.taskGid

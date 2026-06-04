@@ -1,0 +1,103 @@
+arazzo: 1.0.1
+info:
+  title: Asana Find, Comment On, and Complete a Task
+  summary: Read a task, post a closing comment, and mark it complete in a single closeout pass.
+  description: >-
+    A task closeout flow. The workflow reads a task to confirm it exists and is
+    not already complete, posts a closing comment (story) describing the
+    resolution, and then marks the task complete. The flow branches on the
+    current completed state so an already-complete task skips straight to the
+    end. Each request is written inline so the closeout can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: complete-task-with-comment
+  summary: Comment on a task and mark it complete unless it is already done.
+  description: >-
+    Reads a task, branches on its completed flag, posts a closing comment, and
+    marks the task complete.
+  inputs:
+    type: object
+    required:
+    - taskGid
+    - commentText
+    properties:
+      taskGid:
+        type: string
+        description: The gid of the task to close out.
+      commentText:
+        type: string
+        description: Closing comment to post before completing the task.
+  steps:
+  - stepId: readTask
+    description: Read the task and capture its current completed state.
+    operationId: $sourceDescriptions.asanaApi.getTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $inputs.taskGid
+    - name: opt_fields
+      in: query
+      value: name,completed
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      completed: $response.body#/data/completed
+    onSuccess:
+    - name: alreadyComplete
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.data.completed == true
+        type: jsonpath
+    - name: needsCompletion
+      type: goto
+      stepId: postClosingComment
+      criteria:
+      - context: $response.body
+        condition: $.data.completed == false
+        type: jsonpath
+  - stepId: postClosingComment
+    description: Post a closing comment describing the resolution.
+    operationId: $sourceDescriptions.asanaApi.createStoryForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $inputs.taskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          text: $inputs.commentText
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      storyGid: $response.body#/data/gid
+  - stepId: completeTask
+    description: Mark the task complete.
+    operationId: $sourceDescriptions.asanaApi.updateTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $inputs.taskGid
+    - name: opt_fields
+      in: query
+      value: name,completed,completed_at
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          completed: true
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      completed: $response.body#/data/completed
+      completedAt: $response.body#/data/completed_at
+  outputs:
+    taskGid: $inputs.taskGid
+    completed: $steps.completeTask.outputs.completed
+    storyGid: $steps.postClosingComment.outputs.storyGid

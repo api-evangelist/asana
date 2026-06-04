@@ -1,0 +1,94 @@
+arazzo: 1.0.1
+info:
+  title: Asana Add an Existing Task to a Project Section
+  summary: Confirm a task exists, add it to a project section, and note the move with a comment.
+  description: >-
+    A cross-project sharing flow. The workflow reads an existing task to confirm
+    it exists, adds it to a project and drops it straight into a chosen section
+    so the same task can live on multiple boards, and then posts a comment noting
+    the move. Each request is written inline so the flow can be read and executed
+    without opening the underlying OpenAPI description. These endpoints live in
+    the full Asana description, so every step is addressed through that single
+    source.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: add-existing-task-to-project
+  summary: Add a task to a project section and note the move with a comment.
+  description: >-
+    Reads a task, adds it to a project section, then posts a comment noting the
+    move.
+  inputs:
+    type: object
+    required:
+    - taskGid
+    - projectGid
+    - sectionGid
+    properties:
+      taskGid:
+        type: string
+        description: Gid of the existing task to add.
+      projectGid:
+        type: string
+        description: Project gid to add the task to.
+      sectionGid:
+        type: string
+        description: Section gid within the project to place the task in.
+      noteText:
+        type: string
+        description: Comment to post noting the move.
+  steps:
+  - stepId: readTask
+    description: Read the task to confirm it exists before moving it.
+    operationId: $sourceDescriptions.asanaApi.getTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $inputs.taskGid
+    - name: opt_fields
+      in: query
+      value: name
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      taskName: $response.body#/data/name
+  - stepId: addToProject
+    description: Add the task to the project and place it in the section.
+    operationId: $sourceDescriptions.asanaApi.addProjectForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $inputs.taskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          project: $inputs.projectGid
+          section: $inputs.sectionGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      result: $response.body#/data
+  - stepId: postNote
+    description: Post a comment noting the move.
+    operationId: $sourceDescriptions.asanaApi.createStoryForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $inputs.taskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          text: $inputs.noteText
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      storyGid: $response.body#/data/gid
+  outputs:
+    taskGid: $inputs.taskGid
+    projectGid: $inputs.projectGid
+    storyGid: $steps.postNote.outputs.storyGid

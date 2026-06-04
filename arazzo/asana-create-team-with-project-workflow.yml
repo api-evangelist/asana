@@ -1,0 +1,76 @@
+arazzo: 1.0.1
+info:
+  title: Asana Create a Team With a First Project
+  summary: Create a team in an organization and stand up its first project.
+  description: >-
+    A team setup flow. The workflow creates a team within an organization
+    workspace and then creates a first project under that new team. Each request
+    is written inline so the setup can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: teamsApi
+  url: ../openapi/asana-teams-api-openapi.yml
+  type: openapi
+- name: projectsApi
+  url: ../openapi/asana-projects-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-team-with-project
+  summary: Create a team and its first project.
+  description: >-
+    Creates a team in an organization, then creates a project under it.
+  inputs:
+    type: object
+    required:
+    - organizationGid
+    - teamName
+    - projectName
+    properties:
+      organizationGid:
+        type: string
+        description: Organization (workspace) gid the team belongs to.
+      teamName:
+        type: string
+        description: Name of the team to create.
+      teamDescription:
+        type: string
+        description: Optional description for the team.
+      projectName:
+        type: string
+        description: Name of the first project to create under the team.
+  steps:
+  - stepId: createTeam
+    description: Create the team in the organization.
+    operationId: createTeam
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.teamName
+          description: $inputs.teamDescription
+          organization: $inputs.organizationGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      teamGid: $response.body#/data/gid
+  - stepId: createProject
+    description: Create the first project under the new team.
+    operationId: createProjectForTeam
+    parameters:
+    - name: team_gid
+      in: path
+      value: $steps.createTeam.outputs.teamGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.projectName
+          team: $steps.createTeam.outputs.teamGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      projectGid: $response.body#/data/gid
+  outputs:
+    teamGid: $steps.createTeam.outputs.teamGid
+    projectGid: $steps.createProject.outputs.projectGid

@@ -1,0 +1,70 @@
+arazzo: 1.0.1
+info:
+  title: Asana Create a Task and Nest It Under a Parent
+  summary: Create a standalone task and then set its parent so it becomes a subtask.
+  description: >-
+    A reorganization flow. The workflow creates a standalone task in a workspace
+    and then sets its parent to an existing task, turning the new task into a
+    subtask of the parent. Each request is written inline so the reorganization
+    can be read and executed without opening the underlying OpenAPI description.
+    The set-parent endpoint lives only in the full Asana description, so every
+    step is addressed through that single source.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: promote-task-to-subtask
+  summary: Create a task and nest it under a parent task.
+  description: >-
+    Creates a task, then sets its parent so it becomes a subtask.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - taskName
+    - parentTaskGid
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid the new task belongs to.
+      taskName:
+        type: string
+        description: Name of the task to create.
+      parentTaskGid:
+        type: string
+        description: Gid of the task that will become the parent.
+  steps:
+  - stepId: createTask
+    description: Create the standalone task in the workspace.
+    operationId: $sourceDescriptions.asanaApi.createTask
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.taskName
+          workspace: $inputs.workspaceGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      taskGid: $response.body#/data/gid
+  - stepId: setParent
+    description: Nest the new task under the parent task.
+    operationId: $sourceDescriptions.asanaApi.setParentForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $steps.createTask.outputs.taskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          parent: $inputs.parentTaskGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      parentGid: $response.body#/data/parent/gid
+  outputs:
+    taskGid: $steps.createTask.outputs.taskGid
+    parentGid: $steps.setParent.outputs.parentGid

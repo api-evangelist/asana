@@ -1,0 +1,89 @@
+arazzo: 1.0.1
+info:
+  title: Asana Create a Task With Subtasks
+  summary: Create a parent task, then add two subtasks under it to break the work down.
+  description: >-
+    A work-breakdown flow. The workflow creates a parent task in a workspace and
+    then creates two subtasks under it, returning the parent and both subtask
+    gids. Each request is written inline so the breakdown can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-task-with-subtasks
+  summary: Create a parent task and two subtasks beneath it.
+  description: >-
+    Creates a parent task and adds two subtasks to it.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - parentName
+    - subtaskOneName
+    - subtaskTwoName
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid the tasks belong to.
+      parentName:
+        type: string
+        description: Name of the parent task.
+      subtaskOneName:
+        type: string
+        description: Name of the first subtask.
+      subtaskTwoName:
+        type: string
+        description: Name of the second subtask.
+  steps:
+  - stepId: createParent
+    description: Create the parent task in the workspace.
+    operationId: createTask
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.parentName
+          workspace: $inputs.workspaceGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      parentGid: $response.body#/data/gid
+  - stepId: createSubtaskOne
+    description: Create the first subtask under the parent.
+    operationId: createSubtaskForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $steps.createParent.outputs.parentGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.subtaskOneName
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      subtaskOneGid: $response.body#/data/gid
+  - stepId: createSubtaskTwo
+    description: Create the second subtask under the parent.
+    operationId: createSubtaskForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $steps.createParent.outputs.parentGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.subtaskTwoName
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      subtaskTwoGid: $response.body#/data/gid
+  outputs:
+    parentGid: $steps.createParent.outputs.parentGid
+    subtaskOneGid: $steps.createSubtaskOne.outputs.subtaskOneGid
+    subtaskTwoGid: $steps.createSubtaskTwo.outputs.subtaskTwoGid

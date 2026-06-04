@@ -1,0 +1,75 @@
+arazzo: 1.0.1
+info:
+  title: Asana Attach a File to a New Task
+  summary: Create a task and attach an external file URL to it as a reference.
+  description: >-
+    A reference-gathering flow. The workflow creates a task in a workspace and
+    then attaches an external file to it by URL using the external attachment
+    subtype, so the task carries its supporting material. Each request is written
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description. The attachment is sent as multipart form data with the
+    external url, as the create-attachment endpoint requires.
+  version: 1.0.0
+sourceDescriptions:
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
+  type: openapi
+- name: attachmentsApi
+  url: ../openapi/asana-attachments-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: attach-file-to-task
+  summary: Create a task and attach an external file URL to it.
+  description: >-
+    Creates a task, then attaches an external file to it by URL.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - taskName
+    - attachmentName
+    - attachmentUrl
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid the task belongs to.
+      taskName:
+        type: string
+        description: Name of the task to create.
+      attachmentName:
+        type: string
+        description: Display name of the external attachment.
+      attachmentUrl:
+        type: string
+        description: The external URL to attach to the task.
+  steps:
+  - stepId: createTask
+    description: Create the task in the workspace.
+    operationId: createTask
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.taskName
+          workspace: $inputs.workspaceGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      taskGid: $response.body#/data/gid
+  - stepId: attachFile
+    description: Attach an external file to the task by URL.
+    operationId: createAttachmentForObject
+    requestBody:
+      contentType: multipart/form-data
+      payload:
+        parent: $steps.createTask.outputs.taskGid
+        resource_subtype: external
+        name: $inputs.attachmentName
+        url: $inputs.attachmentUrl
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      attachmentGid: $response.body#/data/gid
+  outputs:
+    taskGid: $steps.createTask.outputs.taskGid
+    attachmentGid: $steps.attachFile.outputs.attachmentGid

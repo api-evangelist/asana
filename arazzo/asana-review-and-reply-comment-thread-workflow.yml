@@ -1,0 +1,67 @@
+arazzo: 1.0.1
+info:
+  title: Asana Review and Reply on a Task Comment Thread
+  summary: Read the existing comments on a task, then post a reply comment to the thread.
+  description: >-
+    A discussion flow. The workflow reads the existing stories (comments and
+    system events) on a task to capture the latest comment and then posts a new
+    reply comment to the same task. Each request is written inline so the
+    review-and-reply can be read and executed without opening the underlying
+    OpenAPI description. Both endpoints live in the full Asana description, so
+    every step is addressed through that single source.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: review-and-reply-comment-thread
+  summary: Read a task's comments and post a reply.
+  description: >-
+    Reads the stories on a task, then posts a reply comment.
+  inputs:
+    type: object
+    required:
+    - taskGid
+    - replyText
+    properties:
+      taskGid:
+        type: string
+        description: Task gid whose comment thread to read and reply to.
+      replyText:
+        type: string
+        description: Text of the reply comment to post.
+  steps:
+  - stepId: readStories
+    description: Read the existing stories (comments) on the task.
+    operationId: $sourceDescriptions.asanaApi.getStoriesForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $inputs.taskGid
+    - name: opt_fields
+      in: query
+      value: text,created_at,created_by.name,resource_subtype
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      latestStoryText: $response.body#/data/0/text
+  - stepId: postReply
+    description: Post a reply comment to the task thread.
+    operationId: $sourceDescriptions.asanaApi.createStoryForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $inputs.taskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          text: $inputs.replyText
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      storyGid: $response.body#/data/gid
+  outputs:
+    taskGid: $inputs.taskGid
+    storyGid: $steps.postReply.outputs.storyGid

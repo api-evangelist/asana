@@ -1,0 +1,92 @@
+arazzo: 1.0.1
+info:
+  title: Asana Duplicate a Project and Poll the Job
+  summary: Kick off a project duplication job and poll the async job until it succeeds.
+  description: >-
+    A project-cloning flow with asynchronous completion. The workflow starts a
+    project duplication, which returns a job, and then polls that job until its
+    status reports success, branching back to poll again while it is still
+    in progress. Each request is written inline so the clone-and-wait sequence
+    can be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: projectsApi
+  url: ../openapi/asana-projects-api-openapi.yml
+  type: openapi
+- name: jobsApi
+  url: ../openapi/asana-jobs-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: duplicate-project-and-poll
+  summary: Duplicate a project and wait for the duplication job to finish.
+  description: >-
+    Starts a project duplication job and polls until the job status is
+    succeeded.
+  inputs:
+    type: object
+    required:
+    - projectGid
+    - newName
+    - teamGid
+    properties:
+      projectGid:
+        type: string
+        description: Gid of the project to duplicate.
+      newName:
+        type: string
+        description: Name for the duplicated project.
+      teamGid:
+        type: string
+        description: Team gid the duplicate should belong to.
+  steps:
+  - stepId: startDuplication
+    description: Start the project duplication job.
+    operationId: duplicateProject
+    parameters:
+    - name: project_gid
+      in: path
+      value: $inputs.projectGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.newName
+          team: $inputs.teamGid
+          include:
+          - members
+          - task_notes
+          - task_assignee
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      jobGid: $response.body#/data/gid
+  - stepId: pollJob
+    description: Poll the duplication job until it succeeds.
+    operationId: getJob
+    parameters:
+    - name: job_gid
+      in: path
+      value: $steps.startDuplication.outputs.jobGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/data/status
+      newProjectGid: $response.body#/data/new_project/gid
+    onSuccess:
+    - name: jobDone
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.data.status == "succeeded"
+        type: jsonpath
+    - name: stillRunning
+      type: goto
+      stepId: pollJob
+      criteria:
+      - context: $response.body
+        condition: $.data.status != "succeeded"
+        type: jsonpath
+  outputs:
+    jobGid: $steps.startDuplication.outputs.jobGid
+    newProjectGid: $steps.pollJob.outputs.newProjectGid
+    status: $steps.pollJob.outputs.status

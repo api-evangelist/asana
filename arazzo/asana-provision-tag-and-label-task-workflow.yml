@@ -1,0 +1,77 @@
+arazzo: 1.0.1
+info:
+  title: Asana Provision a Tag and Label a Task
+  summary: Create a tag in a workspace and immediately apply it to an existing task.
+  description: >-
+    A categorization flow. The workflow creates a new tag within a workspace and
+    then applies that freshly minted tag to an existing task. Because the
+    tag-to-task association endpoint lives only in the full Asana description,
+    both steps are addressed through that single source. Each request is written
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-tag-and-label-task
+  summary: Create a workspace tag and apply it to a task.
+  description: >-
+    Creates a tag in a workspace, then labels an existing task with it.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - taskGid
+    - tagName
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid the tag is created in.
+      taskGid:
+        type: string
+        description: Task gid to label with the new tag.
+      tagName:
+        type: string
+        description: Name of the tag to create.
+      tagColor:
+        type: string
+        description: Optional color for the tag (e.g. dark-green).
+  steps:
+  - stepId: createTag
+    description: Create a new tag in the workspace.
+    operationId: $sourceDescriptions.asanaApi.createTagForWorkspace
+    parameters:
+    - name: workspace_gid
+      in: path
+      value: $inputs.workspaceGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.tagName
+          color: $inputs.tagColor
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      tagGid: $response.body#/data/gid
+  - stepId: labelTask
+    description: Apply the new tag to the existing task.
+    operationId: $sourceDescriptions.asanaApi.addTagForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $inputs.taskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          tag: $steps.createTag.outputs.tagGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      tagResult: $response.body#/data
+  outputs:
+    tagGid: $steps.createTag.outputs.tagGid
+    taskGid: $inputs.taskGid

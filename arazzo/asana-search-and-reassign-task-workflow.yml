@@ -1,0 +1,86 @@
+arazzo: 1.0.1
+info:
+  title: Asana Search and Reassign a Task
+  summary: Search a workspace for a task by text, then reassign the first match to a new owner.
+  description: >-
+    A find-and-fix flow. The workflow searches a workspace for tasks matching a
+    text query, branches on whether any match was found, and reassigns the first
+    matching task to a new owner. When no task matches, the flow ends without
+    making changes. Each request is written inline so the search-and-update can
+    be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: search-and-reassign-task
+  summary: Search for a task by text and reassign the first match.
+  description: >-
+    Searches a workspace for a task, then reassigns the first match to a new
+    owner.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - searchText
+    - newAssigneeGid
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid to search within.
+      searchText:
+        type: string
+        description: Free-text query to match tasks on.
+      newAssigneeGid:
+        type: string
+        description: User gid to reassign the matched task to.
+  steps:
+  - stepId: searchTasks
+    description: Search the workspace for tasks matching the text query.
+    operationId: searchTasksForWorkspace
+    parameters:
+    - name: workspace_gid
+      in: path
+      value: $inputs.workspaceGid
+    - name: text
+      in: query
+      value: $inputs.searchText
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      matchedTaskGid: $response.body#/data/0/gid
+    onSuccess:
+    - name: foundMatch
+      type: goto
+      stepId: reassignTask
+      criteria:
+      - context: $response.body
+        condition: $.data.length > 0
+        type: jsonpath
+    - name: noMatch
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.data.length == 0
+        type: jsonpath
+  - stepId: reassignTask
+    description: Reassign the first matched task to the new owner.
+    operationId: updateTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $steps.searchTasks.outputs.matchedTaskGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          assignee: $inputs.newAssigneeGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      taskGid: $response.body#/data/gid
+      assigneeGid: $response.body#/data/assignee/gid
+  outputs:
+    matchedTaskGid: $steps.searchTasks.outputs.matchedTaskGid
+    reassignedTaskGid: $steps.reassignTask.outputs.taskGid

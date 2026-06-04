@@ -1,0 +1,65 @@
+arazzo: 1.0.1
+info:
+  title: Asana Insert a Section Into a Project
+  summary: List a project's sections, then insert a new section at the top of the board.
+  description: >-
+    A board-ordering flow. The workflow lists the existing sections of a project
+    to capture the current first section and then inserts a new section before
+    it, placing the new section at the top of the board. Each request is written
+    inline so the ordering can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: sectionsApi
+  url: ../openapi/asana-sections-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: insert-section-into-project
+  summary: Insert a new section at the top of a project's board.
+  description: >-
+    Lists a project's sections, then inserts a new section before the first
+    existing section.
+  inputs:
+    type: object
+    required:
+    - projectGid
+    - sectionName
+    properties:
+      projectGid:
+        type: string
+        description: Project gid to insert the section into.
+      sectionName:
+        type: string
+        description: Name of the section to insert.
+  steps:
+  - stepId: listSections
+    description: List the project's current sections to find the first one.
+    operationId: getSectionsForProject
+    parameters:
+    - name: project_gid
+      in: path
+      value: $inputs.projectGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstSectionGid: $response.body#/data/0/gid
+  - stepId: insertSection
+    description: Insert the new section before the current first section.
+    operationId: insertSectionForProject
+    parameters:
+    - name: project_gid
+      in: path
+      value: $inputs.projectGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.sectionName
+          before_section: $steps.listSections.outputs.firstSectionGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      sectionGid: $response.body#/data/gid
+  outputs:
+    projectGid: $inputs.projectGid
+    sectionGid: $steps.insertSection.outputs.sectionGid

@@ -1,0 +1,84 @@
+arazzo: 1.0.1
+info:
+  title: Asana Create Dependent Tasks
+  summary: Create a blocking task and a dependent task, then wire the dependency between them.
+  description: >-
+    A sequencing flow. The workflow creates a blocking task and a dependent task
+    in the same workspace, then declares the dependent task as blocked by the
+    blocking task using the dependencies endpoint. Each request is written inline
+    so the sequencing can be read and executed without opening the underlying
+    OpenAPI description. The dependency endpoint lives only in the full Asana
+    description, so every step is addressed through that single source.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: link-task-dependencies
+  summary: Create two tasks and mark one as dependent on the other.
+  description: >-
+    Creates a blocking task and a dependent task, then adds the dependency.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - blockingTaskName
+    - dependentTaskName
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid both tasks belong to.
+      blockingTaskName:
+        type: string
+        description: Name of the task that must finish first.
+      dependentTaskName:
+        type: string
+        description: Name of the task that is blocked.
+  steps:
+  - stepId: createBlockingTask
+    description: Create the task that must complete first.
+    operationId: $sourceDescriptions.asanaApi.createTask
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.blockingTaskName
+          workspace: $inputs.workspaceGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      blockingGid: $response.body#/data/gid
+  - stepId: createDependentTask
+    description: Create the task that is blocked by the first task.
+    operationId: $sourceDescriptions.asanaApi.createTask
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.dependentTaskName
+          workspace: $inputs.workspaceGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      dependentGid: $response.body#/data/gid
+  - stepId: addDependency
+    description: Declare the dependent task as blocked by the blocking task.
+    operationId: $sourceDescriptions.asanaApi.addDependenciesForTask
+    parameters:
+    - name: task_gid
+      in: path
+      value: $steps.createDependentTask.outputs.dependentGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          dependencies:
+          - $steps.createBlockingTask.outputs.blockingGid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      dependencyResult: $response.body#/data
+  outputs:
+    blockingGid: $steps.createBlockingTask.outputs.blockingGid
+    dependentGid: $steps.createDependentTask.outputs.dependentGid

@@ -1,0 +1,81 @@
+arazzo: 1.0.1
+info:
+  title: Asana Add a Custom Field to a Project
+  summary: Create a workspace custom field and attach it to a project as a custom field setting.
+  description: >-
+    A schema-extension flow. The workflow creates a new custom field in a
+    workspace and then attaches that field to a project by creating a custom
+    field setting, making the field available on every task in the project. Each
+    request is written inline so the flow can be read and executed without
+    opening the underlying OpenAPI description. The custom field setting endpoint
+    lives only in the full Asana description, so every step is addressed through
+    that single source.
+  version: 1.0.0
+sourceDescriptions:
+- name: asanaApi
+  url: ../openapi/asana-openapi.yml
+  type: openapi
+workflows:
+- workflowId: add-custom-field-to-project
+  summary: Create a custom field and attach it to a project.
+  description: >-
+    Creates a custom field in a workspace, then adds it to a project as a custom
+    field setting.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - projectGid
+    - fieldName
+    - fieldType
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid the custom field is created in.
+      projectGid:
+        type: string
+        description: Project gid to attach the custom field to.
+      fieldName:
+        type: string
+        description: Name of the custom field.
+      fieldType:
+        type: string
+        description: Field type, one of text, enum, multi_enum, number, date, people.
+      isImportant:
+        type: boolean
+        description: Whether the field appears in the project's task list as a column.
+  steps:
+  - stepId: createCustomField
+    description: Create the custom field in the workspace.
+    operationId: $sourceDescriptions.asanaApi.createCustomField
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.fieldName
+          resource_subtype: $inputs.fieldType
+          workspace: $inputs.workspaceGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      customFieldGid: $response.body#/data/gid
+  - stepId: attachToProject
+    description: Attach the custom field to the project as a custom field setting.
+    operationId: $sourceDescriptions.asanaApi.addCustomFieldSettingForProject
+    parameters:
+    - name: project_gid
+      in: path
+      value: $inputs.projectGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          custom_field: $steps.createCustomField.outputs.customFieldGid
+          is_important: $inputs.isImportant
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      settingResult: $response.body#/data
+  outputs:
+    customFieldGid: $steps.createCustomField.outputs.customFieldGid
+    projectGid: $inputs.projectGid

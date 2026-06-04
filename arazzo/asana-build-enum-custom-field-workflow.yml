@@ -1,0 +1,101 @@
+arazzo: 1.0.1
+info:
+  title: Asana Build an Enum Custom Field With Options
+  summary: Create an enum custom field in a workspace and add two enum options to it.
+  description: >-
+    A field-building flow. The workflow creates an enum custom field in a
+    workspace and then adds two enum options to that field so it offers a set of
+    selectable values. Each request is written inline so the field build can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: customFieldsApi
+  url: ../openapi/asana-custom-fields-api-openapi.yml
+  type: openapi
+- name: enumOptionsApi
+  url: ../openapi/asana-enum-options-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: build-enum-custom-field
+  summary: Create an enum custom field and add two options.
+  description: >-
+    Creates an enum custom field, then adds two enum options to it.
+  inputs:
+    type: object
+    required:
+    - workspaceGid
+    - fieldName
+    - optionOneName
+    - optionTwoName
+    properties:
+      workspaceGid:
+        type: string
+        description: Workspace gid the custom field is created in.
+      fieldName:
+        type: string
+        description: Name of the enum custom field.
+      optionOneName:
+        type: string
+        description: Name of the first enum option.
+      optionOneColor:
+        type: string
+        description: Color of the first enum option (e.g. blue).
+      optionTwoName:
+        type: string
+        description: Name of the second enum option.
+      optionTwoColor:
+        type: string
+        description: Color of the second enum option (e.g. green).
+  steps:
+  - stepId: createField
+    description: Create the enum custom field in the workspace.
+    operationId: createCustomField
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.fieldName
+          resource_subtype: enum
+          workspace: $inputs.workspaceGid
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      customFieldGid: $response.body#/data/gid
+  - stepId: addOptionOne
+    description: Add the first enum option to the field.
+    operationId: createEnumOptionForCustomField
+    parameters:
+    - name: custom_field_gid
+      in: path
+      value: $steps.createField.outputs.customFieldGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.optionOneName
+          color: $inputs.optionOneColor
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      optionOneGid: $response.body#/data/gid
+  - stepId: addOptionTwo
+    description: Add the second enum option to the field.
+    operationId: createEnumOptionForCustomField
+    parameters:
+    - name: custom_field_gid
+      in: path
+      value: $steps.createField.outputs.customFieldGid
+    requestBody:
+      contentType: application/json
+      payload:
+        data:
+          name: $inputs.optionTwoName
+          color: $inputs.optionTwoColor
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      optionTwoGid: $response.body#/data/gid
+  outputs:
+    customFieldGid: $steps.createField.outputs.customFieldGid
+    optionOneGid: $steps.addOptionOne.outputs.optionOneGid
+    optionTwoGid: $steps.addOptionTwo.outputs.optionTwoGid
