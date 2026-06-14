@@ -1,0 +1,1570 @@
+# Asana Conceptual GraphQL Schema
+# Derived from the Asana REST API (https://developers.asana.com/reference/rest-api-reference)
+# No native GraphQL endpoint exists; this schema is for tooling and catalog enrichment.
+
+scalar DateTime
+scalar JSON
+
+# ─────────────────────────────────────────────
+# Enums
+# ─────────────────────────────────────────────
+
+enum ResourceType {
+  task
+  project
+  portfolio
+  workspace
+  team
+  user
+  section
+  tag
+  custom_field
+  story
+  attachment
+  webhook
+  goal
+  goal_relationship
+  time_period
+  job
+  organization_export
+  user_task_list
+  task_template
+  project_template
+  project_brief
+  allocation
+  budget
+  rate
+  audit_log_event
+  role
+  status_update
+}
+
+enum TaskStatus {
+  not_started
+  in_progress
+  completed
+}
+
+enum ProjectColor {
+  dark_pink
+  dark_green
+  dark_blue
+  dark_red
+  dark_teal
+  dark_brown
+  dark_orange
+  dark_purple
+  dark_warm_gray
+  light_pink
+  light_green
+  light_blue
+  light_red
+  light_teal
+  light_yellow
+  light_orange
+  light_purple
+  light_warm_gray
+  none
+}
+
+enum ProjectDefaultView {
+  list
+  board
+  calendar
+  timeline
+}
+
+enum ProjectStatus {
+  on_track
+  at_risk
+  off_track
+  on_hold
+}
+
+enum CustomFieldType {
+  text
+  number
+  enum
+  multi_enum
+  date
+  people
+}
+
+enum CustomFieldFormat {
+  currency
+  identifier
+  percentage
+  custom
+  duration
+  none
+}
+
+enum StoryType {
+  comment
+  system
+}
+
+enum WebhookAction {
+  added
+  changed
+  deleted
+  undeleted
+}
+
+enum AttachmentParentType {
+  task
+  project
+}
+
+enum JobStatus {
+  not_started
+  in_progress
+  succeeded
+  failed
+}
+
+enum StatusUpdateType {
+  project_status_update
+  portfolio_status_update
+  goal_status_update
+}
+
+enum StatusColor {
+  green
+  yellow
+  red
+  blue
+}
+
+enum GoalStatus {
+  green
+  yellow
+  red
+  missed
+  achieved
+}
+
+enum GoalRelationshipType {
+  supporting_goal
+  subgoal
+}
+
+enum TimePeriodPeriodType {
+  quarterly
+  annual
+  monthly
+  weekly
+  custom
+}
+
+enum MembershipAccessLevel {
+  admin
+  editor
+  viewer
+  commenter
+}
+
+enum BudgetType {
+  time
+  cost
+}
+
+enum AuditEventType {
+  user_login_succeeded
+  user_login_failed
+  user_logged_out
+  user_deprovisioned
+  project_created
+  project_deleted
+  task_created
+  task_deleted
+  workspace_setting_updated
+}
+
+# ─────────────────────────────────────────────
+# Common / Shared Types
+# ─────────────────────────────────────────────
+
+type NamedResource {
+  gid: ID!
+  resource_type: String!
+  name: String
+}
+
+type Like {
+  gid: ID!
+  user: User
+}
+
+type TaskCounts {
+  num_completed_tasks: Int
+  num_completed_milestones: Int
+  num_incomplete_tasks: Int
+  num_incomplete_milestones: Int
+  num_milestones: Int
+  num_tasks: Int
+}
+
+type Reaction {
+  gid: ID!
+  resource_type: String!
+  emoji: String
+  user: User
+}
+
+# ─────────────────────────────────────────────
+# User & Workspace
+# ─────────────────────────────────────────────
+
+type User {
+  gid: ID!
+  resource_type: String!
+  name: String
+  email: String
+  photo: UserPhoto
+  workspaces: [Workspace]
+}
+
+type UserPhoto {
+  image_21x21: String
+  image_27x27: String
+  image_36x36: String
+  image_60x60: String
+  image_128x128: String
+}
+
+type Workspace {
+  gid: ID!
+  resource_type: String!
+  name: String
+  is_organization: Boolean
+  email_domains: [String]
+  users: [User]
+  teams: [Team]
+  projects: [Project]
+  tags: [Tag]
+  custom_fields: [CustomField]
+}
+
+type WorkspaceMembership {
+  gid: ID!
+  resource_type: String!
+  user: User
+  workspace: Workspace
+  is_active: Boolean
+  is_admin: Boolean
+  is_guest: Boolean
+  is_limited_access: Boolean
+  user_task_list: UserTaskList
+  created_at: DateTime
+  modified_at: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Team
+# ─────────────────────────────────────────────
+
+type Team {
+  gid: ID!
+  resource_type: String!
+  name: String
+  description: String
+  html_description: String
+  organization: Workspace
+  visibility: String
+  permalink_url: String
+  members: [User]
+  projects: [Project]
+}
+
+type TeamMembership {
+  gid: ID!
+  resource_type: String!
+  user: User
+  team: Team
+  is_guest: Boolean
+  is_limited_access: Boolean
+  is_admin: Boolean
+}
+
+# ─────────────────────────────────────────────
+# Task
+# ─────────────────────────────────────────────
+
+type Task {
+  gid: ID!
+  resource_type: String!
+  name: String
+  notes: String
+  html_notes: String
+  resource_subtype: String
+  assignee: User
+  assignee_status: String
+  completed: Boolean
+  completed_at: DateTime
+  completed_by: User
+  created_at: DateTime
+  created_by: User
+  due_at: DateTime
+  due_on: String
+  start_at: DateTime
+  start_on: String
+  modified_at: DateTime
+  num_hearts: Int
+  num_likes: Int
+  hearted: Boolean
+  liked: Boolean
+  hearts: [Like]
+  likes: [Like]
+  is_rendered_as_separator: Boolean
+  parent: Task
+  subtasks: [Task]
+  dependents: [Task]
+  dependencies: [Task]
+  projects: [Project]
+  memberships: [TaskMembership]
+  followers: [User]
+  workspace: Workspace
+  tags: [Tag]
+  custom_fields: [CustomFieldValue]
+  external: ExternalData
+  permalink_url: String
+  approval_status: String
+  actual_time_minutes: Float
+  stories: [Story]
+  attachments: [Attachment]
+}
+
+type TaskMembership {
+  project: Project
+  section: Section
+}
+
+type ExternalData {
+  gid: String
+  data: String
+}
+
+type CustomFieldValue {
+  gid: ID!
+  resource_type: String!
+  name: String
+  display_value: String
+  type: CustomFieldType
+  number_value: Float
+  text_value: String
+  enum_value: EnumOption
+  multi_enum_values: [EnumOption]
+  date_value: DateValue
+  people_value: [User]
+  enabled: Boolean
+}
+
+type DateValue {
+  date: String
+  date_time: DateTime
+}
+
+type UserTaskList {
+  gid: ID!
+  resource_type: String!
+  name: String
+  owner: User
+  workspace: Workspace
+}
+
+type TaskTemplate {
+  gid: ID!
+  resource_type: String!
+  name: String
+  project: Project
+  template: Boolean
+  created_by: User
+  created_at: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Project
+# ─────────────────────────────────────────────
+
+type Project {
+  gid: ID!
+  resource_type: String!
+  name: String
+  notes: String
+  html_notes: String
+  color: ProjectColor
+  icon: String
+  layout: String
+  default_view: ProjectDefaultView
+  archived: Boolean
+  public: Boolean
+  completed: Boolean
+  completed_at: DateTime
+  created_at: DateTime
+  modified_at: DateTime
+  due_date: String
+  due_on: String
+  start_on: String
+  owner: User
+  created_from_template: ProjectTemplate
+  current_status: ProjectStatusUpdate
+  current_status_update: StatusUpdate
+  members: [User]
+  followers: [User]
+  team: Team
+  workspace: Workspace
+  sections: [Section]
+  tasks: [Task]
+  custom_fields: [CustomField]
+  custom_field_settings: [CustomFieldSetting]
+  permalink_url: String
+  task_counts: TaskCounts
+  privacy_setting: String
+  minimum_access_level_for_customization: String
+  minimum_access_level_for_sharing: String
+  default_access_level: String
+  project_brief: ProjectBrief
+}
+
+type ProjectStatusUpdate {
+  gid: ID!
+  resource_type: String!
+  title: String
+  text: String
+  html_text: String
+  color: StatusColor
+  author: User
+  created_by: User
+  created_at: DateTime
+  modified_at: DateTime
+}
+
+type ProjectBrief {
+  gid: ID!
+  resource_type: String!
+  title: String
+  text: String
+  html_text: String
+  permalink_url: String
+  project: Project
+}
+
+type ProjectTemplate {
+  gid: ID!
+  resource_type: String!
+  name: String
+  description: String
+  html_description: String
+  color: ProjectColor
+  owner: User
+  team: Team
+  public: Boolean
+  requested_dates: [DateVariable]
+  requested_roles: [NamedResource]
+}
+
+type DateVariable {
+  gid: String
+  name: String
+  description: String
+}
+
+type ProjectMembership {
+  gid: ID!
+  resource_type: String!
+  user: User
+  project: Project
+  write_access: String
+}
+
+# ─────────────────────────────────────────────
+# Section
+# ─────────────────────────────────────────────
+
+type Section {
+  gid: ID!
+  resource_type: String!
+  name: String
+  project: Project
+  created_at: DateTime
+  tasks: [Task]
+}
+
+# ─────────────────────────────────────────────
+# Tag
+# ─────────────────────────────────────────────
+
+type Tag {
+  gid: ID!
+  resource_type: String!
+  name: String
+  color: String
+  notes: String
+  created_at: DateTime
+  followers: [User]
+  workspace: Workspace
+  permalink_url: String
+}
+
+# ─────────────────────────────────────────────
+# Custom Fields
+# ─────────────────────────────────────────────
+
+type CustomField {
+  gid: ID!
+  resource_type: String!
+  name: String
+  description: String
+  type: CustomFieldType
+  format: CustomFieldFormat
+  enabled: Boolean
+  is_global_to_workspace: Boolean
+  has_notifications_enabled: Boolean
+  is_formula_field: Boolean
+  is_value_read_only: Boolean
+  precision: Int
+  currency_code: String
+  custom_label: String
+  custom_label_position: String
+  enum_options: [EnumOption]
+  created_by: User
+  date_value: DateValue
+  number_value: Float
+  text_value: String
+  people_value: [User]
+  asana_created_field: String
+}
+
+type EnumOption {
+  gid: ID!
+  resource_type: String!
+  name: String
+  color: String
+  enabled: Boolean
+}
+
+type CustomFieldSetting {
+  gid: ID!
+  resource_type: String!
+  custom_field: CustomField
+  is_important: Boolean
+  parent: NamedResource
+  project: Project
+}
+
+# ─────────────────────────────────────────────
+# Portfolio
+# ─────────────────────────────────────────────
+
+type Portfolio {
+  gid: ID!
+  resource_type: String!
+  name: String
+  color: String
+  owner: User
+  created_at: DateTime
+  created_by: User
+  due_on: String
+  start_on: String
+  public: Boolean
+  workspace: Workspace
+  members: [User]
+  items: [Project]
+  custom_fields: [CustomField]
+  custom_field_settings: [CustomFieldSetting]
+  current_status_update: StatusUpdate
+  permalink_url: String
+}
+
+type PortfolioMembership {
+  gid: ID!
+  resource_type: String!
+  portfolio: Portfolio
+  user: User
+  access_level: MembershipAccessLevel
+}
+
+# ─────────────────────────────────────────────
+# Goal
+# ─────────────────────────────────────────────
+
+type Goal {
+  gid: ID!
+  resource_type: String!
+  name: String
+  notes: String
+  html_notes: String
+  description: String
+  html_description: String
+  status: GoalStatus
+  owner: User
+  followers: [User]
+  team: Team
+  workspace: Workspace
+  time_period: TimePeriod
+  metric: GoalMetric
+  due_on: String
+  start_on: String
+  privacy_setting: String
+  liked: Boolean
+  num_likes: Int
+  likes: [Like]
+  is_workspace_level: Boolean
+  permalink_url: String
+  current_status_update: StatusUpdate
+}
+
+type GoalMetric {
+  gid: ID!
+  resource_type: String!
+  name: String
+  unit: String
+  currency_code: String
+  initial_number_value: Float
+  current_number_value: Float
+  target_number_value: Float
+  progress_source: String
+  measurement: String
+  can_manage: Boolean
+}
+
+type GoalRelationship {
+  gid: ID!
+  resource_type: String!
+  resource_subtype: GoalRelationshipType
+  contribution_weight: Float
+  supporting_resource: NamedResource
+  supported_goal: Goal
+}
+
+type TimePeriod {
+  gid: ID!
+  resource_type: String!
+  display_name: String
+  start_on: String
+  end_on: String
+  period: TimePeriodPeriodType
+  parent: TimePeriod
+}
+
+# ─────────────────────────────────────────────
+# Status Update
+# ─────────────────────────────────────────────
+
+type StatusUpdate {
+  gid: ID!
+  resource_type: String!
+  title: String
+  text: String
+  html_text: String
+  type: StatusUpdateType
+  status_type: StatusColor
+  author: User
+  created_by: User
+  created_at: DateTime
+  modified_at: DateTime
+  parent: NamedResource
+  num_hearts: Int
+  num_likes: Int
+  hearted: Boolean
+  liked: Boolean
+  hearts: [Like]
+  likes: [Like]
+}
+
+# ─────────────────────────────────────────────
+# Story
+# ─────────────────────────────────────────────
+
+type Story {
+  gid: ID!
+  resource_type: String!
+  created_at: DateTime
+  created_by: User
+  resource_subtype: String
+  type: StoryType
+  text: String
+  html_text: String
+  is_pinned: Boolean
+  is_edited: Boolean
+  liked: Boolean
+  num_likes: Int
+  likes: [Like]
+  hearted: Boolean
+  num_hearts: Int
+  hearts: [Like]
+  previews: [StoryPreview]
+  old_name: String
+  new_name: String
+  old_text_value: String
+  new_text_value: String
+  old_number_value: Float
+  new_number_value: Float
+  old_enum_value: EnumOption
+  new_enum_value: EnumOption
+  old_multi_enum_values: [EnumOption]
+  new_multi_enum_values: [EnumOption]
+  old_dates: StoryDates
+  new_dates: StoryDates
+  old_resource_subtype: String
+  new_resource_subtype: String
+  story: Story
+  assignee: User
+  follower: User
+  old_section: Section
+  new_section: Section
+  task: Task
+  project: Project
+  tag: Tag
+  custom_field: CustomField
+  duplicate_of: Task
+  duplicated_from: Task
+  dependency: Task
+  source: String
+  target: NamedResource
+}
+
+type StoryPreview {
+  fallback: String
+  footer: String
+  header: String
+  header_link: String
+  html_text: String
+  text: String
+  title: String
+  title_link: String
+}
+
+type StoryDates {
+  due_at: DateTime
+  due_on: String
+  start_on: String
+}
+
+# ─────────────────────────────────────────────
+# Attachment
+# ─────────────────────────────────────────────
+
+type Attachment {
+  gid: ID!
+  resource_type: String!
+  name: String
+  resource_subtype: String
+  created_at: DateTime
+  download_url: String
+  permanent_url: String
+  host: String
+  parent: NamedResource
+  size: Int
+  view_url: String
+  connected_to_app: Boolean
+}
+
+# ─────────────────────────────────────────────
+# Event
+# ─────────────────────────────────────────────
+
+type Event {
+  user: User
+  resource: NamedResource
+  type: String
+  action: WebhookAction
+  parent: NamedResource
+  created_at: DateTime
+  change: EventChange
+}
+
+type EventChange {
+  field: String
+  action: String
+  added_value: NamedResource
+  removed_value: NamedResource
+  new_value: NamedResource
+}
+
+# ─────────────────────────────────────────────
+# Webhook
+# ─────────────────────────────────────────────
+
+type Webhook {
+  gid: ID!
+  resource_type: String!
+  resource: NamedResource
+  target: String
+  active: Boolean
+  created_at: DateTime
+  last_success_at: DateTime
+  last_failure_at: DateTime
+  last_failure_content: String
+  filters: [WebhookFilter]
+}
+
+type WebhookFilter {
+  resource_type: String
+  resource_subtype: String
+  action: String
+  fields: [String]
+}
+
+# ─────────────────────────────────────────────
+# Job
+# ─────────────────────────────────────────────
+
+type Job {
+  gid: ID!
+  resource_type: String!
+  resource_subtype: String
+  status: JobStatus
+  new_project: Project
+  new_task: Task
+  new_project_template: ProjectTemplate
+}
+
+# ─────────────────────────────────────────────
+# OrganizationExport
+# ─────────────────────────────────────────────
+
+type OrganizationExport {
+  gid: ID!
+  resource_type: String!
+  created_at: DateTime
+  download_url: String
+  state: String
+  organization: Workspace
+}
+
+# ─────────────────────────────────────────────
+# Allocation
+# ─────────────────────────────────────────────
+
+type Allocation {
+  gid: ID!
+  resource_type: String!
+  assignee: User
+  parent: Project
+  start_date: String
+  end_date: String
+  effort: AllocationEffort
+  created_by: User
+  created_at: DateTime
+  modified_at: DateTime
+}
+
+type AllocationEffort {
+  type: String
+  value: Float
+  unit: String
+}
+
+# ─────────────────────────────────────────────
+# Budget
+# ─────────────────────────────────────────────
+
+type Budget {
+  gid: ID!
+  resource_type: String!
+  parent: NamedResource
+  type: BudgetType
+  amount: Float
+  currency_code: String
+  created_at: DateTime
+  modified_at: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Rate
+# ─────────────────────────────────────────────
+
+type Rate {
+  gid: ID!
+  resource_type: String!
+  assignee: User
+  parent: Project
+  currency_code: String
+  amount: Float
+  created_at: DateTime
+  modified_at: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Audit Log
+# ─────────────────────────────────────────────
+
+type AuditLogEvent {
+  gid: ID!
+  created_at: DateTime
+  event_type: String
+  event_category: String
+  actor: AuditActor
+  resource: AuditResource
+  details: JSON
+  context: AuditContext
+}
+
+type AuditActor {
+  actor_type: String
+  gid: ID
+  name: String
+  email: String
+}
+
+type AuditResource {
+  resource_type: String
+  gid: ID
+  name: String
+  email: String
+}
+
+type AuditContext {
+  context_type: String
+  client_ip_address: String
+  user_agent: String
+  api_authentication_method: String
+  oauth_app_name: String
+  session_id: String
+}
+
+# ─────────────────────────────────────────────
+# Role (RBAC)
+# ─────────────────────────────────────────────
+
+type Role {
+  gid: ID!
+  resource_type: String!
+  name: String
+  description: String
+  workspace: Workspace
+  permissions: [String]
+  created_at: DateTime
+  modified_at: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Membership (unified)
+# ─────────────────────────────────────────────
+
+type Membership {
+  gid: ID!
+  resource_type: String!
+  member: NamedResource
+  parent: NamedResource
+  access_level: MembershipAccessLevel
+  created_at: DateTime
+  modified_at: DateTime
+}
+
+# ─────────────────────────────────────────────
+# Queries
+# ─────────────────────────────────────────────
+
+type Query {
+  # Tasks
+  task(gid: ID!): Task
+  tasks(project: ID, section: ID, assignee: ID, workspace: ID, completed_since: String, limit: Int, offset: String): [Task]
+  subtasks(task: ID!): [Task]
+  taskDependencies(task: ID!): [Task]
+  taskDependents(task: ID!): [Task]
+
+  # Projects
+  project(gid: ID!): Project
+  projects(workspace: ID, team: ID, archived: Boolean, limit: Int, offset: String): [Project]
+  projectTaskCounts(project: ID!): TaskCounts
+  projectSections(project: ID!): [Section]
+  projectMemberships(project: ID!): [ProjectMembership]
+  projectCustomFieldSettings(project: ID!): [CustomFieldSetting]
+  projectStatuses(project: ID!): [ProjectStatusUpdate]
+  projectBrief(project: ID!): ProjectBrief
+
+  # Sections
+  section(gid: ID!): Section
+  sections(project: ID!): [Section]
+
+  # Tags
+  tag(gid: ID!): Tag
+  tags(workspace: ID, limit: Int, offset: String): [Tag]
+  tagsForTask(task: ID!): [Tag]
+  tagsForWorkspace(workspace: ID!): [Tag]
+
+  # Users
+  user(gid: ID!): User
+  me: User
+  users(workspace: ID, team: ID, limit: Int, offset: String): [User]
+  userTaskList(user: ID!, workspace: ID!): UserTaskList
+
+  # Workspaces
+  workspace(gid: ID!): Workspace
+  workspaces(limit: Int, offset: String): [Workspace]
+  workspaceMembership(gid: ID!): WorkspaceMembership
+  workspaceMemberships(workspace: ID, user: ID, limit: Int, offset: String): [WorkspaceMembership]
+
+  # Teams
+  team(gid: ID!): Team
+  teams(workspace: ID, organization: ID, limit: Int, offset: String): [Team]
+  teamsForUser(user: ID!, organization: ID!): [Team]
+  teamMembership(gid: ID!): TeamMembership
+  teamMemberships(team: ID, user: ID, workspace: ID, limit: Int, offset: String): [TeamMembership]
+
+  # Portfolios
+  portfolio(gid: ID!): Portfolio
+  portfolios(workspace: ID!, owner: ID, limit: Int, offset: String): [Portfolio]
+  portfolioItems(portfolio: ID!): [Project]
+  portfolioMembership(gid: ID!): PortfolioMembership
+  portfolioMemberships(portfolio: ID, user: ID, workspace: ID, limit: Int, offset: String): [PortfolioMembership]
+  portfolioCustomFieldSettings(portfolio: ID!): [CustomFieldSetting]
+
+  # Goals
+  goal(gid: ID!): Goal
+  goals(workspace: ID, team: ID, time_period: ID, is_workspace_level: Boolean, limit: Int, offset: String): [Goal]
+  goalRelationships(goal: ID!, resource_subtype: GoalRelationshipType): [GoalRelationship]
+
+  # Time Periods
+  timePeriod(gid: ID!): TimePeriod
+  timePeriods(workspace: ID!, start_on: String, end_on: String): [TimePeriod]
+
+  # Custom Fields
+  customField(gid: ID!): CustomField
+  customFields(workspace: ID!, limit: Int, offset: String): [CustomField]
+
+  # Stories
+  story(gid: ID!): Story
+  storiesForTask(task: ID!, limit: Int, offset: String): [Story]
+  storiesForProject(project: ID!, limit: Int, offset: String): [Story]
+
+  # Attachments
+  attachment(gid: ID!): Attachment
+  attachments(parent: ID!, limit: Int, offset: String): [Attachment]
+
+  # Webhooks
+  webhook(gid: ID!): Webhook
+  webhooks(workspace: ID!, resource: ID, limit: Int, offset: String): [Webhook]
+
+  # Events
+  events(resource: ID!, sync: String): EventPage
+
+  # Status Updates
+  statusUpdate(gid: ID!): StatusUpdate
+  statusUpdates(parent: ID!, limit: Int, offset: String): [StatusUpdate]
+
+  # Jobs
+  job(gid: ID!): Job
+
+  # Organization Exports
+  organizationExport(gid: ID!): OrganizationExport
+
+  # Task Templates
+  taskTemplate(gid: ID!): TaskTemplate
+  taskTemplates(project: ID!, limit: Int, offset: String): [TaskTemplate]
+
+  # Project Templates
+  projectTemplate(gid: ID!): ProjectTemplate
+  projectTemplates(team: ID, limit: Int, offset: String): [ProjectTemplate]
+
+  # Memberships (unified)
+  membership(gid: ID!): Membership
+  memberships(parent: ID, member: ID, limit: Int, offset: String): [Membership]
+
+  # Allocations
+  allocation(gid: ID!): Allocation
+  allocations(project: ID, assignee: ID, limit: Int, offset: String): [Allocation]
+
+  # Budgets
+  budget(gid: ID!): Budget
+  budgets(parent: ID!, limit: Int, offset: String): [Budget]
+
+  # Rates
+  rate(gid: ID!): Rate
+  rates(project: ID!, limit: Int, offset: String): [Rate]
+
+  # Audit Log
+  auditLogEvents(workspace: ID!, start_at: DateTime, end_at: DateTime, event_type: String, actor_type: String, actor_gid: ID, resource_gid: ID, limit: Int, offset: String): [AuditLogEvent]
+
+  # Roles
+  role(gid: ID!): Role
+  roles(workspace: ID!, limit: Int, offset: String): [Role]
+
+  # Typeahead
+  typeahead(workspace: ID!, resource_type: String!, query: String, count: Int): [NamedResource]
+}
+
+type EventPage {
+  data: [Event]
+  sync: String
+}
+
+# ─────────────────────────────────────────────
+# Mutations
+# ─────────────────────────────────────────────
+
+type Mutation {
+  # Tasks
+  createTask(input: CreateTaskInput!): Task
+  updateTask(gid: ID!, input: UpdateTaskInput!): Task
+  deleteTask(gid: ID!): DeletePayload
+  setParentForTask(task: ID!, parent: ID, insert_before: ID, insert_after: ID): Task
+  addProjectToTask(task: ID!, project: ID!, section: ID, insert_before: ID, insert_after: ID): EmptyPayload
+  removeProjectFromTask(task: ID!, project: ID!): EmptyPayload
+  addFollowersToTask(task: ID!, followers: [ID!]!): Task
+  removeFollowerFromTask(task: ID!, followers: [ID!]!): Task
+  addTagToTask(task: ID!, tag: ID!): EmptyPayload
+  removeTagFromTask(task: ID!, tag: ID!): EmptyPayload
+  addDependenciesToTask(task: ID!, dependencies: [ID!]!): EmptyPayload
+  removeDependenciesFromTask(task: ID!, dependencies: [ID!]!): EmptyPayload
+  addDependentsToTask(task: ID!, dependents: [ID!]!): EmptyPayload
+  removeDependentsFromTask(task: ID!, dependents: [ID!]!): EmptyPayload
+  duplicateTask(task: ID!, name: String!, include: [String]): Job
+
+  # Projects
+  createProject(input: CreateProjectInput!): Project
+  updateProject(gid: ID!, input: UpdateProjectInput!): Project
+  deleteProject(gid: ID!): DeletePayload
+  duplicateProject(project: ID!, name: String!, team: ID, schedule_dates: ScheduleDatesInput, include: [String]): Job
+  addFollowersToProject(project: ID!, followers: [ID!]!): Project
+  removeFollowersFromProject(project: ID!, followers: [ID!]!): Project
+  addMembersToProject(project: ID!, members: [ID!]!): Project
+  removeMembersFromProject(project: ID!, members: [ID!]!): Project
+  addCustomFieldToProject(project: ID!, custom_field: ID!, is_important: Boolean): CustomFieldSetting
+  removeCustomFieldFromProject(project: ID!, custom_field: ID!): EmptyPayload
+  createProjectFromTemplate(project_template: ID!, name: String!, team: ID, workspace: ID, is_strict: Boolean, public: Boolean, requested_dates: [RequestedDateInput], requested_roles: [RequestedRoleInput]): Job
+  createProjectBrief(project: ID!, input: CreateProjectBriefInput!): ProjectBrief
+  updateProjectBrief(gid: ID!, input: UpdateProjectBriefInput!): ProjectBrief
+  deleteProjectBrief(gid: ID!): DeletePayload
+
+  # Sections
+  createSectionForProject(project: ID!, name: String!, insert_before: ID, insert_after: ID): Section
+  updateSection(gid: ID!, name: String!): Section
+  deleteSection(gid: ID!): DeletePayload
+  addTaskToSection(section: ID!, task: ID!, insert_before: ID, insert_after: ID): EmptyPayload
+  insertSectionForProject(project: ID!, section: ID!, before_section: ID, after_section: ID): EmptyPayload
+  moveSectionsForProject(project: ID!, section: ID!, after_section: ID): EmptyPayload
+
+  # Tags
+  createTag(input: CreateTagInput!): Tag
+  updateTag(gid: ID!, input: UpdateTagInput!): Tag
+  deleteTag(gid: ID!): DeletePayload
+
+  # Stories
+  createStoryForTask(task: ID!, text: String!): Story
+  updateStory(gid: ID!, text: String!, is_pinned: Boolean): Story
+  deleteStory(gid: ID!): DeletePayload
+
+  # Attachments
+  createAttachmentForTask(task: ID!, resource_subtype: String!, name: String, url: String): Attachment
+  deleteAttachment(gid: ID!): DeletePayload
+
+  # Webhooks
+  createWebhook(resource: ID!, target: String!, filters: [WebhookFilterInput]): Webhook
+  updateWebhook(gid: ID!, filters: [WebhookFilterInput]): Webhook
+  deleteWebhook(gid: ID!): DeletePayload
+
+  # Custom Fields
+  createCustomField(input: CreateCustomFieldInput!): CustomField
+  updateCustomField(gid: ID!, input: UpdateCustomFieldInput!): CustomField
+  deleteCustomField(gid: ID!): DeletePayload
+  createEnumOptionForCustomField(custom_field: ID!, name: String!, color: String, enabled: Boolean, insert_before: ID, insert_after: ID): EnumOption
+  updateEnumOption(gid: ID!, name: String, color: String, enabled: Boolean): EnumOption
+  reorderCustomFieldEnum(custom_field: ID!, enum_option: ID!, before_enum_option: ID, after_enum_option: ID): CustomField
+  addCustomFieldToPortfolio(portfolio: ID!, custom_field: ID!, is_important: Boolean): EmptyPayload
+  removeCustomFieldFromPortfolio(portfolio: ID!, custom_field: ID!): EmptyPayload
+
+  # Portfolios
+  createPortfolio(input: CreatePortfolioInput!): Portfolio
+  updatePortfolio(gid: ID!, input: UpdatePortfolioInput!): Portfolio
+  deletePortfolio(gid: ID!): DeletePayload
+  addItemsToPortfolio(portfolio: ID!, items: [ID!]!): EmptyPayload
+  removeItemFromPortfolio(portfolio: ID!, item: ID!): EmptyPayload
+  addMembersToPortfolio(portfolio: ID!, members: [ID!]!): Portfolio
+  removeMembersFromPortfolio(portfolio: ID!, members: [ID!]!): Portfolio
+
+  # Goals
+  createGoal(input: CreateGoalInput!): Goal
+  updateGoal(gid: ID!, input: UpdateGoalInput!): Goal
+  deleteGoal(gid: ID!): DeletePayload
+  addFollowersToGoal(goal: ID!, followers: [ID!]!): Goal
+  removeFollowersFromGoal(goal: ID!, followers: [ID!]!): Goal
+  addSubgoal(parent_goal: ID!, subgoal: ID!): EmptyPayload
+  removeSubgoal(parent_goal: ID!, subgoal: ID!): EmptyPayload
+  addSupportingWorkToGoal(goal: ID!, supporting_work: ID!): GoalRelationship
+  removeSupportingWorkFromGoal(goal_relationship: ID!): EmptyPayload
+  updateGoalRelationship(gid: ID!, contribution_weight: Float!): GoalRelationship
+  updateGoalMetric(goal: ID!, current_number_value: Float): Goal
+
+  # Status Updates
+  createStatusUpdate(parent: ID!, input: CreateStatusUpdateInput!): StatusUpdate
+  deleteStatusUpdate(gid: ID!): DeletePayload
+
+  # Teams
+  createTeam(input: CreateTeamInput!): Team
+  updateTeam(gid: ID!, input: UpdateTeamInput!): Team
+  addUserToTeam(team: ID!, user: ID!): TeamMembership
+  removeUserFromTeam(team: ID!, user: ID!): EmptyPayload
+
+  # Users
+  removeUserFromWorkspace(workspace: ID!, user: ID!): EmptyPayload
+
+  # Workspace
+  updateWorkspace(gid: ID!, name: String!): Workspace
+  addUserToWorkspace(workspace: ID!, user: ID!): WorkspaceMembership
+  removeUserFromWorkspace2(workspace: ID!, user: ID!): EmptyPayload
+
+  # Task Templates
+  instantiateTaskTemplate(task_template: ID!, name: String!): Job
+  deleteTaskTemplate(gid: ID!): DeletePayload
+
+  # Project Templates
+  deleteProjectTemplate(gid: ID!): DeletePayload
+
+  # Jobs (read-only; no mutations)
+
+  # Memberships
+  createMembership(parent: ID!, member: ID!, access_level: MembershipAccessLevel): Membership
+  updateMembership(gid: ID!, access_level: MembershipAccessLevel!): Membership
+  deleteMembership(gid: ID!): DeletePayload
+
+  # Allocations
+  createAllocation(input: CreateAllocationInput!): Allocation
+  updateAllocation(gid: ID!, input: UpdateAllocationInput!): Allocation
+  deleteAllocation(gid: ID!): DeletePayload
+
+  # Budgets
+  createBudget(input: CreateBudgetInput!): Budget
+  updateBudget(gid: ID!, input: UpdateBudgetInput!): Budget
+  deleteBudget(gid: ID!): DeletePayload
+
+  # Rates
+  createRate(input: CreateRateInput!): Rate
+  updateRate(gid: ID!, input: UpdateRateInput!): Rate
+  deleteRate(gid: ID!): DeletePayload
+
+  # Roles
+  createRole(input: CreateRoleInput!): Role
+  updateRole(gid: ID!, input: UpdateRoleInput!): Role
+  deleteRole(gid: ID!): DeletePayload
+
+  # Rule Triggers
+  triggerRule(rule_trigger: ID!, data: JSON): EmptyPayload
+
+  # Batch
+  batch(actions: [BatchActionInput!]!): [BatchResult]
+
+  # Organization Export
+  createOrganizationExport(organization: ID!): OrganizationExport
+}
+
+# ─────────────────────────────────────────────
+# Input Types
+# ─────────────────────────────────────────────
+
+input CreateTaskInput {
+  name: String!
+  notes: String
+  html_notes: String
+  assignee: ID
+  due_at: DateTime
+  due_on: String
+  start_on: String
+  start_at: DateTime
+  projects: [ID]
+  parent: ID
+  section: ID
+  followers: [ID]
+  tags: [ID]
+  workspace: ID
+  resource_subtype: String
+  approval_status: String
+  custom_fields: JSON
+  external: ExternalDataInput
+}
+
+input UpdateTaskInput {
+  name: String
+  notes: String
+  html_notes: String
+  assignee: ID
+  assignee_status: String
+  completed: Boolean
+  due_at: DateTime
+  due_on: String
+  start_on: String
+  start_at: DateTime
+  resource_subtype: String
+  approval_status: String
+  actual_time_minutes: Float
+  custom_fields: JSON
+  external: ExternalDataInput
+}
+
+input ExternalDataInput {
+  gid: String
+  data: String
+}
+
+input CreateProjectInput {
+  name: String!
+  notes: String
+  html_notes: String
+  team: ID
+  workspace: ID
+  color: ProjectColor
+  icon: String
+  layout: String
+  default_view: ProjectDefaultView
+  due_date: String
+  due_on: String
+  start_on: String
+  is_template: Boolean
+  public: Boolean
+  archived: Boolean
+  privacy_setting: String
+  default_access_level: String
+  custom_fields: JSON
+  followers: [ID]
+}
+
+input UpdateProjectInput {
+  name: String
+  notes: String
+  html_notes: String
+  color: ProjectColor
+  icon: String
+  default_view: ProjectDefaultView
+  due_date: String
+  due_on: String
+  start_on: String
+  public: Boolean
+  archived: Boolean
+  completed: Boolean
+  owner: ID
+  team: ID
+  privacy_setting: String
+  default_access_level: String
+  custom_fields: JSON
+}
+
+input ScheduleDatesInput {
+  should_skip_weekends: Boolean!
+  due_on: String
+  start_on: String
+}
+
+input RequestedDateInput {
+  gid: String!
+  value: String!
+}
+
+input RequestedRoleInput {
+  role: String!
+  user: ID
+}
+
+input CreateProjectBriefInput {
+  title: String
+  html_text: String!
+}
+
+input UpdateProjectBriefInput {
+  title: String
+  html_text: String
+}
+
+input CreateTagInput {
+  name: String!
+  color: String
+  notes: String
+  workspace: ID!
+  followers: [ID]
+}
+
+input UpdateTagInput {
+  name: String
+  color: String
+  notes: String
+}
+
+input WebhookFilterInput {
+  resource_type: String
+  resource_subtype: String
+  action: String
+  fields: [String]
+}
+
+input CreateCustomFieldInput {
+  name: String!
+  type: CustomFieldType!
+  workspace: ID!
+  description: String
+  enabled: Boolean
+  format: CustomFieldFormat
+  precision: Int
+  currency_code: String
+  custom_label: String
+  custom_label_position: String
+  enum_options: [EnumOptionInput]
+  has_notifications_enabled: Boolean
+  is_global_to_workspace: Boolean
+}
+
+input UpdateCustomFieldInput {
+  name: String
+  description: String
+  enabled: Boolean
+  format: CustomFieldFormat
+  precision: Int
+  currency_code: String
+  custom_label: String
+  custom_label_position: String
+  has_notifications_enabled: Boolean
+  is_global_to_workspace: Boolean
+}
+
+input EnumOptionInput {
+  name: String!
+  color: String
+  enabled: Boolean
+}
+
+input CreatePortfolioInput {
+  name: String!
+  workspace: ID!
+  color: String
+  public: Boolean
+  members: [ID]
+}
+
+input UpdatePortfolioInput {
+  name: String
+  color: String
+  public: Boolean
+}
+
+input CreateGoalInput {
+  name: String!
+  workspace: ID!
+  notes: String
+  html_notes: String
+  due_on: String
+  start_on: String
+  owner: ID
+  team: ID
+  time_period: ID
+  privacy_setting: String
+  is_workspace_level: Boolean
+  followers: [ID]
+}
+
+input UpdateGoalInput {
+  name: String
+  notes: String
+  html_notes: String
+  due_on: String
+  start_on: String
+  owner: ID
+  team: ID
+  time_period: ID
+  privacy_setting: String
+  status: GoalStatus
+}
+
+input CreateStatusUpdateInput {
+  title: String!
+  text: String
+  html_text: String
+  status_type: StatusColor!
+}
+
+input CreateTeamInput {
+  name: String!
+  organization: ID!
+  description: String
+  html_description: String
+  visibility: String
+}
+
+input UpdateTeamInput {
+  name: String
+  description: String
+  html_description: String
+  visibility: String
+}
+
+input CreateAllocationInput {
+  assignee: ID!
+  parent: ID!
+  start_date: String!
+  end_date: String!
+  effort: AllocationEffortInput
+}
+
+input UpdateAllocationInput {
+  start_date: String
+  end_date: String
+  effort: AllocationEffortInput
+}
+
+input AllocationEffortInput {
+  type: String!
+  value: Float!
+  unit: String
+}
+
+input CreateBudgetInput {
+  parent: ID!
+  type: BudgetType!
+  amount: Float!
+  currency_code: String
+}
+
+input UpdateBudgetInput {
+  amount: Float
+  currency_code: String
+}
+
+input CreateRateInput {
+  assignee: ID!
+  parent: ID!
+  amount: Float!
+  currency_code: String!
+}
+
+input UpdateRateInput {
+  amount: Float
+  currency_code: String
+}
+
+input CreateRoleInput {
+  name: String!
+  workspace: ID!
+  description: String
+  permissions: [String]
+}
+
+input UpdateRoleInput {
+  name: String
+  description: String
+  permissions: [String]
+}
+
+input BatchActionInput {
+  relative_path: String!
+  method: String!
+  data: JSON
+  options: JSON
+}
+
+# ─────────────────────────────────────────────
+# Response Types
+# ─────────────────────────────────────────────
+
+type DeletePayload {
+  gid: ID
+}
+
+type EmptyPayload {
+  data: JSON
+}
+
+type BatchResult {
+  status_code: Int
+  headers: JSON
+  body: JSON
+}
