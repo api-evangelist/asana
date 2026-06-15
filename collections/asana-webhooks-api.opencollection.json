@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Webhooks API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get multiple webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/webhooks",
+            "params": [
+              {
+                "name": "workspace",
+                "value": "1331",
+                "type": "query",
+                "description": "The workspace to query for webhooks in."
+              },
+              {
+                "name": "resource",
+                "value": "51648",
+                "type": "query",
+                "description": "Only return webhooks for the given resource."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get the compact representation of all webhooks your app has registered for the authenticated user in the given workspace."
+        },
+        {
+          "info": {
+            "name": "Asana Establish a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Establishing a webhook is a two-part process. First, a simple HTTP POST request initiates the creation. Then a confirmation handshake occurs where we send a test POST to the target with an X-Hook-Secret header that must be echoed back."
+        },
+        {
+          "info": {
+            "name": "Asana Get a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/webhooks/:webhook_gid",
+            "params": [
+              {
+                "name": "webhook_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the full record for the given webhook."
+        },
+        {
+          "info": {
+            "name": "Asana Update a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/webhooks/:webhook_gid",
+            "params": [
+              {
+                "name": "webhook_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing webhook."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/webhooks/:webhook_gid",
+            "params": [
+              {
+                "name": "webhook_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes the specified webhook."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

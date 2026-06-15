@@ -1,0 +1,447 @@
+{
+  "info": {
+    "_postman_id": "ccc159c5-2767-46c5-a605-0ef4245b46d5",
+    "name": "Asana Events API",
+    "description": "The Asana Events API allows users to track changes to resources using event subscriptions. Events are delivered within a minute on average, designed for at-most-once delivery, and are retrievable from the event stream for 24 hours.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:40.000Z",
+    "updatedAt": "2026-06-05T13:13:40.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ccc159c5-2767-46c5-a605-0ef4245b46d5"
+  },
+  "item": [
+    {
+      "name": "events",
+      "item": [
+        {
+          "name": "Asana Get events on a resource",
+          "id": "d87c06c7-7fa3-4577-912e-a1c4f44c80dd",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/events?resource=<string>&sync=<string>&opt_fields=<string>,<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "events"
+              ],
+              "query": [
+                {
+                  "description": "(Required) A resource ID to subscribe to.",
+                  "key": "resource",
+                  "value": "<string>"
+                },
+                {
+                  "description": "A sync token received from the last request, or none on first request.",
+                  "key": "sync",
+                  "value": "<string>"
+                },
+                {
+                  "key": "opt_fields",
+                  "value": "<string>,<string>"
+                }
+              ]
+            },
+            "description": "Returns the full record for all events that have occurred since the sync token was created. A GET request to the endpoint with no sync token will return a 412 error providing a new sync token."
+          },
+          "response": [
+            {
+              "id": "bfd5bc41-84b6-4fd3-859f-c1e595b79679",
+              "name": "Successfully retrieved events.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?resource=<string>&sync=<string>&opt_fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) A resource ID to subscribe to.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A sync token received from the last request, or none on first request.",
+                      "key": "sync",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"user\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"resource\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"type\": \"<string>\",\n      \"action\": \"deleted\",\n      \"parent\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"change\": {\n        \"field\": \"<string>\",\n        \"action\": \"changed\",\n        \"new_value\": {\n          \"gid\": \"<string>\",\n          \"resource_type\": \"<string>\"\n        },\n        \"added_value\": {\n          \"gid\": \"<string>\",\n          \"resource_type\": \"<string>\"\n        },\n        \"removed_value\": {\n          \"gid\": \"<string>\",\n          \"resource_type\": \"<string>\"\n        }\n      }\n    },\n    {\n      \"user\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"resource\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"type\": \"<string>\",\n      \"action\": \"added\",\n      \"parent\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"change\": {\n        \"field\": \"<string>\",\n        \"action\": \"added\",\n        \"new_value\": {\n          \"gid\": \"<string>\",\n          \"resource_type\": \"<string>\"\n        },\n        \"added_value\": {\n          \"gid\": \"<string>\",\n          \"resource_type\": \"<string>\"\n        },\n        \"removed_value\": {\n          \"gid\": \"<string>\",\n          \"resource_type\": \"<string>\"\n        }\n      }\n    }\n  ],\n  \"sync\": \"<string>\",\n  \"has_more\": \"<boolean>\"\n}",
+              "createdAt": "2026-06-05T13:13:40.000Z",
+              "updatedAt": "2026-06-05T13:13:40.000Z",
+              "uid": "35240-bfd5bc41-84b6-4fd3-859f-c1e595b79679"
+            },
+            {
+              "id": "69ae13a5-ebed-466d-95f4-a6c37761c0f6",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?resource=<string>&sync=<string>&opt_fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) A resource ID to subscribe to.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A sync token received from the last request, or none on first request.",
+                      "key": "sync",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:40.000Z",
+              "updatedAt": "2026-06-05T13:13:40.000Z",
+              "uid": "35240-69ae13a5-ebed-466d-95f4-a6c37761c0f6"
+            },
+            {
+              "id": "578dc74d-bb4a-499f-9fdc-1559cd381e54",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?resource=<string>&sync=<string>&opt_fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) A resource ID to subscribe to.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A sync token received from the last request, or none on first request.",
+                      "key": "sync",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:40.000Z",
+              "updatedAt": "2026-06-05T13:13:40.000Z",
+              "uid": "35240-578dc74d-bb4a-499f-9fdc-1559cd381e54"
+            },
+            {
+              "id": "020dc751-3ade-47a9-ac70-497e8b1c6284",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?resource=<string>&sync=<string>&opt_fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) A resource ID to subscribe to.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A sync token received from the last request, or none on first request.",
+                      "key": "sync",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:40.000Z",
+              "updatedAt": "2026-06-05T13:13:40.000Z",
+              "uid": "35240-020dc751-3ade-47a9-ac70-497e8b1c6284"
+            },
+            {
+              "id": "6eead06a-fd90-410e-8d15-807ad70e7264",
+              "name": "Not found.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?resource=<string>&sync=<string>&opt_fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) A resource ID to subscribe to.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A sync token received from the last request, or none on first request.",
+                      "key": "sync",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:40.000Z",
+              "updatedAt": "2026-06-05T13:13:40.000Z",
+              "uid": "35240-6eead06a-fd90-410e-8d15-807ad70e7264"
+            },
+            {
+              "id": "5f8d9b06-525b-4705-843d-3e387fae82ad",
+              "name": "Sync token invalid or expired. The response will include a new sync token.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?resource=<string>&sync=<string>&opt_fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) A resource ID to subscribe to.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A sync token received from the last request, or none on first request.",
+                      "key": "sync",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"sync\": \"<string>\",\n  \"errors\": [\n    {\n      \"message\": \"<string>\"\n    },\n    {\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:13:40.000Z",
+              "updatedAt": "2026-06-05T13:13:40.000Z",
+              "uid": "35240-5f8d9b06-525b-4705-843d-3e387fae82ad"
+            },
+            {
+              "id": "d78deefd-f563-4e28-81ac-566b778da740",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?resource=<string>&sync=<string>&opt_fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) A resource ID to subscribe to.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "A sync token received from the last request, or none on first request.",
+                      "key": "sync",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:40.000Z",
+              "updatedAt": "2026-06-05T13:13:40.000Z",
+              "uid": "35240-d78deefd-f563-4e28-81ac-566b778da740"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:40.000Z",
+          "updatedAt": "2026-06-05T13:13:40.000Z",
+          "uid": "35240-d87c06c7-7fa3-4577-912e-a1c4f44c80dd"
+        }
+      ],
+      "id": "7196ee27-a2c5-4f45-99a4-628539cc32d2",
+      "createdAt": "2026-06-05T13:13:40.000Z",
+      "updatedAt": "2026-06-05T13:13:40.000Z",
+      "uid": "35240-7196ee27-a2c5-4f45-99a4-628539cc32d2"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

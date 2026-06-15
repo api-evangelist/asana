@@ -1,0 +1,291 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Tasks API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get multiple tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/tasks",
+            "params": [
+              {
+                "name": "project",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "section",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workspace",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "assignee",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "completed_since",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "modified_since",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the compact task records for some filtered set of tasks."
+        },
+        {
+          "info": {
+            "name": "Asana Create a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/tasks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new task."
+        },
+        {
+          "info": {
+            "name": "Asana Get a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/tasks/:task_gid",
+            "params": [
+              {
+                "name": "task_gid",
+                "value": "321654",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the complete task record for a single task."
+        },
+        {
+          "info": {
+            "name": "Asana Update a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/tasks/:task_gid",
+            "params": [
+              {
+                "name": "task_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing task."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/tasks/:task_gid",
+            "params": [
+              {
+                "name": "task_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a task including all of its subtasks."
+        },
+        {
+          "info": {
+            "name": "Asana Get subtasks from a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/tasks/:task_gid/subtasks",
+            "params": [
+              {
+                "name": "task_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a compact representation of all subtasks of a task."
+        },
+        {
+          "info": {
+            "name": "Asana Create a subtask",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/tasks/:task_gid/subtasks",
+            "params": [
+              {
+                "name": "task_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new subtask and adds it to the parent task."
+        },
+        {
+          "info": {
+            "name": "Asana Get tasks from a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/tasks",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "completed_since",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the compact task records for all tasks within the given project."
+        },
+        {
+          "info": {
+            "name": "Asana Search tasks in a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid/tasks/search",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "text",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "assignee.any",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "projects.any",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tags.any",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "completed",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "is_subtask",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_ascending",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Performs an advanced search for tasks within a workspace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

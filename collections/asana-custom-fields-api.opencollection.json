@@ -1,0 +1,126 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Custom Fields API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Custom Fields",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Create a custom field",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/custom_fields",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new custom field in a workspace."
+        },
+        {
+          "info": {
+            "name": "Asana Get a custom field",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/custom_fields/:custom_field_gid",
+            "params": [
+              {
+                "name": "custom_field_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the custom field."
+              }
+            ]
+          },
+          "docs": "Returns the complete definition of a custom field."
+        },
+        {
+          "info": {
+            "name": "Asana Update a custom field",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/custom_fields/:custom_field_gid",
+            "params": [
+              {
+                "name": "custom_field_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing custom field."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a custom field",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/custom_fields/:custom_field_gid",
+            "params": [
+              {
+                "name": "custom_field_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific, existing custom field."
+        },
+        {
+          "info": {
+            "name": "Asana Get a workspace's custom fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid/custom_fields",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "12345",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of the compact representation of all custom fields in a workspace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

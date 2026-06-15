@@ -1,0 +1,108 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Status Updates API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Status Updates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get a status update",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/status_updates/:status_update_gid",
+            "params": [
+              {
+                "name": "status_update_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Asana Get a status update"
+        },
+        {
+          "info": {
+            "name": "Asana Delete a status update",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/status_updates/:status_update_gid",
+            "params": [
+              {
+                "name": "status_update_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Asana Delete a status update"
+        },
+        {
+          "info": {
+            "name": "Asana Get status updates from an object",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/status_updates",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "created_since",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Asana Get status updates from an object"
+        },
+        {
+          "info": {
+            "name": "Asana Create a status update",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/status_updates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Asana Create a status update"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

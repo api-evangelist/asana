@@ -1,0 +1,3923 @@
+{
+  "info": {
+    "_postman_id": "37371a7a-a301-41c8-8d5d-0ebf2c2ec6d4",
+    "name": "Asana Projects API",
+    "description": "The Asana Projects API allows users to create, update, and manage projects. A project represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:48.000Z",
+    "updatedAt": "2026-06-05T13:13:48.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-37371a7a-a301-41c8-8d5d-0ebf2c2ec6d4"
+  },
+  "item": [
+    {
+      "name": "projects",
+      "item": [
+        {
+          "name": "{project_gid}",
+          "item": [
+            {
+              "name": "duplicate",
+              "item": [
+                {
+                  "name": "Asana Duplicate a project",
+                  "id": "05faf7a0-e675-44f7-b514-6c2c30f42340",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"include\": [\n      \"task_tags\",\n      \"task_dependencies\"\n    ],\n    \"schedule_dates\": {\n      \"should_skip_weekends\": \"<boolean>\",\n      \"due_on\": \"<date>\",\n      \"start_on\": \"<date>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid/duplicate",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid",
+                        "duplicate"
+                      ],
+                      "variable": [
+                        {
+                          "id": "92d8b685-357f-46ac-8f41-401fa9affea1",
+                          "key": "project_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Creates a new project by duplicating an existing project asynchronously."
+                  },
+                  "response": [
+                    {
+                      "id": "2b20ab87-757e-43d3-b4fd-f62d1e4ed36f",
+                      "name": "Successfully started the duplication job.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"include\": [\n      \"task_tags\",\n      \"task_dependencies\"\n    ],\n    \"schedule_dates\": {\n      \"should_skip_weekends\": \"<boolean>\",\n      \"due_on\": \"<date>\",\n      \"start_on\": \"<date>\"\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/duplicate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "duplicate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"new_project\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-2b20ab87-757e-43d3-b4fd-f62d1e4ed36f"
+                    },
+                    {
+                      "id": "3d0ca6aa-a1cf-47e2-98bd-74db3fe349da",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"include\": [\n      \"task_tags\",\n      \"task_dependencies\"\n    ],\n    \"schedule_dates\": {\n      \"should_skip_weekends\": \"<boolean>\",\n      \"due_on\": \"<date>\",\n      \"start_on\": \"<date>\"\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/duplicate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "duplicate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-3d0ca6aa-a1cf-47e2-98bd-74db3fe349da"
+                    },
+                    {
+                      "id": "adf94695-256b-4aa7-90ae-0ab5960c040e",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"include\": [\n      \"task_tags\",\n      \"task_dependencies\"\n    ],\n    \"schedule_dates\": {\n      \"should_skip_weekends\": \"<boolean>\",\n      \"due_on\": \"<date>\",\n      \"start_on\": \"<date>\"\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/duplicate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "duplicate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-adf94695-256b-4aa7-90ae-0ab5960c040e"
+                    },
+                    {
+                      "id": "ea2e2fb3-f03f-4b4d-878d-0c4db18d4acf",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"include\": [\n      \"task_tags\",\n      \"task_dependencies\"\n    ],\n    \"schedule_dates\": {\n      \"should_skip_weekends\": \"<boolean>\",\n      \"due_on\": \"<date>\",\n      \"start_on\": \"<date>\"\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/duplicate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "duplicate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-ea2e2fb3-f03f-4b4d-878d-0c4db18d4acf"
+                    },
+                    {
+                      "id": "3ffd842f-5584-4bba-9fca-8cfdb10922f8",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"include\": [\n      \"task_tags\",\n      \"task_dependencies\"\n    ],\n    \"schedule_dates\": {\n      \"should_skip_weekends\": \"<boolean>\",\n      \"due_on\": \"<date>\",\n      \"start_on\": \"<date>\"\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/duplicate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "duplicate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-3ffd842f-5584-4bba-9fca-8cfdb10922f8"
+                    },
+                    {
+                      "id": "4883b977-8d36-4013-80be-59132c43c300",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"include\": [\n      \"task_tags\",\n      \"task_dependencies\"\n    ],\n    \"schedule_dates\": {\n      \"should_skip_weekends\": \"<boolean>\",\n      \"due_on\": \"<date>\",\n      \"start_on\": \"<date>\"\n    }\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/duplicate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "duplicate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-4883b977-8d36-4013-80be-59132c43c300"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-05faf7a0-e675-44f7-b514-6c2c30f42340"
+                }
+              ],
+              "id": "8d90c24c-daec-4440-969b-3e40fef0315c",
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-8d90c24c-daec-4440-969b-3e40fef0315c"
+            },
+            {
+              "name": "task_counts",
+              "item": [
+                {
+                  "name": "Asana Get task count of a project",
+                  "id": "12a7744a-509c-4f55-b038-c8bfd941b69b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid/task_counts",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid",
+                        "task_counts"
+                      ],
+                      "variable": [
+                        {
+                          "id": "32c67946-b9c1-47ee-8d7a-1277a764f867",
+                          "key": "project_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns the task count for a project."
+                  },
+                  "response": [
+                    {
+                      "id": "171aa562-4419-40ff-9c6b-99e48bebe83a",
+                      "name": "Successfully retrieved the task count.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/task_counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "task_counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"num_tasks\": \"<integer>\",\n    \"num_incomplete_tasks\": \"<integer>\",\n    \"num_completed_tasks\": \"<integer>\",\n    \"num_milestones\": \"<integer>\",\n    \"num_incomplete_milestones\": \"<integer>\",\n    \"num_completed_milestones\": \"<integer>\"\n  }\n}",
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-171aa562-4419-40ff-9c6b-99e48bebe83a"
+                    },
+                    {
+                      "id": "aac3f7c0-44ef-4da8-94a4-d224ca21ce3d",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/task_counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "task_counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-aac3f7c0-44ef-4da8-94a4-d224ca21ce3d"
+                    },
+                    {
+                      "id": "b5acb2fa-7c69-4331-ab41-4a46108b4369",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/task_counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "task_counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-b5acb2fa-7c69-4331-ab41-4a46108b4369"
+                    },
+                    {
+                      "id": "7f4a5524-0866-429d-a506-9319887806b1",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/task_counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "task_counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-7f4a5524-0866-429d-a506-9319887806b1"
+                    },
+                    {
+                      "id": "3af26530-1185-4aa6-b2e8-34d46eabf85d",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/task_counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "task_counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-3af26530-1185-4aa6-b2e8-34d46eabf85d"
+                    },
+                    {
+                      "id": "4827432b-4956-4315-828b-5d485c4dd254",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/projects/:project_gid/task_counts",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "projects",
+                            ":project_gid",
+                            "task_counts"
+                          ],
+                          "variable": [
+                            {
+                              "key": "project_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-4827432b-4956-4315-828b-5d485c4dd254"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-12a7744a-509c-4f55-b038-c8bfd941b69b"
+                }
+              ],
+              "id": "e458471c-f409-4148-8261-e55ff7319140",
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-e458471c-f409-4148-8261-e55ff7319140"
+            },
+            {
+              "name": "Asana Get a project",
+              "id": "185ad4a4-57fc-4264-bdf6-a6fd75a4fd3b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/projects/:project_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects",
+                    ":project_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "dcb107b7-6124-48af-9ab7-227ae65449e6",
+                      "key": "project_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Returns the complete project record for a single project."
+              },
+              "response": [
+                {
+                  "id": "e81c4f37-cfd1-45dd-9edc-704aef73a473",
+                  "name": "Successfully retrieved the record for a single project.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"default_view\": \"list\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"privacy_setting\": \"<string>\",\n    \"completed\": \"<boolean>\",\n    \"completed_at\": \"<dateTime>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"members\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"permalink_url\": \"<string>\",\n    \"icon\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-e81c4f37-cfd1-45dd-9edc-704aef73a473"
+                },
+                {
+                  "id": "f6025afc-8177-4871-bf1b-d5d035607c87",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-f6025afc-8177-4871-bf1b-d5d035607c87"
+                },
+                {
+                  "id": "43c7189f-988e-480d-ad20-1956dda6b928",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-43c7189f-988e-480d-ad20-1956dda6b928"
+                },
+                {
+                  "id": "2c3b3b0e-60f1-49b3-a062-c42413241f2f",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-2c3b3b0e-60f1-49b3-a062-c42413241f2f"
+                },
+                {
+                  "id": "863d5f3c-5799-456c-a4d9-eeb6e74b80fc",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-863d5f3c-5799-456c-a4d9-eeb6e74b80fc"
+                },
+                {
+                  "id": "1f3d6f04-cc2d-4044-8239-ecc01b26f66a",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-1f3d6f04-cc2d-4044-8239-ecc01b26f66a"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-185ad4a4-57fc-4264-bdf6-a6fd75a4fd3b"
+            },
+            {
+              "name": "Asana Update a project",
+              "id": "97fe2d14-f44c-4058-b200-86e7b7abf228",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/projects/:project_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects",
+                    ":project_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "537a0c9b-5c79-4618-ae7f-a328a63fdd9f",
+                      "key": "project_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Updates an existing project."
+              },
+              "response": [
+                {
+                  "id": "85715d0d-ef3b-48de-89be-9acef0ca8100",
+                  "name": "Successfully updated the project.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"default_view\": \"list\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"privacy_setting\": \"<string>\",\n    \"completed\": \"<boolean>\",\n    \"completed_at\": \"<dateTime>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"members\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"permalink_url\": \"<string>\",\n    \"icon\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-85715d0d-ef3b-48de-89be-9acef0ca8100"
+                },
+                {
+                  "id": "a3b57807-0a26-4eea-91be-89feadf584b9",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-a3b57807-0a26-4eea-91be-89feadf584b9"
+                },
+                {
+                  "id": "c3ed2ef1-b78e-4f64-aa55-75f288fedb63",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-c3ed2ef1-b78e-4f64-aa55-75f288fedb63"
+                },
+                {
+                  "id": "f9f20a27-3db2-4f25-9e76-e08c79930db6",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-f9f20a27-3db2-4f25-9e76-e08c79930db6"
+                },
+                {
+                  "id": "39f63923-443c-4a43-8ab3-cfbfdaad1281",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-39f63923-443c-4a43-8ab3-cfbfdaad1281"
+                },
+                {
+                  "id": "6843ed66-c1b1-4236-8375-350c625a17d5",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-6843ed66-c1b1-4236-8375-350c625a17d5"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-97fe2d14-f44c-4058-b200-86e7b7abf228"
+            },
+            {
+              "name": "Asana Delete a project",
+              "id": "480592e2-e820-42a0-bd5c-6ba1de4c5aa2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/projects/:project_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects",
+                    ":project_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "992b41c0-218a-4994-bfe7-ddfe4785a283",
+                      "key": "project_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Deletes a project. Tasks in the project are not deleted."
+              },
+              "response": [
+                {
+                  "id": "0f74239d-2ec9-4f9c-b7a3-9812d870df5f",
+                  "name": "Successfully deleted the specified project.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-0f74239d-2ec9-4f9c-b7a3-9812d870df5f"
+                },
+                {
+                  "id": "f57a24e4-cd7f-4048-a616-1330c32048f4",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-f57a24e4-cd7f-4048-a616-1330c32048f4"
+                },
+                {
+                  "id": "d720096f-6132-4a19-900d-79b09ef35b9e",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-d720096f-6132-4a19-900d-79b09ef35b9e"
+                },
+                {
+                  "id": "e22b52bf-b297-43f4-b675-84327036c812",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-e22b52bf-b297-43f4-b675-84327036c812"
+                },
+                {
+                  "id": "3ea5f245-ac15-4421-8bd4-7ef0c0a55f1d",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-3ea5f245-ac15-4421-8bd4-7ef0c0a55f1d"
+                },
+                {
+                  "id": "6b39e210-7f29-4a02-82f5-75aa4da885c7",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/projects/:project_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "projects",
+                        ":project_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "project_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-6b39e210-7f29-4a02-82f5-75aa4da885c7"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-480592e2-e820-42a0-bd5c-6ba1de4c5aa2"
+            }
+          ],
+          "id": "e4c2c73e-2f45-4c40-b877-2569196b8e3f",
+          "createdAt": "2026-06-05T13:13:48.000Z",
+          "updatedAt": "2026-06-05T13:13:48.000Z",
+          "uid": "35240-e4c2c73e-2f45-4c40-b877-2569196b8e3f"
+        },
+        {
+          "name": "Asana Get multiple projects",
+          "id": "7f1b925d-f93e-4980-a44b-5699d676475d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/projects?workspace=<string>&team=<string>&archived=<boolean>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects"
+              ],
+              "query": [
+                {
+                  "key": "workspace",
+                  "value": "<string>"
+                },
+                {
+                  "key": "team",
+                  "value": "<string>"
+                },
+                {
+                  "key": "archived",
+                  "value": "<boolean>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the compact project records for some filtered set of projects."
+          },
+          "response": [
+            {
+              "id": "e06e19fb-1092-427f-abd8-edae6d9a8894",
+              "name": "Successfully retrieved projects.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/projects?workspace=<string>&team=<string>&archived=<boolean>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-e06e19fb-1092-427f-abd8-edae6d9a8894"
+            },
+            {
+              "id": "78839c3f-a50d-4a6e-9a28-435fdaff3718",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/projects?workspace=<string>&team=<string>&archived=<boolean>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-78839c3f-a50d-4a6e-9a28-435fdaff3718"
+            },
+            {
+              "id": "ee0de706-5197-4021-a728-ef1ba89ae5c9",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/projects?workspace=<string>&team=<string>&archived=<boolean>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-ee0de706-5197-4021-a728-ef1ba89ae5c9"
+            },
+            {
+              "id": "be907437-620b-4042-b7dd-aaa3f111e9a1",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/projects?workspace=<string>&team=<string>&archived=<boolean>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-be907437-620b-4042-b7dd-aaa3f111e9a1"
+            },
+            {
+              "id": "61216153-06ec-4cd9-b57f-35525265d670",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/projects?workspace=<string>&team=<string>&archived=<boolean>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-61216153-06ec-4cd9-b57f-35525265d670"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:48.000Z",
+          "updatedAt": "2026-06-05T13:13:48.000Z",
+          "uid": "35240-7f1b925d-f93e-4980-a44b-5699d676475d"
+        },
+        {
+          "name": "Asana Create a project",
+          "id": "f28857d2-b541-455b-aac2-ed986440de16",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects"
+              ]
+            },
+            "description": "Creates a new project in a workspace or team."
+          },
+          "response": [
+            {
+              "id": "b6731cc2-b488-48c7-b04b-09cdf127a536",
+              "name": "Successfully created a new project.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"default_view\": \"list\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"privacy_setting\": \"<string>\",\n    \"completed\": \"<boolean>\",\n    \"completed_at\": \"<dateTime>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"members\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"permalink_url\": \"<string>\",\n    \"icon\": \"<string>\"\n  }\n}",
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-b6731cc2-b488-48c7-b04b-09cdf127a536"
+            },
+            {
+              "id": "dc6e682b-e894-4fe5-9772-dcd62ed08b20",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-dc6e682b-e894-4fe5-9772-dcd62ed08b20"
+            },
+            {
+              "id": "e4319ce4-d1fb-485d-bfe9-6c4e3f2a0722",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-e4319ce4-d1fb-485d-bfe9-6c4e3f2a0722"
+            },
+            {
+              "id": "d8e06d3b-4691-48c2-8701-795ef4099ee5",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-d8e06d3b-4691-48c2-8701-795ef4099ee5"
+            },
+            {
+              "id": "b10ff182-db22-4b2e-9997-61506876d25c",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-b10ff182-db22-4b2e-9997-61506876d25c"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:48.000Z",
+          "updatedAt": "2026-06-05T13:13:48.000Z",
+          "uid": "35240-f28857d2-b541-455b-aac2-ed986440de16"
+        }
+      ],
+      "id": "26b2618d-0335-44c2-ba7f-f76f4dbcdc2c",
+      "createdAt": "2026-06-05T13:13:48.000Z",
+      "updatedAt": "2026-06-05T13:13:48.000Z",
+      "uid": "35240-26b2618d-0335-44c2-ba7f-f76f4dbcdc2c"
+    },
+    {
+      "name": "teams",
+      "item": [
+        {
+          "name": "{team_gid}",
+          "item": [
+            {
+              "name": "projects",
+              "item": [
+                {
+                  "name": "Asana Get a team's projects",
+                  "id": "8286bcfd-7f08-4d84-96d7-aa677f76e73d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/teams/:team_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "teams",
+                        ":team_gid",
+                        "projects"
+                      ],
+                      "query": [
+                        {
+                          "key": "archived",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "key": "offset",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "e18069f3-3fc2-44d2-8404-832fc2c31cb3",
+                          "key": "team_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns the compact project records for all projects in the team."
+                  },
+                  "response": [
+                    {
+                      "id": "cb3c157a-537b-48d6-850e-7c97b6f6527e",
+                      "name": "Successfully retrieved the team's projects.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-cb3c157a-537b-48d6-850e-7c97b6f6527e"
+                    },
+                    {
+                      "id": "89373309-7691-4618-a609-7dded47a0414",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-89373309-7691-4618-a609-7dded47a0414"
+                    },
+                    {
+                      "id": "70aed050-0050-4616-a0aa-0e15ca4fd575",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-70aed050-0050-4616-a0aa-0e15ca4fd575"
+                    },
+                    {
+                      "id": "9b120148-063e-4c82-91cd-0c3a41b28f7b",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-9b120148-063e-4c82-91cd-0c3a41b28f7b"
+                    },
+                    {
+                      "id": "0395fa5d-b9d9-4785-b1ce-130aaed7cca9",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-0395fa5d-b9d9-4785-b1ce-130aaed7cca9"
+                    },
+                    {
+                      "id": "d9522437-afd7-4f2b-a265-c14378e3b1b1",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-d9522437-afd7-4f2b-a265-c14378e3b1b1"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-8286bcfd-7f08-4d84-96d7-aa677f76e73d"
+                },
+                {
+                  "name": "Asana Create a project in a team",
+                  "id": "454f5619-3303-409d-a34f-a970b0bf4eff",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/teams/:team_gid/projects",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "teams",
+                        ":team_gid",
+                        "projects"
+                      ],
+                      "variable": [
+                        {
+                          "id": "27fa5717-e4cc-4aff-8030-9d3b9d91bd9e",
+                          "key": "team_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Creates a project shared with the given team."
+                  },
+                  "response": [
+                    {
+                      "id": "20165ee0-5bed-42bb-a4d9-9e7834ffdc40",
+                      "name": "Successfully created the specified project.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"default_view\": \"list\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"privacy_setting\": \"<string>\",\n    \"completed\": \"<boolean>\",\n    \"completed_at\": \"<dateTime>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"members\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"permalink_url\": \"<string>\",\n    \"icon\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-20165ee0-5bed-42bb-a4d9-9e7834ffdc40"
+                    },
+                    {
+                      "id": "faae3148-b106-4191-8591-1e4efa494502",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-faae3148-b106-4191-8591-1e4efa494502"
+                    },
+                    {
+                      "id": "2fc036bd-af45-4375-8e88-afce8fb756f5",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-2fc036bd-af45-4375-8e88-afce8fb756f5"
+                    },
+                    {
+                      "id": "a47a06a7-a88a-4bf7-819a-2f046f3f8074",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-a47a06a7-a88a-4bf7-819a-2f046f3f8074"
+                    },
+                    {
+                      "id": "c5f0f04f-07ae-4869-8d9d-85f21ab22f83",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-c5f0f04f-07ae-4869-8d9d-85f21ab22f83"
+                    },
+                    {
+                      "id": "7a4b47fd-44a8-4429-a3cc-60285513525c",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-7a4b47fd-44a8-4429-a3cc-60285513525c"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-454f5619-3303-409d-a34f-a970b0bf4eff"
+                }
+              ],
+              "id": "30232009-becb-4eca-90b8-2298413b725d",
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-30232009-becb-4eca-90b8-2298413b725d"
+            }
+          ],
+          "id": "3c975cf0-9dc1-4711-a4ff-4a8bd4e69a04",
+          "createdAt": "2026-06-05T13:13:48.000Z",
+          "updatedAt": "2026-06-05T13:13:48.000Z",
+          "uid": "35240-3c975cf0-9dc1-4711-a4ff-4a8bd4e69a04"
+        }
+      ],
+      "id": "091cb842-857c-47dc-8869-3a9609d41f40",
+      "createdAt": "2026-06-05T13:13:48.000Z",
+      "updatedAt": "2026-06-05T13:13:48.000Z",
+      "uid": "35240-091cb842-857c-47dc-8869-3a9609d41f40"
+    },
+    {
+      "name": "workspaces",
+      "item": [
+        {
+          "name": "{workspace_gid}",
+          "item": [
+            {
+              "name": "projects",
+              "item": [
+                {
+                  "name": "Asana Get all projects in a workspace",
+                  "id": "2bba9278-2526-4efa-b5e0-8ffc258d0bd9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "workspaces",
+                        ":workspace_gid",
+                        "projects"
+                      ],
+                      "query": [
+                        {
+                          "key": "archived",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "key": "offset",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "ac20f85f-80c7-471a-a9b9-9b1a2499819e",
+                          "key": "workspace_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns the compact project records for all projects in the workspace."
+                  },
+                  "response": [
+                    {
+                      "id": "d3fe4d5e-a214-40dc-a423-54e1b19c4497",
+                      "name": "Successfully retrieved the workspace's projects.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-d3fe4d5e-a214-40dc-a423-54e1b19c4497"
+                    },
+                    {
+                      "id": "88491235-b105-48ce-b311-8225e89b7c10",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-88491235-b105-48ce-b311-8225e89b7c10"
+                    },
+                    {
+                      "id": "22281fb8-1d90-4511-a8fc-43815a160e90",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-22281fb8-1d90-4511-a8fc-43815a160e90"
+                    },
+                    {
+                      "id": "7ab9db54-0e49-4cd3-a6a0-c6e6748f7509",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-7ab9db54-0e49-4cd3-a6a0-c6e6748f7509"
+                    },
+                    {
+                      "id": "070de90d-9f00-41df-8963-224d68d03146",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-070de90d-9f00-41df-8963-224d68d03146"
+                    },
+                    {
+                      "id": "130a2a2f-8a4a-4ffc-a75d-bb210f4e9e7b",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects?archived=<boolean>&limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "query": [
+                            {
+                              "key": "archived",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-130a2a2f-8a4a-4ffc-a75d-bb210f4e9e7b"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-2bba9278-2526-4efa-b5e0-8ffc258d0bd9"
+                },
+                {
+                  "name": "Asana Create a project in a workspace",
+                  "id": "fb6c9bee-47d5-4b4a-9a7c-15431c89270a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "workspaces",
+                        ":workspace_gid",
+                        "projects"
+                      ],
+                      "variable": [
+                        {
+                          "id": "2f2a9417-9d75-45f3-9a64-4229fb0654c1",
+                          "key": "workspace_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Creates a project in the workspace."
+                  },
+                  "response": [
+                    {
+                      "id": "e97316fb-03ae-424a-b40e-7c2ed12d4bb2",
+                      "name": "Successfully created the specified project.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"default_view\": \"list\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"privacy_setting\": \"<string>\",\n    \"completed\": \"<boolean>\",\n    \"completed_at\": \"<dateTime>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"members\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"permalink_url\": \"<string>\",\n    \"icon\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-e97316fb-03ae-424a-b40e-7c2ed12d4bb2"
+                    },
+                    {
+                      "id": "5cb52f63-1c22-42fd-94c9-a01c6962cae7",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-5cb52f63-1c22-42fd-94c9-a01c6962cae7"
+                    },
+                    {
+                      "id": "e6b61d80-2417-496c-b1d7-1ca8957800dd",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-e6b61d80-2417-496c-b1d7-1ca8957800dd"
+                    },
+                    {
+                      "id": "9a7e01e7-35d4-411d-acaa-5891188a2575",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-9a7e01e7-35d4-411d-acaa-5891188a2575"
+                    },
+                    {
+                      "id": "2579148a-78e3-4606-b250-fda6238d5337",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-2579148a-78e3-4606-b250-fda6238d5337"
+                    },
+                    {
+                      "id": "290e47e1-c44d-4df3-b35e-6434154680d0",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"archived\": \"<boolean>\",\n    \"color\": \"<string>\",\n    \"default_view\": \"calendar\",\n    \"due_on\": \"<date>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"privacy_setting\": \"public_to_workspace\",\n    \"start_on\": \"<date>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/projects",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "projects"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:48.000Z",
+                      "updatedAt": "2026-06-05T13:13:48.000Z",
+                      "uid": "35240-290e47e1-c44d-4df3-b35e-6434154680d0"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:48.000Z",
+                  "updatedAt": "2026-06-05T13:13:48.000Z",
+                  "uid": "35240-fb6c9bee-47d5-4b4a-9a7c-15431c89270a"
+                }
+              ],
+              "id": "87a05851-b771-44d3-9dc4-dc29e651b769",
+              "createdAt": "2026-06-05T13:13:48.000Z",
+              "updatedAt": "2026-06-05T13:13:48.000Z",
+              "uid": "35240-87a05851-b771-44d3-9dc4-dc29e651b769"
+            }
+          ],
+          "id": "779696ad-d9d8-4b6b-8621-da2b2f9ac64d",
+          "createdAt": "2026-06-05T13:13:48.000Z",
+          "updatedAt": "2026-06-05T13:13:48.000Z",
+          "uid": "35240-779696ad-d9d8-4b6b-8621-da2b2f9ac64d"
+        }
+      ],
+      "id": "db5a013c-30ac-430c-bf6b-cc6e3585e326",
+      "createdAt": "2026-06-05T13:13:48.000Z",
+      "updatedAt": "2026-06-05T13:13:48.000Z",
+      "uid": "35240-db5a013c-30ac-430c-bf6b-cc6e3585e326"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

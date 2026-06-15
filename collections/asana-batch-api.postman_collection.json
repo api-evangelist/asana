@@ -1,0 +1,375 @@
+{
+  "item": [
+    {
+      "id": "1136ff4e-f73c-456e-bf4e-32b34447af58",
+      "name": "Batch API",
+      "description": {
+        "content": "Perform multiple operations in a single HTTP request.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "10f81829-47dd-40d2-a7c5-eb7a35a4d0bd",
+          "name": "Asana Submit parallel requests",
+          "request": {
+            "name": "Asana Submit parallel requests",
+            "description": {
+              "content": "Make multiple API requests in a single call. The maximum number of actions allowed in a single batch request is 10.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"actions\": [\n      {\n        \"relative_path\": \"<string>\",\n        \"method\": \"<string>\",\n        \"data\": \"<object>\",\n        \"options\": {\n          \"limit\": \"<integer>\",\n          \"offset\": \"<string>\",\n          \"fields\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      },\n      {\n        \"relative_path\": \"<string>\",\n        \"method\": \"<string>\",\n        \"data\": \"<object>\",\n        \"options\": {\n          \"limit\": \"<integer>\",\n          \"offset\": \"<string>\",\n          \"fields\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "177d6432-27cf-4ce7-94a0-e5864d1592b6",
+              "name": "Successfully completed the batch request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"actions\": [\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 2536,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 838,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"status_code\": 200,\n      \"headers\": {},\n      \"body\": {}\n    },\n    {\n      \"status_code\": 200,\n      \"headers\": {},\n      \"body\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46ff7a31-fcaf-4155-a651-a517cfc81ade",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"actions\": [\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 2536,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 838,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a2601080-e83f-45a5-9164-ee46030d7416",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"actions\": [\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 2536,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 838,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d1187455-7e1b-4a8d-9df5-26293d554f23",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"actions\": [\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 2536,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 838,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4b6031b9-b228-4f86-afab-1ae97b552f18",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"actions\": [\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 2536,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 838,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "767051ef-0714-4165-91b5-579b100afb04",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"actions\": [\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 2536,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      {\n        \"relative_path\": \"/tasks/123\",\n        \"method\": \"get\",\n        \"data\": {},\n        \"options\": {\n          \"limit\": 838,\n          \"offset\": \"string\",\n          \"fields\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.asana.com/api/1.0",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8082f313-d7c2-4593-82c9-26edbc356875",
+    "name": "Asana Batch API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Asana Batch API enables developers to perform multiple actions by making only a single HTTP request. The maximum number of actions allowed in a single batch request is 10. Actions are dispatched in parallel.\n\nContact Support:\n Name: Asana Support",
+      "type": "text/plain"
+    }
+  }
+}

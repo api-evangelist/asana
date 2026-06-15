@@ -1,0 +1,131 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Workspaces API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workspaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get multiple workspaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/workspaces",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Asana Get multiple workspaces"
+        },
+        {
+          "info": {
+            "name": "Asana Get a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Asana Get a workspace"
+        },
+        {
+          "info": {
+            "name": "Asana Update a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Asana Update a workspace"
+        },
+        {
+          "info": {
+            "name": "Asana Add a user to a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid/addUser",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Asana Add a user to a workspace"
+        },
+        {
+          "info": {
+            "name": "Asana Remove a user from a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid/removeUser",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Asana Remove a user from a workspace"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

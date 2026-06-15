@@ -1,0 +1,1671 @@
+{
+  "info": {
+    "_postman_id": "6dd601b3-df20-45bf-adaf-844302d5a103",
+    "name": "Asana Custom Fields API",
+    "description": "The Asana Custom Fields API allows developers to create and manage custom fields within Asana. Custom fields provide extra information on tasks, projects, and portfolios with types including text, number, enum, multi_enum, date, and people.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:37.000Z",
+    "updatedAt": "2026-06-05T13:13:38.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-6dd601b3-df20-45bf-adaf-844302d5a103"
+  },
+  "item": [
+    {
+      "name": "custom_fields",
+      "item": [
+        {
+          "name": "{custom_field_gid}",
+          "item": [
+            {
+              "name": "Asana Get a custom field",
+              "id": "194eed87-d966-443b-9a64-e8397aef171c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "custom_fields",
+                    ":custom_field_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "ce220c21-b5c6-42dc-bc22-2a192a1b622e",
+                      "key": "custom_field_gid",
+                      "value": "<string>",
+                      "description": "(Required) Globally unique identifier for the custom field."
+                    }
+                  ]
+                },
+                "description": "Returns the complete definition of a custom field."
+              },
+              "response": [
+                {
+                  "id": "a6de76f3-906b-4535-bb9e-ef6af56a6e3a",
+                  "name": "Successfully retrieved the complete definition of a custom field.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"type\": \"<string>\",\n    \"display_value\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"enabled\": \"<boolean>\",\n        \"color\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"enabled\": \"<boolean>\",\n        \"color\": \"<string>\"\n      }\n    ],\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-a6de76f3-906b-4535-bb9e-ef6af56a6e3a"
+                },
+                {
+                  "id": "48681d5a-717c-4f56-83cc-9b7c51a56f8d",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-48681d5a-717c-4f56-83cc-9b7c51a56f8d"
+                },
+                {
+                  "id": "d1ce8f51-d325-4b96-8236-e82b72096a14",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-d1ce8f51-d325-4b96-8236-e82b72096a14"
+                },
+                {
+                  "id": "d6219abd-29ff-4514-a0a7-48a4d9ff92e0",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-d6219abd-29ff-4514-a0a7-48a4d9ff92e0"
+                },
+                {
+                  "id": "d79fbe79-5311-4b97-8362-5089b1dde211",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-d79fbe79-5311-4b97-8362-5089b1dde211"
+                },
+                {
+                  "id": "08b9bb2a-641d-49a5-8895-ecf6111105c3",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-08b9bb2a-641d-49a5-8895-ecf6111105c3"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:38.000Z",
+              "updatedAt": "2026-06-05T13:13:38.000Z",
+              "uid": "35240-194eed87-d966-443b-9a64-e8397aef171c"
+            },
+            {
+              "name": "Asana Update a custom field",
+              "id": "2ee61df1-dfac-4d78-b3a5-c0472aec7298",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "custom_fields",
+                    ":custom_field_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "806a9844-0adf-4f02-ae92-f310996d295e",
+                      "key": "custom_field_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Updates an existing custom field."
+              },
+              "response": [
+                {
+                  "id": "a5dbeade-e3d2-40d5-a2d9-dc4cc70c1279",
+                  "name": "Successfully updated the custom field.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"type\": \"<string>\",\n    \"display_value\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"enabled\": \"<boolean>\",\n        \"color\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"enabled\": \"<boolean>\",\n        \"color\": \"<string>\"\n      }\n    ],\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-a5dbeade-e3d2-40d5-a2d9-dc4cc70c1279"
+                },
+                {
+                  "id": "59fe2b56-1595-4504-9778-3e0d8ca2c18e",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-59fe2b56-1595-4504-9778-3e0d8ca2c18e"
+                },
+                {
+                  "id": "938c7001-1220-4288-ab13-4137da7826d7",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-938c7001-1220-4288-ab13-4137da7826d7"
+                },
+                {
+                  "id": "7b4e7d4e-2cde-4ec7-a26f-41ad97618b20",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-7b4e7d4e-2cde-4ec7-a26f-41ad97618b20"
+                },
+                {
+                  "id": "8ffc1f9e-328b-4ff4-84e6-818bff473e78",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-8ffc1f9e-328b-4ff4-84e6-818bff473e78"
+                },
+                {
+                  "id": "cf60a40b-7775-4995-a5e9-ec1edfef88da",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-cf60a40b-7775-4995-a5e9-ec1edfef88da"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:38.000Z",
+              "updatedAt": "2026-06-05T13:13:38.000Z",
+              "uid": "35240-2ee61df1-dfac-4d78-b3a5-c0472aec7298"
+            },
+            {
+              "name": "Asana Delete a custom field",
+              "id": "ddfefe49-267c-4fee-81ce-1af20b12b09f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "custom_fields",
+                    ":custom_field_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "0cd67d73-47bf-4442-ac90-9f28bed99f78",
+                      "key": "custom_field_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Deletes a specific, existing custom field."
+              },
+              "response": [
+                {
+                  "id": "018c3dde-b570-481d-a7ba-fb6e6851a996",
+                  "name": "Successfully deleted the custom field.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-018c3dde-b570-481d-a7ba-fb6e6851a996"
+                },
+                {
+                  "id": "40620296-f1af-45bc-8e67-8045ac2851c7",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-40620296-f1af-45bc-8e67-8045ac2851c7"
+                },
+                {
+                  "id": "e5f519cb-d421-44fc-b88e-adad4ad72ba6",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-e5f519cb-d421-44fc-b88e-adad4ad72ba6"
+                },
+                {
+                  "id": "a7a8b9fb-0a51-40b3-86c6-2b29ab5672b6",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-a7a8b9fb-0a51-40b3-86c6-2b29ab5672b6"
+                },
+                {
+                  "id": "be62f96c-4134-4834-9868-14abf6e5efe7",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-be62f96c-4134-4834-9868-14abf6e5efe7"
+                },
+                {
+                  "id": "90b9bb36-467b-4d77-a97a-818108515545",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/custom_fields/:custom_field_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "custom_fields",
+                        ":custom_field_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "custom_field_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-90b9bb36-467b-4d77-a97a-818108515545"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:38.000Z",
+              "updatedAt": "2026-06-05T13:13:38.000Z",
+              "uid": "35240-ddfefe49-267c-4fee-81ce-1af20b12b09f"
+            }
+          ],
+          "id": "a299915b-4fdc-43c6-91aa-a95541bc7b68",
+          "createdAt": "2026-06-05T13:13:38.000Z",
+          "updatedAt": "2026-06-05T13:13:38.000Z",
+          "uid": "35240-a299915b-4fdc-43c6-91aa-a95541bc7b68"
+        },
+        {
+          "name": "Asana Create a custom field",
+          "id": "da3ab90a-db53-4a98-89e4-61f2b21fd700",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/custom_fields",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "custom_fields"
+              ]
+            },
+            "description": "Creates a new custom field in a workspace."
+          },
+          "response": [
+            {
+              "id": "c278fab7-1b76-4b50-9806-a929e4479dad",
+              "name": "Successfully created a custom field.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/custom_fields",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "custom_fields"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"type\": \"<string>\",\n    \"display_value\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"enabled\": \"<boolean>\",\n        \"color\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"enabled\": \"<boolean>\",\n        \"color\": \"<string>\"\n      }\n    ],\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-06-05T13:13:38.000Z",
+              "updatedAt": "2026-06-05T13:13:38.000Z",
+              "uid": "35240-c278fab7-1b76-4b50-9806-a929e4479dad"
+            },
+            {
+              "id": "da01acf6-bd24-4f0a-94b0-202115e7d1f5",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/custom_fields",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "custom_fields"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:38.000Z",
+              "updatedAt": "2026-06-05T13:13:38.000Z",
+              "uid": "35240-da01acf6-bd24-4f0a-94b0-202115e7d1f5"
+            },
+            {
+              "id": "f0caf69b-6008-470a-a056-1fd408790533",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/custom_fields",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "custom_fields"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:38.000Z",
+              "updatedAt": "2026-06-05T13:13:38.000Z",
+              "uid": "35240-f0caf69b-6008-470a-a056-1fd408790533"
+            },
+            {
+              "id": "162b5d89-73ff-4794-8d24-a0666cad4183",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/custom_fields",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "custom_fields"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:38.000Z",
+              "updatedAt": "2026-06-05T13:13:38.000Z",
+              "uid": "35240-162b5d89-73ff-4794-8d24-a0666cad4183"
+            },
+            {
+              "id": "03ad87a1-e97c-42a3-a76b-fc77b24a1ee1",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"text\",\n    \"description\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"precision\": \"<integer>\",\n    \"enum_options\": [\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"color\": \"<string>\",\n        \"enabled\": \"<boolean>\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/custom_fields",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "custom_fields"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:38.000Z",
+              "updatedAt": "2026-06-05T13:13:38.000Z",
+              "uid": "35240-03ad87a1-e97c-42a3-a76b-fc77b24a1ee1"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:38.000Z",
+          "updatedAt": "2026-06-05T13:13:38.000Z",
+          "uid": "35240-da3ab90a-db53-4a98-89e4-61f2b21fd700"
+        }
+      ],
+      "id": "e4c0a26a-0393-4a40-a70e-7d0d10427c78",
+      "createdAt": "2026-06-05T13:13:38.000Z",
+      "updatedAt": "2026-06-05T13:13:38.000Z",
+      "uid": "35240-e4c0a26a-0393-4a40-a70e-7d0d10427c78"
+    },
+    {
+      "name": "workspaces",
+      "item": [
+        {
+          "name": "{workspace_gid}",
+          "item": [
+            {
+              "name": "custom_fields",
+              "item": [
+                {
+                  "name": "Asana Get a workspace's custom fields",
+                  "id": "32cb5373-cb15-471c-90b7-a12ad56326f1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/workspaces/:workspace_gid/custom_fields?limit=<integer>&offset=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "workspaces",
+                        ":workspace_gid",
+                        "custom_fields"
+                      ],
+                      "query": [
+                        {
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "key": "offset",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "806ce675-3517-4d55-90aa-6c6e14986735",
+                          "key": "workspace_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of the compact representation of all custom fields in a workspace."
+                  },
+                  "response": [
+                    {
+                      "id": "1c6784ce-20db-4ce8-9411-ec8108d7aca7",
+                      "name": "Successfully retrieved all custom fields for the workspace.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/custom_fields?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "custom_fields"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_subtype\": \"enum\",\n      \"type\": \"multi_enum\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_subtype\": \"enum\",\n      \"type\": \"enum\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:13:38.000Z",
+                      "updatedAt": "2026-06-05T13:13:38.000Z",
+                      "uid": "35240-1c6784ce-20db-4ce8-9411-ec8108d7aca7"
+                    },
+                    {
+                      "id": "c8a36eda-2123-41c0-9b32-7a4235d4d74e",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/custom_fields?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "custom_fields"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:38.000Z",
+                      "updatedAt": "2026-06-05T13:13:38.000Z",
+                      "uid": "35240-c8a36eda-2123-41c0-9b32-7a4235d4d74e"
+                    },
+                    {
+                      "id": "8905dd94-250c-41e3-9a2f-0984696a99fb",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/custom_fields?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "custom_fields"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:38.000Z",
+                      "updatedAt": "2026-06-05T13:13:38.000Z",
+                      "uid": "35240-8905dd94-250c-41e3-9a2f-0984696a99fb"
+                    },
+                    {
+                      "id": "62c659b5-c819-4c77-a2dd-3f15270bfc82",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/custom_fields?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "custom_fields"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:38.000Z",
+                      "updatedAt": "2026-06-05T13:13:38.000Z",
+                      "uid": "35240-62c659b5-c819-4c77-a2dd-3f15270bfc82"
+                    },
+                    {
+                      "id": "cd6d9476-d9fc-4ff9-85e3-cc32f8dbb5e0",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/custom_fields?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "custom_fields"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:38.000Z",
+                      "updatedAt": "2026-06-05T13:13:38.000Z",
+                      "uid": "35240-cd6d9476-d9fc-4ff9-85e3-cc32f8dbb5e0"
+                    },
+                    {
+                      "id": "4c1f0473-ebc1-4536-b829-fcea1a10d45d",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/custom_fields?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "custom_fields"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:38.000Z",
+                      "updatedAt": "2026-06-05T13:13:38.000Z",
+                      "uid": "35240-4c1f0473-ebc1-4536-b829-fcea1a10d45d"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:38.000Z",
+                  "updatedAt": "2026-06-05T13:13:38.000Z",
+                  "uid": "35240-32cb5373-cb15-471c-90b7-a12ad56326f1"
+                }
+              ],
+              "id": "3634b370-4109-4a66-8473-4f5727dad7e4",
+              "createdAt": "2026-06-05T13:13:38.000Z",
+              "updatedAt": "2026-06-05T13:13:38.000Z",
+              "uid": "35240-3634b370-4109-4a66-8473-4f5727dad7e4"
+            }
+          ],
+          "id": "cc16c012-ad28-411e-b438-8df99690d6ba",
+          "createdAt": "2026-06-05T13:13:38.000Z",
+          "updatedAt": "2026-06-05T13:13:38.000Z",
+          "uid": "35240-cc16c012-ad28-411e-b438-8df99690d6ba"
+        }
+      ],
+      "id": "084c19e2-7020-4312-92d0-e06f611469b6",
+      "createdAt": "2026-06-05T13:13:38.000Z",
+      "updatedAt": "2026-06-05T13:13:38.000Z",
+      "uid": "35240-084c19e2-7020-4312-92d0-e06f611469b6"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

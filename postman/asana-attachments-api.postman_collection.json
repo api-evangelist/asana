@@ -1,0 +1,1504 @@
+{
+  "info": {
+    "_postman_id": "9213e9f6-e934-472a-ac2b-6dbed35c01fa",
+    "name": "Asana Attachments API",
+    "description": "The Asana Attachments API allows developers to interact with and manage file attachments within the Asana platform. An attachment object represents any file attached to a task in Asana, whether it is an uploaded file or one associated via a third-party service such as Dropbox or Google Drive.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:35.000Z",
+    "updatedAt": "2026-06-05T13:13:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-9213e9f6-e934-472a-ac2b-6dbed35c01fa"
+  },
+  "item": [
+    {
+      "name": "attachments",
+      "item": [
+        {
+          "name": "{attachment_gid}",
+          "item": [
+            {
+              "name": "Asana Get an attachment",
+              "id": "9f70d35e-1302-4a5c-a54c-c72ff5f08410",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/attachments/:attachment_gid?opt_fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments",
+                    ":attachment_gid"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "b9f1b1f2-55d0-4622-9dc0-be7c33b164ef",
+                      "key": "attachment_gid",
+                      "value": "<string>",
+                      "description": "(Required) Globally unique identifier for the attachment."
+                    }
+                  ]
+                },
+                "description": "Returns the full record for a single attachment."
+              },
+              "response": [
+                {
+                  "id": "b8aa01d0-4d2d-4ce8-b9aa-026f53045394",
+                  "name": "Successfully retrieved the record for a single attachment.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "query": [
+                        {
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"download_url\": \"<uri>\",\n    \"host\": \"<string>\",\n    \"parent\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"permanent_url\": \"<uri>\",\n    \"size\": \"<integer>\",\n    \"view_url\": \"<uri>\",\n    \"connected_to_app\": \"<boolean>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-b8aa01d0-4d2d-4ce8-b9aa-026f53045394"
+                },
+                {
+                  "id": "ed35af57-31d2-403e-b326-59aae6a3c7c6",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "query": [
+                        {
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-ed35af57-31d2-403e-b326-59aae6a3c7c6"
+                },
+                {
+                  "id": "2bc49614-7d58-4f80-94a3-ffbb7d7af357",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "query": [
+                        {
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-2bc49614-7d58-4f80-94a3-ffbb7d7af357"
+                },
+                {
+                  "id": "3bf28362-61f2-4143-8186-a3e90a5c0958",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "query": [
+                        {
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-3bf28362-61f2-4143-8186-a3e90a5c0958"
+                },
+                {
+                  "id": "2f8c30e6-2535-4629-aea5-e9e5eb8c1a9a",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "query": [
+                        {
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-2f8c30e6-2535-4629-aea5-e9e5eb8c1a9a"
+                },
+                {
+                  "id": "9da18d95-34e5-454f-8ef7-43b69790e341",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "query": [
+                        {
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-9da18d95-34e5-454f-8ef7-43b69790e341"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-9f70d35e-1302-4a5c-a54c-c72ff5f08410"
+            },
+            {
+              "name": "Asana Delete an attachment",
+              "id": "fcee898c-4054-4a2b-b8a7-e3ca2ac4ccf2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/attachments/:attachment_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments",
+                    ":attachment_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "8df359d9-b5e7-449e-bfeb-2e00ae2c0fe9",
+                      "key": "attachment_gid",
+                      "value": "<string>",
+                      "description": "(Required) Globally unique identifier for the attachment."
+                    }
+                  ]
+                },
+                "description": "Deletes a specific, existing attachment."
+              },
+              "response": [
+                {
+                  "id": "7d961e48-d2ee-4870-b562-5672b74a5798",
+                  "name": "Successfully deleted the specified attachment.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-7d961e48-d2ee-4870-b562-5672b74a5798"
+                },
+                {
+                  "id": "2f1a9a2d-5ddb-4ac4-8289-33aec2bc5274",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-2f1a9a2d-5ddb-4ac4-8289-33aec2bc5274"
+                },
+                {
+                  "id": "bfaeeb46-e41b-4135-882f-7bb6ecc989a5",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-bfaeeb46-e41b-4135-882f-7bb6ecc989a5"
+                },
+                {
+                  "id": "1280c5a2-96f2-4a70-bbeb-5b0a9257f43d",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-1280c5a2-96f2-4a70-bbeb-5b0a9257f43d"
+                },
+                {
+                  "id": "5853b392-e11f-49c3-8d5f-d462dfdeed68",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-5853b392-e11f-49c3-8d5f-d462dfdeed68"
+                },
+                {
+                  "id": "6de7f9e0-8c49-421e-bb8c-db0af04c009e",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/attachments/:attachment_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "attachments",
+                        ":attachment_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "attachment_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:36.000Z",
+                  "updatedAt": "2026-06-05T13:13:36.000Z",
+                  "uid": "35240-6de7f9e0-8c49-421e-bb8c-db0af04c009e"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-fcee898c-4054-4a2b-b8a7-e3ca2ac4ccf2"
+            }
+          ],
+          "id": "7dd798c5-42db-494e-a1a9-c5e42e1094c8",
+          "createdAt": "2026-06-05T13:13:36.000Z",
+          "updatedAt": "2026-06-05T13:13:36.000Z",
+          "uid": "35240-7dd798c5-42db-494e-a1a9-c5e42e1094c8"
+        },
+        {
+          "name": "Asana Get attachments from an object",
+          "id": "a7d2422d-edf3-4ae3-b6e9-cb1127b52f49",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/attachments?parent=<string>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "attachments"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Globally unique identifier for object to fetch attachments from.",
+                  "key": "parent",
+                  "value": "<string>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the compact records for all attachments on the object."
+          },
+          "response": [
+            {
+              "id": "ea811894-f147-49ec-ba61-ebc39dd812dc",
+              "name": "Successfully retrieved the compact records for all attachments.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/attachments?parent=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for object to fetch attachments from.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_subtype\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_subtype\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-ea811894-f147-49ec-ba61-ebc39dd812dc"
+            },
+            {
+              "id": "dce8a85c-7d9b-4942-aae5-3a9f0cb5ad35",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/attachments?parent=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for object to fetch attachments from.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-dce8a85c-7d9b-4942-aae5-3a9f0cb5ad35"
+            },
+            {
+              "id": "dedbd45b-9ac8-420c-b791-f403d6b6cfeb",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/attachments?parent=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for object to fetch attachments from.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-dedbd45b-9ac8-420c-b791-f403d6b6cfeb"
+            },
+            {
+              "id": "a7cda2e5-5ee4-48aa-b284-fa869c8c8fb1",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/attachments?parent=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for object to fetch attachments from.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-a7cda2e5-5ee4-48aa-b284-fa869c8c8fb1"
+            },
+            {
+              "id": "f77e18d3-395c-49f5-ae59-ee2c62c1d028",
+              "name": "Not found.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/attachments?parent=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for object to fetch attachments from.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-f77e18d3-395c-49f5-ae59-ee2c62c1d028"
+            },
+            {
+              "id": "38560d29-e475-4d18-8912-8270bc4b142b",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/attachments?parent=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for object to fetch attachments from.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-38560d29-e475-4d18-8912-8270bc4b142b"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:36.000Z",
+          "updatedAt": "2026-06-05T13:13:36.000Z",
+          "uid": "35240-a7d2422d-edf3-4ae3-b6e9-cb1127b52f49"
+        },
+        {
+          "name": "Asana Upload an attachment",
+          "id": "9651e26d-9628-461c-aa9c-6f90fce3318c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": "(Required) Globally unique identifier for the task to add the attachment to.",
+                  "key": "parent",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": "(Required) The type of the attachment. (This can only be one of asana,dropbox,gdrive,onedrive,box,vimeo,external)",
+                  "key": "resource_subtype",
+                  "value": "vimeo",
+                  "type": "text"
+                },
+                {
+                  "description": "The file to upload.",
+                  "key": "file",
+                  "type": "file",
+                  "value": null
+                },
+                {
+                  "description": "The name of the external resource being attached.",
+                  "key": "name",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": "The URL of the external resource being attached.",
+                  "key": "url",
+                  "value": "<uri>",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/attachments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "attachments"
+              ]
+            },
+            "description": "Upload an attachment. The file content must be sent as a multipart form data request."
+          },
+          "response": [
+            {
+              "id": "175f0212-a886-4d60-a5ce-f643f0f3d645",
+              "name": "Successfully uploaded the attachment.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "(Required) Globally unique identifier for the task to add the attachment to.",
+                      "key": "parent",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "(Required) The type of the attachment. (This can only be one of asana,dropbox,gdrive,onedrive,box,vimeo,external)",
+                      "key": "resource_subtype",
+                      "value": "vimeo",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The file to upload.",
+                      "key": "file",
+                      "type": "file"
+                    },
+                    {
+                      "description": "The name of the external resource being attached.",
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The URL of the external resource being attached.",
+                      "key": "url",
+                      "value": "<uri>",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/attachments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"resource_subtype\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"download_url\": \"<uri>\",\n    \"host\": \"<string>\",\n    \"parent\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"permanent_url\": \"<uri>\",\n    \"size\": \"<integer>\",\n    \"view_url\": \"<uri>\",\n    \"connected_to_app\": \"<boolean>\"\n  }\n}",
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-175f0212-a886-4d60-a5ce-f643f0f3d645"
+            },
+            {
+              "id": "86e294e5-feec-41d5-9e94-b6cb91ec13c2",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "(Required) Globally unique identifier for the task to add the attachment to.",
+                      "key": "parent",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "(Required) The type of the attachment. (This can only be one of asana,dropbox,gdrive,onedrive,box,vimeo,external)",
+                      "key": "resource_subtype",
+                      "value": "vimeo",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The file to upload.",
+                      "key": "file",
+                      "type": "file"
+                    },
+                    {
+                      "description": "The name of the external resource being attached.",
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The URL of the external resource being attached.",
+                      "key": "url",
+                      "value": "<uri>",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/attachments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-86e294e5-feec-41d5-9e94-b6cb91ec13c2"
+            },
+            {
+              "id": "35dd5a7a-884b-4fb8-905a-9fec8181c3a1",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "(Required) Globally unique identifier for the task to add the attachment to.",
+                      "key": "parent",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "(Required) The type of the attachment. (This can only be one of asana,dropbox,gdrive,onedrive,box,vimeo,external)",
+                      "key": "resource_subtype",
+                      "value": "vimeo",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The file to upload.",
+                      "key": "file",
+                      "type": "file"
+                    },
+                    {
+                      "description": "The name of the external resource being attached.",
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The URL of the external resource being attached.",
+                      "key": "url",
+                      "value": "<uri>",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/attachments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-35dd5a7a-884b-4fb8-905a-9fec8181c3a1"
+            },
+            {
+              "id": "ecf6c5ed-6bd4-4fdb-ad10-396aaa1ce882",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "(Required) Globally unique identifier for the task to add the attachment to.",
+                      "key": "parent",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "(Required) The type of the attachment. (This can only be one of asana,dropbox,gdrive,onedrive,box,vimeo,external)",
+                      "key": "resource_subtype",
+                      "value": "vimeo",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The file to upload.",
+                      "key": "file",
+                      "type": "file"
+                    },
+                    {
+                      "description": "The name of the external resource being attached.",
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The URL of the external resource being attached.",
+                      "key": "url",
+                      "value": "<uri>",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/attachments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-ecf6c5ed-6bd4-4fdb-ad10-396aaa1ce882"
+            },
+            {
+              "id": "beafb5de-8ae3-47c1-8e5c-79e0f3287f89",
+              "name": "Not found.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "(Required) Globally unique identifier for the task to add the attachment to.",
+                      "key": "parent",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "(Required) The type of the attachment. (This can only be one of asana,dropbox,gdrive,onedrive,box,vimeo,external)",
+                      "key": "resource_subtype",
+                      "value": "vimeo",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The file to upload.",
+                      "key": "file",
+                      "type": "file"
+                    },
+                    {
+                      "description": "The name of the external resource being attached.",
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The URL of the external resource being attached.",
+                      "key": "url",
+                      "value": "<uri>",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/attachments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-beafb5de-8ae3-47c1-8e5c-79e0f3287f89"
+            },
+            {
+              "id": "052cb920-56bd-44cf-9c90-ce7ad1607ef0",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "(Required) Globally unique identifier for the task to add the attachment to.",
+                      "key": "parent",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "(Required) The type of the attachment. (This can only be one of asana,dropbox,gdrive,onedrive,box,vimeo,external)",
+                      "key": "resource_subtype",
+                      "value": "vimeo",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The file to upload.",
+                      "key": "file",
+                      "type": "file"
+                    },
+                    {
+                      "description": "The name of the external resource being attached.",
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": "The URL of the external resource being attached.",
+                      "key": "url",
+                      "value": "<uri>",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/attachments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "attachments"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:36.000Z",
+              "updatedAt": "2026-06-05T13:13:36.000Z",
+              "uid": "35240-052cb920-56bd-44cf-9c90-ce7ad1607ef0"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:36.000Z",
+          "updatedAt": "2026-06-05T13:13:36.000Z",
+          "uid": "35240-9651e26d-9628-461c-aa9c-6f90fce3318c"
+        }
+      ],
+      "id": "793dcc3c-4542-4326-9b7d-d571ce9dc963",
+      "createdAt": "2026-06-05T13:13:36.000Z",
+      "updatedAt": "2026-06-05T13:13:36.000Z",
+      "uid": "35240-793dcc3c-4542-4326-9b7d-d571ce9dc963"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

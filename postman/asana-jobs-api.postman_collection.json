@@ -1,0 +1,331 @@
+{
+  "info": {
+    "_postman_id": "54f8cb5e-e7b3-4323-b914-ef23f442f070",
+    "name": "Asana Jobs API",
+    "description": "The Asana Jobs API allows users to access job records representing asynchronous processes such as project or task duplication.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:43.000Z",
+    "updatedAt": "2026-06-05T13:13:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-54f8cb5e-e7b3-4323-b914-ef23f442f070"
+  },
+  "item": [
+    {
+      "name": "jobs",
+      "item": [
+        {
+          "name": "{job_gid}",
+          "item": [
+            {
+              "name": "Asana Get a job by id",
+              "id": "8d3ced03-ee7b-4409-a584-f92b63bc6ddf",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/jobs/:job_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "jobs",
+                    ":job_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "0462047f-5aeb-4746-808a-bcfab0032087",
+                      "key": "job_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Returns the full record for a job."
+              },
+              "response": [
+                {
+                  "id": "0f3a2d35-f1fd-4d64-9adb-78251c1e2aac",
+                  "name": "Successfully retrieved the record for a single job.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/jobs/:job_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "jobs",
+                        ":job_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "job_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"resource_subtype\": \"<string>\",\n    \"status\": \"failed\",\n    \"new_project\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"new_task\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"new_project_template\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:43.000Z",
+                  "updatedAt": "2026-06-05T13:13:43.000Z",
+                  "uid": "35240-0f3a2d35-f1fd-4d64-9adb-78251c1e2aac"
+                },
+                {
+                  "id": "0258450d-2c5a-448f-a832-c739796f7057",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/jobs/:job_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "jobs",
+                        ":job_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "job_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:43.000Z",
+                  "updatedAt": "2026-06-05T13:13:43.000Z",
+                  "uid": "35240-0258450d-2c5a-448f-a832-c739796f7057"
+                },
+                {
+                  "id": "128bca4a-dc90-4989-b835-65dba3a36de6",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/jobs/:job_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "jobs",
+                        ":job_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "job_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:43.000Z",
+                  "updatedAt": "2026-06-05T13:13:43.000Z",
+                  "uid": "35240-128bca4a-dc90-4989-b835-65dba3a36de6"
+                },
+                {
+                  "id": "e5986619-5988-43fc-aa4f-45af6b345bf1",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/jobs/:job_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "jobs",
+                        ":job_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "job_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:43.000Z",
+                  "updatedAt": "2026-06-05T13:13:43.000Z",
+                  "uid": "35240-e5986619-5988-43fc-aa4f-45af6b345bf1"
+                },
+                {
+                  "id": "91074e51-9115-45c2-8872-1f159de07908",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/jobs/:job_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "jobs",
+                        ":job_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "job_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:43.000Z",
+                  "updatedAt": "2026-06-05T13:13:43.000Z",
+                  "uid": "35240-91074e51-9115-45c2-8872-1f159de07908"
+                },
+                {
+                  "id": "9dd54ac2-652e-43cf-816c-dd7fe3a7b442",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/jobs/:job_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "jobs",
+                        ":job_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "job_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:43.000Z",
+                  "updatedAt": "2026-06-05T13:13:43.000Z",
+                  "uid": "35240-9dd54ac2-652e-43cf-816c-dd7fe3a7b442"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:43.000Z",
+              "updatedAt": "2026-06-05T13:13:43.000Z",
+              "uid": "35240-8d3ced03-ee7b-4409-a584-f92b63bc6ddf"
+            }
+          ],
+          "id": "e215d634-d5a2-457f-87fd-c4222c3ccf1b",
+          "createdAt": "2026-06-05T13:13:43.000Z",
+          "updatedAt": "2026-06-05T13:13:43.000Z",
+          "uid": "35240-e215d634-d5a2-457f-87fd-c4222c3ccf1b"
+        }
+      ],
+      "id": "6663d3a6-4b17-4b3c-82de-83db0ad3e65d",
+      "createdAt": "2026-06-05T13:13:43.000Z",
+      "updatedAt": "2026-06-05T13:13:43.000Z",
+      "uid": "35240-6663d3a6-4b17-4b3c-82de-83db0ad3e65d"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

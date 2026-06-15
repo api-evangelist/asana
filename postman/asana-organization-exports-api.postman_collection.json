@@ -1,0 +1,620 @@
+{
+  "info": {
+    "_postman_id": "7d826710-6a24-4900-84a3-596235fca442",
+    "name": "Asana Organization Exports API",
+    "description": "The Asana Organization Exports API allows users to export the complete data of an organization in JSON format. Only available to Service Accounts of Enterprise organizations.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:45.000Z",
+    "updatedAt": "2026-06-05T13:13:45.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-7d826710-6a24-4900-84a3-596235fca442"
+  },
+  "item": [
+    {
+      "name": "organization_exports",
+      "item": [
+        {
+          "name": "{organization_export_gid}",
+          "item": [
+            {
+              "name": "Asana Get details on an org export request",
+              "id": "4315f90d-3fae-4b1c-be52-5a9c498ee291",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/organization_exports/:organization_export_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organization_exports",
+                    ":organization_export_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "7b662c9c-cd27-4f3b-9586-f69ac2184dcf",
+                      "key": "organization_export_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Returns details of a previously-requested organization export."
+              },
+              "response": [
+                {
+                  "id": "34092871-2572-4f18-bfc9-614b5207fa64",
+                  "name": "Successfully retrieved the requested organization export.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organization_exports/:organization_export_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organization_exports",
+                        ":organization_export_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "organization_export_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"state\": \"pending\",\n    \"download_url\": \"<uri>\",\n    \"organization\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"created_at\": \"<dateTime>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:45.000Z",
+                  "updatedAt": "2026-06-05T13:13:45.000Z",
+                  "uid": "35240-34092871-2572-4f18-bfc9-614b5207fa64"
+                },
+                {
+                  "id": "f1bd2909-fd74-4d24-80ee-a0c3fd98b7f6",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organization_exports/:organization_export_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organization_exports",
+                        ":organization_export_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "organization_export_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:45.000Z",
+                  "updatedAt": "2026-06-05T13:13:45.000Z",
+                  "uid": "35240-f1bd2909-fd74-4d24-80ee-a0c3fd98b7f6"
+                },
+                {
+                  "id": "b41802f2-4c3d-487f-a875-c9274bb37baa",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organization_exports/:organization_export_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organization_exports",
+                        ":organization_export_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "organization_export_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:45.000Z",
+                  "updatedAt": "2026-06-05T13:13:45.000Z",
+                  "uid": "35240-b41802f2-4c3d-487f-a875-c9274bb37baa"
+                },
+                {
+                  "id": "f2122314-cdf7-42ee-a92c-ad875da8f5ff",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organization_exports/:organization_export_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organization_exports",
+                        ":organization_export_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "organization_export_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:45.000Z",
+                  "updatedAt": "2026-06-05T13:13:45.000Z",
+                  "uid": "35240-f2122314-cdf7-42ee-a92c-ad875da8f5ff"
+                },
+                {
+                  "id": "61970078-b9e0-47c7-8575-ea3f97a463cf",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organization_exports/:organization_export_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organization_exports",
+                        ":organization_export_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "organization_export_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:45.000Z",
+                  "updatedAt": "2026-06-05T13:13:45.000Z",
+                  "uid": "35240-61970078-b9e0-47c7-8575-ea3f97a463cf"
+                },
+                {
+                  "id": "feb2d04d-0a5a-4fa5-bd29-0c6c78b5c2d0",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/organization_exports/:organization_export_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "organization_exports",
+                        ":organization_export_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "organization_export_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:45.000Z",
+                  "updatedAt": "2026-06-05T13:13:45.000Z",
+                  "uid": "35240-feb2d04d-0a5a-4fa5-bd29-0c6c78b5c2d0"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:45.000Z",
+              "updatedAt": "2026-06-05T13:13:45.000Z",
+              "uid": "35240-4315f90d-3fae-4b1c-be52-5a9c498ee291"
+            }
+          ],
+          "id": "dad041a9-21cd-4e4b-873e-6cb25985f142",
+          "createdAt": "2026-06-05T13:13:45.000Z",
+          "updatedAt": "2026-06-05T13:13:45.000Z",
+          "uid": "35240-dad041a9-21cd-4e4b-873e-6cb25985f142"
+        },
+        {
+          "name": "Asana Create an organization export request",
+          "id": "2447a7f5-15ad-42ec-9db6-c6fca41431e4",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"organization\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/organization_exports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "organization_exports"
+              ]
+            },
+            "description": "Creates an organization export request for the given organization."
+          },
+          "response": [
+            {
+              "id": "053d114a-4154-4915-86d6-414cb99a0c57",
+              "name": "Successfully created an organization export request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"organization\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/organization_exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organization_exports"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"state\": \"pending\",\n    \"download_url\": \"<uri>\",\n    \"organization\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"created_at\": \"<dateTime>\"\n  }\n}",
+              "createdAt": "2026-06-05T13:13:45.000Z",
+              "updatedAt": "2026-06-05T13:13:45.000Z",
+              "uid": "35240-053d114a-4154-4915-86d6-414cb99a0c57"
+            },
+            {
+              "id": "06f5a612-20df-43e0-9be3-9ec80637c21a",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"organization\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/organization_exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organization_exports"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:45.000Z",
+              "updatedAt": "2026-06-05T13:13:45.000Z",
+              "uid": "35240-06f5a612-20df-43e0-9be3-9ec80637c21a"
+            },
+            {
+              "id": "ec2cec41-16dd-4f5c-a546-3fababa2ac95",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"organization\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/organization_exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organization_exports"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:45.000Z",
+              "updatedAt": "2026-06-05T13:13:45.000Z",
+              "uid": "35240-ec2cec41-16dd-4f5c-a546-3fababa2ac95"
+            },
+            {
+              "id": "b8782c2f-0189-4e99-b211-923674392ccb",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"organization\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/organization_exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organization_exports"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:45.000Z",
+              "updatedAt": "2026-06-05T13:13:45.000Z",
+              "uid": "35240-b8782c2f-0189-4e99-b211-923674392ccb"
+            },
+            {
+              "id": "6cf57892-2159-4bce-ac92-aedb6e0fb520",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"organization\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/organization_exports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "organization_exports"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:45.000Z",
+              "updatedAt": "2026-06-05T13:13:45.000Z",
+              "uid": "35240-6cf57892-2159-4bce-ac92-aedb6e0fb520"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:45.000Z",
+          "updatedAt": "2026-06-05T13:13:45.000Z",
+          "uid": "35240-2447a7f5-15ad-42ec-9db6-c6fca41431e4"
+        }
+      ],
+      "id": "2d5d5ac5-bb5c-41e0-adbe-83ec3f1a7daf",
+      "createdAt": "2026-06-05T13:13:45.000Z",
+      "updatedAt": "2026-06-05T13:13:45.000Z",
+      "uid": "35240-2d5d5ac5-bb5c-41e0-adbe-83ec3f1a7daf"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

@@ -1,0 +1,621 @@
+{
+  "info": {
+    "_postman_id": "c27915f1-265d-45e9-93d3-6b4221d86261",
+    "name": "Asana Users API",
+    "description": "The Asana Users API allows developers to interact with user data. A user object represents an account in Asana that can be given access to various workspaces, projects, and tasks. The special string identifier \"me\" can be used to refer to the current authenticated user.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:14:01.000Z",
+    "updatedAt": "2026-06-05T13:14:01.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-c27915f1-265d-45e9-93d3-6b4221d86261"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "{user_gid}",
+          "item": [
+            {
+              "name": "favorites",
+              "item": [
+                {
+                  "name": "Asana Get a user's favorites",
+                  "id": "06651ad7-b957-4e00-8454-6a3b681e1aea",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:user_gid/favorites?resource_type=project&workspace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user_gid",
+                        "favorites"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) ",
+                          "key": "resource_type",
+                          "value": "project"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "workspace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "1ccd2074-4b35-446e-be6c-527bb82aafc5",
+                          "key": "user_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "bbab5cb6-a037-40b5-86d0-f178f731686a",
+                      "name": "Successfully retrieved the user's favorites.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_gid/favorites?resource_type=project&workspace=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_gid",
+                            "favorites"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) ",
+                              "key": "resource_type",
+                              "value": "project"
+                            },
+                            {
+                              "description": "(Required) ",
+                              "key": "workspace",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:14:01.000Z",
+                      "updatedAt": "2026-06-05T13:14:01.000Z",
+                      "uid": "35240-bbab5cb6-a037-40b5-86d0-f178f731686a"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:14:01.000Z",
+                  "updatedAt": "2026-06-05T13:14:01.000Z",
+                  "uid": "35240-06651ad7-b957-4e00-8454-6a3b681e1aea"
+                }
+              ],
+              "id": "729f1a88-4ee9-48ab-ba05-3659b97a4215",
+              "createdAt": "2026-06-05T13:14:01.000Z",
+              "updatedAt": "2026-06-05T13:14:01.000Z",
+              "uid": "35240-729f1a88-4ee9-48ab-ba05-3659b97a4215"
+            },
+            {
+              "name": "Asana Get a user",
+              "id": "b1b8e923-d457-4635-88f7-ffb3845773f1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/users/:user_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":user_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "6512f8e9-c8ea-456c-bff4-331901cae1b5",
+                      "key": "user_gid",
+                      "value": "<string>",
+                      "description": "(Required) A string identifying a user. Can be \"me\", an email, or a gid."
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "03071de5-2741-4931-84a8-a3c94ab0eb36",
+                  "name": "Successfully retrieved the record for a single user.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:user_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "user_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"email\": \"<email>\",\n    \"photo\": {\n      \"image_21x21\": \"<uri>\",\n      \"image_27x27\": \"<uri>\",\n      \"image_36x36\": \"<uri>\",\n      \"image_60x60\": \"<uri>\",\n      \"image_128x128\": \"<uri>\",\n      \"image_1024x1024\": \"<uri>\"\n    },\n    \"workspaces\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  }\n}",
+                  "createdAt": "2026-06-05T13:14:01.000Z",
+                  "updatedAt": "2026-06-05T13:14:01.000Z",
+                  "uid": "35240-03071de5-2741-4931-84a8-a3c94ab0eb36"
+                }
+              ],
+              "createdAt": "2026-06-05T13:14:01.000Z",
+              "updatedAt": "2026-06-05T13:14:01.000Z",
+              "uid": "35240-b1b8e923-d457-4635-88f7-ffb3845773f1"
+            }
+          ],
+          "id": "a862e201-6671-4da8-ad73-81181e4c41b6",
+          "createdAt": "2026-06-05T13:14:01.000Z",
+          "updatedAt": "2026-06-05T13:14:01.000Z",
+          "uid": "35240-a862e201-6671-4da8-ad73-81181e4c41b6"
+        },
+        {
+          "name": "Asana Get multiple users",
+          "id": "4ddb89c1-e924-4267-aafc-572282f5c809",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users?workspace=<string>&team=<string>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "workspace",
+                  "value": "<string>"
+                },
+                {
+                  "key": "team",
+                  "value": "<string>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e92d2be3-f7be-482d-a1cb-0a7dfb67c34b",
+              "name": "Successfully retrieved the requested users.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/users?workspace=<string>&team=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:14:01.000Z",
+              "updatedAt": "2026-06-05T13:14:01.000Z",
+              "uid": "35240-e92d2be3-f7be-482d-a1cb-0a7dfb67c34b"
+            }
+          ],
+          "createdAt": "2026-06-05T13:14:01.000Z",
+          "updatedAt": "2026-06-05T13:14:01.000Z",
+          "uid": "35240-4ddb89c1-e924-4267-aafc-572282f5c809"
+        }
+      ],
+      "id": "67921222-8770-418a-a6cf-a18b4e113b79",
+      "createdAt": "2026-06-05T13:14:01.000Z",
+      "updatedAt": "2026-06-05T13:14:01.000Z",
+      "uid": "35240-67921222-8770-418a-a6cf-a18b4e113b79"
+    },
+    {
+      "name": "teams",
+      "item": [
+        {
+          "name": "{team_gid}",
+          "item": [
+            {
+              "name": "users",
+              "item": [
+                {
+                  "name": "Asana Get users in a team",
+                  "id": "b092d2f2-d582-4b52-9651-298b7d384b8b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/teams/:team_gid/users?offset=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "teams",
+                        ":team_gid",
+                        "users"
+                      ],
+                      "query": [
+                        {
+                          "key": "offset",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "02c01404-a456-42bd-a24a-de7027ca796e",
+                          "key": "team_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "8ce958ad-f32a-467f-b10c-62ccc4cb2f4e",
+                      "name": "Successfully retrieved the users in the team.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/teams/:team_gid/users?offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "teams",
+                            ":team_gid",
+                            "users"
+                          ],
+                          "query": [
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "team_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:14:01.000Z",
+                      "updatedAt": "2026-06-05T13:14:01.000Z",
+                      "uid": "35240-8ce958ad-f32a-467f-b10c-62ccc4cb2f4e"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:14:01.000Z",
+                  "updatedAt": "2026-06-05T13:14:01.000Z",
+                  "uid": "35240-b092d2f2-d582-4b52-9651-298b7d384b8b"
+                }
+              ],
+              "id": "3c2a9908-df74-4ab7-aaef-849427688d79",
+              "createdAt": "2026-06-05T13:14:01.000Z",
+              "updatedAt": "2026-06-05T13:14:01.000Z",
+              "uid": "35240-3c2a9908-df74-4ab7-aaef-849427688d79"
+            }
+          ],
+          "id": "2f064937-6fa0-4a39-ba2c-031f1701e7ca",
+          "createdAt": "2026-06-05T13:14:01.000Z",
+          "updatedAt": "2026-06-05T13:14:01.000Z",
+          "uid": "35240-2f064937-6fa0-4a39-ba2c-031f1701e7ca"
+        }
+      ],
+      "id": "8058b7f4-3f9d-409b-9815-863a339ae65e",
+      "createdAt": "2026-06-05T13:14:01.000Z",
+      "updatedAt": "2026-06-05T13:14:01.000Z",
+      "uid": "35240-8058b7f4-3f9d-409b-9815-863a339ae65e"
+    },
+    {
+      "name": "workspaces",
+      "item": [
+        {
+          "name": "{workspace_gid}",
+          "item": [
+            {
+              "name": "users",
+              "item": [
+                {
+                  "name": "Asana Get users in a workspace or organization",
+                  "id": "3055944f-56b2-40d1-82a5-b165f8dee665",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/workspaces/:workspace_gid/users?offset=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "workspaces",
+                        ":workspace_gid",
+                        "users"
+                      ],
+                      "query": [
+                        {
+                          "key": "offset",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "cb1dc682-2ce5-417c-9cae-dd4f2715cce4",
+                          "key": "workspace_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "807b4313-6084-443d-af8b-eb5655254946",
+                      "name": "Successfully retrieved the users in the workspace.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/users?offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "users"
+                          ],
+                          "query": [
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:14:01.000Z",
+                      "updatedAt": "2026-06-05T13:14:01.000Z",
+                      "uid": "35240-807b4313-6084-443d-af8b-eb5655254946"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:14:01.000Z",
+                  "updatedAt": "2026-06-05T13:14:01.000Z",
+                  "uid": "35240-3055944f-56b2-40d1-82a5-b165f8dee665"
+                }
+              ],
+              "id": "235816ea-de69-4cd0-b552-45a2009f29f9",
+              "createdAt": "2026-06-05T13:14:01.000Z",
+              "updatedAt": "2026-06-05T13:14:01.000Z",
+              "uid": "35240-235816ea-de69-4cd0-b552-45a2009f29f9"
+            }
+          ],
+          "id": "67188f8c-0dc2-4389-a6f0-58d42594db51",
+          "createdAt": "2026-06-05T13:14:01.000Z",
+          "updatedAt": "2026-06-05T13:14:01.000Z",
+          "uid": "35240-67188f8c-0dc2-4389-a6f0-58d42594db51"
+        }
+      ],
+      "id": "9316c560-cc45-494e-a1be-4580f3eb2e53",
+      "createdAt": "2026-06-05T13:14:01.000Z",
+      "updatedAt": "2026-06-05T13:14:01.000Z",
+      "uid": "35240-9316c560-cc45-494e-a1be-4580f3eb2e53"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

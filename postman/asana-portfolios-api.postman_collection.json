@@ -1,0 +1,2766 @@
+{
+  "info": {
+    "_postman_id": "91134a8a-e5c3-4a52-84d9-c56c0a9fd96a",
+    "name": "Asana Portfolios API",
+    "description": "The Asana Portfolios API allows developers to manage portfolios that give a high-level overview of the status of multiple initiatives. Portfolios have a max of 1500 items and a maximum of 20 custom fields.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:46.000Z",
+    "updatedAt": "2026-06-05T13:13:46.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-91134a8a-e5c3-4a52-84d9-c56c0a9fd96a"
+  },
+  "item": [
+    {
+      "name": "portfolios",
+      "item": [
+        {
+          "name": "{portfolio_gid}",
+          "item": [
+            {
+              "name": "items",
+              "item": [
+                {
+                  "name": "Asana Get portfolio items",
+                  "id": "ab581974-334a-40ac-be27-57b5ef6813e7",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid/items?limit=<integer>&offset=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid",
+                        "items"
+                      ],
+                      "query": [
+                        {
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "key": "offset",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "e6b8711b-df4e-471d-86e4-0abd02f44a6e",
+                          "key": "portfolio_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns the compact project records for all items in the portfolio."
+                  },
+                  "response": [
+                    {
+                      "id": "12056be4-e81e-4c9f-b880-84e7abc51645",
+                      "name": "Successfully retrieved the portfolio items.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/items?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-12056be4-e81e-4c9f-b880-84e7abc51645"
+                    },
+                    {
+                      "id": "be58ac1e-ff99-404e-b22d-93176ce7f297",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/items?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-be58ac1e-ff99-404e-b22d-93176ce7f297"
+                    },
+                    {
+                      "id": "b81c0e6a-88c8-47a6-a0fd-0896c93847f7",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/items?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-b81c0e6a-88c8-47a6-a0fd-0896c93847f7"
+                    },
+                    {
+                      "id": "112b3c51-02fa-4579-927a-f2ec4fecdbd0",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/items?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-112b3c51-02fa-4579-927a-f2ec4fecdbd0"
+                    },
+                    {
+                      "id": "afdbefd7-e4fa-452d-9178-dc2794d90910",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/items?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-afdbefd7-e4fa-452d-9178-dc2794d90910"
+                    },
+                    {
+                      "id": "7b9459c2-dd40-4507-8375-b830365c695c",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/items?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "items"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-7b9459c2-dd40-4507-8375-b830365c695c"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-ab581974-334a-40ac-be27-57b5ef6813e7"
+                }
+              ],
+              "id": "1af33540-a441-4247-beaa-3864ebc8b891",
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-1af33540-a441-4247-beaa-3864ebc8b891"
+            },
+            {
+              "name": "addItem",
+              "item": [
+                {
+                  "name": "Asana Add a portfolio item",
+                  "id": "563b2606-aeca-4f02-8205-613e355ba80f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"item\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid/addItem",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid",
+                        "addItem"
+                      ],
+                      "variable": [
+                        {
+                          "id": "77dedcfb-f700-4afe-bf1b-deb6ab91620d",
+                          "key": "portfolio_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Add an item to a portfolio."
+                  },
+                  "response": [
+                    {
+                      "id": "016da194-a6e9-4f6d-9495-621d53b8baad",
+                      "name": "Successfully added the item.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/addItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "addItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-016da194-a6e9-4f6d-9495-621d53b8baad"
+                    },
+                    {
+                      "id": "6dd83c61-0cf7-4e73-88b9-6667efd19916",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/addItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "addItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-6dd83c61-0cf7-4e73-88b9-6667efd19916"
+                    },
+                    {
+                      "id": "04b50905-3bbc-4eb0-8440-7583590468fc",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/addItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "addItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-04b50905-3bbc-4eb0-8440-7583590468fc"
+                    },
+                    {
+                      "id": "f6d7d46a-f411-43ea-b732-8c30121865a4",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/addItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "addItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-f6d7d46a-f411-43ea-b732-8c30121865a4"
+                    },
+                    {
+                      "id": "bfffade4-99c9-470c-8c3a-2b8b91a0d215",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/addItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "addItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-bfffade4-99c9-470c-8c3a-2b8b91a0d215"
+                    },
+                    {
+                      "id": "39f3536b-53a8-4454-b00d-f1a34f46454b",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/addItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "addItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-39f3536b-53a8-4454-b00d-f1a34f46454b"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-563b2606-aeca-4f02-8205-613e355ba80f"
+                }
+              ],
+              "id": "80b07aed-1186-4db2-af68-3ffb057896a6",
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-80b07aed-1186-4db2-af68-3ffb057896a6"
+            },
+            {
+              "name": "removeItem",
+              "item": [
+                {
+                  "name": "Asana Remove a portfolio item",
+                  "id": "6eec4103-a14d-4816-a495-59cda1875b4e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"item\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid/removeItem",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid",
+                        "removeItem"
+                      ],
+                      "variable": [
+                        {
+                          "id": "6df5ab8b-7406-4274-b58e-7a41933aaee7",
+                          "key": "portfolio_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Remove an item from a portfolio."
+                  },
+                  "response": [
+                    {
+                      "id": "3c2f34ed-3931-4fc3-99e5-d3ab79baae94",
+                      "name": "Successfully removed the item.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/removeItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "removeItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {}\n}",
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-3c2f34ed-3931-4fc3-99e5-d3ab79baae94"
+                    },
+                    {
+                      "id": "341cc9b6-b9af-4fa8-a139-590b9de411a0",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/removeItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "removeItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-341cc9b6-b9af-4fa8-a139-590b9de411a0"
+                    },
+                    {
+                      "id": "6476fde4-76b9-4ef8-a9c4-21edcff3e396",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/removeItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "removeItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-6476fde4-76b9-4ef8-a9c4-21edcff3e396"
+                    },
+                    {
+                      "id": "b117506c-3c70-42d0-85dd-36247ed19de3",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/removeItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "removeItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-b117506c-3c70-42d0-85dd-36247ed19de3"
+                    },
+                    {
+                      "id": "3adf0348-806f-40b8-94e7-00ae8ebea7d6",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/removeItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "removeItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-3adf0348-806f-40b8-94e7-00ae8ebea7d6"
+                    },
+                    {
+                      "id": "fca64f37-3aa0-4ff8-a24b-82dcf4b36e7d",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"item\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/portfolios/:portfolio_gid/removeItem",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "portfolios",
+                            ":portfolio_gid",
+                            "removeItem"
+                          ],
+                          "variable": [
+                            {
+                              "key": "portfolio_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:46.000Z",
+                      "updatedAt": "2026-06-05T13:13:46.000Z",
+                      "uid": "35240-fca64f37-3aa0-4ff8-a24b-82dcf4b36e7d"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-6eec4103-a14d-4816-a495-59cda1875b4e"
+                }
+              ],
+              "id": "f518d268-e6d4-4aa0-b0f6-0c2220869b88",
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-f518d268-e6d4-4aa0-b0f6-0c2220869b88"
+            },
+            {
+              "name": "Asana Get a portfolio",
+              "id": "bee21f1b-4150-4678-94f6-74edfe4e0e3b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios",
+                    ":portfolio_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "e6914f49-6399-47ee-9df6-b8980a6e369a",
+                      "key": "portfolio_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Returns the complete portfolio record for a single portfolio."
+              },
+              "response": [
+                {
+                  "id": "726aa705-1e1f-434c-a05b-602768b19758",
+                  "name": "Successfully retrieved the record for a single portfolio.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"members\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"permalink_url\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-726aa705-1e1f-434c-a05b-602768b19758"
+                },
+                {
+                  "id": "ada079d0-cc98-40df-80ea-b74395fd49be",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-ada079d0-cc98-40df-80ea-b74395fd49be"
+                },
+                {
+                  "id": "f6754fa0-9950-495b-9790-ec1625c206fd",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-f6754fa0-9950-495b-9790-ec1625c206fd"
+                },
+                {
+                  "id": "08ca9793-5552-40b6-a11b-7e2574830fe3",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-08ca9793-5552-40b6-a11b-7e2574830fe3"
+                },
+                {
+                  "id": "802b0d0f-7f89-4138-9dd1-d1b92deabe3a",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-802b0d0f-7f89-4138-9dd1-d1b92deabe3a"
+                },
+                {
+                  "id": "0f00387e-f8e0-41c9-b753-2c437191ea0c",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-0f00387e-f8e0-41c9-b753-2c437191ea0c"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-bee21f1b-4150-4678-94f6-74edfe4e0e3b"
+            },
+            {
+              "name": "Asana Update a portfolio",
+              "id": "15dddef0-140b-445c-a9d6-98e39f7eea2e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios",
+                    ":portfolio_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "23173d09-abe3-4a22-a9d0-7d28f161c557",
+                      "key": "portfolio_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Updates the portfolio."
+              },
+              "response": [
+                {
+                  "id": "fe9cb718-e2a7-4593-9cb3-d9dffb8a6860",
+                  "name": "Successfully updated the portfolio.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"members\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"permalink_url\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-fe9cb718-e2a7-4593-9cb3-d9dffb8a6860"
+                },
+                {
+                  "id": "83361eea-b0f0-469d-83e2-a3343c8241ec",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-83361eea-b0f0-469d-83e2-a3343c8241ec"
+                },
+                {
+                  "id": "33da2860-6311-404f-b7f0-6b0454ae6c88",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-33da2860-6311-404f-b7f0-6b0454ae6c88"
+                },
+                {
+                  "id": "20a0acdc-4448-4e1f-9ec0-de068a201868",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-20a0acdc-4448-4e1f-9ec0-de068a201868"
+                },
+                {
+                  "id": "d5371aca-1ff6-4297-aea6-e3ce7300dc6d",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-d5371aca-1ff6-4297-aea6-e3ce7300dc6d"
+                },
+                {
+                  "id": "5c331b93-3709-4911-b8f3-3cd673a5e00c",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-5c331b93-3709-4911-b8f3-3cd673a5e00c"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-15dddef0-140b-445c-a9d6-98e39f7eea2e"
+            },
+            {
+              "name": "Asana Delete a portfolio",
+              "id": "f8fc9b9b-8a89-4161-b984-b7fde3e6b92e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios",
+                    ":portfolio_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "d7b05efd-ac9c-4d66-ac81-393d3f5dcdf0",
+                      "key": "portfolio_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Deletes a specific, existing portfolio."
+              },
+              "response": [
+                {
+                  "id": "3baa903b-960c-46d3-895c-693ec94e07c7",
+                  "name": "Successfully deleted the portfolio.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-3baa903b-960c-46d3-895c-693ec94e07c7"
+                },
+                {
+                  "id": "d3e0cba1-7446-4d9d-8b71-13b09b688d98",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-d3e0cba1-7446-4d9d-8b71-13b09b688d98"
+                },
+                {
+                  "id": "6b9adfd9-8c4d-4234-a11e-6a2f8a5159ff",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-6b9adfd9-8c4d-4234-a11e-6a2f8a5159ff"
+                },
+                {
+                  "id": "3eff45f9-6a71-4cf1-aba5-bdae5287cf92",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-3eff45f9-6a71-4cf1-aba5-bdae5287cf92"
+                },
+                {
+                  "id": "7c9e3d99-c722-443d-b331-bfb128fa2863",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-7c9e3d99-c722-443d-b331-bfb128fa2863"
+                },
+                {
+                  "id": "836b671e-e0e6-4d26-b1d2-21e65f6369b9",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/portfolios/:portfolio_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "portfolios",
+                        ":portfolio_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "portfolio_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:46.000Z",
+                  "updatedAt": "2026-06-05T13:13:46.000Z",
+                  "uid": "35240-836b671e-e0e6-4d26-b1d2-21e65f6369b9"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-f8fc9b9b-8a89-4161-b984-b7fde3e6b92e"
+            }
+          ],
+          "id": "afd047b8-bc54-4cfc-b507-b0938cde6dee",
+          "createdAt": "2026-06-05T13:13:46.000Z",
+          "updatedAt": "2026-06-05T13:13:46.000Z",
+          "uid": "35240-afd047b8-bc54-4cfc-b507-b0938cde6dee"
+        },
+        {
+          "name": "Asana Get multiple portfolios",
+          "id": "f657dc82-47b5-458a-a4bc-04c158307f01",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/portfolios?workspace=<string>&owner=<string>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "portfolios"
+              ],
+              "query": [
+                {
+                  "description": "(Required) ",
+                  "key": "workspace",
+                  "value": "<string>"
+                },
+                {
+                  "key": "owner",
+                  "value": "<string>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns a list of the portfolios in compact representation."
+          },
+          "response": [
+            {
+              "id": "3d8b0b20-f22f-4824-9efc-e08a55e194d2",
+              "name": "Successfully retrieved the requested portfolios.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios?workspace=<string>&owner=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) ",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-3d8b0b20-f22f-4824-9efc-e08a55e194d2"
+            },
+            {
+              "id": "80b93275-5ded-4c15-9a14-1d87c41ff488",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios?workspace=<string>&owner=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) ",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-80b93275-5ded-4c15-9a14-1d87c41ff488"
+            },
+            {
+              "id": "831183e6-d4a7-40de-b527-b167658d27f3",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios?workspace=<string>&owner=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) ",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-831183e6-d4a7-40de-b527-b167658d27f3"
+            },
+            {
+              "id": "65af1704-cc95-4882-98b4-7aef28f689a4",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios?workspace=<string>&owner=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) ",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-65af1704-cc95-4882-98b4-7aef28f689a4"
+            },
+            {
+              "id": "189bc080-c7e1-4efe-95b7-e653265b27a2",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios?workspace=<string>&owner=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) ",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-189bc080-c7e1-4efe-95b7-e653265b27a2"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:46.000Z",
+          "updatedAt": "2026-06-05T13:13:46.000Z",
+          "uid": "35240-f657dc82-47b5-458a-a4bc-04c158307f01"
+        },
+        {
+          "name": "Asana Create a portfolio",
+          "id": "98d2cc71-b572-4c0e-baa6-2086fd02e122",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/portfolios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "portfolios"
+              ]
+            },
+            "description": "Creates a new portfolio in the given workspace."
+          },
+          "response": [
+            {
+              "id": "78eb7b7e-a863-4506-b4d7-468bdcfebcca",
+              "name": "Successfully created a new portfolio.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"members\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"permalink_url\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\"\n  }\n}",
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-78eb7b7e-a863-4506-b4d7-468bdcfebcca"
+            },
+            {
+              "id": "f8779d38-2041-4756-927d-807b9c417b28",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-f8779d38-2041-4756-927d-807b9c417b28"
+            },
+            {
+              "id": "77da37de-aff0-47db-a885-e6fb4b2a2af8",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-77da37de-aff0-47db-a885-e6fb4b2a2af8"
+            },
+            {
+              "id": "373f812e-38ca-45fd-9cd3-cb6a134758a3",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-373f812e-38ca-45fd-9cd3-cb6a134758a3"
+            },
+            {
+              "id": "b0583aff-3df1-44c8-81d7-5d39a017718d",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"dark-purple\",\n    \"workspace\": \"<string>\",\n    \"public\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/portfolios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "portfolios"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:46.000Z",
+              "updatedAt": "2026-06-05T13:13:46.000Z",
+              "uid": "35240-b0583aff-3df1-44c8-81d7-5d39a017718d"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:46.000Z",
+          "updatedAt": "2026-06-05T13:13:46.000Z",
+          "uid": "35240-98d2cc71-b572-4c0e-baa6-2086fd02e122"
+        }
+      ],
+      "id": "9ae2862d-7586-4562-b462-565f39b8e356",
+      "createdAt": "2026-06-05T13:13:46.000Z",
+      "updatedAt": "2026-06-05T13:13:46.000Z",
+      "uid": "35240-9ae2862d-7586-4562-b462-565f39b8e356"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

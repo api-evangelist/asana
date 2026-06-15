@@ -1,0 +1,207 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Goals API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Goals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get goals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/goals",
+            "params": [
+              {
+                "name": "workspace",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "team",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "project",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "is_workspace_level",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "time_periods",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns compact goal records."
+        },
+        {
+          "info": {
+            "name": "Asana Create a goal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/goals",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new goal in a workspace."
+        },
+        {
+          "info": {
+            "name": "Asana Get a goal",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the complete goal record for a single goal."
+        },
+        {
+          "info": {
+            "name": "Asana Update a goal",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing goal."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a goal",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific, existing goal."
+        },
+        {
+          "info": {
+            "name": "Asana Add a collaborator to a goal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid/addFollowers",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds followers to a goal."
+        },
+        {
+          "info": {
+            "name": "Asana Remove a collaborator from a goal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid/removeFollowers",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes followers from a goal."
+        },
+        {
+          "info": {
+            "name": "Asana Get parent goals from a goal",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid/parentGoals",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns a compact representation of all parent goals of a goal."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

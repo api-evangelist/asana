@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Allocations API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Allocations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get an allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/allocations/:allocation_gid",
+            "params": [
+              {
+                "name": "allocation_gid",
+                "value": "77688",
+                "type": "path",
+                "description": "Globally unique identifier for the allocation."
+              },
+              {
+                "name": "opt_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of optional fields to include."
+              }
+            ]
+          },
+          "docs": "Returns the complete allocation record for a single allocation."
+        },
+        {
+          "info": {
+            "name": "Asana Update an allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/allocations/:allocation_gid",
+            "params": [
+              {
+                "name": "allocation_gid",
+                "value": "77688",
+                "type": "path",
+                "description": "Globally unique identifier for the allocation."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing allocation."
+        },
+        {
+          "info": {
+            "name": "Asana Delete an allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/allocations/:allocation_gid",
+            "params": [
+              {
+                "name": "allocation_gid",
+                "value": "77688",
+                "type": "path",
+                "description": "Globally unique identifier for the allocation."
+              }
+            ]
+          },
+          "docs": "Deletes a specific, existing allocation."
+        },
+        {
+          "info": {
+            "name": "Asana Get multiple allocations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/allocations",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Globally unique identifier for the project to filter allocations."
+              },
+              {
+                "name": "assignee",
+                "value": "",
+                "type": "query",
+                "description": "Globally unique identifier for the user to filter allocations."
+              },
+              {
+                "name": "workspace",
+                "value": "",
+                "type": "query",
+                "description": "Globally unique identifier for the workspace."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of allocations filtered to a specific project or user."
+        },
+        {
+          "info": {
+            "name": "Asana Create an allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/allocations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new allocation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

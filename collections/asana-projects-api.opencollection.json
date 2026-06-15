@@ -1,0 +1,285 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Projects API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Projects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get multiple projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/projects",
+            "params": [
+              {
+                "name": "workspace",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "team",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "archived",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the compact project records for some filtered set of projects."
+        },
+        {
+          "info": {
+            "name": "Asana Create a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/projects",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new project in a workspace or team."
+        },
+        {
+          "info": {
+            "name": "Asana Get a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the complete project record for a single project."
+        },
+        {
+          "info": {
+            "name": "Asana Update a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing project."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a project. Tasks in the project are not deleted."
+        },
+        {
+          "info": {
+            "name": "Asana Duplicate a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/duplicate",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new project by duplicating an existing project asynchronously."
+        },
+        {
+          "info": {
+            "name": "Asana Get task count of a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/task_counts",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the task count for a project."
+        },
+        {
+          "info": {
+            "name": "Asana Get a team's projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/teams/:team_gid/projects",
+            "params": [
+              {
+                "name": "team_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "archived",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the compact project records for all projects in the team."
+        },
+        {
+          "info": {
+            "name": "Asana Create a project in a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/teams/:team_gid/projects",
+            "params": [
+              {
+                "name": "team_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a project shared with the given team."
+        },
+        {
+          "info": {
+            "name": "Asana Get all projects in a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid/projects",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "archived",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the compact project records for all projects in the workspace."
+        },
+        {
+          "info": {
+            "name": "Asana Create a project in a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid/projects",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a project in the workspace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

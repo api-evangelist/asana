@@ -1,0 +1,2766 @@
+{
+  "info": {
+    "_postman_id": "12b7409e-d276-453d-8de1-8b7302afd8ad",
+    "name": "Asana Goals API",
+    "description": "The Asana Goals API allows developers to programmatically interact with goals in the goal-tracking system. Goals help organizations drive measurable results and can include metrics, subgoals, and supporting relationships.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:42.000Z",
+    "updatedAt": "2026-06-05T13:13:42.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-12b7409e-d276-453d-8de1-8b7302afd8ad"
+  },
+  "item": [
+    {
+      "name": "goals",
+      "item": [
+        {
+          "name": "{goal_gid}",
+          "item": [
+            {
+              "name": "addFollowers",
+              "item": [
+                {
+                  "name": "Asana Add a collaborator to a goal",
+                  "id": "c87a59ea-ae34-4b6d-839c-09c59673ae2f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid/addFollowers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid",
+                        "addFollowers"
+                      ],
+                      "variable": [
+                        {
+                          "id": "fee22094-4c7f-4979-9deb-2d7675117b9b",
+                          "key": "goal_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Adds followers to a goal."
+                  },
+                  "response": [
+                    {
+                      "id": "ab945b94-2535-43f8-b363-9c7346e615b4",
+                      "name": "Successfully added followers to the goal.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/addFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "addFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"status\": \"<string>\",\n    \"liked\": \"<boolean>\",\n    \"num_likes\": \"<integer>\",\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"time_period\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"metric\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"resource_subtype\": \"<string>\",\n      \"precision\": \"<integer>\",\n      \"unit\": \"<string>\",\n      \"currency_code\": \"<string>\",\n      \"current_number_value\": \"<number>\",\n      \"target_number_value\": \"<number>\",\n      \"initial_number_value\": \"<number>\",\n      \"progress_source\": \"project_task_completion\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-ab945b94-2535-43f8-b363-9c7346e615b4"
+                    },
+                    {
+                      "id": "06680652-5b3f-411c-914f-f2b41cbd2369",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/addFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "addFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-06680652-5b3f-411c-914f-f2b41cbd2369"
+                    },
+                    {
+                      "id": "60a2198d-9ea8-4fd7-8597-92f389edfb0d",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/addFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "addFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-60a2198d-9ea8-4fd7-8597-92f389edfb0d"
+                    },
+                    {
+                      "id": "d1d8e3c7-0d47-4014-8b7b-f54594ea5811",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/addFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "addFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-d1d8e3c7-0d47-4014-8b7b-f54594ea5811"
+                    },
+                    {
+                      "id": "b44de4ca-fe82-4b76-8843-c3b0fd479255",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/addFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "addFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-b44de4ca-fe82-4b76-8843-c3b0fd479255"
+                    },
+                    {
+                      "id": "636e19cd-1a77-480e-9401-0443bdc7da5b",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/addFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "addFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-636e19cd-1a77-480e-9401-0443bdc7da5b"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-c87a59ea-ae34-4b6d-839c-09c59673ae2f"
+                }
+              ],
+              "id": "0c561396-beff-4016-af2c-ee056ab5c40b",
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-0c561396-beff-4016-af2c-ee056ab5c40b"
+            },
+            {
+              "name": "removeFollowers",
+              "item": [
+                {
+                  "name": "Asana Remove a collaborator from a goal",
+                  "id": "f6df1afe-57bd-434f-a96c-29e8953bb9df",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid/removeFollowers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid",
+                        "removeFollowers"
+                      ],
+                      "variable": [
+                        {
+                          "id": "269158fa-1bc8-4ecc-8c6d-89359f941d2d",
+                          "key": "goal_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Removes followers from a goal."
+                  },
+                  "response": [
+                    {
+                      "id": "dc7461ab-6d75-4105-8d51-e484a236884f",
+                      "name": "Successfully removed followers from the goal.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/removeFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "removeFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"status\": \"<string>\",\n    \"liked\": \"<boolean>\",\n    \"num_likes\": \"<integer>\",\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"time_period\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"metric\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"resource_subtype\": \"<string>\",\n      \"precision\": \"<integer>\",\n      \"unit\": \"<string>\",\n      \"currency_code\": \"<string>\",\n      \"current_number_value\": \"<number>\",\n      \"target_number_value\": \"<number>\",\n      \"initial_number_value\": \"<number>\",\n      \"progress_source\": \"project_task_completion\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-dc7461ab-6d75-4105-8d51-e484a236884f"
+                    },
+                    {
+                      "id": "2865f0e4-bb2d-4f04-b3d5-a541b1ae4e79",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/removeFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "removeFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-2865f0e4-bb2d-4f04-b3d5-a541b1ae4e79"
+                    },
+                    {
+                      "id": "40bc22ec-b08f-470a-851a-8f20da34fc0b",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/removeFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "removeFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-40bc22ec-b08f-470a-851a-8f20da34fc0b"
+                    },
+                    {
+                      "id": "36e98397-3076-4c22-a803-62f32afe11b0",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/removeFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "removeFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-36e98397-3076-4c22-a803-62f32afe11b0"
+                    },
+                    {
+                      "id": "fd56722c-aa54-47af-9ea0-f174b928a3af",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/removeFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "removeFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-fd56722c-aa54-47af-9ea0-f174b928a3af"
+                    },
+                    {
+                      "id": "dd863fdc-e911-4a2f-a00b-c6e1c42b549f",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/removeFollowers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "removeFollowers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-dd863fdc-e911-4a2f-a00b-c6e1c42b549f"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-f6df1afe-57bd-434f-a96c-29e8953bb9df"
+                }
+              ],
+              "id": "bc9fb5f7-45d9-456a-a98e-aae970a0ff4d",
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-bc9fb5f7-45d9-456a-a98e-aae970a0ff4d"
+            },
+            {
+              "name": "parentGoals",
+              "item": [
+                {
+                  "name": "Asana Get parent goals from a goal",
+                  "id": "2c29df13-329b-48eb-ad0f-4007ed3811ae",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid/parentGoals",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid",
+                        "parentGoals"
+                      ],
+                      "variable": [
+                        {
+                          "id": "20eab090-0a4a-4920-ba7a-4e25df58754d",
+                          "key": "goal_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Returns a compact representation of all parent goals of a goal."
+                  },
+                  "response": [
+                    {
+                      "id": "3cee8876-74c9-454d-ad4c-6e9a93efd1c9",
+                      "name": "Successfully retrieved the parent goals.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/parentGoals",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "parentGoals"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"owner\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"owner\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-3cee8876-74c9-454d-ad4c-6e9a93efd1c9"
+                    },
+                    {
+                      "id": "5d153d58-635b-4e4d-8112-b1ff971ca155",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/parentGoals",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "parentGoals"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-5d153d58-635b-4e4d-8112-b1ff971ca155"
+                    },
+                    {
+                      "id": "323211c4-c8e8-4e14-a283-cd0d0406524c",
+                      "name": "Unauthorized.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/parentGoals",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "parentGoals"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-323211c4-c8e8-4e14-a283-cd0d0406524c"
+                    },
+                    {
+                      "id": "b5ff9444-e01a-496d-bf15-7de3ffb7f724",
+                      "name": "Forbidden.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/parentGoals",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "parentGoals"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-b5ff9444-e01a-496d-bf15-7de3ffb7f724"
+                    },
+                    {
+                      "id": "ba363434-a806-43fd-9a94-360e3b18c104",
+                      "name": "Not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/parentGoals",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "parentGoals"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-ba363434-a806-43fd-9a94-360e3b18c104"
+                    },
+                    {
+                      "id": "87f1c256-9bc2-4a6b-9218-94e3e275e05d",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/goals/:goal_gid/parentGoals",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "goals",
+                            ":goal_gid",
+                            "parentGoals"
+                          ],
+                          "variable": [
+                            {
+                              "key": "goal_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:13:42.000Z",
+                      "updatedAt": "2026-06-05T13:13:42.000Z",
+                      "uid": "35240-87f1c256-9bc2-4a6b-9218-94e3e275e05d"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-2c29df13-329b-48eb-ad0f-4007ed3811ae"
+                }
+              ],
+              "id": "e0aa3981-a26b-4a7c-a07a-1b7d00e1a717",
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-e0aa3981-a26b-4a7c-a07a-1b7d00e1a717"
+            },
+            {
+              "name": "Asana Get a goal",
+              "id": "c4a0cd7b-3f32-4d16-b2d6-d1a17b7b0e11",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/goals/:goal_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals",
+                    ":goal_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "59c94faf-d769-491d-9c9a-d869a3bf1ff9",
+                      "key": "goal_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Returns the complete goal record for a single goal."
+              },
+              "response": [
+                {
+                  "id": "9d199ef3-302b-4c9b-b80a-eaf5d9f20327",
+                  "name": "Successfully retrieved the record for a single goal.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"status\": \"<string>\",\n    \"liked\": \"<boolean>\",\n    \"num_likes\": \"<integer>\",\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"time_period\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"metric\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"resource_subtype\": \"<string>\",\n      \"precision\": \"<integer>\",\n      \"unit\": \"<string>\",\n      \"currency_code\": \"<string>\",\n      \"current_number_value\": \"<number>\",\n      \"target_number_value\": \"<number>\",\n      \"initial_number_value\": \"<number>\",\n      \"progress_source\": \"project_task_completion\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-9d199ef3-302b-4c9b-b80a-eaf5d9f20327"
+                },
+                {
+                  "id": "bbe0eaa6-4465-424d-a8c9-59055519d336",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-bbe0eaa6-4465-424d-a8c9-59055519d336"
+                },
+                {
+                  "id": "ffc14a9c-1079-49a2-af22-a45baddfa80f",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-ffc14a9c-1079-49a2-af22-a45baddfa80f"
+                },
+                {
+                  "id": "05c516aa-d3ab-4d26-9f9a-0af255966ada",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-05c516aa-d3ab-4d26-9f9a-0af255966ada"
+                },
+                {
+                  "id": "38fb4f5a-2873-4082-a610-9622b02c48d7",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-38fb4f5a-2873-4082-a610-9622b02c48d7"
+                },
+                {
+                  "id": "27ed8f62-387c-46fa-9839-6a40c13149ef",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-27ed8f62-387c-46fa-9839-6a40c13149ef"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-c4a0cd7b-3f32-4d16-b2d6-d1a17b7b0e11"
+            },
+            {
+              "name": "Asana Update a goal",
+              "id": "a6095499-1cf1-4690-ae62-2109bdd78dca",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/goals/:goal_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals",
+                    ":goal_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "d3e382a2-7e98-439a-ac48-5a8caf1b1fb4",
+                      "key": "goal_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Updates an existing goal."
+              },
+              "response": [
+                {
+                  "id": "724e0b06-63e2-4c29-95ca-c2c8e663d8e0",
+                  "name": "Successfully updated the goal.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"status\": \"<string>\",\n    \"liked\": \"<boolean>\",\n    \"num_likes\": \"<integer>\",\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"time_period\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"metric\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"resource_subtype\": \"<string>\",\n      \"precision\": \"<integer>\",\n      \"unit\": \"<string>\",\n      \"currency_code\": \"<string>\",\n      \"current_number_value\": \"<number>\",\n      \"target_number_value\": \"<number>\",\n      \"initial_number_value\": \"<number>\",\n      \"progress_source\": \"project_task_completion\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-724e0b06-63e2-4c29-95ca-c2c8e663d8e0"
+                },
+                {
+                  "id": "58e2e6ad-7f1b-45e1-b6d2-969d371819a2",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-58e2e6ad-7f1b-45e1-b6d2-969d371819a2"
+                },
+                {
+                  "id": "3685edb7-ee7c-4b51-b727-986c709724a7",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-3685edb7-ee7c-4b51-b727-986c709724a7"
+                },
+                {
+                  "id": "512f144c-8c4f-4684-8599-95ad3bc1064b",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-512f144c-8c4f-4684-8599-95ad3bc1064b"
+                },
+                {
+                  "id": "ae618c65-b683-49f8-aa72-7255474f2767",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-ae618c65-b683-49f8-aa72-7255474f2767"
+                },
+                {
+                  "id": "762b2e07-d229-4265-87dc-80354b5eed37",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-762b2e07-d229-4265-87dc-80354b5eed37"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-a6095499-1cf1-4690-ae62-2109bdd78dca"
+            },
+            {
+              "name": "Asana Delete a goal",
+              "id": "5c051ea2-523a-4fd7-858e-0e5d30f9d501",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/goals/:goal_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals",
+                    ":goal_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "904c617c-79c6-41ab-86ee-c1e5202d325f",
+                      "key": "goal_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Deletes a specific, existing goal."
+              },
+              "response": [
+                {
+                  "id": "6934fb8b-bd77-4fcb-a6d7-06259e969f8c",
+                  "name": "Successfully deleted the goal.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-6934fb8b-bd77-4fcb-a6d7-06259e969f8c"
+                },
+                {
+                  "id": "69c1bd94-6895-49a1-99e6-5d12dcb2751f",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-69c1bd94-6895-49a1-99e6-5d12dcb2751f"
+                },
+                {
+                  "id": "bd421e70-457c-49db-98da-57611ce94b08",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-bd421e70-457c-49db-98da-57611ce94b08"
+                },
+                {
+                  "id": "203b435d-47cb-4a36-b28b-a86bbef8668d",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-203b435d-47cb-4a36-b28b-a86bbef8668d"
+                },
+                {
+                  "id": "3c26d9fa-1004-4749-8d31-87a1be73aa51",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-3c26d9fa-1004-4749-8d31-87a1be73aa51"
+                },
+                {
+                  "id": "99d0b7ea-3c21-457b-89d5-6ede92d63052",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/goals/:goal_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "goals",
+                        ":goal_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "goal_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:42.000Z",
+                  "updatedAt": "2026-06-05T13:13:42.000Z",
+                  "uid": "35240-99d0b7ea-3c21-457b-89d5-6ede92d63052"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-5c051ea2-523a-4fd7-858e-0e5d30f9d501"
+            }
+          ],
+          "id": "2ccd8f3a-6ad5-43e1-968a-07a40561f655",
+          "createdAt": "2026-06-05T13:13:42.000Z",
+          "updatedAt": "2026-06-05T13:13:42.000Z",
+          "uid": "35240-2ccd8f3a-6ad5-43e1-968a-07a40561f655"
+        },
+        {
+          "name": "Asana Get goals",
+          "id": "27ab8260-d59f-49d9-b07e-39b838bc48c8",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/goals?workspace=<string>&team=<string>&project=<string>&is_workspace_level=<boolean>&time_periods=<string>&time_periods=<string>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "goals"
+              ],
+              "query": [
+                {
+                  "key": "workspace",
+                  "value": "<string>"
+                },
+                {
+                  "key": "team",
+                  "value": "<string>"
+                },
+                {
+                  "key": "project",
+                  "value": "<string>"
+                },
+                {
+                  "key": "is_workspace_level",
+                  "value": "<boolean>"
+                },
+                {
+                  "key": "time_periods",
+                  "value": "<string>"
+                },
+                {
+                  "key": "time_periods",
+                  "value": "<string>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns compact goal records."
+          },
+          "response": [
+            {
+              "id": "2abc93a6-3f95-4bc6-8ffd-3c9efdacea5a",
+              "name": "Successfully retrieved the requested goals.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/goals?workspace=<string>&team=<string>&project=<string>&is_workspace_level=<boolean>&time_periods=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_workspace_level",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "time_periods",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"owner\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"owner\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-2abc93a6-3f95-4bc6-8ffd-3c9efdacea5a"
+            },
+            {
+              "id": "58b3010c-a014-487b-a244-4fd00e025265",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/goals?workspace=<string>&team=<string>&project=<string>&is_workspace_level=<boolean>&time_periods=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_workspace_level",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "time_periods",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-58b3010c-a014-487b-a244-4fd00e025265"
+            },
+            {
+              "id": "7a00d979-28e2-4ddd-99e7-501783adbd04",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/goals?workspace=<string>&team=<string>&project=<string>&is_workspace_level=<boolean>&time_periods=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_workspace_level",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "time_periods",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-7a00d979-28e2-4ddd-99e7-501783adbd04"
+            },
+            {
+              "id": "dc471c17-f52c-40e2-bd1f-605ff5093ed0",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/goals?workspace=<string>&team=<string>&project=<string>&is_workspace_level=<boolean>&time_periods=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_workspace_level",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "time_periods",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-dc471c17-f52c-40e2-bd1f-605ff5093ed0"
+            },
+            {
+              "id": "b42ce06c-b6aa-43a1-97d1-d7cff8615a97",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/goals?workspace=<string>&team=<string>&project=<string>&is_workspace_level=<boolean>&time_periods=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "project",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "is_workspace_level",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "time_periods",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-b42ce06c-b6aa-43a1-97d1-d7cff8615a97"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:42.000Z",
+          "updatedAt": "2026-06-05T13:13:42.000Z",
+          "uid": "35240-27ab8260-d59f-49d9-b07e-39b838bc48c8"
+        },
+        {
+          "name": "Asana Create a goal",
+          "id": "1bb747e9-f0f0-4b22-999c-9ac9b7fcfd5c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/goals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "goals"
+              ]
+            },
+            "description": "Creates a new goal in a workspace."
+          },
+          "response": [
+            {
+              "id": "4246c26f-4015-445e-b4b2-bb44c6aadec1",
+              "name": "Successfully created a new goal.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/goals",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"status\": \"<string>\",\n    \"liked\": \"<boolean>\",\n    \"num_likes\": \"<integer>\",\n    \"team\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"time_period\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"metric\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"resource_subtype\": \"<string>\",\n      \"precision\": \"<integer>\",\n      \"unit\": \"<string>\",\n      \"currency_code\": \"<string>\",\n      \"current_number_value\": \"<number>\",\n      \"target_number_value\": \"<number>\",\n      \"initial_number_value\": \"<number>\",\n      \"progress_source\": \"project_task_completion\"\n    }\n  }\n}",
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-4246c26f-4015-445e-b4b2-bb44c6aadec1"
+            },
+            {
+              "id": "82fda04e-4db1-4139-bab3-5d65b074674e",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/goals",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-82fda04e-4db1-4139-bab3-5d65b074674e"
+            },
+            {
+              "id": "bff91859-e229-4bbd-95d6-3a0f2c2a8abb",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/goals",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-bff91859-e229-4bbd-95d6-3a0f2c2a8abb"
+            },
+            {
+              "id": "b3eaf744-a4ae-4b7d-a155-21d65616e994",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/goals",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-b3eaf744-a4ae-4b7d-a155-21d65616e994"
+            },
+            {
+              "id": "fc615bbc-4eeb-4469-b176-e29e2662fb1b",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"html_notes\": \"<string>\",\n    \"due_on\": \"<date>\",\n    \"start_on\": \"<date>\",\n    \"liked\": \"<boolean>\",\n    \"team\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"time_period\": \"<string>\",\n    \"owner\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/goals",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "goals"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:42.000Z",
+              "updatedAt": "2026-06-05T13:13:42.000Z",
+              "uid": "35240-fc615bbc-4eeb-4469-b176-e29e2662fb1b"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:42.000Z",
+          "updatedAt": "2026-06-05T13:13:42.000Z",
+          "uid": "35240-1bb747e9-f0f0-4b22-999c-9ac9b7fcfd5c"
+        }
+      ],
+      "id": "357f1a29-de48-4ddb-9714-725075f0f4bc",
+      "createdAt": "2026-06-05T13:13:42.000Z",
+      "updatedAt": "2026-06-05T13:13:42.000Z",
+      "uid": "35240-357f1a29-de48-4ddb-9714-725075f0f4bc"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

@@ -1,0 +1,434 @@
+{
+  "info": {
+    "_postman_id": "ab2a5c58-5060-4524-9188-0efa4c62f191",
+    "name": "Asana Task Templates API",
+    "description": "The Asana Task Templates API manages task templates that allow new tasks to be created with a predefined setup including followers, dependencies, and custom fields.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:54.000Z",
+    "updatedAt": "2026-06-05T13:13:54.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ab2a5c58-5060-4524-9188-0efa4c62f191"
+  },
+  "item": [
+    {
+      "name": "task_templates",
+      "item": [
+        {
+          "name": "{task_template_gid}",
+          "item": [
+            {
+              "name": "instantiateTask",
+              "item": [
+                {
+                  "name": "Asana Instantiate a task from a task template",
+                  "id": "0a292b59-661d-4aa5-8639-f050e57f76d3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/task_templates/:task_template_gid/instantiateTask",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_templates",
+                        ":task_template_gid",
+                        "instantiateTask"
+                      ],
+                      "variable": [
+                        {
+                          "id": "9a21267b-ac14-490d-9530-3ebc4121756d",
+                          "key": "task_template_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "a9cab5dd-9ea7-4542-bd3a-1d5b679ba9bc",
+                      "name": "Successfully instantiated the task.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/task_templates/:task_template_gid/instantiateTask",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "task_templates",
+                            ":task_template_gid",
+                            "instantiateTask"
+                          ],
+                          "variable": [
+                            {
+                              "key": "task_template_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"status\": \"<string>\",\n    \"new_task\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T13:13:54.000Z",
+                      "updatedAt": "2026-06-05T13:13:54.000Z",
+                      "uid": "35240-a9cab5dd-9ea7-4542-bd3a-1d5b679ba9bc"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:54.000Z",
+                  "updatedAt": "2026-06-05T13:13:54.000Z",
+                  "uid": "35240-0a292b59-661d-4aa5-8639-f050e57f76d3"
+                }
+              ],
+              "id": "d15a621a-fd80-4add-8751-d31f89e4d6f2",
+              "createdAt": "2026-06-05T13:13:54.000Z",
+              "updatedAt": "2026-06-05T13:13:54.000Z",
+              "uid": "35240-d15a621a-fd80-4add-8751-d31f89e4d6f2"
+            },
+            {
+              "name": "Asana Get a task template",
+              "id": "7050d42a-01cd-450d-92aa-5e0ac6d7458c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/task_templates/:task_template_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_templates",
+                    ":task_template_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "6ef8d942-fd10-4468-8646-d2a2c459fc9f",
+                      "key": "task_template_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "827afaa6-08d1-4edf-b1b1-fc3640d79be1",
+                  "name": "Successfully retrieved the task template.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/task_templates/:task_template_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_templates",
+                        ":task_template_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_template_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"project\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"created_at\": \"<dateTime>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:54.000Z",
+                  "updatedAt": "2026-06-05T13:13:54.000Z",
+                  "uid": "35240-827afaa6-08d1-4edf-b1b1-fc3640d79be1"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:54.000Z",
+              "updatedAt": "2026-06-05T13:13:54.000Z",
+              "uid": "35240-7050d42a-01cd-450d-92aa-5e0ac6d7458c"
+            },
+            {
+              "name": "Asana Delete a task template",
+              "id": "befcee13-5c22-4e47-8f82-f091b8cb3339",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/task_templates/:task_template_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_templates",
+                    ":task_template_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "413e30c8-e414-450c-bc33-bf255c8459d5",
+                      "key": "task_template_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "69814a5a-4f2a-46bd-9650-05fcfdaf690d",
+                  "name": "Successfully deleted the task template.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/task_templates/:task_template_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_templates",
+                        ":task_template_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_template_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:54.000Z",
+                  "updatedAt": "2026-06-05T13:13:54.000Z",
+                  "uid": "35240-69814a5a-4f2a-46bd-9650-05fcfdaf690d"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:54.000Z",
+              "updatedAt": "2026-06-05T13:13:54.000Z",
+              "uid": "35240-befcee13-5c22-4e47-8f82-f091b8cb3339"
+            }
+          ],
+          "id": "2bd38577-e836-450a-8ae6-571c9ffffbc2",
+          "createdAt": "2026-06-05T13:13:54.000Z",
+          "updatedAt": "2026-06-05T13:13:54.000Z",
+          "uid": "35240-2bd38577-e836-450a-8ae6-571c9ffffbc2"
+        },
+        {
+          "name": "Asana Get multiple task templates",
+          "id": "93e7e4fd-3f0e-44ae-8aaf-25c9f8fd272f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/task_templates?project=<string>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "task_templates"
+              ],
+              "query": [
+                {
+                  "key": "project",
+                  "value": "<string>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2c0bdb1c-4985-458e-9582-8948f010fad8",
+              "name": "Successfully retrieved task templates.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/task_templates?project=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_templates"
+                  ],
+                  "query": [
+                    {
+                      "key": "project",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:13:54.000Z",
+              "updatedAt": "2026-06-05T13:13:54.000Z",
+              "uid": "35240-2c0bdb1c-4985-458e-9582-8948f010fad8"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:54.000Z",
+          "updatedAt": "2026-06-05T13:13:54.000Z",
+          "uid": "35240-93e7e4fd-3f0e-44ae-8aaf-25c9f8fd272f"
+        }
+      ],
+      "id": "22b177b9-32f0-412a-b0b0-b559537c5266",
+      "createdAt": "2026-06-05T13:13:54.000Z",
+      "updatedAt": "2026-06-05T13:13:54.000Z",
+      "uid": "35240-22b177b9-32f0-412a-b0b0-b559537c5266"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

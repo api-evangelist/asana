@@ -1,0 +1,65 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana User Task Lists API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "User Task Lists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get a user task list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/user_task_lists/:user_task_list_gid",
+            "params": [
+              {
+                "name": "user_task_list_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Asana Get a user task list"
+        },
+        {
+          "info": {
+            "name": "Asana Get a user's task list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/users/:user_gid/user_task_list",
+            "params": [
+              {
+                "name": "user_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "workspace",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Asana Get a user's task list"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

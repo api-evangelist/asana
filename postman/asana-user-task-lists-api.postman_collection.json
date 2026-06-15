@@ -1,0 +1,265 @@
+{
+  "info": {
+    "_postman_id": "7baaa827-b16e-408b-b2ca-1678a1e86d04",
+    "name": "Asana User Task Lists API",
+    "description": "The Asana User Task Lists API manages user task lists, which represent the tasks assigned to a particular user (their \"My Tasks\" view).\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:14:00.000Z",
+    "updatedAt": "2026-06-05T13:14:00.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-7baaa827-b16e-408b-b2ca-1678a1e86d04"
+  },
+  "item": [
+    {
+      "name": "user_task_lists",
+      "item": [
+        {
+          "name": "{user_task_list_gid}",
+          "item": [
+            {
+              "name": "Asana Get a user task list",
+              "id": "dac993b4-7dc4-4541-8c8c-8a1b93ba5c61",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/user_task_lists/:user_task_list_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "user_task_lists",
+                    ":user_task_list_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "c481f290-cae8-40f2-855d-f9474967d017",
+                      "key": "user_task_list_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "652ccd0b-306e-48e9-a175-51169a8f4197",
+                  "name": "Successfully retrieved the user task list.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/user_task_lists/:user_task_list_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "user_task_lists",
+                        ":user_task_list_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "user_task_list_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T13:14:00.000Z",
+                  "updatedAt": "2026-06-05T13:14:00.000Z",
+                  "uid": "35240-652ccd0b-306e-48e9-a175-51169a8f4197"
+                }
+              ],
+              "createdAt": "2026-06-05T13:14:00.000Z",
+              "updatedAt": "2026-06-05T13:14:00.000Z",
+              "uid": "35240-dac993b4-7dc4-4541-8c8c-8a1b93ba5c61"
+            }
+          ],
+          "id": "5a980e22-ac29-4054-a0d6-56341ae1cd07",
+          "createdAt": "2026-06-05T13:14:00.000Z",
+          "updatedAt": "2026-06-05T13:14:00.000Z",
+          "uid": "35240-5a980e22-ac29-4054-a0d6-56341ae1cd07"
+        }
+      ],
+      "id": "ff9abfbb-659b-4d64-a714-707e37bf86bb",
+      "createdAt": "2026-06-05T13:14:00.000Z",
+      "updatedAt": "2026-06-05T13:14:00.000Z",
+      "uid": "35240-ff9abfbb-659b-4d64-a714-707e37bf86bb"
+    },
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "{user_gid}",
+          "item": [
+            {
+              "name": "user_task_list",
+              "item": [
+                {
+                  "name": "Asana Get a user's task list",
+                  "id": "e339439c-908b-40d4-aaea-7e69a3487e8e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:user_gid/user_task_list?workspace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user_gid",
+                        "user_task_list"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) ",
+                          "key": "workspace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "5117b339-7718-40c9-9d25-45f07c2ed50f",
+                          "key": "user_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "eb66e740-a036-45f9-8b5b-e1f6757fe041",
+                      "name": "Successfully retrieved the user's task list.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_gid/user_task_list?workspace=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_gid",
+                            "user_task_list"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) ",
+                              "key": "workspace",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"owner\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T13:14:00.000Z",
+                      "updatedAt": "2026-06-05T13:14:00.000Z",
+                      "uid": "35240-eb66e740-a036-45f9-8b5b-e1f6757fe041"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:14:00.000Z",
+                  "updatedAt": "2026-06-05T13:14:00.000Z",
+                  "uid": "35240-e339439c-908b-40d4-aaea-7e69a3487e8e"
+                }
+              ],
+              "id": "2f1e7177-c802-42e3-bad5-e9e49c2d8d74",
+              "createdAt": "2026-06-05T13:14:00.000Z",
+              "updatedAt": "2026-06-05T13:14:00.000Z",
+              "uid": "35240-2f1e7177-c802-42e3-bad5-e9e49c2d8d74"
+            }
+          ],
+          "id": "e0e70e10-c0e3-4760-aaee-d3831f0c61da",
+          "createdAt": "2026-06-05T13:14:00.000Z",
+          "updatedAt": "2026-06-05T13:14:00.000Z",
+          "uid": "35240-e0e70e10-c0e3-4760-aaee-d3831f0c61da"
+        }
+      ],
+      "id": "4345e6b0-5d69-4b57-96ae-de5afff9b539",
+      "createdAt": "2026-06-05T13:14:00.000Z",
+      "updatedAt": "2026-06-05T13:14:00.000Z",
+      "uid": "35240-4345e6b0-5d69-4b57-96ae-de5afff9b539"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

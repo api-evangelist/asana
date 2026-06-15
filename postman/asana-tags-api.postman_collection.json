@@ -1,0 +1,776 @@
+{
+  "info": {
+    "_postman_id": "e1d5f3bc-43ab-45b7-bfc3-a8cbd9cd664f",
+    "name": "Asana Tags API",
+    "description": "The Asana Tags API allows developers to manage tags that can be attached to any task in Asana. A tag exists in a single workspace or organization.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:53.000Z",
+    "updatedAt": "2026-06-05T13:13:53.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e1d5f3bc-43ab-45b7-bfc3-a8cbd9cd664f"
+  },
+  "item": [
+    {
+      "name": "tags",
+      "item": [
+        {
+          "name": "{tag_gid}",
+          "item": [
+            {
+              "name": "Asana Get a tag",
+              "id": "01d808f9-9996-4747-be2d-c922beafffbd",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tags/:tag_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "8867272b-466e-43a8-aac4-e7210b26eae4",
+                      "key": "tag_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "51187974-4f7b-4ddc-b66b-e78b967f1018",
+                  "name": "Successfully retrieved the tag.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tags/:tag_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tags",
+                        ":tag_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "tag_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"permalink_url\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:53.000Z",
+                  "updatedAt": "2026-06-05T13:13:53.000Z",
+                  "uid": "35240-51187974-4f7b-4ddc-b66b-e78b967f1018"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:53.000Z",
+              "updatedAt": "2026-06-05T13:13:53.000Z",
+              "uid": "35240-01d808f9-9996-4747-be2d-c922beafffbd"
+            },
+            {
+              "name": "Asana Update a tag",
+              "id": "07a7f054-806e-491d-b1f2-52f255f1c5c0",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tags/:tag_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "c4e50010-0122-4063-a827-da9664b865f4",
+                      "key": "tag_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "2cf95adc-4be6-465a-aea4-b204dafe0411",
+                  "name": "Successfully updated the tag.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tags/:tag_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tags",
+                        ":tag_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "tag_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"permalink_url\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:53.000Z",
+                  "updatedAt": "2026-06-05T13:13:53.000Z",
+                  "uid": "35240-2cf95adc-4be6-465a-aea4-b204dafe0411"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:53.000Z",
+              "updatedAt": "2026-06-05T13:13:53.000Z",
+              "uid": "35240-07a7f054-806e-491d-b1f2-52f255f1c5c0"
+            },
+            {
+              "name": "Asana Delete a tag",
+              "id": "58b4fec9-f559-4dcd-a80b-5186db312caa",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/tags/:tag_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "e054830b-ae5b-4a30-8c7d-707fcb9ea316",
+                      "key": "tag_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "3aae62ef-c7f1-446c-893a-0f8010e68e96",
+                  "name": "Successfully deleted the tag.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tags/:tag_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tags",
+                        ":tag_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "tag_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:53.000Z",
+                  "updatedAt": "2026-06-05T13:13:53.000Z",
+                  "uid": "35240-3aae62ef-c7f1-446c-893a-0f8010e68e96"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:53.000Z",
+              "updatedAt": "2026-06-05T13:13:53.000Z",
+              "uid": "35240-58b4fec9-f559-4dcd-a80b-5186db312caa"
+            }
+          ],
+          "id": "8c1c206c-2763-4277-8aaf-b6a336c5483b",
+          "createdAt": "2026-06-05T13:13:53.000Z",
+          "updatedAt": "2026-06-05T13:13:53.000Z",
+          "uid": "35240-8c1c206c-2763-4277-8aaf-b6a336c5483b"
+        },
+        {
+          "name": "Asana Get multiple tags",
+          "id": "9c1981b1-2143-41b6-9ed1-256eb434b02c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tags?workspace=<string>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tags"
+              ],
+              "query": [
+                {
+                  "key": "workspace",
+                  "value": "<string>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ddbe428a-b32c-4722-be1b-28031acff2c7",
+              "name": "Successfully retrieved tags.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tags?workspace=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:13:53.000Z",
+              "updatedAt": "2026-06-05T13:13:53.000Z",
+              "uid": "35240-ddbe428a-b32c-4722-be1b-28031acff2c7"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:53.000Z",
+          "updatedAt": "2026-06-05T13:13:53.000Z",
+          "uid": "35240-9c1981b1-2143-41b6-9ed1-256eb434b02c"
+        },
+        {
+          "name": "Asana Create a tag",
+          "id": "1777365c-f4d7-40c5-9277-59e42fc8d8c1",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tags",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tags"
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1b9492d7-aa05-4ba7-aaf7-5d9c81169c32",
+              "name": "Successfully created a new tag.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tags",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tags"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"permalink_url\": \"<string>\"\n  }\n}",
+              "createdAt": "2026-06-05T13:13:53.000Z",
+              "updatedAt": "2026-06-05T13:13:53.000Z",
+              "uid": "35240-1b9492d7-aa05-4ba7-aaf7-5d9c81169c32"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:53.000Z",
+          "updatedAt": "2026-06-05T13:13:53.000Z",
+          "uid": "35240-1777365c-f4d7-40c5-9277-59e42fc8d8c1"
+        }
+      ],
+      "id": "c65b656f-d5d4-4896-825d-8754be68acaf",
+      "createdAt": "2026-06-05T13:13:53.000Z",
+      "updatedAt": "2026-06-05T13:13:53.000Z",
+      "uid": "35240-c65b656f-d5d4-4896-825d-8754be68acaf"
+    },
+    {
+      "name": "workspaces",
+      "item": [
+        {
+          "name": "{workspace_gid}",
+          "item": [
+            {
+              "name": "tags",
+              "item": [
+                {
+                  "name": "Asana Get tags in a workspace",
+                  "id": "28de3f43-d8ed-4308-8997-72b675a8d395",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/workspaces/:workspace_gid/tags?limit=<integer>&offset=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "workspaces",
+                        ":workspace_gid",
+                        "tags"
+                      ],
+                      "query": [
+                        {
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "key": "offset",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "a5e41e8c-04fe-4f6d-b3f8-e91311c2337f",
+                          "key": "workspace_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "f1fc5cfa-08fc-43ce-8fa9-7314500f6ad4",
+                      "name": "Successfully retrieved tags for the workspace.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/tags?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "tags"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:13:53.000Z",
+                      "updatedAt": "2026-06-05T13:13:53.000Z",
+                      "uid": "35240-f1fc5cfa-08fc-43ce-8fa9-7314500f6ad4"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:53.000Z",
+                  "updatedAt": "2026-06-05T13:13:53.000Z",
+                  "uid": "35240-28de3f43-d8ed-4308-8997-72b675a8d395"
+                },
+                {
+                  "name": "Asana Create a tag in a workspace",
+                  "id": "4ce31d2f-775c-4770-b61e-2c7a6ec6c602",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/workspaces/:workspace_gid/tags",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "workspaces",
+                        ":workspace_gid",
+                        "tags"
+                      ],
+                      "variable": [
+                        {
+                          "id": "5529b59e-96e1-45a4-935e-c2d18280bb35",
+                          "key": "workspace_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "1ed21585-7656-41bb-935b-2638c907c9b1",
+                      "name": "Successfully created the tag.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/workspaces/:workspace_gid/tags",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "workspaces",
+                            ":workspace_gid",
+                            "tags"
+                          ],
+                          "variable": [
+                            {
+                              "key": "workspace_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"followers\": [\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"permalink_url\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-06-05T13:13:53.000Z",
+                      "updatedAt": "2026-06-05T13:13:53.000Z",
+                      "uid": "35240-1ed21585-7656-41bb-935b-2638c907c9b1"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:53.000Z",
+                  "updatedAt": "2026-06-05T13:13:53.000Z",
+                  "uid": "35240-4ce31d2f-775c-4770-b61e-2c7a6ec6c602"
+                }
+              ],
+              "id": "2498f99c-4c23-4761-9f0a-0bb77c91a798",
+              "createdAt": "2026-06-05T13:13:53.000Z",
+              "updatedAt": "2026-06-05T13:13:53.000Z",
+              "uid": "35240-2498f99c-4c23-4761-9f0a-0bb77c91a798"
+            }
+          ],
+          "id": "59d53ced-a4ab-4868-bbe6-b909de53b831",
+          "createdAt": "2026-06-05T13:13:53.000Z",
+          "updatedAt": "2026-06-05T13:13:53.000Z",
+          "uid": "35240-59d53ced-a4ab-4868-bbe6-b909de53b831"
+        }
+      ],
+      "id": "eb685c68-0e5e-4007-ba6f-d32606d13f0c",
+      "createdAt": "2026-06-05T13:13:53.000Z",
+      "updatedAt": "2026-06-05T13:13:53.000Z",
+      "uid": "35240-eb685c68-0e5e-4007-ba6f-d32606d13f0c"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

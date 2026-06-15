@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Memberships API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Memberships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get multiple memberships",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/memberships",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "member",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns compact membership records."
+        },
+        {
+          "info": {
+            "name": "Asana Create a membership",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/memberships",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new membership."
+        },
+        {
+          "info": {
+            "name": "Asana Get a membership",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/memberships/:membership_gid",
+            "params": [
+              {
+                "name": "membership_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the complete record for a single membership."
+        },
+        {
+          "info": {
+            "name": "Asana Update a membership",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/memberships/:membership_gid",
+            "params": [
+              {
+                "name": "membership_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a membership's properties."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a membership",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/memberships/:membership_gid",
+            "params": [
+              {
+                "name": "membership_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a membership."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,576 @@
+{
+  "info": {
+    "_postman_id": "14c8eed6-1f6c-47c2-b0cf-1c72a9c4e27b",
+    "name": "Asana Time Tracking Entries API",
+    "description": "The Asana Time Tracking Entries API allows users to record and track time spent on tasks using Asana's native time tracking feature.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:59.000Z",
+    "updatedAt": "2026-06-05T13:13:59.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-14c8eed6-1f6c-47c2-b0cf-1c72a9c4e27b"
+  },
+  "item": [
+    {
+      "name": "tasks",
+      "item": [
+        {
+          "name": "{task_gid}",
+          "item": [
+            {
+              "name": "time_tracking_entries",
+              "item": [
+                {
+                  "name": "Asana Get time tracking entries for a task",
+                  "id": "295729a4-98f7-4094-a944-29310ddb93d1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tasks/:task_gid/time_tracking_entries?limit=<integer>&offset=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tasks",
+                        ":task_gid",
+                        "time_tracking_entries"
+                      ],
+                      "query": [
+                        {
+                          "key": "limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "key": "offset",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "7b4169e1-f814-47fe-b2fa-4c7ac3c03622",
+                          "key": "task_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "300e9459-927a-4c5e-98c6-79d9112cd5f1",
+                      "name": "Successfully retrieved time tracking entries.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/tasks/:task_gid/time_tracking_entries?limit=<integer>&offset=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tasks",
+                            ":task_gid",
+                            "time_tracking_entries"
+                          ],
+                          "query": [
+                            {
+                              "key": "limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "offset",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "task_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"duration_minutes\": \"<integer>\",\n      \"entered_on\": \"<date>\",\n      \"created_by\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"duration_minutes\": \"<integer>\",\n      \"entered_on\": \"<date>\",\n      \"created_by\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:13:59.000Z",
+                      "updatedAt": "2026-06-05T13:13:59.000Z",
+                      "uid": "35240-300e9459-927a-4c5e-98c6-79d9112cd5f1"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:59.000Z",
+                  "updatedAt": "2026-06-05T13:13:59.000Z",
+                  "uid": "35240-295729a4-98f7-4094-a944-29310ddb93d1"
+                },
+                {
+                  "name": "Asana Create a time tracking entry",
+                  "id": "d815c7eb-4342-4c5a-8e73-d713756c81e5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"duration_minutes\": \"<integer>\",\n    \"entered_on\": \"<date>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tasks/:task_gid/time_tracking_entries",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tasks",
+                        ":task_gid",
+                        "time_tracking_entries"
+                      ],
+                      "variable": [
+                        {
+                          "id": "3ae00eab-caf3-4f64-882c-eef4ed9e9b18",
+                          "key": "task_gid",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "d7ac53c2-91a1-4c88-a014-1496e1efa4ef",
+                      "name": "Successfully created the time tracking entry.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"data\": {\n    \"duration_minutes\": \"<integer>\",\n    \"entered_on\": \"<date>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tasks/:task_gid/time_tracking_entries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tasks",
+                            ":task_gid",
+                            "time_tracking_entries"
+                          ],
+                          "variable": [
+                            {
+                              "key": "task_gid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"duration_minutes\": \"<integer>\",\n    \"entered_on\": \"<date>\",\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"task\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"created_at\": \"<dateTime>\"\n  }\n}",
+                      "createdAt": "2026-06-05T13:13:59.000Z",
+                      "updatedAt": "2026-06-05T13:13:59.000Z",
+                      "uid": "35240-d7ac53c2-91a1-4c88-a014-1496e1efa4ef"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:13:59.000Z",
+                  "updatedAt": "2026-06-05T13:13:59.000Z",
+                  "uid": "35240-d815c7eb-4342-4c5a-8e73-d713756c81e5"
+                }
+              ],
+              "id": "ec7d72b9-1713-4280-808b-ba3fa21062e9",
+              "createdAt": "2026-06-05T13:13:59.000Z",
+              "updatedAt": "2026-06-05T13:13:59.000Z",
+              "uid": "35240-ec7d72b9-1713-4280-808b-ba3fa21062e9"
+            }
+          ],
+          "id": "4a150a07-75a9-4e35-a5e0-acc2981a4afb",
+          "createdAt": "2026-06-05T13:13:59.000Z",
+          "updatedAt": "2026-06-05T13:13:59.000Z",
+          "uid": "35240-4a150a07-75a9-4e35-a5e0-acc2981a4afb"
+        }
+      ],
+      "id": "ca6b4b1f-cfb8-4011-bc1b-66a966d87dd0",
+      "createdAt": "2026-06-05T13:13:59.000Z",
+      "updatedAt": "2026-06-05T13:13:59.000Z",
+      "uid": "35240-ca6b4b1f-cfb8-4011-bc1b-66a966d87dd0"
+    },
+    {
+      "name": "time_tracking_entries",
+      "item": [
+        {
+          "name": "{time_tracking_entry_gid}",
+          "item": [
+            {
+              "name": "Asana Get a time tracking entry",
+              "id": "ca786776-449f-46a0-b323-d0f6585cca1f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/time_tracking_entries/:time_tracking_entry_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time_tracking_entries",
+                    ":time_tracking_entry_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "cca9dc42-c021-47a9-b481-d0458475c910",
+                      "key": "time_tracking_entry_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "c238e93b-5cf1-4533-872d-4ffa88239294",
+                  "name": "Successfully retrieved the time tracking entry.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/time_tracking_entries/:time_tracking_entry_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "time_tracking_entries",
+                        ":time_tracking_entry_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "time_tracking_entry_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"duration_minutes\": \"<integer>\",\n    \"entered_on\": \"<date>\",\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"task\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"created_at\": \"<dateTime>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:59.000Z",
+                  "updatedAt": "2026-06-05T13:13:59.000Z",
+                  "uid": "35240-c238e93b-5cf1-4533-872d-4ffa88239294"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:59.000Z",
+              "updatedAt": "2026-06-05T13:13:59.000Z",
+              "uid": "35240-ca786776-449f-46a0-b323-d0f6585cca1f"
+            },
+            {
+              "name": "Asana Update a time tracking entry",
+              "id": "a13894e1-7f08-458e-9605-5cc4ecd9b8a9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"duration_minutes\": \"<integer>\",\n    \"entered_on\": \"<date>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/time_tracking_entries/:time_tracking_entry_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time_tracking_entries",
+                    ":time_tracking_entry_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "5749a7e6-2e55-446e-b075-6a361def9141",
+                      "key": "time_tracking_entry_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "a3a81bf9-d9f8-45ce-a81c-1a8b31648b60",
+                  "name": "Successfully updated the time tracking entry.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"duration_minutes\": \"<integer>\",\n    \"entered_on\": \"<date>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/time_tracking_entries/:time_tracking_entry_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "time_tracking_entries",
+                        ":time_tracking_entry_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "time_tracking_entry_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"duration_minutes\": \"<integer>\",\n    \"entered_on\": \"<date>\",\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"task\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"created_at\": \"<dateTime>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:59.000Z",
+                  "updatedAt": "2026-06-05T13:13:59.000Z",
+                  "uid": "35240-a3a81bf9-d9f8-45ce-a81c-1a8b31648b60"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:59.000Z",
+              "updatedAt": "2026-06-05T13:13:59.000Z",
+              "uid": "35240-a13894e1-7f08-458e-9605-5cc4ecd9b8a9"
+            },
+            {
+              "name": "Asana Delete a time tracking entry",
+              "id": "3039b034-f1a0-4592-b281-0b6cbcaa7dca",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/time_tracking_entries/:time_tracking_entry_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time_tracking_entries",
+                    ":time_tracking_entry_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "2e7fa632-07b9-4298-9bf6-ec253918b462",
+                      "key": "time_tracking_entry_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "95afb915-6bd1-4985-bd89-e94fabd163b6",
+                  "name": "Successfully deleted the time tracking entry.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/time_tracking_entries/:time_tracking_entry_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "time_tracking_entries",
+                        ":time_tracking_entry_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "time_tracking_entry_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:59.000Z",
+                  "updatedAt": "2026-06-05T13:13:59.000Z",
+                  "uid": "35240-95afb915-6bd1-4985-bd89-e94fabd163b6"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:59.000Z",
+              "updatedAt": "2026-06-05T13:13:59.000Z",
+              "uid": "35240-3039b034-f1a0-4592-b281-0b6cbcaa7dca"
+            }
+          ],
+          "id": "542ea263-0271-4643-872b-130953cb791b",
+          "createdAt": "2026-06-05T13:13:59.000Z",
+          "updatedAt": "2026-06-05T13:13:59.000Z",
+          "uid": "35240-542ea263-0271-4643-872b-130953cb791b"
+        }
+      ],
+      "id": "be6ab695-2c2f-4f7a-8074-5d1ca231995e",
+      "createdAt": "2026-06-05T13:13:59.000Z",
+      "updatedAt": "2026-06-05T13:13:59.000Z",
+      "uid": "35240-be6ab695-2c2f-4f7a-8074-5d1ca231995e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

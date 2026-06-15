@@ -1,0 +1,1597 @@
+{
+  "info": {
+    "_postman_id": "f611200b-0989-49b4-b441-4188084cefdf",
+    "name": "Asana Memberships API",
+    "description": "The Asana Memberships API manages the relationship between a team or user and an object in Asana. Currently supports memberships for goals, projects, and portfolios.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:44.000Z",
+    "updatedAt": "2026-06-05T13:13:44.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f611200b-0989-49b4-b441-4188084cefdf"
+  },
+  "item": [
+    {
+      "name": "memberships",
+      "item": [
+        {
+          "name": "{membership_gid}",
+          "item": [
+            {
+              "name": "Asana Get a membership",
+              "id": "af035a8f-24f8-4be7-923f-0b2a221955ba",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/memberships/:membership_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships",
+                    ":membership_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "1c208733-3f16-4ae0-b444-71a532d9c033",
+                      "key": "membership_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Returns the complete record for a single membership."
+              },
+              "response": [
+                {
+                  "id": "b61beea8-542d-42ec-b6ba-482679d721b8",
+                  "name": "Successfully retrieved the record for a single membership.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"member\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"parent\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"role\": \"commenter\",\n    \"is_active\": \"<boolean>\",\n    \"is_guest\": \"<boolean>\",\n    \"is_editable\": \"<boolean>\",\n    \"access_level\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-b61beea8-542d-42ec-b6ba-482679d721b8"
+                },
+                {
+                  "id": "8de5f60f-8bba-4006-b700-af3f24d97535",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-8de5f60f-8bba-4006-b700-af3f24d97535"
+                },
+                {
+                  "id": "64733237-65e0-47d3-98d0-ee2df5a93f58",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-64733237-65e0-47d3-98d0-ee2df5a93f58"
+                },
+                {
+                  "id": "8c438209-99cb-4e18-a75f-3a3108cc4d10",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-8c438209-99cb-4e18-a75f-3a3108cc4d10"
+                },
+                {
+                  "id": "78de5829-bf7a-4a90-beea-2c283972d9b6",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-78de5829-bf7a-4a90-beea-2c283972d9b6"
+                },
+                {
+                  "id": "db490367-1fc3-47ec-928b-bfa1f34b5021",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-db490367-1fc3-47ec-928b-bfa1f34b5021"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-af035a8f-24f8-4be7-923f-0b2a221955ba"
+            },
+            {
+              "name": "Asana Update a membership",
+              "id": "56eed50d-3541-4878-ae99-891c160422fa",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"role\": \"viewer\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/memberships/:membership_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships",
+                    ":membership_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "0630229e-5ca4-49de-acb8-699887e23624",
+                      "key": "membership_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Updates a membership's properties."
+              },
+              "response": [
+                {
+                  "id": "40f28a9f-61d8-4cde-a087-e34bd134f0fd",
+                  "name": "Successfully updated the membership.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"role\": \"viewer\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"member\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"parent\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"role\": \"commenter\",\n    \"is_active\": \"<boolean>\",\n    \"is_guest\": \"<boolean>\",\n    \"is_editable\": \"<boolean>\",\n    \"access_level\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-40f28a9f-61d8-4cde-a087-e34bd134f0fd"
+                },
+                {
+                  "id": "a020df7d-713b-463c-8cf9-e0b6ea7b5e74",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"role\": \"viewer\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-a020df7d-713b-463c-8cf9-e0b6ea7b5e74"
+                },
+                {
+                  "id": "f0721ae0-32ba-4c2e-bb16-455b41b11d40",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"role\": \"viewer\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-f0721ae0-32ba-4c2e-bb16-455b41b11d40"
+                },
+                {
+                  "id": "313f16bb-8671-4647-ba46-7d3f5eb6dc16",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"role\": \"viewer\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-313f16bb-8671-4647-ba46-7d3f5eb6dc16"
+                },
+                {
+                  "id": "606de346-d090-447b-8c35-8cf9fe323a13",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"role\": \"viewer\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-606de346-d090-447b-8c35-8cf9fe323a13"
+                },
+                {
+                  "id": "bd1ff7db-12b6-4778-80e1-74742127cbee",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"role\": \"viewer\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-bd1ff7db-12b6-4778-80e1-74742127cbee"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-56eed50d-3541-4878-ae99-891c160422fa"
+            },
+            {
+              "name": "Asana Delete a membership",
+              "id": "8886e357-38f7-4e6a-a728-f9c22752e353",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/memberships/:membership_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships",
+                    ":membership_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "27a66755-8270-4572-af46-75868d5ea5a3",
+                      "key": "membership_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Deletes a membership."
+              },
+              "response": [
+                {
+                  "id": "a6d82834-19ea-42a9-8ed9-32b4eb84059a",
+                  "name": "Successfully deleted the membership.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-a6d82834-19ea-42a9-8ed9-32b4eb84059a"
+                },
+                {
+                  "id": "34583247-0c8a-4149-a2b3-102464dab378",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-34583247-0c8a-4149-a2b3-102464dab378"
+                },
+                {
+                  "id": "f5daa6b4-bfb6-478c-8283-af9b39643804",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-f5daa6b4-bfb6-478c-8283-af9b39643804"
+                },
+                {
+                  "id": "3f3cb23b-2ecf-47f6-9af4-03c4708d8750",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-3f3cb23b-2ecf-47f6-9af4-03c4708d8750"
+                },
+                {
+                  "id": "d5850b13-dde9-4d11-8efd-ca090ad5af2b",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-d5850b13-dde9-4d11-8efd-ca090ad5af2b"
+                },
+                {
+                  "id": "c00fbb9c-1012-49d1-a729-b02f904b4ef4",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/memberships/:membership_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "memberships",
+                        ":membership_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "membership_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:44.000Z",
+                  "updatedAt": "2026-06-05T13:13:44.000Z",
+                  "uid": "35240-c00fbb9c-1012-49d1-a729-b02f904b4ef4"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-8886e357-38f7-4e6a-a728-f9c22752e353"
+            }
+          ],
+          "id": "35564fed-8c74-4dca-b943-e2d64897061c",
+          "createdAt": "2026-06-05T13:13:44.000Z",
+          "updatedAt": "2026-06-05T13:13:44.000Z",
+          "uid": "35240-35564fed-8c74-4dca-b943-e2d64897061c"
+        },
+        {
+          "name": "Asana Get multiple memberships",
+          "id": "583bed51-a5e4-4970-8a2f-902c35f02eb0",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/memberships?parent=<string>&member=<string>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "memberships"
+              ],
+              "query": [
+                {
+                  "key": "parent",
+                  "value": "<string>"
+                },
+                {
+                  "key": "member",
+                  "value": "<string>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns compact membership records."
+          },
+          "response": [
+            {
+              "id": "52f3d93c-f9db-4510-bc62-416fd8160082",
+              "name": "Successfully retrieved the requested memberships.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/memberships?parent=<string>&member=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "member",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-52f3d93c-f9db-4510-bc62-416fd8160082"
+            },
+            {
+              "id": "0f1bfe6c-8f3b-4702-9c50-25a8e70c06e3",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/memberships?parent=<string>&member=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "member",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-0f1bfe6c-8f3b-4702-9c50-25a8e70c06e3"
+            },
+            {
+              "id": "7b6294b4-3531-4c4b-9234-49035655c54b",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/memberships?parent=<string>&member=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "member",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-7b6294b4-3531-4c4b-9234-49035655c54b"
+            },
+            {
+              "id": "705ee072-783b-4bda-854c-c8f9a6745092",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/memberships?parent=<string>&member=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "member",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-705ee072-783b-4bda-854c-c8f9a6745092"
+            },
+            {
+              "id": "7ab21920-fda5-428e-96e0-215e58a3423d",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/memberships?parent=<string>&member=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "member",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-7ab21920-fda5-428e-96e0-215e58a3423d"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:44.000Z",
+          "updatedAt": "2026-06-05T13:13:44.000Z",
+          "uid": "35240-583bed51-a5e4-4970-8a2f-902c35f02eb0"
+        },
+        {
+          "name": "Asana Create a membership",
+          "id": "1db42072-d650-40a9-ae1b-057f1620b9ba",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"member\": \"<string>\",\n    \"parent\": \"<string>\",\n    \"role\": \"commenter\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/memberships",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "memberships"
+              ]
+            },
+            "description": "Creates a new membership."
+          },
+          "response": [
+            {
+              "id": "ee3ba332-1a75-47ad-be37-851bc0bc6f91",
+              "name": "Successfully created the membership.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"member\": \"<string>\",\n    \"parent\": \"<string>\",\n    \"role\": \"commenter\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/memberships",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"member\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"parent\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"role\": \"commenter\",\n    \"is_active\": \"<boolean>\",\n    \"is_guest\": \"<boolean>\",\n    \"is_editable\": \"<boolean>\",\n    \"access_level\": \"<string>\"\n  }\n}",
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-ee3ba332-1a75-47ad-be37-851bc0bc6f91"
+            },
+            {
+              "id": "2ba9ca54-96b2-4758-8532-4673f3b30b30",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"member\": \"<string>\",\n    \"parent\": \"<string>\",\n    \"role\": \"commenter\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/memberships",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-2ba9ca54-96b2-4758-8532-4673f3b30b30"
+            },
+            {
+              "id": "c36db87b-38f6-4254-813f-eead070bf8eb",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"member\": \"<string>\",\n    \"parent\": \"<string>\",\n    \"role\": \"commenter\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/memberships",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-c36db87b-38f6-4254-813f-eead070bf8eb"
+            },
+            {
+              "id": "f719c7df-180e-4989-b23b-3830302653a8",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"member\": \"<string>\",\n    \"parent\": \"<string>\",\n    \"role\": \"commenter\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/memberships",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-f719c7df-180e-4989-b23b-3830302653a8"
+            },
+            {
+              "id": "a8189de2-b8b9-4ec6-9296-594ee86506bf",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"member\": \"<string>\",\n    \"parent\": \"<string>\",\n    \"role\": \"commenter\",\n    \"is_active\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/memberships",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "memberships"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:44.000Z",
+              "updatedAt": "2026-06-05T13:13:44.000Z",
+              "uid": "35240-a8189de2-b8b9-4ec6-9296-594ee86506bf"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:44.000Z",
+          "updatedAt": "2026-06-05T13:13:44.000Z",
+          "uid": "35240-1db42072-d650-40a9-ae1b-057f1620b9ba"
+        }
+      ],
+      "id": "b76d7bd5-2838-4e0f-8ae6-5fa73920b28e",
+      "createdAt": "2026-06-05T13:13:44.000Z",
+      "updatedAt": "2026-06-05T13:13:44.000Z",
+      "uid": "35240-b76d7bd5-2838-4e0f-8ae6-5fa73920b28e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Organization Exports API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organization Exports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Create an organization export request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/organization_exports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an organization export request for the given organization."
+        },
+        {
+          "info": {
+            "name": "Asana Get details on an org export request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/organization_exports/:organization_export_gid",
+            "params": [
+              {
+                "name": "organization_export_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns details of a previously-requested organization export."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

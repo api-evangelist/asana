@@ -1,0 +1,1746 @@
+{
+  "info": {
+    "_postman_id": "5ce43541-e1c1-4eb1-92e2-7a04d6e07e90",
+    "name": "Asana Allocations API",
+    "description": "The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:13:34.000Z",
+    "updatedAt": "2026-06-05T13:13:34.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5ce43541-e1c1-4eb1-92e2-7a04d6e07e90"
+  },
+  "item": [
+    {
+      "name": "allocations",
+      "item": [
+        {
+          "name": "{allocation_gid}",
+          "item": [
+            {
+              "name": "Asana Get an allocation",
+              "id": "ddac049c-ecc7-4269-af29-8a30b4531a12",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations/:allocation_gid?opt_fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations",
+                    ":allocation_gid"
+                  ],
+                  "query": [
+                    {
+                      "description": "Comma-separated list of optional fields to include.",
+                      "key": "opt_fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "a6072be6-c484-4bbe-a7e5-54bae7e19f73",
+                      "key": "allocation_gid",
+                      "value": "<string>",
+                      "description": "(Required) Globally unique identifier for the allocation."
+                    }
+                  ]
+                },
+                "description": "Returns the complete allocation record for a single allocation."
+              },
+              "response": [
+                {
+                  "id": "f80d4e62-4ee8-4abb-980d-b5d2b82c1ca2",
+                  "name": "Successfully retrieved the record for a single allocation.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "query": [
+                        {
+                          "description": "Comma-separated list of optional fields to include.",
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"assignee\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"hours\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-f80d4e62-4ee8-4abb-980d-b5d2b82c1ca2"
+                },
+                {
+                  "id": "5e66c985-ef33-4cfa-9518-9e772bc98088",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "query": [
+                        {
+                          "description": "Comma-separated list of optional fields to include.",
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-5e66c985-ef33-4cfa-9518-9e772bc98088"
+                },
+                {
+                  "id": "9e83e02f-8c1d-4e4e-8682-cdaf6763ddff",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "query": [
+                        {
+                          "description": "Comma-separated list of optional fields to include.",
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-9e83e02f-8c1d-4e4e-8682-cdaf6763ddff"
+                },
+                {
+                  "id": "315edc83-e468-4c75-8d26-eb5ed9d2610a",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "query": [
+                        {
+                          "description": "Comma-separated list of optional fields to include.",
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-315edc83-e468-4c75-8d26-eb5ed9d2610a"
+                },
+                {
+                  "id": "b2dca380-0ea3-4419-821a-930feceef0dd",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "query": [
+                        {
+                          "description": "Comma-separated list of optional fields to include.",
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-b2dca380-0ea3-4419-821a-930feceef0dd"
+                },
+                {
+                  "id": "e225480d-7b1d-4312-b875-72a9aac35682",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid?opt_fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "query": [
+                        {
+                          "description": "Comma-separated list of optional fields to include.",
+                          "key": "opt_fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-e225480d-7b1d-4312-b875-72a9aac35682"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-ddac049c-ecc7-4269-af29-8a30b4531a12"
+            },
+            {
+              "name": "Asana Update an allocation",
+              "id": "fe906153-a11c-4f1d-9910-68b87175337a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations",
+                    ":allocation_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "debb4855-fc3a-4453-9099-0dbed234fae0",
+                      "key": "allocation_gid",
+                      "value": "<string>",
+                      "description": "(Required) Globally unique identifier for the allocation."
+                    }
+                  ]
+                },
+                "description": "Updates an existing allocation."
+              },
+              "response": [
+                {
+                  "id": "27250d58-adf1-4f7c-8361-390743a4723b",
+                  "name": "Successfully updated the allocation.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"assignee\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"hours\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-27250d58-adf1-4f7c-8361-390743a4723b"
+                },
+                {
+                  "id": "76b61d1a-9bee-444f-87e9-a34f699008d5",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-76b61d1a-9bee-444f-87e9-a34f699008d5"
+                },
+                {
+                  "id": "6db348a4-9adb-4f4f-acf8-272415d11863",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-6db348a4-9adb-4f4f-acf8-272415d11863"
+                },
+                {
+                  "id": "87f9f660-9151-411a-b597-fe87a9409f60",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-87f9f660-9151-411a-b597-fe87a9409f60"
+                },
+                {
+                  "id": "b473cf62-e81a-4472-8490-07389b135942",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-b473cf62-e81a-4472-8490-07389b135942"
+                },
+                {
+                  "id": "308e504e-c71e-4f42-a04e-1461fb891197",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-308e504e-c71e-4f42-a04e-1461fb891197"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-fe906153-a11c-4f1d-9910-68b87175337a"
+            },
+            {
+              "name": "Asana Delete an allocation",
+              "id": "645b5007-f626-4eb5-aad1-27b5494d4a18",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations",
+                    ":allocation_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "aca18aeb-da61-49f8-a86d-09568e7f728d",
+                      "key": "allocation_gid",
+                      "value": "<string>",
+                      "description": "(Required) Globally unique identifier for the allocation."
+                    }
+                  ]
+                },
+                "description": "Deletes a specific, existing allocation."
+              },
+              "response": [
+                {
+                  "id": "a5fdb8af-ed86-46cd-aead-6c137fe6e49e",
+                  "name": "Successfully deleted the specified allocation.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-a5fdb8af-ed86-46cd-aead-6c137fe6e49e"
+                },
+                {
+                  "id": "166750ef-f056-48fe-b505-b8705919aba0",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-166750ef-f056-48fe-b505-b8705919aba0"
+                },
+                {
+                  "id": "2a6809f9-1b40-45f6-ae7c-cd4fd5d32895",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-2a6809f9-1b40-45f6-ae7c-cd4fd5d32895"
+                },
+                {
+                  "id": "a99f389a-4575-4d53-8715-42ff9ed6edf3",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-a99f389a-4575-4d53-8715-42ff9ed6edf3"
+                },
+                {
+                  "id": "24ece164-9986-478f-b9d4-5cbe3125b400",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-24ece164-9986-478f-b9d4-5cbe3125b400"
+                },
+                {
+                  "id": "f65b61a5-70e0-4578-b12c-174ed6e12ff7",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocations/:allocation_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocations",
+                        ":allocation_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocation_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:13:34.000Z",
+                  "updatedAt": "2026-06-05T13:13:34.000Z",
+                  "uid": "35240-f65b61a5-70e0-4578-b12c-174ed6e12ff7"
+                }
+              ],
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-645b5007-f626-4eb5-aad1-27b5494d4a18"
+            }
+          ],
+          "id": "b23348b9-5d72-4f3d-80fb-bfb25bd7452d",
+          "createdAt": "2026-06-05T13:13:34.000Z",
+          "updatedAt": "2026-06-05T13:13:34.000Z",
+          "uid": "35240-b23348b9-5d72-4f3d-80fb-bfb25bd7452d"
+        },
+        {
+          "name": "Asana Get multiple allocations",
+          "id": "812fa01b-7c78-43d7-87d0-30ea291ec2f3",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/allocations?parent=<string>&assignee=<string>&workspace=<string>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "allocations"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Globally unique identifier for the project to filter allocations.",
+                  "key": "parent",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Globally unique identifier for the user to filter allocations.",
+                  "key": "assignee",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Globally unique identifier for the workspace.",
+                  "key": "workspace",
+                  "value": "<string>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns a list of allocations filtered to a specific project or user."
+          },
+          "response": [
+            {
+              "id": "9d7bb762-6ddc-43eb-a832-40604cd0eb24",
+              "name": "Successfully retrieved the requested allocations.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations?parent=<string>&assignee=<string>&workspace=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for the project to filter allocations.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the user to filter allocations.",
+                      "key": "assignee",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the workspace.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"assignee\": {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"resource_type\": \"<string>\"\n      },\n      \"start_date\": \"<date>\",\n      \"end_date\": \"<date>\",\n      \"effort\": {\n        \"type\": \"hours\",\n        \"value\": \"<number>\"\n      },\n      \"parent\": {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"resource_type\": \"<string>\"\n      },\n      \"created_by\": {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"resource_type\": \"<string>\"\n      }\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"assignee\": {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"resource_type\": \"<string>\"\n      },\n      \"start_date\": \"<date>\",\n      \"end_date\": \"<date>\",\n      \"effort\": {\n        \"type\": \"percent\",\n        \"value\": \"<number>\"\n      },\n      \"parent\": {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"resource_type\": \"<string>\"\n      },\n      \"created_by\": {\n        \"gid\": \"<string>\",\n        \"name\": \"<string>\",\n        \"resource_type\": \"<string>\"\n      }\n    }\n  ]\n}",
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-9d7bb762-6ddc-43eb-a832-40604cd0eb24"
+            },
+            {
+              "id": "7bf5f615-9c6c-42ee-869e-17f77eec01bf",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations?parent=<string>&assignee=<string>&workspace=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for the project to filter allocations.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the user to filter allocations.",
+                      "key": "assignee",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the workspace.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-7bf5f615-9c6c-42ee-869e-17f77eec01bf"
+            },
+            {
+              "id": "f4ccf44f-5a37-4d4c-981c-ef45b7ae9510",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations?parent=<string>&assignee=<string>&workspace=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for the project to filter allocations.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the user to filter allocations.",
+                      "key": "assignee",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the workspace.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-f4ccf44f-5a37-4d4c-981c-ef45b7ae9510"
+            },
+            {
+              "id": "c264591e-4f8f-4605-bea0-e20cea966224",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations?parent=<string>&assignee=<string>&workspace=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for the project to filter allocations.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the user to filter allocations.",
+                      "key": "assignee",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the workspace.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-c264591e-4f8f-4605-bea0-e20cea966224"
+            },
+            {
+              "id": "b674c276-5cfe-4467-b2c7-d96887156704",
+              "name": "Not found.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations?parent=<string>&assignee=<string>&workspace=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for the project to filter allocations.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the user to filter allocations.",
+                      "key": "assignee",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the workspace.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-b674c276-5cfe-4467-b2c7-d96887156704"
+            },
+            {
+              "id": "60ec64f0-16fe-4d75-ae4b-0ee385451982",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations?parent=<string>&assignee=<string>&workspace=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Globally unique identifier for the project to filter allocations.",
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the user to filter allocations.",
+                      "key": "assignee",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Globally unique identifier for the workspace.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-60ec64f0-16fe-4d75-ae4b-0ee385451982"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:34.000Z",
+          "updatedAt": "2026-06-05T13:13:34.000Z",
+          "uid": "35240-812fa01b-7c78-43d7-87d0-30ea291ec2f3"
+        },
+        {
+          "name": "Asana Create an allocation",
+          "id": "b88f032b-285d-4558-9fea-e598c038fa5c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/allocations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "allocations"
+              ]
+            },
+            "description": "Creates a new allocation."
+          },
+          "response": [
+            {
+              "id": "ded16985-6161-4fd6-aa05-f21622d9461b",
+              "name": "Successfully created a new allocation.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/allocations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"assignee\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"hours\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    },\n    \"created_by\": {\n      \"gid\": \"<string>\",\n      \"name\": \"<string>\",\n      \"resource_type\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-ded16985-6161-4fd6-aa05-f21622d9461b"
+            },
+            {
+              "id": "77ca2291-3bd7-425b-bc0f-6f2ee50edd27",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/allocations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-77ca2291-3bd7-425b-bc0f-6f2ee50edd27"
+            },
+            {
+              "id": "79436b4b-472c-4db1-a565-508dee467330",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/allocations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-79436b4b-472c-4db1-a565-508dee467330"
+            },
+            {
+              "id": "eedfaa44-54cb-4358-aefd-60d94e88ac67",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/allocations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-eedfaa44-54cb-4358-aefd-60d94e88ac67"
+            },
+            {
+              "id": "48fd1ff3-1711-4a20-bfd3-2c61caef811b",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"assignee\": \"<string>\",\n    \"start_date\": \"<date>\",\n    \"end_date\": \"<date>\",\n    \"effort\": {\n      \"type\": \"percent\",\n      \"value\": \"<number>\"\n    },\n    \"parent\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/allocations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:13:34.000Z",
+              "updatedAt": "2026-06-05T13:13:34.000Z",
+              "uid": "35240-48fd1ff3-1711-4a20-bfd3-2c61caef811b"
+            }
+          ],
+          "createdAt": "2026-06-05T13:13:34.000Z",
+          "updatedAt": "2026-06-05T13:13:34.000Z",
+          "uid": "35240-b88f032b-285d-4558-9fea-e598c038fa5c"
+        }
+      ],
+      "id": "801742e7-8007-41dd-aec8-00e0ff039d66",
+      "createdAt": "2026-06-05T13:13:34.000Z",
+      "updatedAt": "2026-06-05T13:13:34.000Z",
+      "uid": "35240-801742e7-8007-41dd-aec8-00e0ff039d66"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

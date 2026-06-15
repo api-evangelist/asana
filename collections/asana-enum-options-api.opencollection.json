@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Enum Options API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Enum Options",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Create an enum option",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/custom_fields/:custom_field_gid/enum_options",
+            "params": [
+              {
+                "name": "custom_field_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an enum option and adds it to this custom field's list of enum options."
+        },
+        {
+          "info": {
+            "name": "Asana Reorder a custom field's enum",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/custom_fields/:custom_field_gid/enum_options/insert",
+            "params": [
+              {
+                "name": "custom_field_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Moves a particular enum option to be either before or after another specified enum option."
+        },
+        {
+          "info": {
+            "name": "Asana Update an enum option",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/enum_options/:enum_option_gid",
+            "params": [
+              {
+                "name": "enum_option_gid",
+                "value": "97514",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing enum option."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

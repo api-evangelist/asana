@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Users API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get multiple users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/users",
+            "params": [
+              {
+                "name": "workspace",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "team",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Asana Get multiple users"
+        },
+        {
+          "info": {
+            "name": "Asana Get a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/users/:user_gid",
+            "params": [
+              {
+                "name": "user_gid",
+                "value": "me",
+                "type": "path",
+                "description": "A string identifying a user. Can be \"me\", an email, or a gid."
+              }
+            ]
+          },
+          "docs": "Asana Get a user"
+        },
+        {
+          "info": {
+            "name": "Asana Get a user's favorites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/users/:user_gid/favorites",
+            "params": [
+              {
+                "name": "user_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resource_type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workspace",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Asana Get a user's favorites"
+        },
+        {
+          "info": {
+            "name": "Asana Get users in a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/teams/:team_gid/users",
+            "params": [
+              {
+                "name": "team_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Asana Get users in a team"
+        },
+        {
+          "info": {
+            "name": "Asana Get users in a workspace or organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid/users",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Asana Get users in a workspace or organization"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

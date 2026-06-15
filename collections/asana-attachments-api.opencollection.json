@@ -1,0 +1,137 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Attachments API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Attachments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/attachments/:attachment_gid",
+            "params": [
+              {
+                "name": "attachment_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the attachment."
+              },
+              {
+                "name": "opt_fields",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the full record for a single attachment."
+        },
+        {
+          "info": {
+            "name": "Asana Delete an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/attachments/:attachment_gid",
+            "params": [
+              {
+                "name": "attachment_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the attachment."
+              }
+            ]
+          },
+          "docs": "Deletes a specific, existing attachment."
+        },
+        {
+          "info": {
+            "name": "Asana Get attachments from an object",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/attachments",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Globally unique identifier for object to fetch attachments from."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the compact records for all attachments on the object."
+        },
+        {
+          "info": {
+            "name": "Asana Upload an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/attachments",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "parent",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "resource_subtype",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "url",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Upload an attachment. The file content must be sent as a multipart form data request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

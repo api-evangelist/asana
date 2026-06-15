@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Events API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get events on a resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/events",
+            "params": [
+              {
+                "name": "resource",
+                "value": "12345",
+                "type": "query",
+                "description": "A resource ID to subscribe to."
+              },
+              {
+                "name": "sync",
+                "value": "",
+                "type": "query",
+                "description": "A sync token received from the last request, or none on first request."
+              },
+              {
+                "name": "opt_fields",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the full record for all events that have occurred since the sync token was created. A GET request to the endpoint with no sync token will return a 412 error providing a new sync token."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

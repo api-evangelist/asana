@@ -1,0 +1,141 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Goal Relationships API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Goal Relationships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get a goal relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/goal_relationships/:goal_relationship_gid",
+            "params": [
+              {
+                "name": "goal_relationship_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the complete updated goal relationship record for a single goal relationship."
+        },
+        {
+          "info": {
+            "name": "Asana Update a goal relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/goal_relationships/:goal_relationship_gid",
+            "params": [
+              {
+                "name": "goal_relationship_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing goal relationship."
+        },
+        {
+          "info": {
+            "name": "Asana Get goal relationships",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/goal_relationships",
+            "params": [
+              {
+                "name": "supported_goal",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "resource_subtype",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns compact goal relationship records."
+        },
+        {
+          "info": {
+            "name": "Asana Add a supporting goal relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid/addSupportingRelationship",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a goal relationship by adding a supporting resource."
+        },
+        {
+          "info": {
+            "name": "Asana Removes a supporting goal relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid/removeSupportingRelationship",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes a goal relationship for a given parent goal."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

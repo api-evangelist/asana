@@ -1,0 +1,202 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Portfolios API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Portfolios",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get multiple portfolios",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/portfolios",
+            "params": [
+              {
+                "name": "workspace",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of the portfolios in compact representation."
+        },
+        {
+          "info": {
+            "name": "Asana Create a portfolio",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/portfolios",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new portfolio in the given workspace."
+        },
+        {
+          "info": {
+            "name": "Asana Get a portfolio",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/portfolios/:portfolio_gid",
+            "params": [
+              {
+                "name": "portfolio_gid",
+                "value": "12345",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the complete portfolio record for a single portfolio."
+        },
+        {
+          "info": {
+            "name": "Asana Update a portfolio",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/portfolios/:portfolio_gid",
+            "params": [
+              {
+                "name": "portfolio_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the portfolio."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a portfolio",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/portfolios/:portfolio_gid",
+            "params": [
+              {
+                "name": "portfolio_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific, existing portfolio."
+        },
+        {
+          "info": {
+            "name": "Asana Get portfolio items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/portfolios/:portfolio_gid/items",
+            "params": [
+              {
+                "name": "portfolio_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the compact project records for all items in the portfolio."
+        },
+        {
+          "info": {
+            "name": "Asana Add a portfolio item",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/portfolios/:portfolio_gid/addItem",
+            "params": [
+              {
+                "name": "portfolio_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add an item to a portfolio."
+        },
+        {
+          "info": {
+            "name": "Asana Remove a portfolio item",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/portfolios/:portfolio_gid/removeItem",
+            "params": [
+              {
+                "name": "portfolio_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove an item from a portfolio."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

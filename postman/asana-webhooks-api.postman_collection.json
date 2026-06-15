@@ -1,0 +1,1662 @@
+{
+  "info": {
+    "_postman_id": "e12fcc49-4f88-4fef-bc5a-be3820634880",
+    "name": "Asana Webhooks API",
+    "description": "The Asana Webhooks API allows you to subscribe to notifications about events on Asana resources. Webhooks use a confirmation handshake with X-Hook-Secret headers and deliver events via HTTP POST to your target URL.\n\nContact Support:\n Name: Asana Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:14:02.000Z",
+    "updatedAt": "2026-06-05T13:14:03.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e12fcc49-4f88-4fef-bc5a-be3820634880"
+  },
+  "item": [
+    {
+      "name": "webhooks",
+      "item": [
+        {
+          "name": "{webhook_gid}",
+          "item": [
+            {
+              "name": "Asana Get a webhook",
+              "id": "f29978a0-92a9-42a2-b4c6-209d77f9c37d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks",
+                    ":webhook_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "648b49f8-aa1e-41a4-b166-62e01dedf798",
+                      "key": "webhook_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Returns the full record for the given webhook."
+              },
+              "response": [
+                {
+                  "id": "3f35145a-688a-4474-8365-902905b59062",
+                  "name": "Successfully retrieved the record for a single webhook.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"resource\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"target\": \"<uri>\",\n    \"created_at\": \"<dateTime>\",\n    \"last_failure_at\": \"<dateTime>\",\n    \"last_failure_content\": \"<string>\",\n    \"last_success_at\": \"<dateTime>\",\n    \"delivery_retry_count\": \"<integer>\",\n    \"next_attempt_after\": \"<dateTime>\",\n    \"failure_deletion_timestamp\": \"<dateTime>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"removed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"deleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-3f35145a-688a-4474-8365-902905b59062"
+                },
+                {
+                  "id": "5cd4428d-442e-44bf-a882-1770e9ccee2e",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-5cd4428d-442e-44bf-a882-1770e9ccee2e"
+                },
+                {
+                  "id": "a2f3d9f0-ece1-492d-8af4-3ca79685bfc2",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-a2f3d9f0-ece1-492d-8af4-3ca79685bfc2"
+                },
+                {
+                  "id": "dbb9ca70-d415-4aff-a60b-ddad4aa826e7",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-dbb9ca70-d415-4aff-a60b-ddad4aa826e7"
+                },
+                {
+                  "id": "487cea2d-a63f-4f47-8b93-43d515bcc77b",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-487cea2d-a63f-4f47-8b93-43d515bcc77b"
+                },
+                {
+                  "id": "e0ca50b6-1dfa-4ae7-80d7-05d696315343",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-e0ca50b6-1dfa-4ae7-80d7-05d696315343"
+                }
+              ],
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-f29978a0-92a9-42a2-b4c6-209d77f9c37d"
+            },
+            {
+              "name": "Asana Update a webhook",
+              "id": "d7af4124-8294-44eb-8f8d-1c73c0cde03c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks",
+                    ":webhook_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "9bf9fe87-3f9b-48c5-9df8-7e823138ca5c",
+                      "key": "webhook_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Updates an existing webhook."
+              },
+              "response": [
+                {
+                  "id": "6938d694-26da-4d2f-aaa7-1dc66f84da0b",
+                  "name": "Successfully updated the webhook.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"resource\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"target\": \"<uri>\",\n    \"created_at\": \"<dateTime>\",\n    \"last_failure_at\": \"<dateTime>\",\n    \"last_failure_content\": \"<string>\",\n    \"last_success_at\": \"<dateTime>\",\n    \"delivery_retry_count\": \"<integer>\",\n    \"next_attempt_after\": \"<dateTime>\",\n    \"failure_deletion_timestamp\": \"<dateTime>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"removed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"deleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-6938d694-26da-4d2f-aaa7-1dc66f84da0b"
+                },
+                {
+                  "id": "e4595f4d-dad2-40ea-bac9-6e644a24fd21",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-e4595f4d-dad2-40ea-bac9-6e644a24fd21"
+                },
+                {
+                  "id": "122e15b3-38e8-4230-ab34-98ff5c45e48a",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-122e15b3-38e8-4230-ab34-98ff5c45e48a"
+                },
+                {
+                  "id": "bad43b2d-469f-412b-a40a-6ebfcf783f0c",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-bad43b2d-469f-412b-a40a-6ebfcf783f0c"
+                },
+                {
+                  "id": "393ccc46-cb39-4f96-9cef-9b05165b45f0",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-393ccc46-cb39-4f96-9cef-9b05165b45f0"
+                },
+                {
+                  "id": "1d4ce219-c3c3-4433-9b38-6a9eb42f65e6",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"data\": {\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-1d4ce219-c3c3-4433-9b38-6a9eb42f65e6"
+                }
+              ],
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-d7af4124-8294-44eb-8f8d-1c73c0cde03c"
+            },
+            {
+              "name": "Asana Delete a webhook",
+              "id": "39696011-8a4e-4177-8d5b-b26e455c9e59",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks",
+                    ":webhook_gid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "fea485c6-70bc-4f0d-b0f3-20d2fcd47f6d",
+                      "key": "webhook_gid",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "Deletes the specified webhook."
+              },
+              "response": [
+                {
+                  "id": "122561e1-e259-49f7-a240-c5b869160dbd",
+                  "name": "Successfully deleted the webhook.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": {}\n}",
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-122561e1-e259-49f7-a240-c5b869160dbd"
+                },
+                {
+                  "id": "794561eb-a5a2-4967-9c20-2a8066b83864",
+                  "name": "Bad request.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-794561eb-a5a2-4967-9c20-2a8066b83864"
+                },
+                {
+                  "id": "cd046a9d-5470-4e59-90bc-9c1fc2e9753c",
+                  "name": "Unauthorized.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-cd046a9d-5470-4e59-90bc-9c1fc2e9753c"
+                },
+                {
+                  "id": "9dabdf59-0bbf-46b4-9ab2-5ab31cf89986",
+                  "name": "Forbidden.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-9dabdf59-0bbf-46b4-9ab2-5ab31cf89986"
+                },
+                {
+                  "id": "6a667ddc-7e52-4fa4-bcf7-5060780c71d4",
+                  "name": "Not found.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-6a667ddc-7e52-4fa4-bcf7-5060780c71d4"
+                },
+                {
+                  "id": "e6844b27-b595-4648-b619-0e3ab0ea9a48",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/webhooks/:webhook_gid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "webhooks",
+                        ":webhook_gid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "webhook_gid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:14:03.000Z",
+                  "updatedAt": "2026-06-05T13:14:03.000Z",
+                  "uid": "35240-e6844b27-b595-4648-b619-0e3ab0ea9a48"
+                }
+              ],
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-39696011-8a4e-4177-8d5b-b26e455c9e59"
+            }
+          ],
+          "id": "9ecfd58a-a398-4fe9-b4f8-2d828cfef70b",
+          "createdAt": "2026-06-05T13:14:03.000Z",
+          "updatedAt": "2026-06-05T13:14:03.000Z",
+          "uid": "35240-9ecfd58a-a398-4fe9-b4f8-2d828cfef70b"
+        },
+        {
+          "name": "Asana Get multiple webhooks",
+          "id": "2dfa9d67-98f3-4b67-a929-bdd725b0c164",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/webhooks?workspace=<string>&resource=<string>&limit=<integer>&offset=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "webhooks"
+              ],
+              "query": [
+                {
+                  "description": "(Required) The workspace to query for webhooks in.",
+                  "key": "workspace",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Only return webhooks for the given resource.",
+                  "key": "resource",
+                  "value": "<string>"
+                },
+                {
+                  "key": "limit",
+                  "value": "<integer>"
+                },
+                {
+                  "key": "offset",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Get the compact representation of all webhooks your app has registered for the authenticated user in the given workspace."
+          },
+          "response": [
+            {
+              "id": "4ff7c41c-cc6a-4b1a-9038-c48936c77e37",
+              "name": "Successfully retrieved the requested webhooks.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks?workspace=<string>&resource=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The workspace to query for webhooks in.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Only return webhooks for the given resource.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"active\": \"<boolean>\",\n      \"resource\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"target\": \"<uri>\",\n      \"created_at\": \"<dateTime>\",\n      \"last_failure_at\": \"<dateTime>\",\n      \"last_failure_content\": \"<string>\",\n      \"last_success_at\": \"<dateTime>\",\n      \"delivery_retry_count\": \"<integer>\",\n      \"next_attempt_after\": \"<dateTime>\",\n      \"failure_deletion_timestamp\": \"<dateTime>\",\n      \"filters\": [\n        {\n          \"resource_type\": \"<string>\",\n          \"resource_subtype\": \"<string>\",\n          \"action\": \"changed\",\n          \"fields\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"resource_type\": \"<string>\",\n          \"resource_subtype\": \"<string>\",\n          \"action\": \"added\",\n          \"fields\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    },\n    {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"active\": \"<boolean>\",\n      \"resource\": {\n        \"gid\": \"<string>\",\n        \"resource_type\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"target\": \"<uri>\",\n      \"created_at\": \"<dateTime>\",\n      \"last_failure_at\": \"<dateTime>\",\n      \"last_failure_content\": \"<string>\",\n      \"last_success_at\": \"<dateTime>\",\n      \"delivery_retry_count\": \"<integer>\",\n      \"next_attempt_after\": \"<dateTime>\",\n      \"failure_deletion_timestamp\": \"<dateTime>\",\n      \"filters\": [\n        {\n          \"resource_type\": \"<string>\",\n          \"resource_subtype\": \"<string>\",\n          \"action\": \"removed\",\n          \"fields\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"resource_type\": \"<string>\",\n          \"resource_subtype\": \"<string>\",\n          \"action\": \"undeleted\",\n          \"fields\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"<string>\",\n    \"path\": \"<string>\",\n    \"uri\": \"<uri>\"\n  }\n}",
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-4ff7c41c-cc6a-4b1a-9038-c48936c77e37"
+            },
+            {
+              "id": "5d007474-e710-4ed0-8652-5f9e8fbff242",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks?workspace=<string>&resource=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The workspace to query for webhooks in.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Only return webhooks for the given resource.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-5d007474-e710-4ed0-8652-5f9e8fbff242"
+            },
+            {
+              "id": "6f71e165-cc19-4ef2-b32b-7ddb3db55f36",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks?workspace=<string>&resource=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The workspace to query for webhooks in.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Only return webhooks for the given resource.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-6f71e165-cc19-4ef2-b32b-7ddb3db55f36"
+            },
+            {
+              "id": "0e82334d-4bb1-4fa3-a39b-37278b3cecf8",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks?workspace=<string>&resource=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The workspace to query for webhooks in.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Only return webhooks for the given resource.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-0e82334d-4bb1-4fa3-a39b-37278b3cecf8"
+            },
+            {
+              "id": "cc62644c-db35-4cbb-bf25-e2ac473cbe5c",
+              "name": "Not found.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks?workspace=<string>&resource=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The workspace to query for webhooks in.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Only return webhooks for the given resource.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-cc62644c-db35-4cbb-bf25-e2ac473cbe5c"
+            },
+            {
+              "id": "be549c05-5f5d-4925-a8fa-6a8f1884c2f7",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks?workspace=<string>&resource=<string>&limit=<integer>&offset=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The workspace to query for webhooks in.",
+                      "key": "workspace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Only return webhooks for the given resource.",
+                      "key": "resource",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-be549c05-5f5d-4925-a8fa-6a8f1884c2f7"
+            }
+          ],
+          "createdAt": "2026-06-05T13:14:03.000Z",
+          "updatedAt": "2026-06-05T13:14:03.000Z",
+          "uid": "35240-2dfa9d67-98f3-4b67-a929-bdd725b0c164"
+        },
+        {
+          "name": "Asana Establish a webhook",
+          "id": "427e3700-07d8-40e5-a48e-e45d1ee8540f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"resource\": \"<string>\",\n    \"target\": \"<uri>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"removed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/webhooks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "webhooks"
+              ]
+            },
+            "description": "Establishing a webhook is a two-part process. First, a simple HTTP POST request initiates the creation. Then a confirmation handshake occurs where we send a test POST to the target with an X-Hook-Secret header that must be echoed back."
+          },
+          "response": [
+            {
+              "id": "42289abb-f12c-4d35-9646-1b980a1fa3ae",
+              "name": "Successfully created the webhook.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"<string>\",\n    \"target\": \"<uri>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"removed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": {\n    \"gid\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"resource\": {\n      \"gid\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    \"target\": \"<uri>\",\n    \"created_at\": \"<dateTime>\",\n    \"last_failure_at\": \"<dateTime>\",\n    \"last_failure_content\": \"<string>\",\n    \"last_success_at\": \"<dateTime>\",\n    \"delivery_retry_count\": \"<integer>\",\n    \"next_attempt_after\": \"<dateTime>\",\n    \"failure_deletion_timestamp\": \"<dateTime>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"removed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"deleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-42289abb-f12c-4d35-9646-1b980a1fa3ae"
+            },
+            {
+              "id": "641af748-ca4f-4d87-bdcf-ab0deb6a55ff",
+              "name": "Bad request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"<string>\",\n    \"target\": \"<uri>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"removed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-641af748-ca4f-4d87-bdcf-ab0deb6a55ff"
+            },
+            {
+              "id": "77b30c20-8b5f-44e1-a97f-911213b25146",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"<string>\",\n    \"target\": \"<uri>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"removed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-77b30c20-8b5f-44e1-a97f-911213b25146"
+            },
+            {
+              "id": "1b9cd4c8-85f2-492f-a39a-0c71793fe0d2",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"<string>\",\n    \"target\": \"<uri>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"removed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-1b9cd4c8-85f2-492f-a39a-0c71793fe0d2"
+            },
+            {
+              "id": "941580ef-2e80-41fc-9ee2-eada71df39b3",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"<string>\",\n    \"target\": \"<uri>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"removed\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"undeleted\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/webhooks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "webhooks"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:14:03.000Z",
+              "updatedAt": "2026-06-05T13:14:03.000Z",
+              "uid": "35240-941580ef-2e80-41fc-9ee2-eada71df39b3"
+            }
+          ],
+          "createdAt": "2026-06-05T13:14:03.000Z",
+          "updatedAt": "2026-06-05T13:14:03.000Z",
+          "uid": "35240-427e3700-07d8-40e5-a48e-e45d1ee8540f"
+        }
+      ],
+      "id": "096b8deb-9b0f-41df-aa04-344c2ae820ca",
+      "createdAt": "2026-06-05T13:14:03.000Z",
+      "updatedAt": "2026-06-05T13:14:03.000Z",
+      "uid": "35240-096b8deb-9b0f-41df-aa04-344c2ae820ca"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://app.asana.com/api/1.0"
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Sections API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get a section",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/sections/:section_gid",
+            "params": [
+              {
+                "name": "section_gid",
+                "value": "321654",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the complete record for a single section."
+        },
+        {
+          "info": {
+            "name": "Asana Update a section",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/sections/:section_gid",
+            "params": [
+              {
+                "name": "section_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing section."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a section",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/sections/:section_gid",
+            "params": [
+              {
+                "name": "section_gid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a specific, existing section."
+        },
+        {
+          "info": {
+            "name": "Asana Get sections in a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/sections",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the compact records for all sections in the specified project."
+        },
+        {
+          "info": {
+            "name": "Asana Create a section in a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/sections",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new section in a project."
+        },
+        {
+          "info": {
+            "name": "Asana Add task to section",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/sections/:section_gid/addTask",
+            "params": [
+              {
+                "name": "section_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a task to a specific, existing section."
+        },
+        {
+          "info": {
+            "name": "Asana Move or insert sections",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/sections/insert",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Move sections relative to each other in a board view."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
