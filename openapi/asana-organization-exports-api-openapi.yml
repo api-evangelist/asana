@@ -1,10 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Organization Exports API
-  description: >-
-    The Asana Organization Exports API allows users to export the complete data
-    of an organization in JSON format. Only available to Service Accounts of
-    Enterprise organizations.
+  title: Asana Allocations Organization Exports API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -14,23 +11,49 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Organization Exports
-    description: Export organization data in JSON format.
+- name: Organization Exports
+  description: "An `organization_export` object represents a request to export the complete data of an organization in JSON format.\n\nTo export an organization using this API:\n\n* Create an `organization_export`\n  [request](/reference/createorganizationexport)\n  and store the ID that is returned.\n* Request the `organization_export` every few minutes, until the\n  `state` field contains ‘finished’.\n* Download the file located at the URL in the `download_url` field. * Exports can take a long time, from several minutes to a few hours\n  for large organizations.\n\n\n*Note: These endpoints are only available to [Service Accounts](https://asana.com/guide/help/premium/service-accounts) of an [Enterprise](https://asana.com/enterprise) organization.*"
 paths:
   /organization_exports:
+    parameters:
+    - $ref: '#/components/parameters/pretty'
     post:
       summary: Asana Create an organization export request
-      description: Creates an organization export request for the given organization.
-      operationId: createOrganizationExport
+      description: This method creates a request to export an Organization. Asana will complete the export at some point after you create the request.
       tags:
-        - Organization Exports
+      - Organization Exports
+      operationId: createOrganizationExport
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - created_at
+        - download_url
+        - organization
+        - organization.name
+        - state
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - created_at
+            - download_url
+            - organization
+            - organization.name
+            - state
+        style: form
+        explode: false
       requestBody:
+        description: The organization to export.
         required: true
         content:
           application/json:
@@ -38,17 +61,10 @@ paths:
               type: object
               properties:
                 data:
-                  type: object
-                  properties:
-                    organization:
-                      type: string
-                      description: Globally unique identifier for the workspace or organization.
-                      example: '1331'
-                  required:
-                    - organization
+                  $ref: '#/components/schemas/OrganizationExportRequest'
       responses:
-        '201':
-          description: Successfully created an organization export request.
+        201:
+          description: Successfully created organization export request.
           content:
             application/json:
               schema:
@@ -56,31 +72,93 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/OrganizationExportResponse'
-        '400':
-          description: Bad request.
-        '401':
-          description: Unauthorized.
-        '403':
-          description: Forbidden.
-        '500':
-          description: Internal server error.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nOrganizationExport result = client.organizationexports.createOrganizationExport()\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet organizationExportsApiInstance = new Asana.OrganizationExportsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The organization to export.\nlet opts = { \n    'opt_fields': \"created_at,download_url,organization,organization.name,state\"\n};\norganizationExportsApiInstance.createOrganizationExport(body, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.organizationexports.createOrganizationExport({field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\norganization_exports_api_instance = asana.OrganizationExportsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The organization to export.\nopts = {\n    'opt_fields': \"created_at,download_url,organization,organization.name,state\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Create an organization export request\n    api_response = organization_exports_api_instance.create_organization_export(body, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling OrganizationExportsApi->create_organization_export: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.organization_exports.create_organization_export({''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->organizationexports->createOrganizationExport(array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.organization_exports.create_organization_export(field: \"value\", field: \"value\", options: {pretty: true})"
   /organization_exports/{organization_export_gid}:
+    parameters:
+    - $ref: '#/components/parameters/organization_export_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get details on an org export request
-      description: Returns details of a previously-requested organization export.
-      operationId: getOrganizationExport
+      description: Returns details of a previously-requested Organization export.
       tags:
-        - Organization Exports
+      - Organization Exports
+      operationId: getOrganizationExport
       parameters:
-        - name: organization_export_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - created_at
+        - download_url
+        - organization
+        - organization.name
+        - state
+        schema:
+          type: array
+          items:
             type: string
-          example: '12345'
+            enum:
+            - created_at
+            - download_url
+            - organization
+            - organization.name
+            - state
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved the requested organization export.
+        200:
+          description: Successfully retrieved organization export object.
           content:
             application/json:
               schema:
@@ -88,67 +166,255 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/OrganizationExportResponse'
-        '400':
-          description: Bad request.
-        '401':
-          description: Unauthorized.
-        '403':
-          description: Forbidden.
-        '404':
-          description: Not found.
-        '500':
-          description: Internal server error.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nOrganizationExport result = client.organizationexports.getOrganizationExport(organizationExportGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet organizationExportsApiInstance = new Asana.OrganizationExportsApi();\nlet organization_export_gid = \"12345\"; // String | Globally unique identifier for the organization export.\nlet opts = { \n    'opt_fields': \"created_at,download_url,organization,organization.name,state\"\n};\norganizationExportsApiInstance.getOrganizationExport(organization_export_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.organizationexports.getOrganizationExport(organizationExportGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\norganization_exports_api_instance = asana.OrganizationExportsApi(api_client)\norganization_export_gid = \"12345\" # str | Globally unique identifier for the organization export.\nopts = {\n    'opt_fields': \"created_at,download_url,organization,organization.name,state\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get details on an org export request\n    api_response = organization_exports_api_instance.get_organization_export(organization_export_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling OrganizationExportsApi->get_organization_export: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.organization_exports.get_organization_export(organization_export_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->organizationexports->getOrganizationExport($organization_export_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.organization_exports.get_organization_export(organization_export_gid: 'organization_export_gid', param: \"value\", param: \"value\", options: {pretty: true})"
 components:
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    OrganizationExportRequest:
+      type: object
+      description: An *organization_export* request starts a job to export the complete data of the given Organization.
+      properties:
+        organization:
+          description: Globally unique identifier for the workspace or organization.
+          type: string
+          example: '1331'
+    OrganizationExportResponse:
+      $ref: '#/components/schemas/OrganizationExportBase'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    OrganizationExportCompact:
+      description: An *organization_export* object represents a request to export the complete data of an Organization in JSON format.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: organization_export
+          x-insert-after: gid
+        created_at:
+          description: The time at which this resource was created.
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2012-02-22T02:06:58.147Z'
+        download_url:
+          description: 'Download this URL to retreive the full export of the organization
+
+            in JSON format. It will be compressed in a gzip (.gz) container.
+
+
+            *Note: May be null if the export is still in progress or
+
+            failed.  If present, this URL may only be valid for 1 hour from
+
+            the time of retrieval. You should avoid persisting this URL
+
+            somewhere and rather refresh on demand to ensure you do not keep
+
+            stale URLs.*'
+          type: string
+          format: uri
+          readOnly: true
+          nullable: true
+          example: https://asana-export-us-east-1.s3.us-east-1.amazonaws.com/2563645399633793/domain_export/7588024658887731/download/ domain_export_2563645399633793_7588024658887731_2023018-201726.json.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256& X-Amz-Content-Sha256=xxxxxxxx&X-Amz-Date=xxxxxxxx&X-Amz-Expires=300&X-Amz-Security-Token=xxxxxxxx& X-Amz-Signature=xxxxxxxx&X-Amz-SignedHeaders=host&x-id=GetObject#_=_
+        state:
+          description: The current state of the export.
+          type: string
+          enum:
+          - pending
+          - started
+          - finished
+          - error
+          readOnly: true
+          example: started
+        organization:
+          $ref: '#/components/schemas/WorkspaceCompact'
+    OrganizationExportBase:
+      $ref: '#/components/schemas/OrganizationExportCompact'
+    WorkspaceCompact:
+      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: workspace
+          x-insert-after: gid
+        name:
+          description: The name of the workspace.
+          type: string
+          example: My Company Workspace
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    organization_export_path_gid:
+      name: organization_export_gid
+      in: path
+      description: Globally unique identifier for the organization export.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: organization_export
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
   securitySchemes:
     personalAccessToken:
       type: http
+      description: A personal access token for the Asana API.
       scheme: bearer
     oauth2:
       type: oauth2
+      description: OAuth 2.0 authorization code flow.
       flows:
         authorizationCode:
           authorizationUrl: https://app.asana.com/-/oauth_authorize
           tokenUrl: https://app.asana.com/-/oauth_token
           scopes:
             default: Provides access to all endpoints documented in the API reference.
-  schemas:
-    OrganizationExportResponse:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-          example: '12345'
-        resource_type:
-          type: string
-          readOnly: true
-          example: organization_export
-        state:
-          type: string
-          readOnly: true
-          description: The state of the export.
-          enum:
-            - pending
-            - started
-            - finished
-            - error
-          example: started
-        download_url:
-          type: string
-          format: uri
-          readOnly: true
-          nullable: true
-          description: Download URL when the export is finished.
-        organization:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true

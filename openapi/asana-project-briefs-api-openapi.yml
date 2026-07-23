@@ -1,0 +1,655 @@
+openapi: 3.1.0
+info:
+  title: Asana Allocations Project Briefs API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
+security:
+- personalAccessToken: []
+- oauth2: []
+tags:
+- name: Project Briefs
+  description: 'A project brief object represents a rich text document that describes a project.
+
+
+    Please note that this API is in *preview*, and is expected to change. This API is to be used for development and testing only as an advance view into the upcoming rich text format experience in the task description. For more information, see [this post](https://forum.asana.com/t/project-brief-api-now-available-as-a-preview/150885) in the developer forum.'
+paths:
+  /project_briefs/{project_brief_gid}:
+    parameters:
+    - $ref: '#/components/parameters/project_brief_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    get:
+      summary: Asana Get a project brief
+      description: Get the full record for a project brief.
+      tags:
+      - Project Briefs
+      operationId: getProjectBrief
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - html_text
+        - permalink_url
+        - project
+        - project.name
+        - text
+        - title
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - html_text
+            - permalink_url
+            - project
+            - project.name
+            - text
+            - title
+        style: form
+        explode: false
+      responses:
+        200:
+          description: Successfully retrieved the record for a project brief.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectBriefResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        402:
+          $ref: '#/components/responses/PaymentRequired'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        424:
+          $ref: '#/components/responses/TooManyRequests'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        501:
+          $ref: '#/components/responses/BadGateway'
+        503:
+          $ref: '#/components/responses/ServiceUnavailable'
+        504:
+          $ref: '#/components/responses/GatewayTimeout'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.projectbriefs.getProjectBrief(projectBriefGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectBriefsApiInstance = new Asana.ProjectBriefsApi();\nlet project_brief_gid = \"12345\"; // String | Globally unique identifier for the project brief.\nlet opts = { \n    'opt_fields': \"html_text,permalink_url,project,project.name,text,title\"\n};\nprojectBriefsApiInstance.getProjectBrief(project_brief_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projectbriefs.getProjectBrief(projectBriefGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_briefs_api_instance = asana.ProjectBriefsApi(api_client)\nproject_brief_gid = \"12345\" # str | Globally unique identifier for the project brief.\nopts = {\n    'opt_fields': \"html_text,permalink_url,project,project.name,text,title\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a project brief\n    api_response = project_briefs_api_instance.get_project_brief(project_brief_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectBriefsApi->get_project_brief: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_briefs.get_project_brief(project_brief_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projectbriefs->getProjectBrief($project_brief_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_briefs.get_project_brief(project_brief_gid: 'project_brief_gid', param: \"value\", param: \"value\", options: {pretty: true})"
+    put:
+      summary: Asana Update a project brief
+      description: 'An existing project brief can be updated by making a PUT request on the URL for
+
+        that project brief. Only the fields provided in the `data` block will be updated;
+
+        any unspecified fields will remain unchanged.
+
+
+        Returns the complete updated project brief record.'
+      tags:
+      - Project Briefs
+      operationId: updateProjectBrief
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - html_text
+        - permalink_url
+        - project
+        - project.name
+        - text
+        - title
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - html_text
+            - permalink_url
+            - project
+            - project.name
+            - text
+            - title
+        style: form
+        explode: false
+      requestBody:
+        description: The updated fields for the project brief.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/ProjectBriefRequest'
+      responses:
+        200:
+          description: Successfully updated the project brief.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectBriefResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.projectbriefs.updateProjectBrief(projectBriefGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectBriefsApiInstance = new Asana.ProjectBriefsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The updated fields for the project brief.\nlet project_brief_gid = \"12345\"; // String | Globally unique identifier for the project brief.\nlet opts = { \n    'opt_fields': \"html_text,permalink_url,project,project.name,text,title\"\n};\nprojectBriefsApiInstance.updateProjectBrief(body, project_brief_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projectbriefs.updateProjectBrief(projectBriefGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_briefs_api_instance = asana.ProjectBriefsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The updated fields for the project brief.\nproject_brief_gid = \"12345\" # str | Globally unique identifier for the project brief.\nopts = {\n    'opt_fields': \"html_text,permalink_url,project,project.name,text,title\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Update a project brief\n    api_response = project_briefs_api_instance.update_project_brief(body, project_brief_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectBriefsApi->update_project_brief: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_briefs.update_project_brief(project_brief_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projectbriefs->updateProjectBrief($project_brief_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_briefs.update_project_brief(project_brief_gid: 'project_brief_gid', field: \"value\", field: \"value\", options: {pretty: true})"
+    delete:
+      summary: Asana Delete a project brief
+      description: 'Deletes a specific, existing project brief.
+
+
+        Returns an empty data record.'
+      tags:
+      - Project Briefs
+      operationId: deleteProjectBrief
+      responses:
+        200:
+          description: Successfully deleted the specified project brief.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmptyResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.projectbriefs.deleteProjectBrief(projectBriefGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectBriefsApiInstance = new Asana.ProjectBriefsApi();\nlet project_brief_gid = \"12345\"; // String | Globally unique identifier for the project brief.\n\nprojectBriefsApiInstance.deleteProjectBrief(project_brief_gid).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projectbriefs.deleteProjectBrief(projectBriefGid)\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_briefs_api_instance = asana.ProjectBriefsApi(api_client)\nproject_brief_gid = \"12345\" # str | Globally unique identifier for the project brief.\n\n\ntry:\n    # Delete a project brief\n    api_response = project_briefs_api_instance.delete_project_brief(project_brief_gid)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectBriefsApi->delete_project_brief: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_briefs.delete_project_brief(project_brief_gid, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projectbriefs->deleteProjectBrief($project_brief_gid, array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_briefs.delete_project_brief(project_brief_gid: 'project_brief_gid', options: {pretty: true})"
+  /projects/{project_gid}/project_briefs:
+    parameters:
+    - $ref: '#/components/parameters/project_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    post:
+      summary: Asana Create a project brief
+      description: 'Creates a new project brief.
+
+
+        Returns the full record of the newly created project brief.'
+      tags:
+      - Project Briefs
+      operationId: createProjectBrief
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - html_text
+        - permalink_url
+        - project
+        - project.name
+        - text
+        - title
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - html_text
+            - permalink_url
+            - project
+            - project.name
+            - text
+            - title
+        style: form
+        explode: false
+      requestBody:
+        description: The project brief to create.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/ProjectBriefRequest'
+      responses:
+        201:
+          description: Successfully created a new project brief.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectBriefResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        402:
+          $ref: '#/components/responses/PaymentRequired'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.projectbriefs.createProjectBrief(projectGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectBriefsApiInstance = new Asana.ProjectBriefsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The project brief to create.\nlet project_gid = \"1331\"; // String | Globally unique identifier for the project.\nlet opts = { \n    'opt_fields': \"html_text,permalink_url,project,project.name,text,title\"\n};\nprojectBriefsApiInstance.createProjectBrief(body, project_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projectbriefs.createProjectBrief(projectGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_briefs_api_instance = asana.ProjectBriefsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The project brief to create.\nproject_gid = \"1331\" # str | Globally unique identifier for the project.\nopts = {\n    'opt_fields': \"html_text,permalink_url,project,project.name,text,title\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Create a project brief\n    api_response = project_briefs_api_instance.create_project_brief(body, project_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectBriefsApi->create_project_brief: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_briefs.create_project_brief(project_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projectbriefs->createProjectBrief($project_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_briefs.create_project_brief(project_gid: 'project_gid', field: \"value\", field: \"value\", options: {pretty: true})"
+components:
+  schemas:
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    ProjectBriefRequest:
+      allOf:
+      - $ref: '#/components/schemas/ProjectBriefBase'
+      - type: object
+        properties:
+          text:
+            description: The plain text of the project brief. When writing to a project brief, you can specify either `html_text` (preferred) or `text`, but not both.
+            type: string
+            example: This is a project brief.
+    ProjectBriefCompact:
+      description: A *Project Brief* allows you to explain the what and why of the project to your team.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project_brief
+          x-insert-after: gid
+    ProjectBriefBase:
+      allOf:
+      - $ref: '#/components/schemas/ProjectBriefCompact'
+      - type: object
+        properties:
+          title:
+            description: The title of the project brief.
+            type: string
+            example: Stuff to buy — Project Brief
+          html_text:
+            description: HTML formatted text for the project brief.
+            type: string
+            example: <body>This is a <strong>project brief</strong>.</body>
+    ProjectBriefResponse:
+      allOf:
+      - $ref: '#/components/schemas/ProjectBriefBase'
+      - type: object
+        properties:
+          text:
+            description: '[Opt In](/docs/inputoutput-options). The plain text of the project brief.'
+            type: string
+            example: This is a project brief.
+          permalink_url:
+            type: string
+            readOnly: true
+            description: A url that points directly to the object within Asana.
+            example: https://app.asana.com/0/11111111/22222222
+          project:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: The project with which this project brief is associated.
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    GatewayTimeout:
+      description: This request took too long to complete.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ServiceUnavailable:
+      description: Either the upstream service is unavailable to the API, or the API has been intentionally shut off.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PaymentRequired:
+      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadGateway:
+      description: There is an issue between the load balancers and Asana's API.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    TooManyRequests:
+      description: You have exceeded one of the enforced rate limits in the API. See the [documentation on rate limiting](https://developers.asana.com/docs/#rate-limits) for more information.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    project_brief_path_gid:
+      name: project_brief_gid
+      in: path
+      description: Globally unique identifier for the project brief.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: project_brief
+    project_path_gid:
+      name: project_gid
+      in: path
+      description: Globally unique identifier for the project.
+      required: true
+      schema:
+        type: string
+      example: '1331'
+      x-env-variable: project
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

@@ -1,0 +1,482 @@
+openapi: 3.1.0
+info:
+  title: Asana Allocations Audit Log API API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
+security:
+- personalAccessToken: []
+- oauth2: []
+tags:
+- name: Audit Log API
+  description: 'Asana''s audit log is an immutable log of [important events](/docs/audit-log-events#supported-audit-log-events) in your organization''s Asana instance.
+
+
+    The audit log API allows you to monitor and act upon important security and compliance-related changes. Organizations might use this API endpoint to:
+
+
+    * Set up proactive alerting with a Security Information and Event Management (SIEM) tool like [Splunk](https://asana.com/guide/help/api/splunk)
+
+    * Conduct reactive investigations when a security incident takes place
+
+    * Visualize key domain data in aggregate to identify security trends
+
+
+    Note that since the API provides insight into what is happening in an Asana instance, the data is [read-only](/reference/getauditlogevents). That is, there are no "write" or "update" endpoints for audit log events.
+
+
+    Only [Service Accounts](https://asana.com/guide/help/premium/service-accounts) in [Enterprise Domains](https://asana.com/enterprise) can access audit log API endpoints. Authentication with a Service Account''s [personal access token](/docs/personal-access-token) is required.
+
+
+    For a full list of supported events, see [supported AuditLogEvents](/docs/audit-log-events#supported-audit-log-events).'
+paths:
+  /workspaces/{workspace_gid}/audit_log_events:
+    parameters:
+    - $ref: '#/components/parameters/workspace_path_gid'
+    - $ref: '#/components/parameters/audit_log_start_at'
+    - $ref: '#/components/parameters/audit_log_end_at'
+    - $ref: '#/components/parameters/audit_log_event_type'
+    - $ref: '#/components/parameters/audit_log_actor_type'
+    - $ref: '#/components/parameters/audit_log_actor_gid'
+    - $ref: '#/components/parameters/audit_log_resource_gid'
+    - $ref: '#/components/parameters/limit'
+    - $ref: '#/components/parameters/offset'
+    get:
+      summary: Asana Get audit log events
+      description: 'Retrieve the audit log events that have been captured in your domain.
+
+
+        This endpoint will return a list of [AuditLogEvent](/reference/audit-log-api) objects, sorted by creation time in ascending order. Note that the Audit Log API captures events from October 8th, 2021 and later. Queries for events before this date will not return results.
+
+
+        There are a number of query parameters (below) that can be used to filter the set of [AuditLogEvent](/reference/audit-log-api) objects that are returned in the response. Any combination of query parameters is valid. When no filters are provided, all of the events that have been captured in your domain will match.
+
+
+        The list of events will always be [paginated](/docs/pagination). The default limit is 1000 events. The next set of events can be retrieved using the `offset` from the previous response. If there are no events that match the provided filters in your domain, the endpoint will return `null` for the `next_page` field. Querying again with the same filters may return new events if they were captured after the last request. Once a response includes a `next_page` with an `offset`, subsequent requests can be made with the latest `offset` to poll for new events that match the provided filters.
+
+
+        *Note: If the filters you provided match events in your domain and `next_page` is present in the response, we will continue to send `next_page` on subsequent requests even when there are no more events that match the filters. This was put in place so that you can implement an audit log stream that will return future events that match these filters. If you are not interested in future events that match the filters you have defined, you can rely on checking empty `data` response for the end of current events that match your filters.*
+
+
+        When no `offset` is provided, the response will begin with the oldest events that match the provided filters. It is important to note that [AuditLogEvent](/reference/audit-log-api) objects will be permanently deleted from our systems after 90 days. If you wish to keep a permanent record of these events, we recommend using a SIEM tool to ingest and store these logs.'
+      tags:
+      - Audit Log API
+      operationId: getAuditLogEvents
+      responses:
+        200:
+          description: AuditLogEvents were successfully retrieved.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AuditLogEvent'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<JsonElement> result = client.auditlogapi.getAuditLogEvents(workspaceGid, resourceGid, actorGid, actorType, eventType, endAt, startAt)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet auditLogApiApiInstance = new Asana.AuditLogAPIApi();\nlet workspace_gid = \"12345\"; // String | Globally unique identifier for the workspace or organization.\nlet opts = { \n    'start_at': \"2013-10-20T19:20:30+01:00\", \n    'end_at': \"2013-10-20T19:20:30+01:00\", \n    'event_type': \"event_type_example\", \n    'actor_type': \"actor_type_example\", \n    'actor_gid': \"actor_gid_example\", \n    'resource_gid': \"resource_gid_example\", \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n};\nauditLogApiApiInstance.getAuditLogEvents(workspace_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.auditlogapi.getAuditLogEvents(workspaceGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\naudit_log_api_api_instance = asana.AuditLogAPIApi(api_client)\nworkspace_gid = \"12345\" # str | Globally unique identifier for the workspace or organization.\nopts = {\n    'start_at': '2013-10-20T19:20:30+01:00', # datetime | Filter to events created after this time (inclusive).\n    'end_at': '2013-10-20T19:20:30+01:00', # datetime | Filter to events created before this time (exclusive).\n    'event_type': \"event_type_example\", # str | Filter to events of this type. Refer to the [supported audit log events](/docs/audit-log-events#supported-audit-log-events) for a full list of values.\n    'actor_type': \"actor_type_example\", # str | Filter to events with an actor of this type. This only needs to be included if querying for actor types without an ID. If `actor_gid` is included, this should be excluded.\n    'actor_gid': \"actor_gid_example\", # str | Filter to events triggered by the actor with this ID.\n    'resource_gid': \"resource_gid_example\", # str | Filter to events with this resource ID.\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n}\n\ntry:\n    # Get audit log events\n    api_response = audit_log_api_api_instance.get_audit_log_events(workspace_gid, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling AuditLogAPIApi->get_audit_log_events: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.audit_log_api.get_audit_log_events(workspace_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->auditlogapi->getAuditLogEvents($workspace_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.audit_log_api.get_audit_log_events(workspace_gid: 'workspace_gid', param: \"value\", param: \"value\", options: {pretty: true})"
+components:
+  parameters:
+    audit_log_event_type:
+      name: event_type
+      in: query
+      description: 'Filter to events of this type.
+
+        Refer to the [supported audit log events](/docs/audit-log-events#supported-audit-log-events) for a full list of values.'
+      required: false
+      schema:
+        type: string
+    audit_log_start_at:
+      name: start_at
+      in: query
+      description: Filter to events created after this time (inclusive).
+      required: false
+      schema:
+        type: string
+        format: date-time
+    audit_log_actor_type:
+      name: actor_type
+      in: query
+      description: 'Filter to events with an actor of this type.
+
+        This only needs to be included if querying for actor types without an ID. If `actor_gid` is included, this should be excluded.'
+      required: false
+      schema:
+        type: string
+        enum:
+        - user
+        - asana
+        - asana_support
+        - anonymous
+        - external_administrator
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    audit_log_resource_gid:
+      name: resource_gid
+      in: query
+      description: Filter to events with this resource ID.
+      required: false
+      schema:
+        type: string
+    workspace_path_gid:
+      name: workspace_gid
+      in: path
+      description: Globally unique identifier for the workspace or organization.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
+    audit_log_actor_gid:
+      name: actor_gid
+      in: query
+      description: Filter to events triggered by the actor with this ID.
+      required: false
+      schema:
+        type: string
+    audit_log_end_at:
+      name: end_at
+      in: query
+      description: Filter to events created before this time (exclusive).
+      required: false
+      schema:
+        type: string
+        format: date-time
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    AuditLogEventContext:
+      description: The context from which this event originated.
+      type: object
+      properties:
+        context_type:
+          description: 'The type of context.
+
+            Can be one of `web`, `desktop`, `mobile`, `asana_support`, `asana`, `email`, or `api`.'
+          type: string
+          enum:
+          - web
+          - desktop
+          - mobile
+          - asana_support
+          - asana
+          - email
+          - api
+          example: web
+        api_authentication_method:
+          description: 'The authentication method used in the context of an API request.
+
+            Only present if the `context_type` is `api`. Can be one of `cookie`, `oauth`, `personal_access_token`, or `service_account`.'
+          type: string
+          enum:
+          - cookie
+          - oauth
+          - personal_access_token
+          - service_account
+        client_ip_address:
+          description: The IP address of the client that initiated the event, if applicable.
+          type: string
+          example: 1.1.1.1
+        user_agent:
+          description: The user agent of the client that initiated the event, if applicable.
+          type: string
+          example: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36
+        oauth_app_name:
+          description: 'The name of the OAuth App that initiated the event.
+
+            Only present if the `api_authentication_method` is `oauth`.'
+          type: string
+        rule_name:
+          description: The name of the automation rule that initiated the event.
+          type: string
+          example: When Task is added to this project
+    AuditLogEventActor:
+      description: The entity that triggered the event. Will typically be a user.
+      type: object
+      properties:
+        actor_type:
+          description: 'The type of actor.
+
+            Can be one of `user`, `asana`, `asana_support`, `anonymous`, or `external_administrator`.'
+          type: string
+          enum:
+          - user
+          - asana
+          - asana_support
+          - anonymous
+          - external_administrator
+          example: user
+        gid:
+          description: Globally unique identifier of the actor, if it is a user.
+          type: string
+          example: '1111'
+        name:
+          description: The name of the actor, if it is a user.
+          type: string
+          example: Greg Sanchez
+        email:
+          description: The email of the actor, if it is a user.
+          type: string
+          example: gregsanchez@example.com
+    AuditLogEventDetails:
+      description: Event specific details. The schema will vary depending on the `event_type`.
+      type: object
+      properties:
+        old_value:
+          type: string
+          nullable: true
+        new_value:
+          type: string
+          nullable: true
+        group:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+    AuditLogEventResource:
+      description: The primary object that was affected by this event.
+      type: object
+      properties:
+        resource_type:
+          description: The type of resource.
+          type: string
+          example: task
+        resource_subtype:
+          description: The subtype of resource. Most resources will not have a subtype.
+          type: string
+          example: milestone
+        gid:
+          description: Globally unique identifier of the resource.
+          type: string
+          example: '1111'
+        name:
+          description: The name of the resource.
+          type: string
+          nullable: true
+          example: Example Task
+        email:
+          description: The email of the resource, if applicable.
+          type: string
+    NextPage:
+      type: object
+      nullable: true
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    AuditLogEvent:
+      description: 'An object representing a single event within an Asana domain.
+
+
+        Every audit log event is comprised of an `event_type`, `actor`, `resource`, and `context`. Some events will include additional metadata about the event under `details`. See our [currently supported list of events](/docs/audit-log-events#supported-audit-log-events) for more details.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the `AuditLogEvent`, as a string.
+          type: string
+          example: '12345'
+          x-insert-after: false
+        created_at:
+          description: The time the event was created.
+          type: string
+          format: date-time
+          example: '2021-01-01T00:00:00.000Z'
+        event_type:
+          description: The type of the event.
+          type: string
+          example: task_deleted
+        event_category:
+          description: The category that this `event_type` belongs to.
+          type: string
+          example: deletion
+        actor:
+          $ref: '#/components/schemas/AuditLogEventActor'
+        resource:
+          $ref: '#/components/schemas/AuditLogEventResource'
+        details:
+          $ref: '#/components/schemas/AuditLogEventDetails'
+        context:
+          $ref: '#/components/schemas/AuditLogEventContext'
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

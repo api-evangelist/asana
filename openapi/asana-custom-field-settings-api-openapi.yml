@@ -1,0 +1,1059 @@
+openapi: 3.1.0
+info:
+  title: Asana Allocations Custom Field Settings API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
+security:
+- personalAccessToken: []
+- oauth2: []
+tags:
+- name: Custom Field Settings
+  description: Custom fields are attached to a particular project with the custom field settings resource. This resource both represents the many-to-many join of the custom field and project as well as stores information that is relevant to that particular pairing. For instance, the `is_important` property determines some possible application-specific handling of that custom field.
+paths:
+  /projects/{project_gid}/custom_field_settings:
+    parameters:
+    - $ref: '#/components/parameters/project_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/limit'
+    - $ref: '#/components/parameters/offset'
+    get:
+      summary: Asana Get a project's custom fields
+      description: Returns a list of all of the custom fields settings on a project, in compact form. Note that, as in all queries to collections which return compact representation, `opt_fields` can be used to include more data than is returned in the compact representation. See the [documentation for input/output options](https://developers.asana.com/docs/inputoutput-options) for more information.
+      tags:
+      - Custom Field Settings
+      operationId: getCustomFieldSettingsForProject
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - custom_field
+        - custom_field.asana_created_field
+        - custom_field.created_by
+        - custom_field.created_by.name
+        - custom_field.currency_code
+        - custom_field.custom_label
+        - custom_field.custom_label_position
+        - custom_field.date_value
+        - custom_field.date_value.date
+        - custom_field.date_value.date_time
+        - custom_field.description
+        - custom_field.display_value
+        - custom_field.enabled
+        - custom_field.enum_options
+        - custom_field.enum_options.color
+        - custom_field.enum_options.enabled
+        - custom_field.enum_options.name
+        - custom_field.enum_value
+        - custom_field.enum_value.color
+        - custom_field.enum_value.enabled
+        - custom_field.enum_value.name
+        - custom_field.format
+        - custom_field.has_notifications_enabled
+        - custom_field.id_prefix
+        - custom_field.is_formula_field
+        - custom_field.is_global_to_workspace
+        - custom_field.is_value_read_only
+        - custom_field.multi_enum_values
+        - custom_field.multi_enum_values.color
+        - custom_field.multi_enum_values.enabled
+        - custom_field.multi_enum_values.name
+        - custom_field.name
+        - custom_field.number_value
+        - custom_field.people_value
+        - custom_field.people_value.name
+        - custom_field.precision
+        - custom_field.representation_type
+        - custom_field.resource_subtype
+        - custom_field.text_value
+        - custom_field.type
+        - is_important
+        - offset
+        - parent
+        - parent.name
+        - path
+        - project
+        - project.name
+        - uri
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - custom_field
+            - custom_field.asana_created_field
+            - custom_field.created_by
+            - custom_field.created_by.name
+            - custom_field.currency_code
+            - custom_field.custom_label
+            - custom_field.custom_label_position
+            - custom_field.date_value
+            - custom_field.date_value.date
+            - custom_field.date_value.date_time
+            - custom_field.description
+            - custom_field.display_value
+            - custom_field.enabled
+            - custom_field.enum_options
+            - custom_field.enum_options.color
+            - custom_field.enum_options.enabled
+            - custom_field.enum_options.name
+            - custom_field.enum_value
+            - custom_field.enum_value.color
+            - custom_field.enum_value.enabled
+            - custom_field.enum_value.name
+            - custom_field.format
+            - custom_field.has_notifications_enabled
+            - custom_field.id_prefix
+            - custom_field.is_formula_field
+            - custom_field.is_global_to_workspace
+            - custom_field.is_value_read_only
+            - custom_field.multi_enum_values
+            - custom_field.multi_enum_values.color
+            - custom_field.multi_enum_values.enabled
+            - custom_field.multi_enum_values.name
+            - custom_field.name
+            - custom_field.number_value
+            - custom_field.people_value
+            - custom_field.people_value.name
+            - custom_field.precision
+            - custom_field.representation_type
+            - custom_field.resource_subtype
+            - custom_field.text_value
+            - custom_field.type
+            - is_important
+            - offset
+            - parent
+            - parent.name
+            - path
+            - project
+            - project.name
+            - uri
+        style: form
+        explode: false
+      responses:
+        200:
+          description: Successfully retrieved custom field settings objects for a project.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CustomFieldSettingResponse'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<CustomFieldSetting> result = client.customfieldsettings.getCustomFieldSettingsForProject(projectGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet customFieldSettingsApiInstance = new Asana.CustomFieldSettingsApi();\nlet project_gid = \"1331\"; // String | Globally unique identifier for the project.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"custom_field,custom_field.asana_created_field,custom_field.created_by,custom_field.created_by.name,custom_field.currency_code,custom_field.custom_label,custom_field.custom_label_position,custom_field.date_value,custom_field.date_value.date,custom_field.date_value.date_time,custom_field.description,custom_field.display_value,custom_field.enabled,custom_field.enum_options,custom_field.enum_options.color,custom_field.enum_options.enabled,custom_field.enum_options.name,custom_field.enum_value,custom_field.enum_value.color,custom_field.enum_value.enabled,custom_field.enum_value.name,custom_field.format,custom_field.has_notifications_enabled,custom_field.id_prefix,custom_field.is_formula_field,custom_field.is_global_to_workspace,custom_field.is_value_read_only,custom_field.multi_enum_values,custom_field.multi_enum_values.color,custom_field.multi_enum_values.enabled,custom_field.multi_enum_values.name,custom_field.name,custom_field.number_value,custom_field.people_value,custom_field.people_value.name,custom_field.precision,custom_field.representation_type,custom_field.resource_subtype,custom_field.text_value,custom_field.type,is_important,offset,parent,parent.name,path,project,project.name,uri\"\n};\ncustomFieldSettingsApiInstance.getCustomFieldSettingsForProject(project_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.customfieldsettings.getCustomFieldSettingsForProject(projectGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ncustom_field_settings_api_instance = asana.CustomFieldSettingsApi(api_client)\nproject_gid = \"1331\" # str | Globally unique identifier for the project.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"custom_field,custom_field.asana_created_field,custom_field.created_by,custom_field.created_by.name,custom_field.currency_code,custom_field.custom_label,custom_field.custom_label_position,custom_field.date_value,custom_field.date_value.date,custom_field.date_value.date_time,custom_field.description,custom_field.display_value,custom_field.enabled,custom_field.enum_options,custom_field.enum_options.color,custom_field.enum_options.enabled,custom_field.enum_options.name,custom_field.enum_value,custom_field.enum_value.color,custom_field.enum_value.enabled,custom_field.enum_value.name,custom_field.format,custom_field.has_notifications_enabled,custom_field.id_prefix,custom_field.is_formula_field,custom_field.is_global_to_workspace,custom_field.is_value_read_only,custom_field.multi_enum_values,custom_field.multi_enum_values.color,custom_field.multi_enum_values.enabled,custom_field.multi_enum_values.name,custom_field.name,custom_field.number_value,custom_field.people_value,custom_field.people_value.name,custom_field.precision,custom_field.representation_type,custom_field.resource_subtype,custom_field.text_value,custom_field.type,is_important,offset,parent,parent.name,path,project,project.name,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a project's custom fields\n    api_response = custom_field_settings_api_instance.get_custom_field_settings_for_project(project_gid, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling CustomFieldSettingsApi->get_custom_field_settings_for_project: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.custom_field_settings.get_custom_field_settings_for_project(project_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->customfieldsettings->getCustomFieldSettingsForProject($project_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.custom_field_settings.get_custom_field_settings_for_project(project_gid: 'project_gid', param: \"value\", param: \"value\", options: {pretty: true})"
+  /portfolios/{portfolio_gid}/custom_field_settings:
+    parameters:
+    - $ref: '#/components/parameters/portfolio_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/limit'
+    - $ref: '#/components/parameters/offset'
+    get:
+      summary: Asana Get a portfolio's custom fields
+      description: Returns a list of all of the custom fields settings on a portfolio, in compact form.
+      tags:
+      - Custom Field Settings
+      operationId: getCustomFieldSettingsForPortfolio
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - custom_field
+        - custom_field.asana_created_field
+        - custom_field.created_by
+        - custom_field.created_by.name
+        - custom_field.currency_code
+        - custom_field.custom_label
+        - custom_field.custom_label_position
+        - custom_field.date_value
+        - custom_field.date_value.date
+        - custom_field.date_value.date_time
+        - custom_field.description
+        - custom_field.display_value
+        - custom_field.enabled
+        - custom_field.enum_options
+        - custom_field.enum_options.color
+        - custom_field.enum_options.enabled
+        - custom_field.enum_options.name
+        - custom_field.enum_value
+        - custom_field.enum_value.color
+        - custom_field.enum_value.enabled
+        - custom_field.enum_value.name
+        - custom_field.format
+        - custom_field.has_notifications_enabled
+        - custom_field.id_prefix
+        - custom_field.is_formula_field
+        - custom_field.is_global_to_workspace
+        - custom_field.is_value_read_only
+        - custom_field.multi_enum_values
+        - custom_field.multi_enum_values.color
+        - custom_field.multi_enum_values.enabled
+        - custom_field.multi_enum_values.name
+        - custom_field.name
+        - custom_field.number_value
+        - custom_field.people_value
+        - custom_field.people_value.name
+        - custom_field.precision
+        - custom_field.representation_type
+        - custom_field.resource_subtype
+        - custom_field.text_value
+        - custom_field.type
+        - is_important
+        - offset
+        - parent
+        - parent.name
+        - path
+        - project
+        - project.name
+        - uri
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - custom_field
+            - custom_field.asana_created_field
+            - custom_field.created_by
+            - custom_field.created_by.name
+            - custom_field.currency_code
+            - custom_field.custom_label
+            - custom_field.custom_label_position
+            - custom_field.date_value
+            - custom_field.date_value.date
+            - custom_field.date_value.date_time
+            - custom_field.description
+            - custom_field.display_value
+            - custom_field.enabled
+            - custom_field.enum_options
+            - custom_field.enum_options.color
+            - custom_field.enum_options.enabled
+            - custom_field.enum_options.name
+            - custom_field.enum_value
+            - custom_field.enum_value.color
+            - custom_field.enum_value.enabled
+            - custom_field.enum_value.name
+            - custom_field.format
+            - custom_field.has_notifications_enabled
+            - custom_field.id_prefix
+            - custom_field.is_formula_field
+            - custom_field.is_global_to_workspace
+            - custom_field.is_value_read_only
+            - custom_field.multi_enum_values
+            - custom_field.multi_enum_values.color
+            - custom_field.multi_enum_values.enabled
+            - custom_field.multi_enum_values.name
+            - custom_field.name
+            - custom_field.number_value
+            - custom_field.people_value
+            - custom_field.people_value.name
+            - custom_field.precision
+            - custom_field.representation_type
+            - custom_field.resource_subtype
+            - custom_field.text_value
+            - custom_field.type
+            - is_important
+            - offset
+            - parent
+            - parent.name
+            - path
+            - project
+            - project.name
+            - uri
+        style: form
+        explode: false
+      responses:
+        200:
+          description: Successfully retrieved custom field settings objects for a portfolio.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CustomFieldSettingResponse'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<CustomFieldSetting> result = client.customfieldsettings.getCustomFieldSettingsForPortfolio(portfolioGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet customFieldSettingsApiInstance = new Asana.CustomFieldSettingsApi();\nlet portfolio_gid = \"12345\"; // String | Globally unique identifier for the portfolio.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"custom_field,custom_field.asana_created_field,custom_field.created_by,custom_field.created_by.name,custom_field.currency_code,custom_field.custom_label,custom_field.custom_label_position,custom_field.date_value,custom_field.date_value.date,custom_field.date_value.date_time,custom_field.description,custom_field.display_value,custom_field.enabled,custom_field.enum_options,custom_field.enum_options.color,custom_field.enum_options.enabled,custom_field.enum_options.name,custom_field.enum_value,custom_field.enum_value.color,custom_field.enum_value.enabled,custom_field.enum_value.name,custom_field.format,custom_field.has_notifications_enabled,custom_field.id_prefix,custom_field.is_formula_field,custom_field.is_global_to_workspace,custom_field.is_value_read_only,custom_field.multi_enum_values,custom_field.multi_enum_values.color,custom_field.multi_enum_values.enabled,custom_field.multi_enum_values.name,custom_field.name,custom_field.number_value,custom_field.people_value,custom_field.people_value.name,custom_field.precision,custom_field.representation_type,custom_field.resource_subtype,custom_field.text_value,custom_field.type,is_important,offset,parent,parent.name,path,project,project.name,uri\"\n};\ncustomFieldSettingsApiInstance.getCustomFieldSettingsForPortfolio(portfolio_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.customfieldsettings.getCustomFieldSettingsForPortfolio(portfolioGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ncustom_field_settings_api_instance = asana.CustomFieldSettingsApi(api_client)\nportfolio_gid = \"12345\" # str | Globally unique identifier for the portfolio.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"custom_field,custom_field.asana_created_field,custom_field.created_by,custom_field.created_by.name,custom_field.currency_code,custom_field.custom_label,custom_field.custom_label_position,custom_field.date_value,custom_field.date_value.date,custom_field.date_value.date_time,custom_field.description,custom_field.display_value,custom_field.enabled,custom_field.enum_options,custom_field.enum_options.color,custom_field.enum_options.enabled,custom_field.enum_options.name,custom_field.enum_value,custom_field.enum_value.color,custom_field.enum_value.enabled,custom_field.enum_value.name,custom_field.format,custom_field.has_notifications_enabled,custom_field.id_prefix,custom_field.is_formula_field,custom_field.is_global_to_workspace,custom_field.is_value_read_only,custom_field.multi_enum_values,custom_field.multi_enum_values.color,custom_field.multi_enum_values.enabled,custom_field.multi_enum_values.name,custom_field.name,custom_field.number_value,custom_field.people_value,custom_field.people_value.name,custom_field.precision,custom_field.representation_type,custom_field.resource_subtype,custom_field.text_value,custom_field.type,is_important,offset,parent,parent.name,path,project,project.name,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a portfolio's custom fields\n    api_response = custom_field_settings_api_instance.get_custom_field_settings_for_portfolio(portfolio_gid, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling CustomFieldSettingsApi->get_custom_field_settings_for_portfolio: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.custom_field_settings.get_custom_field_settings_for_portfolio(portfolio_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->customfieldsettings->getCustomFieldSettingsForPortfolio($portfolio_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.custom_field_settings.get_custom_field_settings_for_portfolio(portfolio_gid: 'portfolio_gid', param: \"value\", param: \"value\", options: {pretty: true})"
+components:
+  schemas:
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    CustomFieldResponse:
+      allOf:
+      - $ref: '#/components/schemas/CustomFieldBase'
+      - type: object
+        properties:
+          representation_type:
+            description: This field tells the type of the custom field.
+            type: string
+            example: number
+            readOnly: true
+            enum:
+            - text
+            - enum
+            - multi_enum
+            - number
+            - date
+            - people
+            - formula
+            - custom_id
+          id_prefix:
+            description: This field is the unique custom ID string for the custom field.
+            type: string
+            nullable: true
+            example: ID
+          is_formula_field:
+            description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
+            type: boolean
+            example: false
+          is_value_read_only:
+            description: '*Conditional*. This flag describes whether a custom field is read only.'
+            type: boolean
+            example: false
+          created_by:
+            allOf:
+            - $ref: '#/components/schemas/UserCompact'
+            - nullable: true
+          people_value:
+            description: '*Conditional*. Only relevant for custom fields of type `people`. This array of [compact user](/reference/users) objects reflects the values of a `people` custom field.'
+            type: array
+            items:
+              $ref: '#/components/schemas/UserCompact'
+    EnumOption:
+      description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
+
+
+        You can add enum options to a custom field by using the `POST /custom_fields/custom_field_gid/enum_options` endpoint.
+
+
+        **It is not possible to remove or delete an enum option**. Instead, enum options can be disabled by updating the `enabled` field to false with the `PUT /enum_options/enum_option_gid` endpoint. Other attributes can be updated similarly.
+
+
+        On creation of an enum option, `enabled` is always set to `true`, meaning the enum option is a selectable value for the custom field. Setting `enabled=false` is equivalent to “trashing” the enum option in the Asana web app within the “Edit Fields” dialog. The enum option will no longer be selectable but, if the enum option value was previously set within a task, the task will retain the value.
+
+
+        Enum options are an ordered list and by default new enum options are inserted at the end. Ordering in relation to existing enum options can be specified on creation by using `insert_before` or `insert_after` to reference an existing enum option. Only one of `insert_before` and `insert_after` can be provided when creating a new enum option.
+
+
+        An enum options list can be reordered with the `POST /custom_fields/custom_field_gid/enum_options/insert` endpoint.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: enum_option
+          x-insert-after: gid
+        name:
+          description: The name of the enum option.
+          type: string
+          example: Low
+        enabled:
+          description: Whether or not the enum option is a selectable value for the custom field.
+          type: boolean
+          example: true
+        color:
+          description: The color of the enum option. Defaults to ‘none’.
+          type: string
+          example: blue
+    CustomFieldCompact:
+      description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
+
+
+        Users in Asana can [lock custom fields](https://asana.com/guide/help/premium/custom-fields#gl-lock-fields), which will make them read-only when accessed by other users. Attempting to edit a locked custom field will return HTTP error code `403 Forbidden`.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: custom_field
+          x-insert-after: gid
+        name:
+          description: The name of the custom field.
+          type: string
+          example: Status
+        resource_subtype:
+          description: 'The type of the custom field. Must be one of the given values.
+
+            '
+          type: string
+          readOnly: true
+          example: text
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+        type:
+          description: '*Deprecated: new integrations should prefer the resource_subtype field.* The type of the custom field. Must be one of the given values.
+
+            '
+          type: string
+          readOnly: true
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+        enum_options:
+          description: '*Conditional*. Only relevant for custom fields of type `enum`. This array specifies the possible values which an `enum` custom field can adopt. To modify the enum options, refer to [working with enum options](/reference/createenumoptionforcustomfield).'
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumOption'
+        enabled:
+          description: '*Conditional*. Determines if the custom field is enabled or not.'
+          type: boolean
+          readOnly: true
+          example: true
+        representation_type:
+          description: This field tells the type of the custom field.
+          type: string
+          example: number
+          readOnly: true
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+          - formula
+          - custom_id
+        id_prefix:
+          description: This field is the unique custom ID string for the custom field.
+          type: string
+          nullable: true
+          example: ID
+        is_formula_field:
+          description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
+          type: boolean
+          example: false
+        date_value:
+          description: '*Conditional*. Only relevant for custom fields of type `date`. This object reflects the chosen date (and optionally, time) value of a `date` custom field. If no date is selected, the value of `date_value` will be `null`.'
+          type: object
+          nullable: true
+          properties:
+            date:
+              type: string
+              description: A string representing the date in YYYY-MM-DD format.
+              example: '2024-08-23'
+            date_time:
+              type: string
+              description: A string representing the date in ISO 8601 format. If no time value is selected, the value of `date-time` will be `null`.
+              example: '2024-08-23T22:00:00.000Z'
+        enum_value:
+          allOf:
+          - $ref: '#/components/schemas/EnumOption'
+          - type: object
+            nullable: true
+            description: '*Conditional*. Only relevant for custom fields of type `enum`. This object is the chosen value of an `enum` custom field.'
+        multi_enum_values:
+          description: '*Conditional*. Only relevant for custom fields of type `multi_enum`. This object is the chosen values of a `multi_enum` custom field.'
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumOption'
+        number_value:
+          description: '*Conditional*. This number is the value of a `number` custom field.'
+          type: number
+          nullable: true
+          example: 5.2
+        text_value:
+          description: '*Conditional*. This string is the value of a `text` custom field.'
+          type: string
+          nullable: true
+          example: Some Value
+        display_value:
+          description: A string representation for the value of the custom field. Integrations that don't require the underlying type should use this field to read values. Using this field will future-proof an app against new custom field types.
+          type: string
+          readOnly: true
+          example: blue
+          nullable: true
+    CustomFieldSettingBase:
+      $ref: '#/components/schemas/CustomFieldSettingCompact'
+    CustomFieldBase:
+      allOf:
+      - $ref: '#/components/schemas/CustomFieldCompact'
+      - type: object
+        properties:
+          description:
+            description: '[Opt In](/docs/inputoutput-options). The description of the custom field.'
+            type: string
+            example: Development team priority
+          enum_options:
+            description: '*Conditional*. Only relevant for custom fields of type `enum`. This array specifies the possible values which an `enum` custom field can adopt. To modify the enum options, refer to [working with enum options](/reference/createenumoptionforcustomfield).'
+            type: array
+            items:
+              $ref: '#/components/schemas/EnumOption'
+          precision:
+            description: 'Only relevant for custom fields of type ‘Number’. This field dictates the number of places after the decimal to round to, i.e. 0 is integer values, 1 rounds to the nearest tenth, and so on. Must be between 0 and 6, inclusive.
+
+              For percentage format, this may be unintuitive, as a value of 0.25 has a precision of 0, while a value of 0.251 has a precision of 1. This is due to 0.25 being displayed as 25%.
+
+              The identifier format will always have a precision of 0.'
+            type: integer
+            example: 2
+          format:
+            description: The format of this custom field.
+            type: string
+            enum:
+            - currency
+            - identifier
+            - percentage
+            - custom
+            - duration
+            - none
+            example: custom
+          currency_code:
+            description: ISO 4217 currency code to format this custom field. This will be null if the `format` is not `currency`.
+            type: string
+            nullable: true
+            example: EUR
+          custom_label:
+            description: This is the string that appears next to the custom field value. This will be null if the `format` is not `custom`.
+            type: string
+            nullable: true
+            example: gold pieces
+          custom_label_position:
+            description: Only relevant for custom fields with `custom` format. This depicts where to place the custom label. This will be null if the `format` is not `custom`.
+            type: string
+            nullable: true
+            enum:
+            - prefix
+            - suffix
+            - null
+            example: suffix
+          is_global_to_workspace:
+            description: This flag describes whether this custom field is available to every container in the workspace. Before project-specific custom fields, this field was always true.
+            type: boolean
+            example: true
+            readOnly: true
+          has_notifications_enabled:
+            description: '*Conditional*. This flag describes whether a follower of a task with this field should receive inbox notifications from changes to this field.'
+            type: boolean
+            example: true
+          asana_created_field:
+            description: '*Conditional*. A unique identifier to associate this field with the template source of truth.'
+            type: string
+            readOnly: true
+            nullable: true
+            enum:
+            - a_v_requirements
+            - account_name
+            - actionable
+            - align_shipping_link
+            - align_status
+            - allotted_time
+            - appointment
+            - approval_stage
+            - approved
+            - article_series
+            - board_committee
+            - browser
+            - campaign_audience
+            - campaign_project_status
+            - campaign_regions
+            - channel_primary
+            - client_topic_type
+            - complete_by
+            - contact
+            - contact_email_address
+            - content_channels
+            - content_channels_needed
+            - content_stage
+            - content_type
+            - contract
+            - contract_status
+            - cost
+            - creation_stage
+            - creative_channel
+            - creative_needed
+            - creative_needs
+            - data_sensitivity
+            - deal_size
+            - delivery_appt
+            - delivery_appt_date
+            - department
+            - department_responsible
+            - design_request_needed
+            - design_request_type
+            - discussion_category
+            - do_this_task
+            - editorial_content_status
+            - editorial_content_tag
+            - editorial_content_type
+            - effort
+            - effort_level
+            - est_completion_date
+            - estimated_time
+            - estimated_value
+            - expected_cost
+            - external_steps_needed
+            - favorite_idea
+            - feedback_type
+            - financial
+            - funding_amount
+            - grant_application_process
+            - hiring_candidate_status
+            - idea_status
+            - ids_link
+            - ids_patient_link
+            - implementation_stage
+            - insurance
+            - interview_area
+            - interview_question_score
+            - itero_scan_link
+            - job_s_applied_to
+            - lab
+            - launch_status
+            - lead_status
+            - localization_language
+            - localization_market_team
+            - localization_status
+            - meeting_minutes
+            - meeting_needed
+            - minutes
+            - mrr
+            - must_localize
+            - name_of_foundation
+            - need_to_follow_up
+            - next_appointment
+            - next_steps_sales
+            - num_people
+            - number_of_user_reports
+            - office_location
+            - onboarding_activity
+            - owner
+            - participants_needed
+            - patient_date_of_birth
+            - patient_email
+            - patient_phone
+            - patient_status
+            - phone_number
+            - planning_category
+            - point_of_contact
+            - position
+            - post_format
+            - prescription
+            - priority
+            - priority_level
+            - product
+            - product_stage
+            - progress
+            - project_size
+            - project_status
+            - proposed_budget
+            - publish_status
+            - reason_for_scan
+            - referral
+            - request_type
+            - research_status
+            - responsible_department
+            - responsible_team
+            - risk_assessment_status
+            - room_name
+            - sales_counterpart
+            - sentiment
+            - shipping_link
+            - social_channels
+            - stage
+            - status
+            - status_design
+            - status_of_initiative
+            - system_setup
+            - task_progress
+            - team
+            - team_marketing
+            - team_responsible
+            - time_it_takes_to_complete_tasks
+            - timeframe
+            - treatment_type
+            - type_work_requests_it
+            - use_agency
+            - user_name
+            - vendor_category
+            - vendor_type
+            - word_count
+            - null
+            example: priority
+    CustomFieldSettingResponse:
+      allOf:
+      - $ref: '#/components/schemas/CustomFieldSettingBase'
+      - type: object
+        properties:
+          project:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: '*Deprecated: new integrations should prefer the `parent` field.* The id of the project that this custom field settings refers to.'
+              readOnly: true
+          is_important:
+            description: '`is_important` is used in the Asana web application to determine if this custom field is displayed in the list/grid view of a project or portfolio.'
+            type: boolean
+            readOnly: true
+            example: false
+          parent:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: The parent to which the custom field is applied. This can be a project or portfolio and indicates that the tasks or projects that the parent contains may be given custom field values for this custom field.
+              readOnly: true
+          custom_field:
+            allOf:
+            - $ref: '#/components/schemas/CustomFieldResponse'
+            - type: object
+              description: The custom field that is applied to the `parent`.
+              readOnly: true
+    NextPage:
+      type: object
+      nullable: true
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    CustomFieldSettingCompact:
+      description: Custom Fields Settings objects represent the many-to-many join of the Custom Field and Project as well as stores information that is relevant to that particular pairing.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: custom_field_setting
+          x-insert-after: gid
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    portfolio_path_gid:
+      name: portfolio_gid
+      in: path
+      description: Globally unique identifier for the portfolio.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: portfolio
+    project_path_gid:
+      name: project_gid
+      in: path
+      description: Globally unique identifier for the project.
+      required: true
+      schema:
+        type: string
+      example: '1331'
+      x-env-variable: project
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

@@ -1,9 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Goal Relationships API
-  description: >-
-    The Asana Goal Relationships API allows users to create and manage
-    relationships between goals and other goals, projects, tasks, or portfolios.
+  title: Asana Allocations Goal Relationships API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -13,29 +11,32 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Goal Relationships
-    description: Manage relationships between goals and other objects.
+- name: Goal Relationships
+  description: Manage relationships between goals and other objects.
 paths:
   /goal_relationships/{goal_relationship_gid}:
+    parameters:
+    - $ref: '#/components/parameters/goal_relationship_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get a goal relationship
       description: Returns the complete updated goal relationship record for a single goal relationship.
       operationId: getGoalRelationship
       tags:
-        - Goal Relationships
+      - Goal Relationships
       parameters:
-        - name: goal_relationship_gid
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '12345'
+      - name: goal_relationship_gid
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '12345'
       responses:
         '200':
           description: Successfully retrieved the record for a goal relationship.
@@ -61,14 +62,14 @@ paths:
       description: Updates an existing goal relationship.
       operationId: updateGoalRelationship
       tags:
-        - Goal Relationships
+      - Goal Relationships
       parameters:
-        - name: goal_relationship_gid
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '12345'
+      - name: goal_relationship_gid
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '12345'
       requestBody:
         required: true
         content:
@@ -104,26 +105,26 @@ paths:
       description: Returns compact goal relationship records.
       operationId: getGoalRelationships
       tags:
-        - Goal Relationships
+      - Goal Relationships
       parameters:
-        - name: supported_goal
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: resource_subtype
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          schema:
-            type: string
+      - name: supported_goal
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: resource_subtype
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        schema:
+          type: string
       responses:
         '200':
           description: Successfully retrieved the requested goal relationships.
@@ -145,18 +146,21 @@ paths:
         '500':
           description: Internal server error.
   /goals/{goal_gid}/addSupportingRelationship:
+    parameters:
+    - $ref: '#/components/parameters/goal_path_gid'
+    - $ref: '#/components/parameters/pretty'
     post:
       summary: Asana Add a supporting goal relationship
       description: Creates a goal relationship by adding a supporting resource.
       operationId: addSupportingRelationship
       tags:
-        - Goal Relationships
+      - Goal Relationships
       parameters:
-        - name: goal_gid
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: goal_gid
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -176,7 +180,7 @@ paths:
                     insert_after:
                       type: string
                   required:
-                    - supporting_resource
+                  - supporting_resource
       responses:
         '200':
           description: Successfully created the goal relationship.
@@ -198,18 +202,21 @@ paths:
         '500':
           description: Internal server error.
   /goals/{goal_gid}/removeSupportingRelationship:
+    parameters:
+    - $ref: '#/components/parameters/goal_path_gid'
+    - $ref: '#/components/parameters/pretty'
     post:
       summary: Asana Removes a supporting goal relationship
       description: Removes a goal relationship for a given parent goal.
       operationId: removeSupportingRelationship
       tags:
-        - Goal Relationships
+      - Goal Relationships
       parameters:
-        - name: goal_gid
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: goal_gid
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -223,7 +230,7 @@ paths:
                     supporting_resource:
                       type: string
                   required:
-                    - supporting_resource
+                  - supporting_resource
       responses:
         '200':
           description: Successfully removed the goal relationship.
@@ -245,19 +252,14 @@ paths:
         '500':
           description: Internal server error.
 components:
-  securitySchemes:
-    personalAccessToken:
-      type: http
-      scheme: bearer
-    oauth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://app.asana.com/-/oauth_authorize
-          tokenUrl: https://app.asana.com/-/oauth_token
-          scopes:
-            default: Provides access to all endpoints documented in the API reference.
   schemas:
+    GoalRelationshipRequest:
+      type: object
+      properties:
+        contribution_weight:
+          type: number
+        supporting_resource:
+          type: string
     GoalRelationshipCompact:
       type: object
       properties:
@@ -284,13 +286,6 @@ components:
         contribution_weight:
           type: number
           example: 1
-    GoalRelationshipRequest:
-      type: object
-      properties:
-        contribution_weight:
-          type: number
-        supporting_resource:
-          type: string
     GoalRelationshipResponse:
       type: object
       properties:
@@ -325,3 +320,48 @@ components:
         contribution_weight:
           type: number
           example: 1
+  parameters:
+    goal_relationship_path_gid:
+      name: goal_relationship_gid
+      in: path
+      description: Globally unique identifier for the goal relationship.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: goal_relationship
+    goal_path_gid:
+      name: goal_gid
+      in: path
+      description: Globally unique identifier for the goal.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: goal
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

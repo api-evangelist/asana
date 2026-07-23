@@ -1,10 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Events API
-  description: >-
-    The Asana Events API allows users to track changes to resources using event
-    subscriptions. Events are delivered within a minute on average, designed for
-    at-most-once delivery, and are retrievable from the event stream for 24 hours.
+  title: Asana Allocations Events API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -14,48 +11,63 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Events
-    description: Track changes to Asana resources via event subscriptions.
+- name: Events
+  description: Track changes to Asana resources via event subscriptions.
 paths:
   /events:
+    parameters:
+    - name: resource
+      in: query
+      required: true
+      description: A resource ID to subscribe to. The resource can be a task, project, or goal.
+      schema:
+        type: string
+      example: '12345'
+    - name: sync
+      in: query
+      required: false
+      description: 'A sync token received from the last request, or none on first sync. Events will be returned from the point in time that the sync token was generated.
+
+        *Note: On your first request, omit the sync token. The response will be the same as for an expired sync token, and will include a new valid sync token.If the sync token is too old (which may happen from time to time) the API will return a `412 Precondition Failed` error, and include a fresh sync token in the response.*'
+      schema:
+        type: string
+      example: de4774f6915eae04714ca93bb2f5ee81
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get events on a resource
-      description: >-
-        Returns the full record for all events that have occurred since the sync
-        token was created. A GET request to the endpoint with no sync token will
-        return a 412 error providing a new sync token.
+      description: Returns the full record for all events that have occurred since the sync token was created. A GET request to the endpoint with no sync token will return a 412 error providing a new sync token.
       operationId: getEvents
       tags:
-        - Events
+      - Events
       parameters:
-        - name: resource
-          in: query
-          required: true
-          description: A resource ID to subscribe to.
-          schema:
+      - name: resource
+        in: query
+        required: true
+        description: A resource ID to subscribe to.
+        schema:
+          type: string
+        example: '12345'
+      - name: sync
+        in: query
+        required: false
+        description: A sync token received from the last request, or none on first request.
+        schema:
+          type: string
+      - name: opt_fields
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
             type: string
-          example: '12345'
-        - name: sync
-          in: query
-          required: false
-          description: A sync token received from the last request, or none on first request.
-          schema:
-            type: string
-        - name: opt_fields
-          in: query
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: false
+        style: form
+        explode: false
       responses:
         '200':
           description: Successfully retrieved events.
@@ -83,8 +95,7 @@ paths:
         '404':
           description: Not found.
         '412':
-          description: >-
-            Sync token invalid or expired. The response will include a new sync token.
+          description: Sync token invalid or expired. The response will include a new sync token.
           content:
             application/json:
               schema:
@@ -102,18 +113,19 @@ paths:
         '500':
           description: Internal server error.
 components:
-  securitySchemes:
-    personalAccessToken:
-      type: http
-      scheme: bearer
-    oauth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://app.asana.com/-/oauth_authorize
-          tokenUrl: https://app.asana.com/-/oauth_token
-          scopes:
-            default: Provides access to all endpoints documented in the API reference.
+  parameters:
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
   schemas:
     EventResponse:
       type: object
@@ -147,15 +159,13 @@ components:
         action:
           type: string
           readOnly: true
-          description: >-
-            The type of action taken on the resource. One of changed, added,
-            removed, deleted, or undeleted.
+          description: The type of action taken on the resource. One of changed, added, removed, deleted, or undeleted.
           enum:
-            - changed
-            - added
-            - removed
-            - deleted
-            - undeleted
+          - changed
+          - added
+          - removed
+          - deleted
+          - undeleted
           example: changed
         parent:
           type: object
@@ -186,9 +196,9 @@ components:
               type: string
               description: The type of action on the field.
               enum:
-                - changed
-                - added
-                - removed
+              - changed
+              - added
+              - removed
               example: changed
             new_value:
               type: object
@@ -214,3 +224,17 @@ components:
                   type: string
                 resource_type:
                   type: string
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

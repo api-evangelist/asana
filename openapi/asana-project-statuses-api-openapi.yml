@@ -1,0 +1,714 @@
+openapi: 3.1.0
+info:
+  title: Asana Allocations Project Statuses API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
+security:
+- personalAccessToken: []
+- oauth2: []
+tags:
+- name: Project Statuses
+  description: '*Deprecated: new integrations should prefer using [status updates](/reference/status-updates)*
+
+
+    A project status is an update on the progress of a particular project,
+
+    and is sent out to all project followers when created. These updates
+
+    include both text describing the update and a color code intended to
+
+    represent the overall state of the project: "green" for projects that
+
+    are on track, "yellow" for projects at risk, "red" for projects that
+
+    are behind, and "blue" for projects on hold.
+
+
+    Project statuses can be created and deleted, but not modified.'
+paths:
+  /project_statuses/{project_status_gid}:
+    parameters:
+    - $ref: '#/components/parameters/project_status_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    get:
+      summary: Asana Get a project status
+      description: '*Deprecated: new integrations should prefer the `/status_updates/{status_gid}` route.*
+
+
+        Returns the complete record for a single status update.'
+      tags:
+      - Project Statuses
+      operationId: getProjectStatus
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - author
+        - author.name
+        - color
+        - created_at
+        - created_by
+        - created_by.name
+        - html_text
+        - modified_at
+        - text
+        - title
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - author
+            - author.name
+            - color
+            - created_at
+            - created_by
+            - created_by.name
+            - html_text
+            - modified_at
+            - text
+            - title
+        style: form
+        explode: false
+      responses:
+        200:
+          description: Successfully retrieved the specified project's status updates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectStatusResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nProjectStatus result = client.projectstatuses.getProjectStatus(projectStatusGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectStatusesApiInstance = new Asana.ProjectStatusesApi();\nlet project_status_gid = \"321654\"; // String | The project status update to get.\nlet opts = { \n    'opt_fields': \"author,author.name,color,created_at,created_by,created_by.name,html_text,modified_at,text,title\"\n};\nprojectStatusesApiInstance.getProjectStatus(project_status_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projectstatuses.getProjectStatus(projectStatusGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_statuses_api_instance = asana.ProjectStatusesApi(api_client)\nproject_status_gid = \"321654\" # str | The project status update to get.\nopts = {\n    'opt_fields': \"author,author.name,color,created_at,created_by,created_by.name,html_text,modified_at,text,title\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a project status\n    api_response = project_statuses_api_instance.get_project_status(project_status_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectStatusesApi->get_project_status: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_statuses.get_project_status(project_status_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projectstatuses->getProjectStatus($project_status_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_statuses.get_project_status(project_status_gid: 'project_status_gid', param: \"value\", param: \"value\", options: {pretty: true})"
+    delete:
+      summary: Asana Delete a project status
+      description: '*Deprecated: new integrations should prefer the `/status_updates/{status_gid}` route.*
+
+
+        Deletes a specific, existing project status update.
+
+
+        Returns an empty data record.'
+      tags:
+      - Project Statuses
+      operationId: deleteProjectStatus
+      responses:
+        200:
+          description: Successfully deleted the specified project status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmptyResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.projectstatuses.deleteProjectStatus(projectStatusGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectStatusesApiInstance = new Asana.ProjectStatusesApi();\nlet project_status_gid = \"321654\"; // String | The project status update to get.\n\nprojectStatusesApiInstance.deleteProjectStatus(project_status_gid).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projectstatuses.deleteProjectStatus(projectStatusGid)\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_statuses_api_instance = asana.ProjectStatusesApi(api_client)\nproject_status_gid = \"321654\" # str | The project status update to get.\n\n\ntry:\n    # Delete a project status\n    api_response = project_statuses_api_instance.delete_project_status(project_status_gid)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectStatusesApi->delete_project_status: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_statuses.delete_project_status(project_status_gid, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projectstatuses->deleteProjectStatus($project_status_gid, array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_statuses.delete_project_status(project_status_gid: 'project_status_gid', options: {pretty: true})"
+  /projects/{project_gid}/project_statuses:
+    parameters:
+    - $ref: '#/components/parameters/project_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    get:
+      summary: Asana Get statuses from a project
+      description: '*Deprecated: new integrations should prefer the `/status_updates` route.*
+
+
+        Returns the compact project status update records for all updates on the project.'
+      tags:
+      - Project Statuses
+      operationId: getProjectStatusesForProject
+      parameters:
+      - $ref: '#/components/parameters/project_path_gid'
+      - $ref: '#/components/parameters/pretty'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - author
+        - author.name
+        - color
+        - created_at
+        - created_by
+        - created_by.name
+        - html_text
+        - modified_at
+        - offset
+        - path
+        - text
+        - title
+        - uri
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - author
+            - author.name
+            - color
+            - created_at
+            - created_by
+            - created_by.name
+            - html_text
+            - modified_at
+            - offset
+            - path
+            - text
+            - title
+            - uri
+        style: form
+        explode: false
+      responses:
+        200:
+          description: Successfully retrieved the specified project's status updates.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectStatusCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<ProjectStatus> result = client.projectstatuses.getProjectStatusesForProject(projectGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectStatusesApiInstance = new Asana.ProjectStatusesApi();\nlet project_gid = \"1331\"; // String | Globally unique identifier for the project.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"author,author.name,color,created_at,created_by,created_by.name,html_text,modified_at,offset,path,text,title,uri\"\n};\nprojectStatusesApiInstance.getProjectStatusesForProject(project_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projectstatuses.getProjectStatusesForProject(projectGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_statuses_api_instance = asana.ProjectStatusesApi(api_client)\nproject_gid = \"1331\" # str | Globally unique identifier for the project.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"author,author.name,color,created_at,created_by,created_by.name,html_text,modified_at,offset,path,text,title,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get statuses from a project\n    api_response = project_statuses_api_instance.get_project_statuses_for_project(project_gid, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectStatusesApi->get_project_statuses_for_project: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_statuses.get_project_statuses_for_project(project_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projectstatuses->getProjectStatusesForProject($project_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_statuses.get_project_statuses_for_project(project_gid: 'project_gid', param: \"value\", param: \"value\", options: {pretty: true})"
+    post:
+      summary: Asana Create a project status
+      description: '*Deprecated: new integrations should prefer the `/status_updates` route.*
+
+
+        Creates a new status update on the project.
+
+
+        Returns the full record of the newly created project status update.'
+      tags:
+      - Project Statuses
+      operationId: createProjectStatusForProject
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - author
+        - author.name
+        - color
+        - created_at
+        - created_by
+        - created_by.name
+        - html_text
+        - modified_at
+        - text
+        - title
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - author
+            - author.name
+            - color
+            - created_at
+            - created_by
+            - created_by.name
+            - html_text
+            - modified_at
+            - text
+            - title
+        style: form
+        explode: false
+      requestBody:
+        description: The project status to create.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/ProjectStatusRequest'
+      responses:
+        201:
+          description: Successfully created a new story.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectStatusResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nProjectStatus result = client.projectstatuses.createProjectStatusForProject(projectGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectStatusesApiInstance = new Asana.ProjectStatusesApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The project status to create.\nlet project_gid = \"1331\"; // String | Globally unique identifier for the project.\nlet opts = { \n    'opt_fields': \"author,author.name,color,created_at,created_by,created_by.name,html_text,modified_at,text,title\"\n};\nprojectStatusesApiInstance.createProjectStatusForProject(body, project_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projectstatuses.createProjectStatusForProject(projectGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_statuses_api_instance = asana.ProjectStatusesApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The project status to create.\nproject_gid = \"1331\" # str | Globally unique identifier for the project.\nopts = {\n    'opt_fields': \"author,author.name,color,created_at,created_by,created_by.name,html_text,modified_at,text,title\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Create a project status\n    api_response = project_statuses_api_instance.create_project_status_for_project(body, project_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectStatusesApi->create_project_status_for_project: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_statuses.create_project_status_for_project(project_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projectstatuses->createProjectStatusForProject($project_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_statuses.create_project_status_for_project(project_gid: 'project_gid', field: \"value\", field: \"value\", options: {pretty: true})"
+components:
+  schemas:
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    ProjectStatusResponse:
+      allOf:
+      - $ref: '#/components/schemas/ProjectStatusBase'
+      - type: object
+        properties:
+          author:
+            $ref: '#/components/schemas/UserCompact'
+          created_at:
+            description: The time at which this resource was created.
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+          created_by:
+            $ref: '#/components/schemas/UserCompact'
+          modified_at:
+            description: 'The time at which this project status was last modified.
+
+              *Note: This does not currently reflect any changes in associations such as comments that may have been added or removed from the project status.*'
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+    ProjectStatusCompact:
+      description: '*Deprecated: new integrations should prefer the `status_update` resource.*
+
+        A *project status* is an update on the progress of a particular project, and is sent out to all project followers when created. These updates include both text describing the update and a color code intended to represent the overall state of the project: "green" for projects that are on track, "yellow" for projects at risk, and "red" for projects that are behind.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project_status
+          x-insert-after: gid
+        title:
+          description: The title of the project status update.
+          type: string
+          example: Status Update - Jun 15
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    ProjectStatusBase:
+      allOf:
+      - $ref: '#/components/schemas/ProjectStatusCompact'
+      - type: object
+        properties:
+          text:
+            description: The text content of the status update.
+            type: string
+            example: The project is moving forward according to plan...
+          html_text:
+            description: '[Opt In](/docs/inputoutput-options). The text content of the status update with formatting as HTML.'
+            type: string
+            example: <body>The project <strong>is</strong> moving forward according to plan...</body>
+          color:
+            description: The color associated with the status update.
+            type: string
+            enum:
+            - green
+            - yellow
+            - red
+            - blue
+            - complete
+    ProjectStatusRequest:
+      $ref: '#/components/schemas/ProjectStatusBase'
+    NextPage:
+      type: object
+      nullable: true
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    project_status_path_gid:
+      name: project_status_gid
+      in: path
+      required: true
+      description: The project status update to get.
+      schema:
+        type: string
+      example: '321654'
+      x-env-variable: project_status
+    project_path_gid:
+      name: project_gid
+      in: path
+      description: Globally unique identifier for the project.
+      required: true
+      schema:
+        type: string
+      example: '1331'
+      x-env-variable: project
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

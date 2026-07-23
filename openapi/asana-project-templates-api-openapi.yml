@@ -1,9 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Project Templates API
-  description: >-
-    The Asana Project Templates API allows users to manage project templates
-    that enable new projects to be created with a predefined setup.
+  title: Asana Allocations Project Templates API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -13,30 +11,79 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Project Templates
-    description: Manage project templates for repeatable workflows.
+- name: Project Templates
+  description: 'A project template is an object that allows new projects to be created
+
+    with a predefined setup, which may include tasks, sections, rules, etc.
+
+    It simplifies the process of running a workflow that involves a similar
+
+    set of work every time.
+
+
+
+    Project templates in organizations are shared with a single team. Currently, the
+
+    team of a project template cannot be changed via the API.'
 paths:
   /project_templates/{project_template_gid}:
+    parameters:
+    - $ref: '#/components/parameters/project_template_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get a project template
-      operationId: getProjectTemplate
+      description: Returns the complete project template record for a single project template.
       tags:
-        - Project Templates
+      - Project Templates
+      operationId: getProjectTemplate
       parameters:
-        - name: project_template_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - color
+        - description
+        - html_description
+        - name
+        - owner
+        - public
+        - requested_dates
+        - requested_dates.description
+        - requested_dates.name
+        - requested_roles
+        - requested_roles.name
+        - team
+        - team.name
+        schema:
+          type: array
+          items:
             type: string
+            enum:
+            - color
+            - description
+            - html_description
+            - name
+            - owner
+            - public
+            - requested_dates
+            - requested_dates.description
+            - requested_dates.name
+            - requested_roles
+            - requested_roles.name
+            - team
+            - team.name
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved the project template.
+        200:
+          description: Successfully retrieved the requested project template.
           content:
             application/json:
               schema:
@@ -44,46 +91,176 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/ProjectTemplateResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - oauth2:
+        - project_templates:read
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.projecttemplates.getProjectTemplate(projectTemplateGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectTemplatesApiInstance = new Asana.ProjectTemplatesApi();\nlet project_template_gid = \"1331\"; // String | Globally unique identifier for the project template.\nlet opts = { \n    'opt_fields': \"color,description,html_description,name,owner,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name\"\n};\nprojectTemplatesApiInstance.getProjectTemplate(project_template_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projecttemplates.getProjectTemplate(projectTemplateGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_templates_api_instance = asana.ProjectTemplatesApi(api_client)\nproject_template_gid = \"1331\" # str | Globally unique identifier for the project template.\nopts = {\n    'opt_fields': \"color,description,html_description,name,owner,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a project template\n    api_response = project_templates_api_instance.get_project_template(project_template_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectTemplatesApi->get_project_template: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_templates.get_project_template(project_template_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projecttemplates->getProjectTemplate($project_template_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_templates.get_project_template(project_template_gid: 'project_template_gid', param: \"value\", param: \"value\", options: {pretty: true})"
     delete:
       summary: Asana Delete a project template
-      operationId: deleteProjectTemplate
+      description: 'A specific, existing project template can be deleted by making a DELETE request on the URL for that project template.
+
+
+        Returns an empty data record.'
       tags:
-        - Project Templates
-      parameters:
-        - name: project_template_gid
-          in: path
-          required: true
-          schema:
-            type: string
+      - Project Templates
+      operationId: deleteProjectTemplate
       responses:
-        '200':
-          description: Successfully deleted the project template.
+        200:
+          description: Successfully deleted the specified project template.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmptyResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        402:
+          $ref: '#/components/responses/PaymentRequired'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectTemplatesApiInstance = new Asana.ProjectTemplatesApi();\nlet project_template_gid = \"1331\"; // String | Globally unique identifier for the project template.\n\nprojectTemplatesApiInstance.deleteProjectTemplate(project_template_gid).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projecttemplates.deleteProjectTemplate(projectTemplateGid)\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_templates_api_instance = asana.ProjectTemplatesApi(api_client)\nproject_template_gid = \"1331\" # str | Globally unique identifier for the project template.\n\n\ntry:\n    # Delete a project template\n    api_response = project_templates_api_instance.delete_project_template(project_template_gid)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectTemplatesApi->delete_project_template: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_templates.delete_project_template(project_template_gid, opt_pretty=True)'
+          name: python-sdk-v3
   /project_templates:
+    parameters:
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get multiple project templates
-      operationId: getProjectTemplates
+      description: Returns the compact project template records for all project templates in the given team or workspace.
       tags:
-        - Project Templates
+      - Project Templates
+      operationId: getProjectTemplates
       parameters:
-        - name: workspace
-          in: query
-          schema:
+      - $ref: '#/components/parameters/workspace_query_param'
+      - $ref: '#/components/parameters/team_query_param'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - color
+        - description
+        - html_description
+        - name
+        - offset
+        - owner
+        - path
+        - public
+        - requested_dates
+        - requested_dates.description
+        - requested_dates.name
+        - requested_roles
+        - requested_roles.name
+        - team
+        - team.name
+        - uri
+        schema:
+          type: array
+          items:
             type: string
-        - name: team
-          in: query
-          schema:
-            type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          schema:
-            type: string
+            enum:
+            - color
+            - description
+            - html_description
+            - name
+            - offset
+            - owner
+            - path
+            - public
+            - requested_dates
+            - requested_dates.description
+            - requested_dates.name
+            - requested_roles
+            - requested_roles.name
+            - team
+            - team.name
+            - uri
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved project templates.
+        200:
+          description: Successfully retrieved the requested team's or workspace's project templates.
           content:
             application/json:
               schema:
@@ -93,29 +270,122 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ProjectTemplateCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - oauth2:
+        - project_templates:read
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<JsonElement> result = client.projecttemplates.getProjectTemplates(team, workspace)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectTemplatesApiInstance = new Asana.ProjectTemplatesApi();\nlet opts = { \n    'workspace': \"12345\", \n    'team': \"14916\", \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri\"\n};\nprojectTemplatesApiInstance.getProjectTemplates(opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projecttemplates.getProjectTemplates({param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_templates_api_instance = asana.ProjectTemplatesApi(api_client)\nopts = {\n    'workspace': \"12345\", # str | The workspace to filter results on.\n    'team': \"14916\", # str | The team to filter projects on.\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get multiple project templates\n    api_response = project_templates_api_instance.get_project_templates(opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectTemplatesApi->get_project_templates: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_templates.get_project_templates({''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projecttemplates->getProjectTemplates(array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_templates.get_project_templates(param: \"value\", param: \"value\", options: {pretty: true})"
   /teams/{team_gid}/project_templates:
+    parameters:
+    - $ref: '#/components/parameters/team_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get a team's project templates
-      operationId: getProjectTemplatesForTeam
+      description: Returns the compact project template records for all project templates in the team.
       tags:
-        - Project Templates
+      - Project Templates
+      operationId: getProjectTemplatesForTeam
       parameters:
-        - name: team_gid
-          in: path
-          required: true
-          schema:
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - color
+        - description
+        - html_description
+        - name
+        - offset
+        - owner
+        - path
+        - public
+        - requested_dates
+        - requested_dates.description
+        - requested_dates.name
+        - requested_roles
+        - requested_roles.name
+        - team
+        - team.name
+        - uri
+        schema:
+          type: array
+          items:
             type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          schema:
-            type: string
+            enum:
+            - color
+            - description
+            - html_description
+            - name
+            - offset
+            - owner
+            - path
+            - public
+            - requested_dates
+            - requested_dates.description
+            - requested_dates.name
+            - requested_roles
+            - requested_roles.name
+            - team
+            - team.name
+            - uri
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved the team's project templates.
+        200:
+          description: Successfully retrieved the requested team's project templates.
           content:
             application/json:
               schema:
@@ -125,163 +395,711 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ProjectTemplateCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - oauth2:
+        - project_templates:read
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<JsonElement> result = client.projecttemplates.getProjectTemplatesForTeam(teamGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectTemplatesApiInstance = new Asana.ProjectTemplatesApi();\nlet team_gid = \"159874\"; // String | Globally unique identifier for the team.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri\"\n};\nprojectTemplatesApiInstance.getProjectTemplatesForTeam(team_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projecttemplates.getProjectTemplatesForTeam(teamGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_templates_api_instance = asana.ProjectTemplatesApi(api_client)\nteam_gid = \"159874\" # str | Globally unique identifier for the team.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a team's project templates\n    api_response = project_templates_api_instance.get_project_templates_for_team(team_gid, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectTemplatesApi->get_project_templates_for_team: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_templates.get_project_templates_for_team(team_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projecttemplates->getProjectTemplatesForTeam($team_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_templates.get_project_templates_for_team(team_gid: 'team_gid', param: \"value\", param: \"value\", options: {pretty: true})"
   /project_templates/{project_template_gid}/instantiateProject:
+    parameters:
+    - $ref: '#/components/parameters/project_template_path_gid'
+    - $ref: '#/components/parameters/pretty'
     post:
       summary: Asana Instantiate a project from a project template
-      operationId: instantiateProject
+      description: 'Creates and returns a job that will asynchronously handle the project instantiation.
+
+
+        To form this request, it is recommended to first make a request to [get a project template](/reference/getprojecttemplate). Then, from the response, copy the `gid` from the object in the `requested_dates` array. This `gid` should be used in `requested_dates` to instantiate a project.
+
+
+        _Note: The body of this request will differ if your workspace is an organization. To determine if your workspace is an organization, use the [is_organization](/reference/workspaces) parameter._'
       tags:
-        - Project Templates
+      - Project Templates
+      operationId: instantiateProject
       parameters:
-        - name: project_template_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - new_project
+        - new_project.name
+        - new_project_template
+        - new_project_template.name
+        - new_task
+        - new_task.created_by
+        - new_task.name
+        - new_task.resource_subtype
+        - new_task_template
+        - new_task_template.name
+        - resource_subtype
+        - status
+        schema:
+          type: array
+          items:
             type: string
+            enum:
+            - new_project
+            - new_project.name
+            - new_project_template
+            - new_project_template.name
+            - new_task
+            - new_task.created_by
+            - new_task.name
+            - new_task.resource_subtype
+            - new_task_template
+            - new_task_template.name
+            - resource_subtype
+            - status
+        style: form
+        explode: false
       requestBody:
-        required: true
+        description: Describes the inputs used for instantiating a project, such as the resulting project's name, which team it should be created in, and values for date variables.
         content:
           application/json:
             schema:
               type: object
               properties:
                 data:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    team:
-                      type: string
-                    public:
-                      type: boolean
-                    is_strict:
-                      type: boolean
-                    requested_dates:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          gid:
-                            type: string
-                          value:
-                            type: string
-                            format: date
-                    requested_roles:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          gid:
-                            type: string
-                          value:
-                            type: string
-                  required:
-                    - name
+                  $ref: '#/components/schemas/ProjectTemplateInstantiateProjectRequest'
       responses:
-        '201':
-          description: Successfully instantiated the project.
+        201:
+          description: Successfully created the job to handle project instantiation.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    type: object
-                    properties:
-                      gid:
-                        type: string
-                      resource_type:
-                        type: string
-                      status:
-                        type: string
-                      new_project:
-                        type: object
-                        properties:
-                          gid:
-                            type: string
-                          name:
-                            type: string
+                    $ref: '#/components/schemas/JobResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - oauth2:
+        - projects:write
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJob result = client.projecttemplates.instantiateProject(projectTemplateGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet projectTemplatesApiInstance = new Asana.ProjectTemplatesApi();\nlet project_template_gid = \"1331\"; // String | Globally unique identifier for the project template.\nlet opts = { \n    'body': {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}, \n    'opt_fields': \"new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,resource_subtype,status\"\n};\nprojectTemplatesApiInstance.instantiateProject(project_template_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.projecttemplates.instantiateProject(projectTemplateGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nproject_templates_api_instance = asana.ProjectTemplatesApi(api_client)\nproject_template_gid = \"1331\" # str | Globally unique identifier for the project template.\nopts = {\n    'body': {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}, # dict | Describes the inputs used for instantiating a project, such as the resulting project's name, which team it should be created in, and values for date variables.\n    'opt_fields': \"new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,resource_subtype,status\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Instantiate a project from a project template\n    api_response = project_templates_api_instance.instantiate_project(project_template_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling ProjectTemplatesApi->instantiate_project: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.project_templates.instantiate_project(project_template_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->projecttemplates->instantiateProject($project_template_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_templates.instantiate_project(project_template_gid: 'project_template_gid', field: \"value\", field: \"value\", options: {pretty: true})"
 components:
+  schemas:
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    ProjectTemplateInstantiateProjectRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          description: The name of the new project.
+          type: string
+          example: New Project Name
+        team:
+          description: '*Optional*. Sets the team of the new project. If the project template exists in an _organization_, you may specify a value for `team`. If no value is provided then it defaults to the same team as the project template.'
+          type: string
+          example: '12345'
+        public:
+          description: '*Deprecated:* new integrations use `privacy_setting` instead.'
+          deprecated: true
+          type: boolean
+          example: true
+        privacy_setting:
+          description: 'The privacy setting of the project. *Note: Administrators in your organization may restrict the values of `privacy_setting`.*'
+          type: string
+          enum:
+          - public_to_workspace
+          - private_to_team
+          - private
+          example: public_to_workspace
+        is_strict:
+          description: '*Optional*. If set to `true`, the endpoint returns an "Unprocessable Entity" error if you fail to provide a calendar date value for any date variable. If set to `false`, a default date is used for each unfulfilled date variable (e.g., the current date is used as the Start Date of a project).'
+          type: boolean
+          example: true
+        requested_dates:
+          description: Array of mappings of date variables to calendar dates.
+          type: array
+          items:
+            $ref: '#/components/schemas/DateVariableRequest'
+        requested_roles:
+          description: Array of mappings of template roles to user ids
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestedRoleRequest'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    ProjectTemplateResponse:
+      allOf:
+      - $ref: '#/components/schemas/ProjectTemplateBase'
+    ProjectTemplateCompact:
+      description: A *project template* is an object that allows new projects to be created with a predefined setup, which may include tasks, sections, Rules, etc. It simplifies the process of running a workflow that involves a similar set of work every time.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project_template
+          x-insert-after: gid
+        name:
+          description: Name of the project template.
+          type: string
+          example: Packing list
+    RequestedRoleRequest:
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the template role in the project template.
+          type: string
+          example: '1'
+        value:
+          description: The user id that should be assigned to the template role.
+          type: string
+          example: '123'
+    JobResponse:
+      $ref: '#/components/schemas/JobBase'
+    JobBase:
+      $ref: '#/components/schemas/JobCompact'
+    TeamCompact:
+      description: A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: team
+          x-insert-after: gid
+        name:
+          description: The name of the team.
+          type: string
+          example: Marketing
+    TemplateRole:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: task
+          x-insert-after: gid
+        name:
+          type: string
+          description: Name of the template role.
+          example: Designer
+    NextPage:
+      type: object
+      nullable: true
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    JobCompact:
+      description: A *job* is an object representing a process that handles asynchronous work.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: job
+          x-insert-after: gid
+        resource_subtype:
+          description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+          type: string
+          readOnly: true
+          example: duplicate_task
+        status:
+          description: 'The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.'
+          type: string
+          enum:
+          - not_started
+          - in_progress
+          - succeeded
+          - failed
+          readOnly: true
+          example: in_progress
+        new_project:
+          $ref: '#/components/schemas/ProjectCompact'
+        new_task:
+          allOf:
+          - $ref: '#/components/schemas/TaskCompact'
+          - type: object
+            nullable: true
+        new_project_template:
+          $ref: '#/components/schemas/ProjectTemplateCompact'
+    DateVariableCompact:
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the date field in the project template. A value of `1` refers to the project start date, while `2` refers to the project due date.
+          type: string
+          readOnly: true
+          example: '1'
+        name:
+          description: The name of the date variable.
+          type: string
+          readOnly: true
+          example: Start Date
+        description:
+          description: The description of what the date variable is used for when instantiating a project.
+          type: string
+          readOnly: true
+          example: Choose a start date for your project.
+    ProjectTemplateBase:
+      allOf:
+      - $ref: '#/components/schemas/ProjectTemplateCompact'
+      - type: object
+        properties:
+          description:
+            description: Free-form textual information associated with the project template
+            type: string
+            example: These are things we need to pack for a trip.
+          html_description:
+            description: The description of the project template with formatting as HTML.
+            type: string
+            example: <body>These are things we need to pack for a trip.</body>
+          public:
+            description: True if the project template is public to its team.
+            type: boolean
+            example: false
+          owner:
+            description: The current owner of the project template, may be null.
+            allOf:
+            - $ref: '#/components/schemas/UserCompact'
+            - type: object
+              nullable: true
+          team:
+            allOf:
+            - $ref: '#/components/schemas/TeamCompact'
+          requested_dates:
+            description: Array of date variables in this project template. Calendar dates must be provided for these variables when instantiating a project.
+            type: array
+            items:
+              $ref: '#/components/schemas/DateVariableCompact'
+            readOnly: true
+          color:
+            description: Color of the project template.
+            type: string
+            nullable: true
+            enum:
+            - dark-pink
+            - dark-green
+            - dark-blue
+            - dark-red
+            - dark-teal
+            - dark-brown
+            - dark-orange
+            - dark-purple
+            - dark-warm-gray
+            - light-pink
+            - light-green
+            - light-blue
+            - light-red
+            - light-teal
+            - light-brown
+            - light-orange
+            - light-purple
+            - light-warm-gray
+            - null
+            example: light-green
+          requested_roles:
+            description: Array of template roles in this project template. User Ids can be provided for these variables when instantiating a project to assign template tasks to the user.
+            type: array
+            items:
+              $ref: '#/components/schemas/TemplateRole'
+    DateVariableRequest:
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the date field in the project template. A value of `1` refers to the project start date, while `2` refers to the project due date.
+          type: string
+          example: '1'
+        value:
+          description: The date with which the date variable should be replaced when instantiating a project. This takes a date with `YYYY-MM-DD` format.
+          type: string
+          nullable: true
+          format: date-time
+          example: '2022-01-01'
+    TaskCompact:
+      description: The *task* is the basic object around which many operations in Asana are centered.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: task
+          x-insert-after: gid
+        name:
+          description: The name of the task.
+          type: string
+          example: Bug Task
+        resource_subtype:
+          type: string
+          description: 'The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+
+            The resource_subtype `milestone` represent a single moment in time. This means tasks with this subtype cannot have a start_date.'
+          enum:
+          - default_task
+          - milestone
+          - approval
+          example: default_task
+        created_by:
+          type: object
+          readOnly: true
+          description: '[Opt In](/docs/inputoutput-options). A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.'
+          properties:
+            gid:
+              description: Globally unique identifier of the resource.
+              type: string
+              example: '1111'
+            resource_type:
+              description: The type of resource.
+              type: string
+              example: user
+  parameters:
+    team_path_gid:
+      name: team_gid
+      in: path
+      description: Globally unique identifier for the team.
+      required: true
+      schema:
+        type: string
+      example: '159874'
+      x-env-variable: team
+    workspace_query_param:
+      name: workspace
+      in: query
+      description: The workspace to filter results on.
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
+    project_template_path_gid:
+      name: project_template_gid
+      in: path
+      description: Globally unique identifier for the project template.
+      required: true
+      schema:
+        type: string
+      example: '1331'
+      x-env-variable: project_template
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    team_query_param:
+      name: team
+      in: query
+      description: The team to filter projects on.
+      schema:
+        type: string
+      example: '14916'
+      x-env-variable: team
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PaymentRequired:
+      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     personalAccessToken:
       type: http
+      description: A personal access token for the Asana API.
       scheme: bearer
     oauth2:
       type: oauth2
+      description: OAuth 2.0 authorization code flow.
       flows:
         authorizationCode:
           authorizationUrl: https://app.asana.com/-/oauth_authorize
           tokenUrl: https://app.asana.com/-/oauth_token
           scopes:
             default: Provides access to all endpoints documented in the API reference.
-  schemas:
-    ProjectTemplateCompact:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: project_template
-        name:
-          type: string
-    ProjectTemplateResponse:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: project_template
-        name:
-          type: string
-        description:
-          type: string
-        html_description:
-          type: string
-        color:
-          type: string
-          nullable: true
-        owner:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        team:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        public:
-          type: boolean
-        requested_dates:
-          type: array
-          items:
-            type: object
-            properties:
-              gid:
-                type: string
-              name:
-                type: string
-              description:
-                type: string
-        requested_roles:
-          type: array
-          items:
-            type: object
-            properties:
-              gid:
-                type: string
-              name:
-                type: string

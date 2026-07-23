@@ -1,10 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Enum Options API
-  description: >-
-    The Asana Enum Options API allows users to retrieve and manage enum options
-    for custom fields. Enum options are pre-defined choices that users can
-    select from when filling out custom field values.
+  title: Asana Allocations Enum Options API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -14,14 +11,14 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Enum Options
-    description: Manage enum options for custom fields.
+- name: Enum Options
+  description: Manage enum options for custom fields.
 paths:
   /custom_fields/{custom_field_gid}/enum_options:
     post:
@@ -29,14 +26,14 @@ paths:
       description: Creates an enum option and adds it to this custom field's list of enum options.
       operationId: createEnumOptionForCustomField
       tags:
-        - Enum Options
+      - Enum Options
       parameters:
-        - name: custom_field_gid
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '12345'
+      - name: custom_field_gid
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '12345'
       requestBody:
         required: true
         content:
@@ -72,14 +69,14 @@ paths:
       description: Moves a particular enum option to be either before or after another specified enum option.
       operationId: insertEnumOptionForCustomField
       tags:
-        - Enum Options
+      - Enum Options
       parameters:
-        - name: custom_field_gid
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '12345'
+      - name: custom_field_gid
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '12345'
       requestBody:
         required: true
         content:
@@ -115,14 +112,14 @@ paths:
       description: Updates an existing enum option.
       operationId: updateEnumOption
       tags:
-        - Enum Options
+      - Enum Options
       parameters:
-        - name: enum_option_gid
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '97514'
+      - name: enum_option_gid
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '97514'
       requestBody:
         required: true
         content:
@@ -153,19 +150,22 @@ paths:
         '500':
           description: Internal server error.
 components:
-  securitySchemes:
-    personalAccessToken:
-      type: http
-      scheme: bearer
-    oauth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://app.asana.com/-/oauth_authorize
-          tokenUrl: https://app.asana.com/-/oauth_token
-          scopes:
-            default: Provides access to all endpoints documented in the API reference.
   schemas:
+    EnumOptionInsertRequest:
+      type: object
+      properties:
+        enum_option:
+          type: string
+          description: The gid of the enum option to relocate.
+          example: '97285'
+        before_enum_option:
+          type: string
+          description: An existing enum option to insert before.
+        after_enum_option:
+          type: string
+          description: An existing enum option to insert after.
+      required:
+      - enum_option
     EnumOption:
       type: object
       properties:
@@ -204,18 +204,17 @@ components:
         insert_after:
           type: string
           description: An existing enum option within this custom field after which the new enum option should be inserted.
-    EnumOptionInsertRequest:
-      type: object
-      properties:
-        enum_option:
-          type: string
-          description: The gid of the enum option to relocate.
-          example: '97285'
-        before_enum_option:
-          type: string
-          description: An existing enum option to insert before.
-        after_enum_option:
-          type: string
-          description: An existing enum option to insert after.
-      required:
-        - enum_option
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

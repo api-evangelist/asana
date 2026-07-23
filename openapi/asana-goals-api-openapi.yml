@@ -1,10 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Goals API
-  description: >-
-    The Asana Goals API allows developers to programmatically interact with goals
-    in the goal-tracking system. Goals help organizations drive measurable results
-    and can include metrics, subgoals, and supporting relationships.
+  title: Asana Allocations Goals API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -14,60 +11,62 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Goals
-    description: Manage goals in the goal-tracking system.
+- name: Goals
+  description: Manage goals in the goal-tracking system.
 paths:
   /goals:
+    parameters:
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get goals
       description: Returns compact goal records.
       operationId: getGoals
       tags:
-        - Goals
+      - Goals
       parameters:
-        - name: workspace
-          in: query
-          required: false
-          schema:
+      - name: workspace
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: team
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: project
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: is_workspace_level
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: time_periods
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
             type: string
-        - name: team
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: project
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: is_workspace_level
-          in: query
-          required: false
-          schema:
-            type: boolean
-        - name: time_periods
-          in: query
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-        - name: offset
-          in: query
-          schema:
-            type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      - name: offset
+        in: query
+        schema:
+          type: string
       responses:
         '200':
           description: Successfully retrieved the requested goals.
@@ -93,7 +92,7 @@ paths:
       description: Creates a new goal in a workspace.
       operationId: createGoal
       tags:
-        - Goals
+      - Goals
       requestBody:
         required: true
         content:
@@ -122,19 +121,22 @@ paths:
         '500':
           description: Internal server error.
   /goals/{goal_gid}:
+    parameters:
+    - $ref: '#/components/parameters/goal_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get a goal
       description: Returns the complete goal record for a single goal.
       operationId: getGoal
       tags:
-        - Goals
+      - Goals
       parameters:
-        - name: goal_gid
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '12345'
+      - name: goal_gid
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '12345'
       responses:
         '200':
           description: Successfully retrieved the record for a single goal.
@@ -160,14 +162,14 @@ paths:
       description: Updates an existing goal.
       operationId: updateGoal
       tags:
-        - Goals
+      - Goals
       parameters:
-        - name: goal_gid
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '12345'
+      - name: goal_gid
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '12345'
       requestBody:
         required: true
         content:
@@ -202,14 +204,14 @@ paths:
       description: Deletes a specific, existing goal.
       operationId: deleteGoal
       tags:
-        - Goals
+      - Goals
       parameters:
-        - name: goal_gid
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '12345'
+      - name: goal_gid
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '12345'
       responses:
         '200':
           description: Successfully deleted the goal.
@@ -231,18 +233,21 @@ paths:
         '500':
           description: Internal server error.
   /goals/{goal_gid}/addFollowers:
+    parameters:
+    - $ref: '#/components/parameters/goal_path_gid'
+    - $ref: '#/components/parameters/pretty'
     post:
       summary: Asana Add a collaborator to a goal
       description: Adds followers to a goal.
       operationId: addFollowersForGoal
       tags:
-        - Goals
+      - Goals
       parameters:
-        - name: goal_gid
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: goal_gid
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -278,18 +283,21 @@ paths:
         '500':
           description: Internal server error.
   /goals/{goal_gid}/removeFollowers:
+    parameters:
+    - $ref: '#/components/parameters/goal_path_gid'
+    - $ref: '#/components/parameters/pretty'
     post:
       summary: Asana Remove a collaborator from a goal
       description: Removes followers from a goal.
       operationId: removeFollowersForGoal
       tags:
-        - Goals
+      - Goals
       parameters:
-        - name: goal_gid
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: goal_gid
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -325,18 +333,21 @@ paths:
         '500':
           description: Internal server error.
   /goals/{goal_gid}/parentGoals:
+    parameters:
+    - $ref: '#/components/parameters/goal_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get parent goals from a goal
       description: Returns a compact representation of all parent goals of a goal.
       operationId: getParentGoalsForGoal
       tags:
-        - Goals
+      - Goals
       parameters:
-        - name: goal_gid
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: goal_gid
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: Successfully retrieved the parent goals.
@@ -359,75 +370,443 @@ paths:
           description: Not found.
         '500':
           description: Internal server error.
-components:
-  securitySchemes:
-    personalAccessToken:
-      type: http
-      scheme: bearer
-    oauth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://app.asana.com/-/oauth_authorize
-          tokenUrl: https://app.asana.com/-/oauth_token
-          scopes:
-            default: Provides access to all endpoints documented in the API reference.
-  schemas:
-    GoalCompact:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-          example: '12345'
-        resource_type:
-          type: string
-          readOnly: true
-          example: goal
-        name:
-          type: string
-          example: Grow web traffic by 30%
-        owner:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-    GoalRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Grow web traffic by 30%
-        notes:
-          type: string
-        html_notes:
-          type: string
-        due_on:
-          type: string
-          format: date
-          nullable: true
-        start_on:
-          type: string
-          format: date
-          nullable: true
-        liked:
-          type: boolean
-        team:
-          type: string
-        workspace:
-          type: string
-        time_period:
-          type: string
-        owner:
-          type: string
-        followers:
+  /goals/{goal_gid}/setMetric:
+    parameters:
+    - $ref: '#/components/parameters/goal_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    post:
+      summary: Asana Create a goal metric
+      description: Creates and adds a goal metric to a specified goal. Note that this replaces an existing goal metric if one already exists.
+      tags:
+      - Goals
+      operationId: createGoalMetric
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - current_status_update
+        - current_status_update.resource_subtype
+        - current_status_update.title
+        - due_on
+        - followers
+        - followers.name
+        - html_notes
+        - is_workspace_level
+        - liked
+        - likes
+        - likes.user
+        - likes.user.name
+        - metric
+        - metric.can_manage
+        - metric.currency_code
+        - metric.current_display_value
+        - metric.current_number_value
+        - metric.initial_number_value
+        - metric.is_custom_weight
+        - metric.precision
+        - metric.progress_source
+        - metric.resource_subtype
+        - metric.target_number_value
+        - metric.unit
+        - name
+        - notes
+        - num_likes
+        - owner
+        - owner.name
+        - start_on
+        - status
+        - team
+        - team.name
+        - time_period
+        - time_period.display_name
+        - time_period.end_on
+        - time_period.period
+        - time_period.start_on
+        - workspace
+        - workspace.name
+        schema:
           type: array
           items:
             type: string
+            enum:
+            - current_status_update
+            - current_status_update.resource_subtype
+            - current_status_update.title
+            - due_on
+            - followers
+            - followers.name
+            - html_notes
+            - is_workspace_level
+            - liked
+            - likes
+            - likes.user
+            - likes.user.name
+            - metric
+            - metric.can_manage
+            - metric.currency_code
+            - metric.current_display_value
+            - metric.current_number_value
+            - metric.initial_number_value
+            - metric.is_custom_weight
+            - metric.precision
+            - metric.progress_source
+            - metric.resource_subtype
+            - metric.target_number_value
+            - metric.unit
+            - name
+            - notes
+            - num_likes
+            - owner
+            - owner.name
+            - start_on
+            - status
+            - team
+            - team.name
+            - time_period
+            - time_period.display_name
+            - time_period.end_on
+            - time_period.period
+            - time_period.start_on
+            - workspace
+            - workspace.name
+        style: form
+        explode: false
+      requestBody:
+        description: The goal metric to create.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/GoalMetricRequest'
+      responses:
+        200:
+          description: Successfully created a new goal metric.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalResponse_2'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        402:
+          $ref: '#/components/responses/PaymentRequired'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.goals.createGoalMetric(goalGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet goalsApiInstance = new Asana.GoalsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The goal metric to create.\nlet goal_gid = \"12345\"; // String | Globally unique identifier for the goal.\nlet opts = { \n    'opt_fields': \"current_status_update,current_status_update.resource_subtype,current_status_update.title,due_on,followers,followers.name,html_notes,is_workspace_level,liked,likes,likes.user,likes.user.name,metric,metric.can_manage,metric.currency_code,metric.current_display_value,metric.current_number_value,metric.initial_number_value,metric.is_custom_weight,metric.precision,metric.progress_source,metric.resource_subtype,metric.target_number_value,metric.unit,name,notes,num_likes,owner,owner.name,start_on,status,team,team.name,time_period,time_period.display_name,time_period.end_on,time_period.period,time_period.start_on,workspace,workspace.name\"\n};\ngoalsApiInstance.createGoalMetric(body, goal_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.goals.createGoalMetric(goalGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ngoals_api_instance = asana.GoalsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The goal metric to create.\ngoal_gid = \"12345\" # str | Globally unique identifier for the goal.\nopts = {\n    'opt_fields': \"current_status_update,current_status_update.resource_subtype,current_status_update.title,due_on,followers,followers.name,html_notes,is_workspace_level,liked,likes,likes.user,likes.user.name,metric,metric.can_manage,metric.currency_code,metric.current_display_value,metric.current_number_value,metric.initial_number_value,metric.is_custom_weight,metric.precision,metric.progress_source,metric.resource_subtype,metric.target_number_value,metric.unit,name,notes,num_likes,owner,owner.name,start_on,status,team,team.name,time_period,time_period.display_name,time_period.end_on,time_period.period,time_period.start_on,workspace,workspace.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Create a goal metric\n    api_response = goals_api_instance.create_goal_metric(body, goal_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling GoalsApi->create_goal_metric: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.goals.create_goal_metric(goal_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->goals->createGoalMetric($goal_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.goals.create_goal_metric(goal_gid: 'goal_gid', field: \"value\", field: \"value\", options: {pretty: true})"
+  /goals/{goal_gid}/setMetricCurrentValue:
+    parameters:
+    - $ref: '#/components/parameters/goal_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    post:
+      summary: Asana Update a goal metric
+      description: 'Updates a goal''s existing metric''s `current_number_value` if one exists,
+
+        otherwise responds with a 400 status code.
+
+
+        Returns the complete updated goal metric record.'
+      tags:
+      - Goals
+      operationId: updateGoalMetric
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - current_status_update
+        - current_status_update.resource_subtype
+        - current_status_update.title
+        - due_on
+        - followers
+        - followers.name
+        - html_notes
+        - is_workspace_level
+        - liked
+        - likes
+        - likes.user
+        - likes.user.name
+        - metric
+        - metric.can_manage
+        - metric.currency_code
+        - metric.current_display_value
+        - metric.current_number_value
+        - metric.initial_number_value
+        - metric.is_custom_weight
+        - metric.precision
+        - metric.progress_source
+        - metric.resource_subtype
+        - metric.target_number_value
+        - metric.unit
+        - name
+        - notes
+        - num_likes
+        - owner
+        - owner.name
+        - start_on
+        - status
+        - team
+        - team.name
+        - time_period
+        - time_period.display_name
+        - time_period.end_on
+        - time_period.period
+        - time_period.start_on
+        - workspace
+        - workspace.name
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - current_status_update
+            - current_status_update.resource_subtype
+            - current_status_update.title
+            - due_on
+            - followers
+            - followers.name
+            - html_notes
+            - is_workspace_level
+            - liked
+            - likes
+            - likes.user
+            - likes.user.name
+            - metric
+            - metric.can_manage
+            - metric.currency_code
+            - metric.current_display_value
+            - metric.current_number_value
+            - metric.initial_number_value
+            - metric.is_custom_weight
+            - metric.precision
+            - metric.progress_source
+            - metric.resource_subtype
+            - metric.target_number_value
+            - metric.unit
+            - name
+            - notes
+            - num_likes
+            - owner
+            - owner.name
+            - start_on
+            - status
+            - team
+            - team.name
+            - time_period
+            - time_period.display_name
+            - time_period.end_on
+            - time_period.period
+            - time_period.start_on
+            - workspace
+            - workspace.name
+        style: form
+        explode: false
+      requestBody:
+        description: The updated fields for the goal metric.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/GoalMetricCurrentValueRequest'
+      responses:
+        200:
+          description: Successfully updated the goal metric.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoalResponse_2'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        402:
+          $ref: '#/components/responses/PaymentRequired'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.goals.updateGoalMetric(goalGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet goalsApiInstance = new Asana.GoalsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The updated fields for the goal metric.\nlet goal_gid = \"12345\"; // String | Globally unique identifier for the goal.\nlet opts = { \n    'opt_fields': \"current_status_update,current_status_update.resource_subtype,current_status_update.title,due_on,followers,followers.name,html_notes,is_workspace_level,liked,likes,likes.user,likes.user.name,metric,metric.can_manage,metric.currency_code,metric.current_display_value,metric.current_number_value,metric.initial_number_value,metric.is_custom_weight,metric.precision,metric.progress_source,metric.resource_subtype,metric.target_number_value,metric.unit,name,notes,num_likes,owner,owner.name,start_on,status,team,team.name,time_period,time_period.display_name,time_period.end_on,time_period.period,time_period.start_on,workspace,workspace.name\"\n};\ngoalsApiInstance.updateGoalMetric(body, goal_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.goals.updateGoalMetric(goalGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ngoals_api_instance = asana.GoalsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The updated fields for the goal metric.\ngoal_gid = \"12345\" # str | Globally unique identifier for the goal.\nopts = {\n    'opt_fields': \"current_status_update,current_status_update.resource_subtype,current_status_update.title,due_on,followers,followers.name,html_notes,is_workspace_level,liked,likes,likes.user,likes.user.name,metric,metric.can_manage,metric.currency_code,metric.current_display_value,metric.current_number_value,metric.initial_number_value,metric.is_custom_weight,metric.precision,metric.progress_source,metric.resource_subtype,metric.target_number_value,metric.unit,name,notes,num_likes,owner,owner.name,start_on,status,team,team.name,time_period,time_period.display_name,time_period.end_on,time_period.period,time_period.start_on,workspace,workspace.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Update a goal metric\n    api_response = goals_api_instance.update_goal_metric(body, goal_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling GoalsApi->update_goal_metric: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.goals.update_goal_metric(goal_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->goals->updateGoalMetric($goal_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.goals.update_goal_metric(goal_gid: 'goal_gid', field: \"value\", field: \"value\", options: {pretty: true})"
+components:
+  schemas:
+    GoalMetricCurrentValueRequest:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: task
+          x-insert-after: gid
+        current_number_value:
+          description: '*Conditional*. This number is the current value of a goal metric of type number.'
+          type: number
+          example: 8.12
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    WorkspaceCompact:
+      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: workspace
+          x-insert-after: gid
+        name:
+          description: The name of the workspace.
+          type: string
+          example: My Company Workspace
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
     GoalResponse:
       type: object
       properties:
@@ -531,9 +910,453 @@ components:
             progress_source:
               type: string
               enum:
-                - manual
-                - subgoal_progress
-                - project_task_completion
-                - project_milestone_completion
-                - task_completion
-                - external
+              - manual
+              - subgoal_progress
+              - project_task_completion
+              - project_milestone_completion
+              - task_completion
+              - external
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    GoalCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: goal
+        name:
+          type: string
+          example: Grow web traffic by 30%
+        owner:
+          type: object
+          properties:
+            gid:
+              type: string
+            resource_type:
+              type: string
+            name:
+              type: string
+    GoalMetricBase:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: task
+          x-insert-after: gid
+        resource_subtype:
+          description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+          type: string
+          readOnly: true
+          example: number
+          enum:
+          - number
+        precision:
+          description: '*Conditional*. Only relevant for goal metrics of type ‘Number’. This field dictates the number of places after the decimal to round to, i.e. 0 is integer values, 1 rounds to the nearest tenth, and so on. Must be between 0 and 6, inclusive.
+
+            For percentage format, this may be unintuitive, as a value of 0.25 has a precision of 0, while a value of 0.251 has a precision of 1. This is due to 0.25 being displayed as 25%.'
+          type: integer
+          example: 2
+        unit:
+          description: A supported unit of measure for the goal metric, or none.
+          type: string
+          enum:
+          - none
+          - currency
+          - percentage
+        currency_code:
+          description: ISO 4217 currency code to format this custom field. This will be null if the `unit` is not `currency`.
+          type: string
+          nullable: true
+          example: EUR
+        initial_number_value:
+          description: This number is the start value of a goal metric of type number.
+          type: number
+          example: 5.2
+        target_number_value:
+          description: This number is the end value of a goal metric of type number. This number cannot equal `initial_number_value`.
+          type: number
+          example: 10.2
+        current_number_value:
+          description: This number is the current value of a goal metric of type number.
+          type: number
+          example: 8.12
+        current_display_value:
+          description: This string is the current value of a goal metric of type string.
+          type: string
+          readOnly: true
+          example: '8.12'
+        progress_source:
+          description: This field defines how the progress value of a goal metric is being calculated. A goal's progress can be provided manually by the user, calculated automatically from contributing subgoals, projects, or tasks, or managed by an integration with an external data source, such as Salesforce.
+          type: string
+          enum:
+          - manual
+          - subgoal_progress
+          - project_task_completion
+          - project_milestone_completion
+          - task_completion
+          - external
+          example: manual
+        is_custom_weight:
+          description: '*Conditional*. Only relevant if `metric.progress_source` is one of `subgoal_progress`, `project_task_completion`, `project_milestone_completion`, or `task_completion`. If true, we use the supporting object''s custom weight to calculate the goal''s progress. If false, we treat all supporting objects as equally weighted'
+          type: boolean
+          example: false
+    Like:
+      type: object
+      description: An object to represent a user's like.
+      properties:
+        gid:
+          description: Globally unique identifier of the object, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+        user:
+          $ref: '#/components/schemas/UserCompact'
+    TeamCompact:
+      description: A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: team
+          x-insert-after: gid
+        name:
+          description: The name of the team.
+          type: string
+          example: Marketing
+    TimePeriodCompact:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: time_period
+          x-insert-after: gid
+        end_on:
+          type: string
+          description: The localized end date of the time period in `YYYY-MM-DD` format.
+          example: '2019-09-14'
+        start_on:
+          type: string
+          description: The localized start date of the time period in `YYYY-MM-DD` format.
+          example: '2019-09-13'
+        period:
+          type: string
+          description: 'The cadence and index of the time period. The value is one of: `FY`, `H1`, `H2`, `Q1`, `Q2`, `Q3`, or `Q4`.'
+          enum:
+          - FY
+          - H1
+          - H2
+          - Q1
+          - Q2
+          - Q3
+          - Q4
+          example: Q1
+        display_name:
+          type: string
+          description: A string representing the cadence code and the fiscal year.
+          example: Q1 FY22
+    GoalResponse_2:
+      allOf:
+      - $ref: '#/components/schemas/GoalBase'
+      - type: object
+        properties:
+          likes:
+            description: Array of likes for users who have liked this goal.
+            type: array
+            items:
+              $ref: '#/components/schemas/Like'
+            readOnly: true
+          num_likes:
+            description: The number of users who have liked this goal.
+            type: integer
+            readOnly: true
+            example: 5
+          team:
+            allOf:
+            - $ref: '#/components/schemas/TeamCompact'
+            - type: object
+              nullable: true
+              description: '*Conditional*. This property is only present when the `workspace` provided is an organization.'
+          workspace:
+            allOf:
+            - $ref: '#/components/schemas/WorkspaceCompact'
+            - type: object
+          followers:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserCompact'
+            description: Array of users who are members of this goal.
+          time_period:
+            allOf:
+            - $ref: '#/components/schemas/TimePeriodCompact'
+            - type: object
+              nullable: true
+          metric:
+            allOf:
+            - $ref: '#/components/schemas/GoalMetricBase'
+            - type: object
+              nullable: true
+              properties:
+                can_manage:
+                  description: '*Conditional*. Only relevant for `progress_source` of type `external`. This boolean indicates whether the requester has the ability to update the current value of this metric. This returns `true` if the external metric was created by the requester, `false` otherwise.'
+                  type: boolean
+                  readOnly: true
+                  example: true
+          owner:
+            allOf:
+            - $ref: '#/components/schemas/UserCompact'
+            - type: object
+              nullable: true
+          current_status_update:
+            allOf:
+            - $ref: '#/components/schemas/StatusUpdateCompact'
+            - description: The latest `status_update` posted to this goal.
+              nullable: true
+          status:
+            type: string
+            readOnly: true
+            description: 'The current status of this goal. When the goal is open, its status can be `green`, `yellow`, and `red` to reflect "On Track", "At Risk", and "Off Track", respectively. When the goal is closed, the value can be `missed`, `achieved`, `partial`, or `dropped`.
+
+              *Note* you can only write to this property if `metric` is set.'
+            example: green
+            nullable: true
+    GoalRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Grow web traffic by 30%
+        notes:
+          type: string
+        html_notes:
+          type: string
+        due_on:
+          type: string
+          format: date
+          nullable: true
+        start_on:
+          type: string
+          format: date
+          nullable: true
+        liked:
+          type: boolean
+        team:
+          type: string
+        workspace:
+          type: string
+        time_period:
+          type: string
+        owner:
+          type: string
+        followers:
+          type: array
+          items:
+            type: string
+    GoalBase:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: goal
+          x-insert-after: gid
+        name:
+          type: string
+          description: The name of the goal.
+          example: Grow web traffic by 30%
+        html_notes:
+          type: string
+          description: The notes of the goal with formatting as HTML.
+          example: <body>Start building brand awareness.</body>
+        notes:
+          type: string
+          description: Free-form textual information associated with the goal (i.e. its description).
+          example: Start building brand awareness.
+        due_on:
+          type: string
+          description: The localized day on which this goal is due. This takes a date with format `YYYY-MM-DD`.
+          example: '2019-09-15'
+          nullable: true
+        start_on:
+          type: string
+          description: The day on which work for this goal begins, or null if the goal has no start date. This takes a date with `YYYY-MM-DD` format, and cannot be set unless there is an accompanying due date.
+          example: '2019-09-14'
+          nullable: true
+        is_workspace_level:
+          type: boolean
+          description: '*Conditional*. This property is only present when the `workspace` provided is an organization. Whether the goal belongs to the `workspace` (and is listed as part of the workspace’s goals) or not. If it isn’t a workspace-level goal, it is a team-level goal, and is associated with the goal’s team.'
+          example: true
+        liked:
+          type: boolean
+          description: True if the goal is liked by the authorized user, false if not.
+          example: false
+    StatusUpdateCompact:
+      description: A *status update* is an update on the progress of a particular project, portfolio, or goal, and is sent out to all of its parent's followers when created. These updates include both text describing the update and a `status_type` intended to represent the overall state of the project.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: status_update
+          x-insert-after: gid
+        title:
+          description: The title of the status update.
+          type: string
+          example: Status Update - Jun 15
+        resource_subtype:
+          type: string
+          description: 'The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+
+            The `resource_subtype`s for `status` objects represent the type of their parent.'
+          enum:
+          - project_status_update
+          - portfolio_status_update
+          - goal_status_update
+          example: project_status_update
+          readOnly: true
+    GoalMetricRequest:
+      $ref: '#/components/schemas/GoalMetricBase'
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PaymentRequired:
+      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    goal_path_gid:
+      name: goal_gid
+      in: path
+      description: Globally unique identifier for the goal.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: goal
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

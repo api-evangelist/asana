@@ -1,9 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Teams API
-  description: >-
-    The Asana Teams API allows management of teams used to group related
-    projects and people within an organization.
+  title: Asana Allocations Teams API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -13,22 +11,67 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Teams
-    description: Manage teams within organizations.
+- name: Teams
+  description: A team is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
 paths:
   /teams:
+    parameters:
+    - $ref: '#/components/parameters/pretty'
     post:
       summary: Asana Create a team
-      operationId: createTeam
+      description: Creates a team within the current workspace.
       tags:
-        - Teams
+      - Teams
+      operationId: createTeam
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - description
+        - edit_team_name_or_description_access_level
+        - edit_team_visibility_or_trash_team_access_level
+        - guest_invite_management_access_level
+        - html_description
+        - join_request_management_access_level
+        - member_invite_management_access_level
+        - name
+        - organization
+        - organization.name
+        - permalink_url
+        - team_content_management_access_level
+        - team_member_removal_access_level
+        - visibility
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - description
+            - edit_team_name_or_description_access_level
+            - edit_team_visibility_or_trash_team_access_level
+            - guest_invite_management_access_level
+            - html_description
+            - join_request_management_access_level
+            - member_invite_management_access_level
+            - name
+            - organization
+            - organization.name
+            - permalink_url
+            - team_content_management_access_level
+            - team_member_removal_access_level
+            - visibility
+        style: form
+        explode: false
       requestBody:
+        description: The team to create.
         required: true
         content:
           application/json:
@@ -38,8 +81,8 @@ paths:
                 data:
                   $ref: '#/components/schemas/TeamRequest'
       responses:
-        '201':
-          description: Successfully created the team.
+        201:
+          description: Successfully created a new team.
           content:
             application/json:
               schema:
@@ -47,21 +90,111 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/TeamResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nTeam result = client.teams.createTeam()\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet teamsApiInstance = new Asana.TeamsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The team to create.\nlet opts = { \n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,organization,organization.name,permalink_url,team_content_management_access_level,team_member_removal_access_level,visibility\"\n};\nteamsApiInstance.createTeam(body, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.teams.createTeam({field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nteams_api_instance = asana.TeamsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The team to create.\nopts = {\n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,organization,organization.name,permalink_url,team_content_management_access_level,team_member_removal_access_level,visibility\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Create a team\n    api_response = teams_api_instance.create_team(body, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TeamsApi->create_team: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.teams.create_team({''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->teams->createTeam(array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.teams.create_team(field: \"value\", field: \"value\", options: {pretty: true})"
   /teams/{team_gid}:
+    parameters:
+    - $ref: '#/components/parameters/team_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get a team
-      operationId: getTeam
+      description: Returns the full record for a single team.
       tags:
-        - Teams
+      - Teams
+      operationId: getTeam
       parameters:
-        - name: team_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - description
+        - edit_team_name_or_description_access_level
+        - edit_team_visibility_or_trash_team_access_level
+        - guest_invite_management_access_level
+        - html_description
+        - join_request_management_access_level
+        - member_invite_management_access_level
+        - name
+        - organization
+        - organization.name
+        - permalink_url
+        - team_content_management_access_level
+        - team_member_removal_access_level
+        - visibility
+        schema:
+          type: array
+          items:
             type: string
+            enum:
+            - description
+            - edit_team_name_or_description_access_level
+            - edit_team_visibility_or_trash_team_access_level
+            - guest_invite_management_access_level
+            - html_description
+            - join_request_management_access_level
+            - member_invite_management_access_level
+            - name
+            - organization
+            - organization.name
+            - permalink_url
+            - team_content_management_access_level
+            - team_member_removal_access_level
+            - visibility
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved the team.
+        200:
+          description: Successfully retrieved the record for a single team.
           content:
             application/json:
               schema:
@@ -69,18 +202,109 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/TeamResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - oauth2:
+        - teams:read
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nTeam result = client.teams.getTeam(teamGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet teamsApiInstance = new Asana.TeamsApi();\nlet team_gid = \"159874\"; // String | Globally unique identifier for the team.\nlet opts = { \n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,organization,organization.name,permalink_url,team_content_management_access_level,team_member_removal_access_level,visibility\"\n};\nteamsApiInstance.getTeam(team_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.teams.getTeam(teamGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nteams_api_instance = asana.TeamsApi(api_client)\nteam_gid = \"159874\" # str | Globally unique identifier for the team.\nopts = {\n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,organization,organization.name,permalink_url,team_content_management_access_level,team_member_removal_access_level,visibility\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a team\n    api_response = teams_api_instance.get_team(team_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TeamsApi->get_team: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.teams.get_team(team_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->teams->getTeam($team_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.teams.get_team(team_gid: 'team_gid', param: \"value\", param: \"value\", options: {pretty: true})"
     put:
       summary: Asana Update a team
-      operationId: updateTeam
+      description: Updates a team within the current workspace.
       tags:
-        - Teams
+      - Teams
+      operationId: updateTeam
       parameters:
-        - name: team_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - description
+        - edit_team_name_or_description_access_level
+        - edit_team_visibility_or_trash_team_access_level
+        - guest_invite_management_access_level
+        - html_description
+        - join_request_management_access_level
+        - member_invite_management_access_level
+        - name
+        - organization
+        - organization.name
+        - permalink_url
+        - team_content_management_access_level
+        - team_member_removal_access_level
+        - visibility
+        schema:
+          type: array
+          items:
             type: string
+            enum:
+            - description
+            - edit_team_name_or_description_access_level
+            - edit_team_visibility_or_trash_team_access_level
+            - guest_invite_management_access_level
+            - html_description
+            - join_request_management_access_level
+            - member_invite_management_access_level
+            - name
+            - organization
+            - organization.name
+            - permalink_url
+            - team_content_management_access_level
+            - team_member_removal_access_level
+            - visibility
+        style: form
+        explode: false
       requestBody:
+        description: The team to update.
         required: true
         content:
           application/json:
@@ -90,7 +314,7 @@ paths:
                 data:
                   $ref: '#/components/schemas/TeamRequest'
       responses:
-        '200':
+        200:
           description: Successfully updated the team.
           content:
             application/json:
@@ -99,29 +323,119 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/TeamResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nTeam result = client.teams.updateTeam()\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet teamsApiInstance = new Asana.TeamsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The team to update.\nlet team_gid = \"159874\"; // String | Globally unique identifier for the team.\nlet opts = { \n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,organization,organization.name,permalink_url,team_content_management_access_level,team_member_removal_access_level,visibility\"\n};\nteamsApiInstance.updateTeam(body, team_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.teams.updateTeam(teamGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nteams_api_instance = asana.TeamsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The team to update.\nteam_gid = \"159874\" # str | Globally unique identifier for the team.\nopts = {\n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,organization,organization.name,permalink_url,team_content_management_access_level,team_member_removal_access_level,visibility\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Update a team\n    api_response = teams_api_instance.update_team(body, team_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TeamsApi->update_team: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.teams.update_team(team_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->teams->updateTeam(array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.teams.update_team(field: \"value\", field: \"value\", options: {pretty: true})"
   /workspaces/{workspace_gid}/teams:
+    parameters:
+    - $ref: '#/components/parameters/workspace_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/limit'
+    - $ref: '#/components/parameters/offset'
     get:
       summary: Asana Get teams in a workspace
-      operationId: getTeamsForWorkspace
+      description: Returns the compact records for all teams in the workspace visible to the authorized user.
       tags:
-        - Teams
+      - Teams
+      operationId: getTeamsForWorkspace
       parameters:
-        - name: workspace_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - description
+        - edit_team_name_or_description_access_level
+        - edit_team_visibility_or_trash_team_access_level
+        - guest_invite_management_access_level
+        - html_description
+        - join_request_management_access_level
+        - member_invite_management_access_level
+        - name
+        - offset
+        - organization
+        - organization.name
+        - path
+        - permalink_url
+        - team_content_management_access_level
+        - team_member_removal_access_level
+        - uri
+        - visibility
+        schema:
+          type: array
+          items:
             type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          schema:
-            type: string
+            enum:
+            - description
+            - edit_team_name_or_description_access_level
+            - edit_team_visibility_or_trash_team_access_level
+            - guest_invite_management_access_level
+            - html_description
+            - join_request_management_access_level
+            - member_invite_management_access_level
+            - name
+            - offset
+            - organization
+            - organization.name
+            - path
+            - permalink_url
+            - team_content_management_access_level
+            - team_member_removal_access_level
+            - uri
+            - visibility
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved teams.
+        200:
+          description: Returns the team records for all teams in the organization or workspace accessible to the authenticated user.
           content:
             application/json:
               schema:
@@ -131,26 +445,131 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TeamCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - oauth2:
+        - teams:read
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<Team> result = client.teams.getTeamsForWorkspace(workspaceGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet teamsApiInstance = new Asana.TeamsApi();\nlet workspace_gid = \"12345\"; // String | Globally unique identifier for the workspace or organization.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,offset,organization,organization.name,path,permalink_url,team_content_management_access_level,team_member_removal_access_level,uri,visibility\"\n};\nteamsApiInstance.getTeamsForWorkspace(workspace_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.teams.getTeamsForWorkspace(workspaceGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nteams_api_instance = asana.TeamsApi(api_client)\nworkspace_gid = \"12345\" # str | Globally unique identifier for the workspace or organization.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,offset,organization,organization.name,path,permalink_url,team_content_management_access_level,team_member_removal_access_level,uri,visibility\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get teams in a workspace\n    api_response = teams_api_instance.get_teams_for_workspace(workspace_gid, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling TeamsApi->get_teams_for_workspace: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.teams.get_teams_for_workspace(workspace_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->teams->getTeamsForWorkspace($workspace_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.teams.get_teams_for_workspace(workspace_gid: 'workspace_gid', param: \"value\", param: \"value\", options: {pretty: true})"
   /users/{user_gid}/teams:
+    parameters:
+    - $ref: '#/components/parameters/user_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/limit'
+    - $ref: '#/components/parameters/offset'
+    - name: organization
+      in: query
+      description: The workspace or organization to filter teams on.
+      required: true
+      schema:
+        type: string
+      example: '1331'
     get:
       summary: Asana Get teams for a user
-      operationId: getTeamsForUser
+      description: Returns the compact records for all teams to which the given user is assigned.
       tags:
-        - Teams
+      - Teams
+      operationId: getTeamsForUser
       parameters:
-        - name: user_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - description
+        - edit_team_name_or_description_access_level
+        - edit_team_visibility_or_trash_team_access_level
+        - guest_invite_management_access_level
+        - html_description
+        - join_request_management_access_level
+        - member_invite_management_access_level
+        - name
+        - offset
+        - organization
+        - organization.name
+        - path
+        - permalink_url
+        - team_content_management_access_level
+        - team_member_removal_access_level
+        - uri
+        - visibility
+        schema:
+          type: array
+          items:
             type: string
-        - name: organization
-          in: query
-          required: true
-          schema:
-            type: string
+            enum:
+            - description
+            - edit_team_name_or_description_access_level
+            - edit_team_visibility_or_trash_team_access_level
+            - guest_invite_management_access_level
+            - html_description
+            - join_request_management_access_level
+            - member_invite_management_access_level
+            - name
+            - offset
+            - organization
+            - organization.name
+            - path
+            - permalink_url
+            - team_content_management_access_level
+            - team_member_removal_access_level
+            - uri
+            - visibility
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved user's teams.
+        200:
+          description: Returns the team records for all teams in the organization or workspace to which the given user is assigned.
           content:
             application/json:
               schema:
@@ -160,19 +579,104 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TeamCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - oauth2:
+        - teams:read
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<Team> result = client.teams.getTeamsForUser(userGid, organization)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet teamsApiInstance = new Asana.TeamsApi();\nlet user_gid = \"me\"; // String | A string identifying a user. This can either be the string \\\"me\\\", an email, or the gid of a user.\nlet organization = \"1331\"; // String | The workspace or organization to filter teams on.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,offset,organization,organization.name,path,permalink_url,team_content_management_access_level,team_member_removal_access_level,uri,visibility\"\n};\nteamsApiInstance.getTeamsForUser(user_gid, organization, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.teams.getTeamsForUser(userGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nteams_api_instance = asana.TeamsApi(api_client)\nuser_gid = \"me\" # str | A string identifying a user. This can either be the string \\\"me\\\", an email, or the gid of a user.\norganization = \"1331\" # str | The workspace or organization to filter teams on.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,offset,organization,organization.name,path,permalink_url,team_content_management_access_level,team_member_removal_access_level,uri,visibility\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get teams for a user\n    api_response = teams_api_instance.get_teams_for_user(user_gid, organization, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling TeamsApi->get_teams_for_user: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.teams.get_teams_for_user(user_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->teams->getTeamsForUser($user_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.teams.get_teams_for_user(user_gid: 'user_gid', organization: '&#x27;organization_example&#x27;', param: \"value\", param: \"value\", options: {pretty: true})"
   /teams/{team_gid}/addUser:
+    parameters:
+    - $ref: '#/components/parameters/team_path_gid'
+    - $ref: '#/components/parameters/pretty'
     post:
       summary: Asana Add a user to a team
-      operationId: addUserForTeam
+      description: 'The user making this call must be a member of the team in order to add others. The user being added must exist in the same organization as the team.
+
+
+        Returns the complete team membership record for the newly added user.'
       tags:
-        - Teams
+      - Teams
+      operationId: addUserForTeam
       parameters:
-        - name: team_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - is_admin
+        - is_guest
+        - is_limited_access
+        - team
+        - team.name
+        - user
+        - user.name
+        schema:
+          type: array
+          items:
             type: string
+            enum:
+            - is_admin
+            - is_guest
+            - is_limited_access
+            - team
+            - team.name
+            - user
+            - user.name
+        style: form
+        explode: false
       requestBody:
+        description: The user to add to the team.
         required: true
         content:
           application/json:
@@ -180,28 +684,80 @@ paths:
               type: object
               properties:
                 data:
-                  type: object
-                  properties:
-                    user:
-                      type: string
-                  required:
-                    - user
+                  $ref: '#/components/schemas/TeamAddUserRequest'
       responses:
-        '200':
-          description: Successfully added the user to the team.
+        200:
+          description: Successfully added user to the team.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TeamMembershipResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.teams.addUserForTeam(teamGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet teamsApiInstance = new Asana.TeamsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The user to add to the team.\nlet team_gid = \"159874\"; // String | Globally unique identifier for the team.\nlet opts = { \n    'opt_fields': \"is_admin,is_guest,is_limited_access,team,team.name,user,user.name\"\n};\nteamsApiInstance.addUserForTeam(body, team_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.teams.addUserForTeam(teamGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nteams_api_instance = asana.TeamsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The user to add to the team.\nteam_gid = \"159874\" # str | Globally unique identifier for the team.\nopts = {\n    'opt_fields': \"is_admin,is_guest,is_limited_access,team,team.name,user,user.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Add a user to a team\n    api_response = teams_api_instance.add_user_for_team(body, team_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TeamsApi->add_user_for_team: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.teams.add_user_for_team(team_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->teams->addUserForTeam($team_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.teams.add_user_for_team(team_gid: 'team_gid', field: \"value\", field: \"value\", options: {pretty: true})"
   /teams/{team_gid}/removeUser:
+    parameters:
+    - $ref: '#/components/parameters/team_path_gid'
+    - $ref: '#/components/parameters/pretty'
     post:
       summary: Asana Remove a user from a team
-      operationId: removeUserForTeam
+      description: The user making this call must be a member of the team in order to remove themselves or others.
       tags:
-        - Teams
-      parameters:
-        - name: team_gid
-          in: path
-          required: true
-          schema:
-            type: string
+      - Teams
+      operationId: removeUserForTeam
       requestBody:
+        description: The user to remove from the team.
         required: true
         content:
           application/json:
@@ -209,86 +765,553 @@ paths:
               type: object
               properties:
                 data:
-                  type: object
-                  properties:
-                    user:
-                      type: string
-                  required:
-                    - user
+                  $ref: '#/components/schemas/TeamRemoveUserRequest'
       responses:
-        '204':
-          description: Successfully removed the user from the team.
+        204:
+          description: Returns an empty data record
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmptyResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.teams.removeUserForTeam(teamGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet teamsApiInstance = new Asana.TeamsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The user to remove from the team.\nlet team_gid = \"159874\"; // String | Globally unique identifier for the team.\n\nteamsApiInstance.removeUserForTeam(body, team_gid).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.teams.removeUserForTeam(teamGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nteams_api_instance = asana.TeamsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The user to remove from the team.\nteam_gid = \"159874\" # str | Globally unique identifier for the team.\n\n\ntry:\n    # Remove a user from a team\n    api_response = teams_api_instance.remove_user_for_team(body, team_gid)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TeamsApi->remove_user_for_team: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.teams.remove_user_for_team(team_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->teams->removeUserForTeam($team_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.teams.remove_user_for_team(team_gid: 'team_gid', field: \"value\", field: \"value\", options: {pretty: true})"
 components:
+  schemas:
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    TeamBase:
+      $ref: '#/components/schemas/TeamCompact'
+    TeamAddUserRequest:
+      type: object
+      description: A user identification object for specification with the addUser/removeUser endpoints.
+      properties:
+        user:
+          description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+          type: string
+          example: '12345'
+    TeamRequest:
+      allOf:
+      - $ref: '#/components/schemas/TeamBase'
+      - type: object
+        properties:
+          description:
+            description: 'The description of the team.
+
+              '
+            type: string
+            example: All developers should be members of this team.
+          html_description:
+            description: 'The description of the team with formatting as HTML.
+
+              '
+            type: string
+            example: <body><em>All</em> developers should be members of this team.</body>
+          organization:
+            type: string
+            description: 'The organization/workspace the team belongs to. This must be the same organization you are in and cannot be changed once set.
+
+              '
+            example: '123456789'
+          visibility:
+            description: 'The visibility of the team to users in the same organization
+
+              '
+            type: string
+            enum:
+            - secret
+            - request_to_join
+            - public
+          edit_team_name_or_description_access_level:
+            description: 'Controls who can edit team name and description
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          edit_team_visibility_or_trash_team_access_level:
+            description: 'Controls who can edit team visibility and trash teams
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          member_invite_management_access_level:
+            description: 'Controls who can accept or deny member invites for a given team
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          guest_invite_management_access_level:
+            description: 'Controls who can accept or deny guest invites for a given team
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          join_request_management_access_level:
+            description: 'Controls who can accept or deny join team requests for a Membership by Request team
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          team_member_removal_access_level:
+            description: 'Controls who can remove team members
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          team_content_management_access_level:
+            description: 'Controls who can create and share content with the team
+
+              '
+            type: string
+            enum:
+            - no_restriction
+            - only_team_admins
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    WorkspaceCompact:
+      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: workspace
+          x-insert-after: gid
+        name:
+          description: The name of the workspace.
+          type: string
+          example: My Company Workspace
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    TeamMembershipResponse:
+      $ref: '#/components/schemas/TeamMembershipBase'
+    TeamRemoveUserRequest:
+      type: object
+      description: A user identification object for specification with the addUser/removeUser endpoints.
+      properties:
+        user:
+          description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+          type: string
+          example: '12345'
+    TeamCompact:
+      description: A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: team
+          x-insert-after: gid
+        name:
+          description: The name of the team.
+          type: string
+          example: Marketing
+    TeamResponse:
+      allOf:
+      - $ref: '#/components/schemas/TeamBase'
+      - type: object
+        properties:
+          description:
+            description: '[Opt In](/docs/inputoutput-options). The description of the team.
+
+              '
+            type: string
+            example: All developers should be members of this team.
+          html_description:
+            description: '[Opt In](/docs/inputoutput-options). The description of the team with formatting as HTML.
+
+              '
+            type: string
+            example: <body><em>All</em> developers should be members of this team.</body>
+          organization:
+            allOf:
+            - $ref: '#/components/schemas/WorkspaceCompact'
+            - type: object
+              description: 'The organization/workspace the team belongs to.
+
+                '
+          permalink_url:
+            type: string
+            readOnly: true
+            description: A url that points directly to the object within Asana.
+            example: https://app.asana.com/0/resource/123456789/list
+          visibility:
+            description: 'The visibility of the team to users in the same organization
+
+              '
+            type: string
+            enum:
+            - secret
+            - request_to_join
+            - public
+          edit_team_name_or_description_access_level:
+            description: 'Controls who can edit team name and description
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          edit_team_visibility_or_trash_team_access_level:
+            description: 'Controls who can edit team visibility and trash teams
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          member_invite_management_access_level:
+            description: 'Controls who can accept or deny member invites for a given team
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          guest_invite_management_access_level:
+            description: 'Controls who can accept or deny guest invites for a given team
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          join_request_management_access_level:
+            description: 'Controls who can accept or deny join team requests for a Membership by Request team
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          team_member_removal_access_level:
+            description: 'Controls who can remove team members
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          team_content_management_access_level:
+            description: 'Controls who can create and share content with the team
+
+              '
+            type: string
+            enum:
+            - no_restriction
+            - only_team_admins
+    NextPage:
+      type: object
+      nullable: true
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    TeamMembershipBase:
+      $ref: '#/components/schemas/TeamMembershipCompact'
+    TeamMembershipCompact:
+      description: This object represents a user's connection to a team.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: team_membership
+          x-insert-after: gid
+        user:
+          $ref: '#/components/schemas/UserCompact'
+        team:
+          $ref: '#/components/schemas/TeamCompact'
+        is_guest:
+          type: boolean
+          description: Describes if the user is a guest in the team.
+          example: false
+        is_limited_access:
+          type: boolean
+          readOnly: true
+          description: Describes if the user has limited access to the team.
+          example: false
+        is_admin:
+          type: boolean
+          description: Describes if the user is a team admin.
+          example: false
+  parameters:
+    team_path_gid:
+      name: team_gid
+      in: path
+      description: Globally unique identifier for the team.
+      required: true
+      schema:
+        type: string
+      example: '159874'
+      x-env-variable: team
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    user_path_gid:
+      name: user_gid
+      in: path
+      description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+      required: true
+      schema:
+        type: string
+      x-env-variable: user
+      example: me
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    workspace_path_gid:
+      name: workspace_gid
+      in: path
+      description: Globally unique identifier for the workspace or organization.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     personalAccessToken:
       type: http
+      description: A personal access token for the Asana API.
       scheme: bearer
     oauth2:
       type: oauth2
+      description: OAuth 2.0 authorization code flow.
       flows:
         authorizationCode:
           authorizationUrl: https://app.asana.com/-/oauth_authorize
           tokenUrl: https://app.asana.com/-/oauth_token
           scopes:
             default: Provides access to all endpoints documented in the API reference.
-  schemas:
-    TeamCompact:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: team
-        name:
-          type: string
-          example: Marketing
-    TeamRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        html_description:
-          type: string
-        organization:
-          type: string
-        visibility:
-          type: string
-          enum:
-            - secret
-            - request_to_join
-            - public
-    TeamResponse:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: team
-        name:
-          type: string
-        description:
-          type: string
-        html_description:
-          type: string
-        organization:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        permalink_url:
-          type: string
-          readOnly: true
-        visibility:
-          type: string

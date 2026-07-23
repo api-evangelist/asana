@@ -1,9 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Time Periods API
-  description: >-
-    The Asana Time Periods API manages time periods that represent
-    domain-scoped date ranges set on goals.
+  title: Asana Allocations Time Periods API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -13,30 +11,59 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Time Periods
-    description: Manage time periods for goals.
+- name: Time Periods
+  description: A time period is an object that represents a domain-scoped date range that can be set on [goals](/reference/goals).
 paths:
   /time_periods/{time_period_gid}:
+    parameters:
+    - $ref: '#/components/parameters/time_period_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get a time period
-      operationId: getTimePeriod
+      description: Returns the full record for a single time period.
       tags:
-        - Time Periods
+      - Time Periods
+      operationId: getTimePeriod
       parameters:
-        - name: time_period_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - display_name
+        - end_on
+        - parent
+        - parent.display_name
+        - parent.end_on
+        - parent.period
+        - parent.start_on
+        - period
+        - start_on
+        schema:
+          type: array
+          items:
             type: string
+            enum:
+            - display_name
+            - end_on
+            - parent
+            - parent.display_name
+            - parent.end_on
+            - parent.period
+            - parent.start_on
+            - period
+            - start_on
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved the time period.
+        200:
+          description: Successfully retrieved the record for a single time period.
           content:
             application/json:
               schema:
@@ -44,39 +71,129 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/TimePeriodResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.timeperiods.getTimePeriod(timePeriodGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet timePeriodsApiInstance = new Asana.TimePeriodsApi();\nlet time_period_gid = \"917392\"; // String | Globally unique identifier for the time period.\nlet opts = { \n    'opt_fields': \"display_name,end_on,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,period,start_on\"\n};\ntimePeriodsApiInstance.getTimePeriod(time_period_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.timeperiods.getTimePeriod(timePeriodGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ntime_periods_api_instance = asana.TimePeriodsApi(api_client)\ntime_period_gid = \"917392\" # str | Globally unique identifier for the time period.\nopts = {\n    'opt_fields': \"display_name,end_on,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,period,start_on\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a time period\n    api_response = time_periods_api_instance.get_time_period(time_period_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TimePeriodsApi->get_time_period: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.time_periods.get_time_period(time_period_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->timeperiods->getTimePeriod($time_period_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.time_periods.get_time_period(time_period_gid: 'time_period_gid', param: \"value\", param: \"value\", options: {pretty: true})"
   /time_periods:
+    parameters:
+    - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/limit'
+    - $ref: '#/components/parameters/offset'
     get:
       summary: Asana Get time periods
-      operationId: getTimePeriods
+      description: Returns compact time period records.
       tags:
-        - Time Periods
+      - Time Periods
+      operationId: getTimePeriods
       parameters:
-        - name: workspace
-          in: query
-          required: true
-          schema:
+      - name: start_on
+        in: query
+        description: ISO 8601 date string
+        schema:
+          type: string
+          format: date
+        example: '2019-09-15'
+      - name: end_on
+        in: query
+        description: ISO 8601 date string
+        schema:
+          type: string
+          format: date
+        example: '2019-09-15'
+      - name: workspace
+        in: query
+        required: true
+        description: Globally unique identifier for the workspace.
+        schema:
+          type: string
+        example: '31326'
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - display_name
+        - end_on
+        - offset
+        - parent
+        - parent.display_name
+        - parent.end_on
+        - parent.period
+        - parent.start_on
+        - path
+        - period
+        - start_on
+        - uri
+        schema:
+          type: array
+          items:
             type: string
-        - name: start_on
-          in: query
-          schema:
-            type: string
-            format: date
-        - name: end_on
-          in: query
-          schema:
-            type: string
-            format: date
-        - name: limit
-          in: query
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          schema:
-            type: string
+            enum:
+            - display_name
+            - end_on
+            - offset
+            - parent
+            - parent.display_name
+            - parent.end_on
+            - parent.period
+            - parent.start_on
+            - path
+            - period
+            - start_on
+            - uri
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved time periods.
+        200:
+          description: Successfully retrieved the requested time periods.
           content:
             application/json:
               schema:
@@ -86,75 +203,265 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TimePeriodCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<JsonElement> result = client.timeperiods.getTimePeriods(endOn, startOn, workspace)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet timePeriodsApiInstance = new Asana.TimePeriodsApi();\nlet workspace = \"31326\"; // String | Globally unique identifier for the workspace.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'start_on': \"2019-09-15\", \n    'end_on': \"2019-09-15\", \n    'opt_fields': \"display_name,end_on,offset,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,path,period,start_on,uri\"\n};\ntimePeriodsApiInstance.getTimePeriods(workspace, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.timeperiods.getTimePeriods({param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ntime_periods_api_instance = asana.TimePeriodsApi(api_client)\nworkspace = \"31326\" # str | Globally unique identifier for the workspace.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'start_on': '2019-09-15', # date | ISO 8601 date string\n    'end_on': '2019-09-15', # date | ISO 8601 date string\n    'opt_fields': \"display_name,end_on,offset,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,path,period,start_on,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get time periods\n    api_response = time_periods_api_instance.get_time_periods(workspace, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling TimePeriodsApi->get_time_periods: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.time_periods.get_time_periods({''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->timeperiods->getTimePeriods(array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.time_periods.get_time_periods(workspace: '&#x27;workspace_example&#x27;', param: \"value\", param: \"value\", options: {pretty: true})"
 components:
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    TimePeriodResponse:
+      $ref: '#/components/schemas/TimePeriodBase'
+    NextPage:
+      type: object
+      nullable: true
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    TimePeriodCompact:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: time_period
+          x-insert-after: gid
+        end_on:
+          type: string
+          description: The localized end date of the time period in `YYYY-MM-DD` format.
+          example: '2019-09-14'
+        start_on:
+          type: string
+          description: The localized start date of the time period in `YYYY-MM-DD` format.
+          example: '2019-09-13'
+        period:
+          type: string
+          description: 'The cadence and index of the time period. The value is one of: `FY`, `H1`, `H2`, `Q1`, `Q2`, `Q3`, or `Q4`.'
+          enum:
+          - FY
+          - H1
+          - H2
+          - Q1
+          - Q2
+          - Q3
+          - Q4
+          example: Q1
+        display_name:
+          type: string
+          description: A string representing the cadence code and the fiscal year.
+          example: Q1 FY22
+    TimePeriodBase:
+      allOf:
+      - $ref: '#/components/schemas/TimePeriodCompact'
+      - type: object
+        properties:
+          parent:
+            allOf:
+            - $ref: '#/components/schemas/TimePeriodCompact'
+            - nullable: true
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    time_period_path_gid:
+      name: time_period_gid
+      in: path
+      description: Globally unique identifier for the time period.
+      required: true
+      schema:
+        type: string
+      example: '917392'
+      x-env-variable: time_period
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
   securitySchemes:
     personalAccessToken:
       type: http
+      description: A personal access token for the Asana API.
       scheme: bearer
     oauth2:
       type: oauth2
+      description: OAuth 2.0 authorization code flow.
       flows:
         authorizationCode:
           authorizationUrl: https://app.asana.com/-/oauth_authorize
           tokenUrl: https://app.asana.com/-/oauth_token
           scopes:
             default: Provides access to all endpoints documented in the API reference.
-  schemas:
-    TimePeriodCompact:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: time_period
-        display_name:
-          type: string
-        start_on:
-          type: string
-          format: date
-        end_on:
-          type: string
-          format: date
-        period:
-          type: string
-          enum:
-            - FY
-            - H1
-            - H2
-            - Q1
-            - Q2
-            - Q3
-            - Q4
-    TimePeriodResponse:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: time_period
-        display_name:
-          type: string
-        start_on:
-          type: string
-          format: date
-        end_on:
-          type: string
-          format: date
-        period:
-          type: string
-        parent:
-          type: object
-          nullable: true
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            display_name:
-              type: string

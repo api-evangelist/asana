@@ -1,10 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Status Updates API
-  description: >-
-    The Asana Status Updates API allows users to manage progress updates on
-    projects, portfolios, and goals. Status updates include text and a
-    status_type indicating the overall state.
+  title: Asana Allocations Status Updates API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -14,30 +11,100 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Status Updates
-    description: Manage status updates on objects.
+- name: Status Updates
+  description: 'A status update is an update on the progress of a particular object,
+
+    and is sent out to all followers when created. These updates
+
+    include both text describing the update and a `status_type` intended to
+
+    represent the overall state of the project. These include: `on_track` for projects that
+
+    are on track, `at_risk` for projects at risk, `off_track` for projects that
+
+    are behind, and `on_hold` for projects on hold.
+
+
+    Status updates can be created and deleted, but not modified.'
 paths:
   /status_updates/{status_update_gid}:
+    parameters:
+    - $ref: '#/components/parameters/status_update_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get a status update
-      operationId: getStatusUpdate
+      description: Returns the complete record for a single status update.
       tags:
-        - Status Updates
+      - Status Updates
+      operationId: getStatus
       parameters:
-        - name: status_update_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - author
+        - author.name
+        - created_at
+        - created_by
+        - created_by.name
+        - hearted
+        - hearts
+        - hearts.user
+        - hearts.user.name
+        - html_text
+        - liked
+        - likes
+        - likes.user
+        - likes.user.name
+        - modified_at
+        - num_hearts
+        - num_likes
+        - parent
+        - parent.name
+        - resource_subtype
+        - status_type
+        - text
+        - title
+        schema:
+          type: array
+          items:
             type: string
+            enum:
+            - author
+            - author.name
+            - created_at
+            - created_by
+            - created_by.name
+            - hearted
+            - hearts
+            - hearts.user
+            - hearts.user.name
+            - html_text
+            - liked
+            - likes
+            - likes.user
+            - likes.user.name
+            - modified_at
+            - num_hearts
+            - num_likes
+            - parent
+            - parent.name
+            - resource_subtype
+            - status_type
+            - text
+            - title
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved the status update.
+        200:
+          description: Successfully retrieved the specified object's status updates.
           content:
             application/json:
               schema:
@@ -45,48 +112,220 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/StatusUpdateResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.statusupdates.getStatus(statusGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet statusUpdatesApiInstance = new Asana.StatusUpdatesApi();\nlet status_update_gid = \"321654\"; // String | The status update to get.\nlet opts = { \n    'opt_fields': \"author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title\"\n};\nstatusUpdatesApiInstance.getStatus(status_update_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.statusupdates.getStatus(statusUpdateGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nstatus_updates_api_instance = asana.StatusUpdatesApi(api_client)\nstatus_update_gid = \"321654\" # str | The status update to get.\nopts = {\n    'opt_fields': \"author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a status update\n    api_response = status_updates_api_instance.get_status(status_update_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling StatusUpdatesApi->get_status: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.status_updates.get_status(status_update_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->statusupdates->getStatus($status_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.status_updates.get_status(status_gid: 'status_gid', param: \"value\", param: \"value\", options: {pretty: true})"
     delete:
       summary: Asana Delete a status update
-      operationId: deleteStatusUpdate
+      description: 'Deletes a specific, existing status update.
+
+
+        Returns an empty data record.'
       tags:
-        - Status Updates
-      parameters:
-        - name: status_update_gid
-          in: path
-          required: true
-          schema:
-            type: string
+      - Status Updates
+      operationId: deleteStatus
       responses:
-        '200':
-          description: Successfully deleted the status update.
+        200:
+          description: Successfully deleted the specified status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmptyResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.statusupdates.deleteStatus(statusGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet statusUpdatesApiInstance = new Asana.StatusUpdatesApi();\nlet status_update_gid = \"321654\"; // String | The status update to get.\n\nstatusUpdatesApiInstance.deleteStatus(status_update_gid).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.statusupdates.deleteStatus(statusUpdateGid)\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nstatus_updates_api_instance = asana.StatusUpdatesApi(api_client)\nstatus_update_gid = \"321654\" # str | The status update to get.\n\n\ntry:\n    # Delete a status update\n    api_response = status_updates_api_instance.delete_status(status_update_gid)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling StatusUpdatesApi->delete_status: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.status_updates.delete_status(status_update_gid, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->statusupdates->deleteStatus($status_gid, array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.status_updates.delete_status(status_gid: 'status_gid', options: {pretty: true})"
   /status_updates:
+    parameters:
+    - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/limit'
+    - $ref: '#/components/parameters/offset'
     get:
       summary: Asana Get status updates from an object
-      operationId: getStatusUpdatesForObject
+      description: Returns the compact status update records for all updates on the object.
       tags:
-        - Status Updates
+      - Status Updates
+      operationId: getStatusesForObject
       parameters:
-        - name: parent
-          in: query
-          required: true
-          schema:
+      - name: parent
+        required: true
+        in: query
+        description: Globally unique identifier for object to fetch statuses from. Must be a GID for a project, portfolio, or goal.
+        schema:
+          type: string
+        example: '159874'
+      - name: created_since
+        in: query
+        description: Only return statuses that have been created since the given time.
+        schema:
+          type: string
+          format: date-time
+        example: '2012-02-22T02:06:58.158Z'
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - author
+        - author.name
+        - created_at
+        - created_by
+        - created_by.name
+        - hearted
+        - hearts
+        - hearts.user
+        - hearts.user.name
+        - html_text
+        - liked
+        - likes
+        - likes.user
+        - likes.user.name
+        - modified_at
+        - num_hearts
+        - num_likes
+        - offset
+        - parent
+        - parent.name
+        - path
+        - resource_subtype
+        - status_type
+        - text
+        - title
+        - uri
+        schema:
+          type: array
+          items:
             type: string
-        - name: created_since
-          in: query
-          schema:
-            type: string
-            format: date-time
-        - name: limit
-          in: query
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          schema:
-            type: string
+            enum:
+            - author
+            - author.name
+            - created_at
+            - created_by
+            - created_by.name
+            - hearted
+            - hearts
+            - hearts.user
+            - hearts.user.name
+            - html_text
+            - liked
+            - likes
+            - likes.user
+            - likes.user.name
+            - modified_at
+            - num_hearts
+            - num_likes
+            - offset
+            - parent
+            - parent.name
+            - path
+            - resource_subtype
+            - status_type
+            - text
+            - title
+            - uri
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved status updates.
+        200:
+          description: Successfully retrieved the specified object's status updates.
           content:
             application/json:
               schema:
@@ -96,12 +335,128 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/StatusUpdateCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<JsonElement> result = client.statusupdates.getStatusesForObject(createdSince, parent)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet statusUpdatesApiInstance = new Asana.StatusUpdatesApi();\nlet parent = \"159874\"; // String | Globally unique identifier for object to fetch statuses from. Must be a GID for a project, portfolio, or goal.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'created_since': \"2012-02-22T02:06:58.158Z\", \n    'opt_fields': \"author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,offset,parent,parent.name,path,resource_subtype,status_type,text,title,uri\"\n};\nstatusUpdatesApiInstance.getStatusesForObject(parent, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.statusupdates.getStatusesForObject({param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nstatus_updates_api_instance = asana.StatusUpdatesApi(api_client)\nparent = \"159874\" # str | Globally unique identifier for object to fetch statuses from. Must be a GID for a project, portfolio, or goal.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'created_since': '2012-02-22T02:06:58.158Z', # datetime | Only return statuses that have been created since the given time.\n    'opt_fields': \"author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,offset,parent,parent.name,path,resource_subtype,status_type,text,title,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get status updates from an object\n    api_response = status_updates_api_instance.get_statuses_for_object(parent, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling StatusUpdatesApi->get_statuses_for_object: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.status_updates.get_statuses_for_object({''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->statusupdates->getStatusesForObject(array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.status_updates.get_statuses_for_object(parent: '&#x27;parent_example&#x27;', param: \"value\", param: \"value\", options: {pretty: true})"
     post:
       summary: Asana Create a status update
-      operationId: createStatusUpdateForObject
+      description: 'Creates a new status update on an object.
+
+        Returns the full record of the newly created status update.'
       tags:
-        - Status Updates
+      - Status Updates
+      operationId: createStatusForObject
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - author
+        - author.name
+        - created_at
+        - created_by
+        - created_by.name
+        - hearted
+        - hearts
+        - hearts.user
+        - hearts.user.name
+        - html_text
+        - liked
+        - likes
+        - likes.user
+        - likes.user.name
+        - modified_at
+        - num_hearts
+        - num_likes
+        - parent
+        - parent.name
+        - resource_subtype
+        - status_type
+        - text
+        - title
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - author
+            - author.name
+            - created_at
+            - created_by
+            - created_by.name
+            - hearted
+            - hearts
+            - hearts.user
+            - hearts.user.name
+            - html_text
+            - liked
+            - likes
+            - likes.user
+            - likes.user.name
+            - modified_at
+            - num_hearts
+            - num_likes
+            - parent
+            - parent.name
+            - resource_subtype
+            - status_type
+            - text
+            - title
+        style: form
+        explode: false
       requestBody:
+        description: The status update to create.
         required: true
         content:
           application/json:
@@ -111,8 +466,8 @@ paths:
                 data:
                   $ref: '#/components/schemas/StatusUpdateRequest'
       responses:
-        '201':
-          description: Successfully created the status update.
+        201:
+          description: Successfully created a new status update.
           content:
             application/json:
               schema:
@@ -120,122 +475,396 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/StatusUpdateResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.statusupdates.createStatusForObject()\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet statusUpdatesApiInstance = new Asana.StatusUpdatesApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The status update to create.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title\"\n};\nstatusUpdatesApiInstance.createStatusForObject(body, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.statusupdates.createStatusForObject({field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nstatus_updates_api_instance = asana.StatusUpdatesApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The status update to create.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Create a status update\n    api_response = status_updates_api_instance.create_status_for_object(body, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling StatusUpdatesApi->create_status_for_object: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.status_updates.create_status_for_object({''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->statusupdates->createStatusForObject(array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.status_updates.create_status_for_object(field: \"value\", field: \"value\", options: {pretty: true})"
 components:
+  schemas:
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    StatusUpdateBase:
+      allOf:
+      - $ref: '#/components/schemas/StatusUpdateCompact'
+      - type: object
+        required:
+        - text
+        - status_type
+        properties:
+          text:
+            description: The text content of the status update.
+            type: string
+            example: The project is moving forward according to plan...
+          html_text:
+            description: '[Opt In](/docs/inputoutput-options). The text content of the status update with formatting as HTML.'
+            type: string
+            example: <body>The project <strong>is</strong> moving forward according to plan...</body>
+          status_type:
+            description: The type associated with the status update. This represents the current state of the object this object is on.
+            type: string
+            enum:
+            - on_track
+            - at_risk
+            - off_track
+            - on_hold
+            - complete
+            - achieved
+            - partial
+            - missed
+            - dropped
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    StatusUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/StatusUpdateBase'
+      - type: object
+        required:
+        - parent
+        properties:
+          parent:
+            allOf:
+            - type: string
+              description: The id of parent to send this status update to. This can be a project, goal or portfolio.
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    Like:
+      type: object
+      description: An object to represent a user's like.
+      properties:
+        gid:
+          description: Globally unique identifier of the object, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+        user:
+          $ref: '#/components/schemas/UserCompact'
+    NextPage:
+      type: object
+      nullable: true
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    StatusUpdateCompact:
+      description: A *status update* is an update on the progress of a particular project, portfolio, or goal, and is sent out to all of its parent's followers when created. These updates include both text describing the update and a `status_type` intended to represent the overall state of the project.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: status_update
+          x-insert-after: gid
+        title:
+          description: The title of the status update.
+          type: string
+          example: Status Update - Jun 15
+        resource_subtype:
+          type: string
+          description: 'The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+
+            The `resource_subtype`s for `status` objects represent the type of their parent.'
+          enum:
+          - project_status_update
+          - portfolio_status_update
+          - goal_status_update
+          example: project_status_update
+          readOnly: true
+    StatusUpdateResponse:
+      allOf:
+      - $ref: '#/components/schemas/StatusUpdateBase'
+      - type: object
+        properties:
+          author:
+            $ref: '#/components/schemas/UserCompact'
+          created_at:
+            description: The time at which this resource was created.
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+          created_by:
+            $ref: '#/components/schemas/UserCompact'
+          hearted:
+            description: '*Deprecated - please use liked instead* True if the status is hearted by the authorized user, false if not.'
+            type: boolean
+            example: true
+            readOnly: true
+          hearts:
+            description: '*Deprecated - please use likes instead* Array of likes for users who have hearted this status.'
+            type: array
+            items:
+              $ref: '#/components/schemas/Like'
+            readOnly: true
+          liked:
+            description: True if the status is liked by the authorized user, false if not.
+            type: boolean
+            example: true
+          likes:
+            description: Array of likes for users who have liked this status.
+            type: array
+            items:
+              $ref: '#/components/schemas/Like'
+            readOnly: true
+          modified_at:
+            description: 'The time at which this project status was last modified.
+
+              *Note: This does not currently reflect any changes in associations such as comments that may have been added or removed from the status.*'
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+          num_hearts:
+            description: '*Deprecated - please use likes instead* The number of users who have hearted this status.'
+            type: integer
+            example: 5
+            readOnly: true
+          num_likes:
+            description: The number of users who have liked this status.
+            type: integer
+            example: 5
+            readOnly: true
+          parent:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: The parent of the status update. This can be a project, goal or portfolio, and indicates that this status was sent on that object.
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    status_update_path_gid:
+      name: status_update_gid
+      in: path
+      required: true
+      description: The status update to get.
+      schema:
+        type: string
+      example: '321654'
+      x-env-variable: status
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
   securitySchemes:
     personalAccessToken:
       type: http
+      description: A personal access token for the Asana API.
       scheme: bearer
     oauth2:
       type: oauth2
+      description: OAuth 2.0 authorization code flow.
       flows:
         authorizationCode:
           authorizationUrl: https://app.asana.com/-/oauth_authorize
           tokenUrl: https://app.asana.com/-/oauth_token
           scopes:
             default: Provides access to all endpoints documented in the API reference.
-  schemas:
-    StatusUpdateCompact:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: status_update
-        title:
-          type: string
-        resource_subtype:
-          type: string
-          enum:
-            - project_status_update
-            - portfolio_status_update
-            - goal_status_update
-    StatusUpdateRequest:
-      type: object
-      properties:
-        text:
-          type: string
-        html_text:
-          type: string
-        status_type:
-          type: string
-          enum:
-            - on_track
-            - at_risk
-            - off_track
-            - on_hold
-            - complete
-            - achieved
-            - partial
-            - missed
-            - dropped
-        parent:
-          type: string
-        title:
-          type: string
-      required:
-        - status_type
-        - parent
-    StatusUpdateResponse:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: status_update
-        title:
-          type: string
-        text:
-          type: string
-        html_text:
-          type: string
-        status_type:
-          type: string
-          enum:
-            - on_track
-            - at_risk
-            - off_track
-            - on_hold
-            - complete
-            - achieved
-            - partial
-            - missed
-            - dropped
-        author:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        created_by:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        parent:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        resource_subtype:
-          type: string

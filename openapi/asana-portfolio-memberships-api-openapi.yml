@@ -1,0 +1,597 @@
+openapi: 3.1.0
+info:
+  title: Asana Allocations Portfolio Memberships API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
+  version: '1.0'
+  termsOfService: https://asana.com/terms
+  contact:
+    name: Asana Support
+    url: https://asana.com/support
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
+security:
+- personalAccessToken: []
+- oauth2: []
+tags:
+- name: Portfolio Memberships
+  description: This object determines if a user is a member of a portfolio.
+paths:
+  /portfolio_memberships:
+    parameters:
+    - $ref: '#/components/parameters/portfolio_query_param'
+    - $ref: '#/components/parameters/workspace_query_param'
+    - $ref: '#/components/parameters/user_query_param'
+    - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/limit'
+    - $ref: '#/components/parameters/offset'
+    get:
+      summary: Asana Get multiple portfolio memberships
+      description: Returns a list of portfolio memberships in compact representation. You must specify `portfolio`, `portfolio` and `user`, or `workspace` and `user`.
+      tags:
+      - Portfolio Memberships
+      operationId: getPortfolioMemberships
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - access_level
+        - offset
+        - path
+        - portfolio
+        - portfolio.name
+        - uri
+        - user
+        - user.name
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - access_level
+            - offset
+            - path
+            - portfolio
+            - portfolio.name
+            - uri
+            - user
+            - user.name
+        style: form
+        explode: false
+      responses:
+        200:
+          description: Successfully retrieved portfolio memberships.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeprecatedPortfolioMembershipCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<PortfolioMembership> result = client.portfoliomemberships.getPortfolioMemberships(user, workspace, portfolio)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet portfolioMembershipsApiInstance = new Asana.PortfolioMembershipsApi();\nlet opts = { \n    'portfolio': \"12345\", \n    'workspace': \"12345\", \n    'user': \"me\", \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"access_level,offset,path,portfolio,portfolio.name,uri,user,user.name\"\n};\nportfolioMembershipsApiInstance.getPortfolioMemberships(opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.portfoliomemberships.getPortfolioMemberships({param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nportfolio_memberships_api_instance = asana.PortfolioMembershipsApi(api_client)\nopts = {\n    'portfolio': \"12345\", # str | The portfolio to filter results on.\n    'workspace': \"12345\", # str | The workspace to filter results on.\n    'user': \"me\", # str | A string identifying a user. This can either be the string \\\"me\\\", an email, or the gid of a user.\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"access_level,offset,path,portfolio,portfolio.name,uri,user,user.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get multiple portfolio memberships\n    api_response = portfolio_memberships_api_instance.get_portfolio_memberships(opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling PortfolioMembershipsApi->get_portfolio_memberships: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.portfolio_memberships.get_portfolio_memberships({''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->portfoliomemberships->getPortfolioMemberships(array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.portfolio_memberships.get_portfolio_memberships(param: \"value\", param: \"value\", options: {pretty: true})"
+  /portfolio_memberships/{portfolio_membership_gid}:
+    parameters:
+    - $ref: '#/components/parameters/portfolio_membership_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    get:
+      summary: Asana Get a portfolio membership
+      description: Returns the complete portfolio record for a single portfolio membership.
+      tags:
+      - Portfolio Memberships
+      operationId: getPortfolioMembership
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - access_level
+        - portfolio
+        - portfolio.name
+        - user
+        - user.name
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - access_level
+            - portfolio
+            - portfolio.name
+            - user
+            - user.name
+        style: form
+        explode: false
+      responses:
+        200:
+          description: Successfully retrieved the requested portfolio membership.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DeprecatedPortfolioMembershipResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nPortfolioMembership result = client.portfoliomemberships.getPortfolioMembership(portfolioMembershipGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet portfolioMembershipsApiInstance = new Asana.PortfolioMembershipsApi();\nlet portfolio_membership_gid = \"1331\"; // String | \nlet opts = { \n    'opt_fields': \"access_level,portfolio,portfolio.name,user,user.name\"\n};\nportfolioMembershipsApiInstance.getPortfolioMembership(portfolio_membership_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.portfoliomemberships.getPortfolioMembership(portfolioMembershipGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nportfolio_memberships_api_instance = asana.PortfolioMembershipsApi(api_client)\nportfolio_membership_gid = \"1331\" # str | \nopts = {\n    'opt_fields': \"access_level,portfolio,portfolio.name,user,user.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a portfolio membership\n    api_response = portfolio_memberships_api_instance.get_portfolio_membership(portfolio_membership_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling PortfolioMembershipsApi->get_portfolio_membership: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.portfolio_memberships.get_portfolio_membership(portfolio_membership_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->portfoliomemberships->getPortfolioMembership($portfolio_membership_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.portfolio_memberships.get_portfolio_membership(portfolio_membership_gid: 'portfolio_membership_gid', param: \"value\", param: \"value\", options: {pretty: true})"
+  /portfolios/{portfolio_gid}/portfolio_memberships:
+    parameters:
+    - $ref: '#/components/parameters/portfolio_path_gid'
+    - $ref: '#/components/parameters/user_query_param'
+    - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/limit'
+    - $ref: '#/components/parameters/offset'
+    get:
+      summary: Asana Get memberships from a portfolio
+      description: Returns the compact portfolio membership records for the portfolio.
+      tags:
+      - Portfolio Memberships
+      operationId: getPortfolioMembershipsForPortfolio
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - access_level
+        - offset
+        - path
+        - portfolio
+        - portfolio.name
+        - uri
+        - user
+        - user.name
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - access_level
+            - offset
+            - path
+            - portfolio
+            - portfolio.name
+            - uri
+            - user
+            - user.name
+        style: form
+        explode: false
+      responses:
+        200:
+          description: Successfully retrieved the requested portfolio's memberships.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeprecatedPortfolioMembershipCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<PortfolioMembership> result = client.portfoliomemberships.getPortfolioMembershipsForPortfolio(portfolioGid, user)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet portfolioMembershipsApiInstance = new Asana.PortfolioMembershipsApi();\nlet portfolio_gid = \"12345\"; // String | Globally unique identifier for the portfolio.\nlet opts = { \n    'user': \"me\", \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"access_level,offset,path,portfolio,portfolio.name,uri,user,user.name\"\n};\nportfolioMembershipsApiInstance.getPortfolioMembershipsForPortfolio(portfolio_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.portfoliomemberships.getPortfolioMembershipsForPortfolio(portfolioGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nportfolio_memberships_api_instance = asana.PortfolioMembershipsApi(api_client)\nportfolio_gid = \"12345\" # str | Globally unique identifier for the portfolio.\nopts = {\n    'user': \"me\", # str | A string identifying a user. This can either be the string \\\"me\\\", an email, or the gid of a user.\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"access_level,offset,path,portfolio,portfolio.name,uri,user,user.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get memberships from a portfolio\n    api_response = portfolio_memberships_api_instance.get_portfolio_memberships_for_portfolio(portfolio_gid, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling PortfolioMembershipsApi->get_portfolio_memberships_for_portfolio: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.portfolio_memberships.get_portfolio_memberships_for_portfolio(portfolio_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->portfoliomemberships->getPortfolioMembershipsForPortfolio($portfolio_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.portfolio_memberships.get_portfolio_memberships_for_portfolio(portfolio_gid: 'portfolio_gid', param: \"value\", param: \"value\", options: {pretty: true})"
+components:
+  schemas:
+    PortfolioCompact:
+      description: 'A *portfolio* gives a high-level overview of the status of multiple initiatives in Asana. Portfolios provide a dashboard overview of the state of multiple projects, including a progress report and the most recent [project status](/reference/project-statuses) update.
+
+        Portfolios have some restrictions on size. Each portfolio has a max of 1500 items and, like projects, a max of 20 custom fields.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: portfolio
+          x-insert-after: gid
+        name:
+          description: The name of the portfolio.
+          type: string
+          example: Bug Portfolio
+    DeprecatedPortfolioMembershipCompact:
+      description: This object determines if a user is a member of a portfolio.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: portfolio_membership
+          x-insert-after: gid
+        portfolio:
+          description: '[Opt In](/docs/inputoutput-options). The portfolio the user is a member of.'
+          $ref: '#/components/schemas/PortfolioCompact'
+        user:
+          $ref: '#/components/schemas/UserCompact'
+        access_level:
+          description: Whether the member has admin, editor, or viewer access to the portfolio. Portfolios do not support commenter access yet.
+          type: string
+          enum:
+          - admin
+          - editor
+          - viewer
+          readOnly: true
+          example: admin
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    DeprecatedPortfolioMembershipResponse:
+      $ref: '#/components/schemas/DeprecatedPortfolioMembershipBase'
+    NextPage:
+      type: object
+      nullable: true
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    DeprecatedPortfolioMembershipBase:
+      $ref: '#/components/schemas/DeprecatedPortfolioMembershipCompact'
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    workspace_query_param:
+      name: workspace
+      in: query
+      description: The workspace to filter results on.
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
+    user_query_param:
+      name: user
+      in: query
+      description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+      schema:
+        type: string
+      x-env-variable: user
+      example: me
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    portfolio_membership_path_gid:
+      name: portfolio_membership_gid
+      in: path
+      required: true
+      schema:
+        type: string
+      example: '1331'
+      x-env-variable: portfolio_membership
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    portfolio_query_param:
+      name: portfolio
+      in: query
+      description: The portfolio to filter results on.
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: portfolio
+    portfolio_path_gid:
+      name: portfolio_gid
+      in: path
+      description: Globally unique identifier for the portfolio.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: portfolio
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

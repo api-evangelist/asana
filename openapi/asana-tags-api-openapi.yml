@@ -1,9 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Tags API
-  description: >-
-    The Asana Tags API allows developers to manage tags that can be attached to
-    any task in Asana. A tag exists in a single workspace or organization.
+  title: Asana Allocations Tags API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -13,36 +11,71 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Tags
-    description: Manage tags for tasks.
+- name: Tags
 paths:
   /tags:
+    parameters:
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get multiple tags
+      description: Returns the compact tag records for some filtered set of tags. Use one or more of the parameters provided to filter the tags returned.
+      tags:
+      - Tags
       operationId: getTags
-      tags: []
       parameters:
-        - name: workspace
-          in: query
-          schema:
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - name: workspace
+        in: query
+        description: The workspace to filter tags on.
+        schema:
+          type: string
+        example: '1331'
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - color
+        - created_at
+        - followers
+        - followers.name
+        - name
+        - notes
+        - offset
+        - path
+        - permalink_url
+        - uri
+        - workspace
+        - workspace.name
+        schema:
+          type: array
+          items:
             type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          schema:
-            type: string
+            enum:
+            - color
+            - created_at
+            - followers
+            - followers.name
+            - name
+            - notes
+            - offset
+            - path
+            - permalink_url
+            - uri
+            - workspace
+            - workspace.name
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved tags.
+        200:
+          description: Successfully retrieved the specified set of tags.
           content:
             application/json:
               schema:
@@ -52,11 +85,110 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TagCompact'
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<Tag> result = client.tags.getTags(workspace)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet tagsApiInstance = new Asana.TagsApi();\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'workspace': \"1331\", \n    'opt_fields': \"color,created_at,followers,followers.name,name,notes,offset,path,permalink_url,uri,workspace,workspace.name\"\n};\ntagsApiInstance.getTags(opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.tags.getTags({param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ntags_api_instance = asana.TagsApi(api_client)\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'workspace': \"1331\", # str | The workspace to filter tags on.\n    'opt_fields': \"color,created_at,followers,followers.name,name,notes,offset,path,permalink_url,uri,workspace,workspace.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get multiple tags\n    api_response = tags_api_instance.get_tags(opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling TagsApi->get_tags: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.tags.get_tags({''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->tags->getTags(array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.tags.get_tags(param: \"value\", param: \"value\", options: {pretty: true})"
     post:
       summary: Asana Create a tag
+      description: 'Creates a new tag in a workspace or organization.
+
+
+        Every tag is required to be created in a specific workspace or
+
+        organization, and this cannot be changed once set. Note that you can use
+
+        the workspace parameter regardless of whether or not it is an
+
+        organization.
+
+
+        Returns the full record of the newly created tag.'
+      tags:
+      - Tags
       operationId: createTag
-      tags: []
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - color
+        - created_at
+        - followers
+        - followers.name
+        - name
+        - notes
+        - permalink_url
+        - workspace
+        - workspace.name
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - color
+            - created_at
+            - followers
+            - followers.name
+            - name
+            - notes
+            - permalink_url
+            - workspace
+            - workspace.name
+        style: form
+        explode: false
       requestBody:
+        description: The tag to create.
         required: true
         content:
           application/json:
@@ -66,8 +198,8 @@ paths:
                 data:
                   $ref: '#/components/schemas/TagRequest'
       responses:
-        '201':
-          description: Successfully created a new tag.
+        201:
+          description: Successfully created the newly specified tag.
           content:
             application/json:
               schema:
@@ -75,20 +207,101 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/TagResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nTag result = client.tags.createTag()\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet tagsApiInstance = new Asana.TagsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The tag to create.\nlet opts = { \n    'opt_fields': \"color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name\"\n};\ntagsApiInstance.createTag(body, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.tags.createTag({field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ntags_api_instance = asana.TagsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The tag to create.\nopts = {\n    'opt_fields': \"color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Create a tag\n    api_response = tags_api_instance.create_tag(body, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TagsApi->create_tag: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.tags.create_tag({''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->tags->createTag(array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.tags.create_tag(field: \"value\", field: \"value\", options: {pretty: true})"
   /tags/{tag_gid}:
+    parameters:
+    - $ref: '#/components/parameters/tag_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get a tag
+      description: Returns the complete tag record for a single tag.
+      tags:
+      - Tags
       operationId: getTag
-      tags: []
       parameters:
-        - name: tag_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - color
+        - created_at
+        - followers
+        - followers.name
+        - name
+        - notes
+        - permalink_url
+        - workspace
+        - workspace.name
+        schema:
+          type: array
+          items:
             type: string
+            enum:
+            - color
+            - created_at
+            - followers
+            - followers.name
+            - name
+            - notes
+            - permalink_url
+            - workspace
+            - workspace.name
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved the tag.
+        200:
+          description: Successfully retrieved the specified tag.
           content:
             application/json:
               schema:
@@ -96,28 +309,109 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/TagResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nTag result = client.tags.getTag(tagGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet tagsApiInstance = new Asana.TagsApi();\nlet tag_gid = \"11235\"; // String | Globally unique identifier for the tag.\nlet opts = { \n    'opt_fields': \"color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name\"\n};\ntagsApiInstance.getTag(tag_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.tags.getTag(tagGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ntags_api_instance = asana.TagsApi(api_client)\ntag_gid = \"11235\" # str | Globally unique identifier for the tag.\nopts = {\n    'opt_fields': \"color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a tag\n    api_response = tags_api_instance.get_tag(tag_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TagsApi->get_tag: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.tags.get_tag(tag_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->tags->getTag($tag_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.tags.get_tag(tag_gid: 'tag_gid', param: \"value\", param: \"value\", options: {pretty: true})"
     put:
       summary: Asana Update a tag
+      description: 'Updates the properties of a tag. Only the fields provided in the `data`
+
+        block will be updated; any unspecified fields will remain unchanged.
+
+
+        When using this method, it is best to specify only those fields you wish
+
+        to change, or else you may overwrite changes made by another user since
+
+        you last retrieved the tag.
+
+
+        Returns the complete updated tag record.'
+      tags:
+      - Tags
       operationId: updateTag
-      tags: []
       parameters:
-        - name: tag_gid
-          in: path
-          required: true
-          schema:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - color
+        - created_at
+        - followers
+        - followers.name
+        - name
+        - notes
+        - permalink_url
+        - workspace
+        - workspace.name
+        schema:
+          type: array
+          items:
             type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/TagRequest'
+            enum:
+            - color
+            - created_at
+            - followers
+            - followers.name
+            - name
+            - notes
+            - permalink_url
+            - workspace
+            - workspace.name
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully updated the tag.
+        200:
+          description: Successfully updated the specified tag.
           content:
             application/json:
               schema:
@@ -125,160 +419,423 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/TagResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nTag result = client.tags.updateTag(tagGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet tagsApiInstance = new Asana.TagsApi();\nlet tag_gid = \"11235\"; // String | Globally unique identifier for the tag.\nlet opts = { \n    'opt_fields': \"color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name\"\n};\ntagsApiInstance.updateTag(tag_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.tags.updateTag(tagGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ntags_api_instance = asana.TagsApi(api_client)\ntag_gid = \"11235\" # str | Globally unique identifier for the tag.\nopts = {\n    'opt_fields': \"color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Update a tag\n    api_response = tags_api_instance.update_tag(tag_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TagsApi->update_tag: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.tags.update_tag(tag_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->tags->updateTag($tag_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.tags.update_tag(tag_gid: 'tag_gid', field: \"value\", field: \"value\", options: {pretty: true})"
     delete:
       summary: Asana Delete a tag
+      description: 'A specific, existing tag can be deleted by making a DELETE request on
+
+        the URL for that tag.
+
+
+        Returns an empty data record.'
+      tags:
+      - Tags
       operationId: deleteTag
-      tags: []
-      parameters:
-        - name: tag_gid
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
-        '200':
-          description: Successfully deleted the tag.
-  /workspaces/{workspace_gid}/tags:
-    get:
-      summary: Asana Get tags in a workspace
-      operationId: getTagsForWorkspace
-      tags: []
-      parameters:
-        - name: workspace_gid
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successfully retrieved tags for the workspace.
+        200:
+          description: Successfully deleted the specified tag.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/TagCompact'
-    post:
-      summary: Asana Create a tag in a workspace
-      operationId: createTagForWorkspace
-      tags: []
-      parameters:
-        - name: workspace_gid
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/TagRequest'
-      responses:
-        '201':
-          description: Successfully created the tag.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/TagResponse'
+                    $ref: '#/components/schemas/EmptyResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: java
+          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
+          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.tags.deleteTag(tagGid)\n    .option(\"pretty\", true)\n    .execute();"
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet tagsApiInstance = new Asana.TagsApi();\nlet tag_gid = \"11235\"; // String | Globally unique identifier for the tag.\n\ntagsApiInstance.deleteTag(tag_gid).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.tags.deleteTag(tagGid)\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\ntags_api_instance = asana.TagsApi(api_client)\ntag_gid = \"11235\" # str | Globally unique identifier for the tag.\n\n\ntry:\n    # Delete a tag\n    api_response = tags_api_instance.delete_tag(tag_gid)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling TagsApi->delete_tag: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.tags.delete_tag(tag_gid, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->tags->deleteTag($tag_gid, array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.tags.delete_tag(tag_gid: 'tag_gid', options: {pretty: true})"
 components:
+  schemas:
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    TagCompact:
+      description: A *tag* is a label that can be attached to any task in Asana. It exists in a single workspace or organization.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: tag
+          x-insert-after: gid
+        name:
+          description: Name of the tag. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    WorkspaceCompact:
+      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: workspace
+          x-insert-after: gid
+        name:
+          description: The name of the workspace.
+          type: string
+          example: My Company Workspace
+    TagBase:
+      allOf:
+      - $ref: '#/components/schemas/TagCompact'
+      - type: object
+        properties:
+          color:
+            type: string
+            description: Color of the tag.
+            nullable: true
+            enum:
+            - dark-pink
+            - dark-green
+            - dark-blue
+            - dark-red
+            - dark-teal
+            - dark-brown
+            - dark-orange
+            - dark-purple
+            - dark-warm-gray
+            - light-pink
+            - light-green
+            - light-blue
+            - light-red
+            - light-teal
+            - light-brown
+            - light-orange
+            - light-purple
+            - light-warm-gray
+            - null
+            example: light-green
+          notes:
+            description: Free-form textual information associated with the tag (i.e. its description).
+            type: string
+            example: Mittens really likes the stuff from Humboldt.
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    TagResponse:
+      allOf:
+      - $ref: '#/components/schemas/TagBase'
+      - type: object
+        properties:
+          created_at:
+            description: The time at which this resource was created.
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+          followers:
+            description: Array of users following this tag.
+            type: array
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/UserCompact'
+          workspace:
+            $ref: '#/components/schemas/WorkspaceCompact'
+          permalink_url:
+            type: string
+            readOnly: true
+            description: A url that points directly to the object within Asana.
+            example: https://app.asana.com/0/resource/123456789/list
+    TagRequest:
+      allOf:
+      - $ref: '#/components/schemas/TagBase'
+      - type: object
+        properties:
+          followers:
+            type: array
+            description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
+            items:
+              type: string
+            example:
+            - '12345'
+            - '42563'
+          workspace:
+            type: string
+            x-env-variable: true
+            description: Gid of an object.
+            example: '12345'
+    NextPage:
+      type: object
+      nullable: true
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+  responses:
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    tag_path_gid:
+      name: tag_gid
+      in: path
+      description: Globally unique identifier for the tag.
+      required: true
+      schema:
+        type: string
+      example: '11235'
+      x-env-variable: tag
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
   securitySchemes:
     personalAccessToken:
       type: http
+      description: A personal access token for the Asana API.
       scheme: bearer
     oauth2:
       type: oauth2
+      description: OAuth 2.0 authorization code flow.
       flows:
         authorizationCode:
           authorizationUrl: https://app.asana.com/-/oauth_authorize
           tokenUrl: https://app.asana.com/-/oauth_token
           scopes:
             default: Provides access to all endpoints documented in the API reference.
-  schemas:
-    TagCompact:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: tag
-        name:
-          type: string
-          example: Stuff to buy
-    TagRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        color:
-          type: string
-          nullable: true
-        workspace:
-          type: string
-        followers:
-          type: array
-          items:
-            type: string
-    TagResponse:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-        resource_type:
-          type: string
-          readOnly: true
-          example: tag
-        name:
-          type: string
-        color:
-          type: string
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        followers:
-          type: array
-          readOnly: true
-          items:
-            type: object
-            properties:
-              gid:
-                type: string
-              resource_type:
-                type: string
-              name:
-                type: string
-        workspace:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        permalink_url:
-          type: string
-          readOnly: true

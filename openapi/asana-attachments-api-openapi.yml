@@ -1,11 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Asana Attachments API
-  description: >-
-    The Asana Attachments API allows developers to interact with and manage file
-    attachments within the Asana platform. An attachment object represents any
-    file attached to a task in Asana, whether it is an uploaded file or one
-    associated via a third-party service such as Dropbox or Google Drive.
+  title: Asana Allocations Attachments API
+  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
   contact:
@@ -15,40 +11,42 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://app.asana.com/api/1.0
-    description: Main endpoint.
+- url: https://app.asana.com/api/1.0
+  description: Main endpoint.
 security:
-  - personalAccessToken: []
-  - oauth2: []
+- personalAccessToken: []
+- oauth2: []
 tags:
-  - name: Attachments
-    description: >-
-      An attachment object represents any file attached to a task in Asana.
+- name: Attachments
+  description: An attachment object represents any file attached to a task in Asana.
 paths:
   /attachments/{attachment_gid}:
+    parameters:
+    - $ref: '#/components/parameters/attachment_path_gid'
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get an attachment
       description: Returns the full record for a single attachment.
       operationId: getAttachment
       tags:
-        - Attachments
+      - Attachments
       parameters:
-        - name: attachment_gid
-          in: path
-          required: true
-          description: Globally unique identifier for the attachment.
-          schema:
+      - name: attachment_gid
+        in: path
+        required: true
+        description: Globally unique identifier for the attachment.
+        schema:
+          type: string
+        example: '12345'
+      - name: opt_fields
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
             type: string
-          example: '12345'
-        - name: opt_fields
-          in: query
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: false
+        style: form
+        explode: false
       responses:
         '200':
           description: Successfully retrieved the record for a single attachment.
@@ -74,15 +72,15 @@ paths:
       description: Deletes a specific, existing attachment.
       operationId: deleteAttachment
       tags:
-        - Attachments
+      - Attachments
       parameters:
-        - name: attachment_gid
-          in: path
-          required: true
-          description: Globally unique identifier for the attachment.
-          schema:
-            type: string
-          example: '12345'
+      - name: attachment_gid
+        in: path
+        required: true
+        description: Globally unique identifier for the attachment.
+        schema:
+          type: string
+        example: '12345'
       responses:
         '200':
           description: Successfully deleted the specified attachment.
@@ -104,32 +102,33 @@ paths:
         '500':
           description: Internal server error.
   /attachments:
+    parameters:
+    - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get attachments from an object
-      description: >-
-        Returns the compact records for all attachments on the object.
+      description: Returns the compact records for all attachments on the object.
       operationId: getAttachmentsForObject
       tags:
-        - Attachments
+      - Attachments
       parameters:
-        - name: parent
-          in: query
-          required: true
-          description: Globally unique identifier for object to fetch attachments from.
-          schema:
-            type: string
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: string
+      - name: parent
+        in: query
+        required: true
+        description: Globally unique identifier for object to fetch attachments from.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: Successfully retrieved the compact records for all attachments.
@@ -154,12 +153,10 @@ paths:
           description: Internal server error.
     post:
       summary: Asana Upload an attachment
-      description: >-
-        Upload an attachment. The file content must be sent as a multipart
-        form data request.
+      description: Upload an attachment. The file content must be sent as a multipart form data request.
       operationId: createAttachmentForObject
       tags:
-        - Attachments
+      - Attachments
       requestBody:
         required: true
         content:
@@ -178,13 +175,13 @@ paths:
                   type: string
                   description: The type of the attachment.
                   enum:
-                    - asana
-                    - dropbox
-                    - gdrive
-                    - onedrive
-                    - box
-                    - vimeo
-                    - external
+                  - asana
+                  - dropbox
+                  - gdrive
+                  - onedrive
+                  - box
+                  - vimeo
+                  - external
                 name:
                   type: string
                   description: The name of the external resource being attached.
@@ -193,8 +190,8 @@ paths:
                   format: uri
                   description: The URL of the external resource being attached.
               required:
-                - parent
-                - resource_subtype
+              - parent
+              - resource_subtype
       responses:
         '200':
           description: Successfully uploaded the attachment.
@@ -216,38 +213,29 @@ paths:
         '500':
           description: Internal server error.
 components:
-  securitySchemes:
-    personalAccessToken:
-      type: http
-      scheme: bearer
-    oauth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://app.asana.com/-/oauth_authorize
-          tokenUrl: https://app.asana.com/-/oauth_token
-          scopes:
-            default: Provides access to all endpoints documented in the API reference.
+  parameters:
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    attachment_path_gid:
+      name: attachment_gid
+      in: path
+      description: Globally unique identifier for the attachment.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: attachment
   schemas:
-    AttachmentCompact:
-      type: object
-      properties:
-        gid:
-          type: string
-          readOnly: true
-          example: '12345'
-        resource_type:
-          type: string
-          readOnly: true
-          example: attachment
-        name:
-          type: string
-          description: The name of the file.
-          example: Screenshot.png
-        resource_subtype:
-          type: string
-          description: The service hosting the attachment.
-          example: dropbox
     AttachmentResponse:
       type: object
       properties:
@@ -304,3 +292,36 @@ components:
         connected_to_app:
           type: boolean
           readOnly: true
+    AttachmentCompact:
+      type: object
+      properties:
+        gid:
+          type: string
+          readOnly: true
+          example: '12345'
+        resource_type:
+          type: string
+          readOnly: true
+          example: attachment
+        name:
+          type: string
+          description: The name of the file.
+          example: Screenshot.png
+        resource_subtype:
+          type: string
+          description: The service hosting the attachment.
+          example: dropbox
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      description: A personal access token for the Asana API.
+      scheme: bearer
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.asana.com/-/oauth_authorize
+          tokenUrl: https://app.asana.com/-/oauth_token
+          scopes:
+            default: Provides access to all endpoints documented in the API reference.

@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: Asana Allocations Jobs API
+  title: Asana Allocations Batch API API
   description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
   version: '1.0'
   termsOfService: https://asana.com/terms
@@ -17,44 +17,54 @@ security:
 - personalAccessToken: []
 - oauth2: []
 tags:
-- name: Jobs
-  description: Track asynchronous operations like project or task duplication.
+- name: Batch API
+  description: Perform multiple operations in a single HTTP request.
 paths:
-  /jobs/{job_gid}:
+  /batch:
     parameters:
-    - $ref: '#/components/parameters/job_path_gid'
     - $ref: '#/components/parameters/pretty'
-    get:
-      summary: Asana Get a job by id
-      description: Returns the full record for a job.
-      operationId: getJob
+    post:
+      summary: Asana Submit parallel requests
+      description: Make multiple API requests in a single call. The maximum number of actions allowed in a single batch request is 10.
+      operationId: createBatchRequest
       tags:
-      - Jobs
-      parameters:
-      - name: job_gid
-        in: path
+      - Batch API
+      requestBody:
         required: true
-        schema:
-          type: string
-        example: '12345'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    actions:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/BatchRequestAction'
+              required:
+              - data
       responses:
         '200':
-          description: Successfully retrieved the record for a single job.
+          description: Successfully completed the batch request.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/JobResponse'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BatchResponse'
         '400':
           description: Bad request.
         '401':
           description: Unauthorized.
         '403':
           description: Forbidden.
-        '404':
-          description: Not found.
+        '429':
+          description: Too many requests.
         '500':
           description: Internal server error.
 components:
@@ -71,70 +81,55 @@ components:
         type: boolean
       style: form
       example: true
-    job_path_gid:
-      name: job_gid
-      in: path
-      description: Globally unique identifier for the job.
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: job
   schemas:
-    JobResponse:
+    BatchResponse:
       type: object
       properties:
-        gid:
+        status_code:
+          type: integer
+          description: The HTTP status code for the individual action.
+          example: 200
+        headers:
+          type: object
+          description: HTTP headers for the individual action.
+        body:
+          type: object
+          description: The body of the response for the individual action.
+    BatchRequestAction:
+      type: object
+      properties:
+        relative_path:
           type: string
-          readOnly: true
-          example: '12345'
-        resource_type:
+          description: The path of the desired endpoint relative to the API's base URL.
+          example: /tasks/123
+        method:
           type: string
-          readOnly: true
-          example: job
-        resource_subtype:
-          type: string
-          readOnly: true
-          example: duplicate_task
-        status:
-          type: string
-          readOnly: true
+          description: The HTTP method for the action.
           enum:
-          - not_started
-          - in_progress
-          - succeeded
-          - failed
-          example: in_progress
-        new_project:
+          - get
+          - post
+          - put
+          - delete
+          - patch
+          example: get
+        data:
           type: object
-          nullable: true
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        new_task:
+          description: For POST/PUT requests, an object containing the data for the action.
+        options:
           type: object
-          nullable: true
+          description: Pagination and other options for the action.
           properties:
-            gid:
+            limit:
+              type: integer
+            offset:
               type: string
-            resource_type:
-              type: string
-            name:
-              type: string
-        new_project_template:
-          type: object
-          nullable: true
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
+            fields:
+              type: array
+              items:
+                type: string
+      required:
+      - relative_path
+      - method
   securitySchemes:
     personalAccessToken:
       type: http
