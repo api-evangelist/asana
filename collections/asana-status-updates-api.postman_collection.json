@@ -1,19 +1,22 @@
 {
   "item": [
     {
-      "id": "2cf470b5-a00d-4c2a-931c-fa933defcfa8",
+      "id": "e3e18c7b-5272-44a5-8454-6ce2c6ea84bd",
       "name": "Status Updates",
       "description": {
-        "content": "Manage status updates on objects.",
+        "content": "A status update is an update on the progress of a particular object,\nand is sent out to all followers when created. These updates\ninclude both text describing the update and a `status_type` intended to\nrepresent the overall state of the project. These include: `on_track` for projects that\nare on track, `at_risk` for projects at risk, `off_track` for projects that\nare behind, and `on_hold` for projects on hold.\n\nStatus updates can be created and deleted, but not modified.",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "a132541e-fc37-45ad-9b6e-c0a1b2e99135",
+          "id": "16f3d8b4-f87a-44f8-bf85-c6925047c2e1",
           "name": "Asana Get a status update",
           "request": {
             "name": "Asana Get a status update",
-            "description": {},
+            "description": {
+              "content": "Returns the complete record for a single status update.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "status_updates",
@@ -22,14 +25,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "status_update_gid",
-                  "description": "(Required) "
+                  "description": "(Required) The status update to get."
                 }
               ]
             },
@@ -44,8 +60,8 @@
           },
           "response": [
             {
-              "id": "52042178-e843-4187-9648-abb489e488eb",
-              "name": "Successfully retrieved the status update.",
+              "id": "d336b059-19cd-4ad9-bb56-637ce41b5f10",
+              "name": "Successfully retrieved the specified object's status updates.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -55,14 +71,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "status_update_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The status update to get."
                     }
                   ]
                 },
@@ -91,48 +116,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"string\",\n    \"resource_type\": \"status_update\",\n    \"title\": \"string\",\n    \"text\": \"string\",\n    \"html_text\": \"string\",\n    \"status_type\": \"off_track\",\n    \"author\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"created_at\": \"1965-05-03T22:10:09.531Z\",\n    \"created_by\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"parent\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"resource_subtype\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"text\": \"The project is moving forward according to plan...\",\n    \"status_type\": \"missed\",\n    \"gid\": \"12345\",\n    \"resource_type\": \"status_update\",\n    \"title\": \"Status Update - Jun 15\",\n    \"resource_subtype\": \"project_status_update\",\n    \"html_text\": \"<body>The project <strong>is</strong> moving forward according to plan...</body>\",\n    \"author\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"user\",\n      \"name\": \"Greg Sanchez\"\n    },\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"created_by\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"user\",\n      \"name\": \"Greg Sanchez\"\n    },\n    \"hearted\": true,\n    \"hearts\": [\n      {\n        \"gid\": \"12345\",\n        \"user\": {\n          \"gid\": \"12345\",\n          \"resource_type\": \"user\",\n          \"name\": \"Greg Sanchez\"\n        }\n      },\n      {\n        \"gid\": \"12345\",\n        \"user\": {\n          \"gid\": \"12345\",\n          \"resource_type\": \"user\",\n          \"name\": \"Greg Sanchez\"\n        }\n      }\n    ],\n    \"liked\": true,\n    \"likes\": [\n      {\n        \"gid\": \"12345\",\n        \"user\": {\n          \"gid\": \"12345\",\n          \"resource_type\": \"user\",\n          \"name\": \"Greg Sanchez\"\n        }\n      },\n      {\n        \"gid\": \"12345\",\n        \"user\": {\n          \"gid\": \"12345\",\n          \"resource_type\": \"user\",\n          \"name\": \"Greg Sanchez\"\n        }\n      }\n    ],\n    \"modified_at\": \"2012-02-22T02:06:58.147Z\",\n    \"num_hearts\": 5,\n    \"num_likes\": 5,\n    \"parent\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project\",\n      \"name\": \"Stuff to buy\"\n    }\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "425547da-dbb8-4b88-a1c1-fb1518e475e7",
-          "name": "Asana Delete a status update",
-          "request": {
-            "name": "Asana Delete a status update",
-            "description": {},
-            "url": {
-              "path": [
-                "status_updates",
-                ":status_update_gid"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "status_update_gid",
-                  "description": "(Required) "
-                }
-              ]
             },
-            "method": "DELETE",
-            "auth": null
-          },
-          "response": [
             {
-              "id": "43b90f3c-58bd-4e8c-9c07-a995deaf10c9",
-              "name": "Successfully deleted the status update.",
+              "id": "9f188086-9e48-4399-a28f-2a8ef9d83fae",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -142,14 +132,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "status_update_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The status update to get."
                     }
                   ]
                 },
@@ -161,6 +160,362 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "84fda324-4329-4fe3-9a27-fa40cf42e82d",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a3cebc6-e36e-4c13-9e1d-1f065e072fef",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dfb38556-181c-43f4-8ca2-8cb230e56aec",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebd83ad8-27f5-4441-aa34-0b23190300bc",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bfa8d565-d6dc-46b4-9c10-e8e2f4dc0119",
+          "name": "Asana Delete a status update",
+          "request": {
+            "name": "Asana Delete a status update",
+            "description": {
+              "content": "Deletes a specific, existing status update.\n\nReturns an empty data record.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "status_updates",
+                ":status_update_gid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "status_update_gid",
+                  "description": "(Required) The status update to get."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6991f64b-2ffd-4b1f-bd8d-6abb7f221c8f",
+              "name": "Successfully deleted the specified status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -171,12 +526,297 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"data\": {}\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "51b7732f-dec3-4868-adaa-a7cb7e358fa4",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ced4fc5c-84de-460f-8bb2-6fe034c1b627",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ac43788-d159-44d0-a1e7-6d1fc1a32232",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d7a8af7-912c-4b1b-ba59-b81755ec3313",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ad13883-765c-4349-b987-a1e629375e3f",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates",
+                    ":status_update_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status_update_gid",
+                      "description": "(Required) The status update to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -185,11 +825,14 @@
           }
         },
         {
-          "id": "56f1037c-bf0f-4d01-88ba-020e8b77c2cd",
+          "id": "f64fdf1a-d1d9-4524-ba18-27c8458e7dae",
           "name": "Asana Get status updates from an object",
           "request": {
             "name": "Asana Get status updates from an object",
-            "description": {},
+            "description": {
+              "content": "Returns the compact status update records for all updates on the object.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "status_updates"
@@ -202,22 +845,37 @@
                   "disabled": false,
                   "key": "parent",
                   "value": "<string>",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for object to fetch statuses from. Must be a GID for a project, portfolio, or goal."
                 },
                 {
                   "disabled": false,
                   "key": "created_since",
-                  "value": "<dateTime>"
+                  "value": "<dateTime>",
+                  "description": "Only return statuses that have been created since the given time."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
                 },
                 {
                   "disabled": false,
                   "key": "limit",
-                  "value": "<integer>"
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
                 },
                 {
                   "disabled": false,
                   "key": "offset",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
                 }
               ],
               "variable": []
@@ -233,8 +891,8 @@
           },
           "response": [
             {
-              "id": "9b227487-a83a-4ab0-b4f1-f82594685070",
-              "name": "Successfully retrieved status updates.",
+              "id": "bd2f0f83-8e2c-4789-b1d8-715ba6a52742",
+              "name": "Successfully retrieved the specified object's status updates.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -246,19 +904,27 @@
                   "query": [
                     {
                       "key": "parent",
-                      "value": "<string>"
+                      "value": "159874"
                     },
                     {
                       "key": "created_since",
-                      "value": "<dateTime>"
+                      "value": "2012-02-22T02:06:58.158Z"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,offset,parent,parent.name,path,resource_subtype,status_type,text,title,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     },
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
                     }
                   ],
                   "variable": []
@@ -288,7 +954,347 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"status_update\",\n      \"title\": \"string\",\n      \"resource_subtype\": \"project_status_update\"\n    },\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"status_update\",\n      \"title\": \"string\",\n      \"resource_subtype\": \"goal_status_update\"\n    }\n  ]\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"status_update\",\n      \"title\": \"Status Update - Jun 15\",\n      \"resource_subtype\": \"project_status_update\"\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"status_update\",\n      \"title\": \"Status Update - Jun 15\",\n      \"resource_subtype\": \"project_status_update\"\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"path\": \"/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"uri\": \"https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "89edac84-8095-4320-a88d-b0426736bd1b",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "159874"
+                    },
+                    {
+                      "key": "created_since",
+                      "value": "2012-02-22T02:06:58.158Z"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,offset,parent,parent.name,path,resource_subtype,status_type,text,title,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a0fc647-0668-42fe-b8bc-6df4c9649d8d",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "159874"
+                    },
+                    {
+                      "key": "created_since",
+                      "value": "2012-02-22T02:06:58.158Z"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,offset,parent,parent.name,path,resource_subtype,status_type,text,title,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5eb07944-5a45-4347-b06f-8c758ebc30f6",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "159874"
+                    },
+                    {
+                      "key": "created_since",
+                      "value": "2012-02-22T02:06:58.158Z"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,offset,parent,parent.name,path,resource_subtype,status_type,text,title,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23cdab1d-e753-4868-bf82-ab2b276510cf",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "159874"
+                    },
+                    {
+                      "key": "created_since",
+                      "value": "2012-02-22T02:06:58.158Z"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,offset,parent,parent.name,path,resource_subtype,status_type,text,title,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0aa3c87f-f72a-4779-a275-9af0b01690be",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "159874"
+                    },
+                    {
+                      "key": "created_since",
+                      "value": "2012-02-22T02:06:58.158Z"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,offset,parent,parent.name,path,resource_subtype,status_type,text,title,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -299,11 +1305,14 @@
           }
         },
         {
-          "id": "ec1eab00-e9f4-4da2-a1f1-7c7dee33c410",
+          "id": "4f9573d5-033c-4106-82b0-13a1e19ee9b2",
           "name": "Asana Create a status update",
           "request": {
             "name": "Asana Create a status update",
-            "description": {},
+            "description": {
+              "content": "Creates a new status update on an object.\nReturns the full record of the newly created status update.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "status_updates"
@@ -311,7 +1320,32 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+                }
+              ],
               "variable": []
             },
             "header": [
@@ -328,7 +1362,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"data\": {\n    \"status_type\": \"<string>\",\n    \"parent\": \"<string>\",\n    \"text\": \"<string>\",\n    \"html_text\": \"<string>\",\n    \"title\": \"<string>\"\n  }\n}",
+              "raw": "{\n  \"data\": {\n    \"parent\": \"<string>\",\n    \"status_type\": \"<string>\",\n    \"text\": \"<string>\",\n    \"title\": \"<string>\",\n    \"html_text\": \"<string>\"\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -338,8 +1372,8 @@
           },
           "response": [
             {
-              "id": "c3f39ced-0c10-43cd-b593-84b674027b79",
-              "name": "Successfully created the status update.",
+              "id": "9e8cafb8-3125-4f61-9883-74a4c5825738",
+              "name": "Successfully created a new status update.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -348,7 +1382,24 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -368,7 +1419,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"status_type\": \"achieved\",\n    \"parent\": \"string\",\n    \"text\": \"string\",\n    \"html_text\": \"string\",\n    \"title\": \"string\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"parent\": \"string\",\n    \"status_type\": \"complete\",\n    \"text\": \"The project is moving forward according to plan...\",\n    \"title\": \"Status Update - Jun 15\",\n    \"html_text\": \"<body>The project <strong>is</strong> moving forward according to plan...</body>\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -384,7 +1435,347 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"string\",\n    \"resource_type\": \"status_update\",\n    \"title\": \"string\",\n    \"text\": \"string\",\n    \"html_text\": \"string\",\n    \"status_type\": \"off_track\",\n    \"author\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"created_at\": \"1965-05-03T22:10:09.531Z\",\n    \"created_by\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"parent\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"resource_subtype\": \"string\"\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"text\": \"The project is moving forward according to plan...\",\n    \"status_type\": \"missed\",\n    \"gid\": \"12345\",\n    \"resource_type\": \"status_update\",\n    \"title\": \"Status Update - Jun 15\",\n    \"resource_subtype\": \"project_status_update\",\n    \"html_text\": \"<body>The project <strong>is</strong> moving forward according to plan...</body>\",\n    \"author\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"user\",\n      \"name\": \"Greg Sanchez\"\n    },\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"created_by\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"user\",\n      \"name\": \"Greg Sanchez\"\n    },\n    \"hearted\": true,\n    \"hearts\": [\n      {\n        \"gid\": \"12345\",\n        \"user\": {\n          \"gid\": \"12345\",\n          \"resource_type\": \"user\",\n          \"name\": \"Greg Sanchez\"\n        }\n      },\n      {\n        \"gid\": \"12345\",\n        \"user\": {\n          \"gid\": \"12345\",\n          \"resource_type\": \"user\",\n          \"name\": \"Greg Sanchez\"\n        }\n      }\n    ],\n    \"liked\": true,\n    \"likes\": [\n      {\n        \"gid\": \"12345\",\n        \"user\": {\n          \"gid\": \"12345\",\n          \"resource_type\": \"user\",\n          \"name\": \"Greg Sanchez\"\n        }\n      },\n      {\n        \"gid\": \"12345\",\n        \"user\": {\n          \"gid\": \"12345\",\n          \"resource_type\": \"user\",\n          \"name\": \"Greg Sanchez\"\n        }\n      }\n    ],\n    \"modified_at\": \"2012-02-22T02:06:58.147Z\",\n    \"num_hearts\": 5,\n    \"num_likes\": 5,\n    \"parent\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project\",\n      \"name\": \"Stuff to buy\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18869ccc-7973-4aac-ab64-4f5cb28d4796",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"parent\": \"string\",\n    \"status_type\": \"complete\",\n    \"text\": \"The project is moving forward according to plan...\",\n    \"title\": \"Status Update - Jun 15\",\n    \"html_text\": \"<body>The project <strong>is</strong> moving forward according to plan...</body>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f73c8c4f-e9ad-42f7-9fb7-fb3688378a66",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"parent\": \"string\",\n    \"status_type\": \"complete\",\n    \"text\": \"The project is moving forward according to plan...\",\n    \"title\": \"Status Update - Jun 15\",\n    \"html_text\": \"<body>The project <strong>is</strong> moving forward according to plan...</body>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e935ccd-15b8-4119-88ff-e5edb43d9085",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"parent\": \"string\",\n    \"status_type\": \"complete\",\n    \"text\": \"The project is moving forward according to plan...\",\n    \"title\": \"Status Update - Jun 15\",\n    \"html_text\": \"<body>The project <strong>is</strong> moving forward according to plan...</body>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96e5d2e8-b705-4fd8-adce-c6c3684894d5",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"parent\": \"string\",\n    \"status_type\": \"complete\",\n    \"text\": \"The project is moving forward according to plan...\",\n    \"title\": \"Status Update - Jun 15\",\n    \"html_text\": \"<body>The project <strong>is</strong> moving forward according to plan...</body>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9802f76-a303-444e-b4e1-1877231bf466",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "status_updates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "author,author.name,created_at,created_by,created_by.name,hearted,hearts,hearts.user,hearts.user.name,html_text,liked,likes,likes.user,likes.user.name,modified_at,num_hearts,num_likes,parent,parent.name,resource_subtype,status_type,text,title"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"parent\": \"string\",\n    \"status_type\": \"complete\",\n    \"text\": \"The project is moving forward according to plan...\",\n    \"title\": \"Status Update - Jun 15\",\n    \"html_text\": \"<body>The project <strong>is</strong> moving forward according to plan...</body>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -416,11 +1807,11 @@
     ]
   },
   "info": {
-    "_postman_id": "3e0d5bd4-5f41-4820-ab49-dd13ea1f1205",
-    "name": "Asana Status Updates API",
+    "_postman_id": "7e0d037f-f759-42aa-ae15-d25ecdda88a0",
+    "name": "Asana Allocations Status Updates API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Asana Status Updates API allows users to manage progress updates on projects, portfolios, and goals. Status updates include text and a status_type indicating the overall state.\n\nContact Support:\n Name: Asana Support",
+      "content": "The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.\n\nContact Support:\n Name: Asana Support",
       "type": "text/plain"
     }
   }

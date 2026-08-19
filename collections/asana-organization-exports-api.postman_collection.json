@@ -1,20 +1,20 @@
 {
   "item": [
     {
-      "id": "846de522-6620-4631-8fe6-86d34ce0299c",
+      "id": "86406d5e-90d7-40b3-8d7b-5033711a0fbe",
       "name": "Organization Exports",
       "description": {
-        "content": "Export organization data in JSON format.",
+        "content": "An `organization_export` object represents a request to export the complete data of an organization in JSON format.\n\nTo export an organization using this API:\n\n* Create an `organization_export`\n  [request](/reference/createorganizationexport)\n  and store the ID that is returned.\n* Request the `organization_export` every few minutes, until the\n  `state` field contains ‘finished’.\n* Download the file located at the URL in the `download_url` field. * Exports can take a long time, from several minutes to a few hours\n  for large organizations.\n\n\n*Note: These endpoints are only available to [Service Accounts](https://asana.com/guide/help/premium/service-accounts) of an [Enterprise](https://asana.com/enterprise) organization.*",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "635b99a8-488b-4036-a1aa-ba2359ed0a84",
+          "id": "8d431979-732d-43f8-ab07-cf1de312221a",
           "name": "Asana Create an organization export request",
           "request": {
             "name": "Asana Create an organization export request",
             "description": {
-              "content": "Creates an organization export request for the given organization.",
+              "content": "This method creates a request to export an Organization. Asana will complete the export at some point after you create the request.",
               "type": "text/plain"
             },
             "url": {
@@ -24,7 +24,20 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": []
             },
             "header": [
@@ -51,8 +64,8 @@
           },
           "response": [
             {
-              "id": "59c8e587-3043-4c96-a0da-c02a5f7bd281",
-              "name": "Successfully created an organization export request.",
+              "id": "537e0770-0e4d-49fc-abe4-9b0d27e8ac50",
+              "name": "Successfully created organization export request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -61,7 +74,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -97,13 +119,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"organization_export\",\n    \"state\": \"started\",\n    \"download_url\": \"http://aMaULLYfowNtjOpaaOMuyPBhOwLUfXrT.jrokJb+Kb.xsCiuoUOb..lxhYXc7k\",\n    \"organization\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"created_at\": \"1966-11-15T00:09:45.907Z\"\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"organization_export\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"download_url\": \"http://bTcHU.qnxaKda0Et0WR,KQoCUMlmdRJnxTPFyX6Ttl1pcCXBxXdY5l\",\n    \"state\": \"started\",\n    \"organization\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"workspace\",\n      \"name\": \"My Company Workspace\"\n    }\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "5888497c-d24c-41c0-8cce-28f40dd518ea",
-              "name": "Bad request.",
+              "id": "7be0a910-c513-4291-a490-7057571101d1",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -112,7 +134,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -123,6 +154,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
@@ -141,16 +176,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "328f9e25-92fc-4674-b2ae-b3b2c0acba2c",
-              "name": "Unauthorized.",
+              "id": "6ab3ccf2-b3bf-470b-80ed-c82a47ed28a0",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -159,7 +194,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -170,6 +214,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
@@ -188,16 +236,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "8a336cd6-c3ee-4139-9a9f-9b91fbadc147",
-              "name": "Forbidden.",
+              "id": "1128340f-36c8-4a3e-8540-e7d7f4deb6d4",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -206,7 +254,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -217,6 +274,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
@@ -235,16 +296,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "52c968ef-9a90-469e-97a3-c36c32d10858",
-              "name": "Internal server error.",
+              "id": "dd647834-8853-455c-8912-14dc4f07ce78",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -253,7 +314,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -264,6 +334,70 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"organization\": \"1331\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0239e19c-19c6-4447-9c7b-d70c54f02bf4",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "organization_exports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
@@ -282,12 +416,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -296,12 +430,12 @@
           }
         },
         {
-          "id": "c4639a72-d3ca-41a8-9b66-97754921fb06",
+          "id": "d180ac65-8055-4848-a9b2-65731860d4fc",
           "name": "Asana Get details on an org export request",
           "request": {
             "name": "Asana Get details on an org export request",
             "description": {
-              "content": "Returns details of a previously-requested organization export.",
+              "content": "Returns details of a previously-requested Organization export.",
               "type": "text/plain"
             },
             "url": {
@@ -312,14 +446,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "organization_export_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the organization export."
                 }
               ]
             },
@@ -334,8 +481,8 @@
           },
           "response": [
             {
-              "id": "37375db0-5a45-459b-92a0-cd82c47261ed",
-              "name": "Successfully retrieved the requested organization export.",
+              "id": "96393fe3-2e89-432c-af1b-53e02af52ac2",
+              "name": "Successfully retrieved organization export object.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -345,14 +492,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "organization_export_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the organization export."
                     }
                   ]
                 },
@@ -381,13 +537,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"organization_export\",\n    \"state\": \"started\",\n    \"download_url\": \"http://aMaULLYfowNtjOpaaOMuyPBhOwLUfXrT.jrokJb+Kb.xsCiuoUOb..lxhYXc7k\",\n    \"organization\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"created_at\": \"1966-11-15T00:09:45.907Z\"\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"organization_export\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"download_url\": \"http://bTcHU.qnxaKda0Et0WR,KQoCUMlmdRJnxTPFyX6Ttl1pcCXBxXdY5l\",\n    \"state\": \"started\",\n    \"organization\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"workspace\",\n      \"name\": \"My Company Workspace\"\n    }\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "82fbd1c1-b2f6-4b07-8bdf-46235a97238e",
-              "name": "Bad request.",
+              "id": "93222259-d16e-49fc-a391-a26135751b7f",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -397,14 +553,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "organization_export_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the organization export."
                     }
                   ]
                 },
@@ -416,6 +581,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -426,16 +595,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "af9c29c6-54ee-4484-b570-6c102c5bb639",
-              "name": "Unauthorized.",
+              "id": "5bb84241-bca5-4499-9b1d-7cd9bf40909e",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -445,14 +614,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "organization_export_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the organization export."
                     }
                   ]
                 },
@@ -464,6 +642,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -474,16 +656,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "24256737-cec9-41af-a0d1-a9fef7f76a35",
-              "name": "Forbidden.",
+              "id": "adfe1ae5-6795-4ce8-8dc1-a67466b20924",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -493,14 +675,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "organization_export_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the organization export."
                     }
                   ]
                 },
@@ -512,6 +703,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -522,16 +717,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "912f69ae-ba37-45b8-aa93-2b33b31aeb61",
-              "name": "Not found.",
+              "id": "b4489b98-10ec-4d00-82cb-38523077ec2a",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -541,14 +736,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "organization_export_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the organization export."
                     }
                   ]
                 },
@@ -560,6 +764,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -570,16 +778,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "f0746327-540d-410f-a5b5-b6d5dc8dd8e0",
-              "name": "Internal server error.",
+              "id": "2b9c6b12-810a-44cc-96e1-bf2318d99005",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -589,14 +797,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,download_url,organization,organization.name,state"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "organization_export_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the organization export."
                     }
                   ]
                 },
@@ -608,6 +825,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -618,12 +839,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -653,11 +874,11 @@
     ]
   },
   "info": {
-    "_postman_id": "b1a95fd8-f928-4211-8d50-b2f868295353",
-    "name": "Asana Organization Exports API",
+    "_postman_id": "adeadac3-1b64-4ade-8b68-41e162b13346",
+    "name": "Asana Allocations Organization Exports API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Asana Organization Exports API allows users to export the complete data of an organization in JSON format. Only available to Service Accounts of Enterprise organizations.\n\nContact Support:\n Name: Asana Support",
+      "content": "The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.\n\nContact Support:\n Name: Asana Support",
       "type": "text/plain"
     }
   }

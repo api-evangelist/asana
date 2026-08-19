@@ -1,0 +1,158 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Allocations Portfolio Memberships API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Portfolio Memberships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get multiple portfolio memberships",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/portfolio_memberships",
+            "params": [
+              {
+                "name": "portfolio",
+                "value": "12345",
+                "type": "query",
+                "description": "The portfolio to filter results on."
+              },
+              {
+                "name": "workspace",
+                "value": "12345",
+                "type": "query",
+                "description": "The workspace to filter results on."
+              },
+              {
+                "name": "user",
+                "value": "me",
+                "type": "query",
+                "description": "A string identifying a user. This can either be the string \"me\", an email, or the gid of a user."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "Returns a list of portfolio memberships in compact representation. You must specify `portfolio`, `portfolio` and `user`, or `workspace` and `user`."
+        },
+        {
+          "info": {
+            "name": "Asana Get a portfolio membership",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/portfolio_memberships/:portfolio_membership_gid",
+            "params": [
+              {
+                "name": "portfolio_membership_gid",
+                "value": "1331",
+                "type": "path"
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "access_level,portfolio,portfolio.name,user,user.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "Returns the complete portfolio record for a single portfolio membership."
+        },
+        {
+          "info": {
+            "name": "Asana Get memberships from a portfolio",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/portfolios/:portfolio_gid/portfolio_memberships",
+            "params": [
+              {
+                "name": "portfolio_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the portfolio."
+              },
+              {
+                "name": "user",
+                "value": "me",
+                "type": "query",
+                "description": "A string identifying a user. This can either be the string \"me\", an email, or the gid of a user."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "Returns the compact portfolio membership records for the portfolio."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

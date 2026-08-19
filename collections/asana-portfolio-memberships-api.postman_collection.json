@@ -1,0 +1,1494 @@
+{
+  "item": [
+    {
+      "id": "32bfe975-d872-4653-9c40-3e2b81949670",
+      "name": "Portfolio Memberships",
+      "description": {
+        "content": "This object determines if a user is a member of a portfolio.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ccd55d9d-d48a-4137-addf-0e6c6d55973a",
+          "name": "Asana Get multiple portfolio memberships",
+          "request": {
+            "name": "Asana Get multiple portfolio memberships",
+            "description": {
+              "content": "Returns a list of portfolio memberships in compact representation. You must specify `portfolio`, `portfolio` and `user`, or `workspace` and `user`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "portfolio_memberships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "portfolio",
+                  "value": "<string>",
+                  "description": "The portfolio to filter results on."
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace",
+                  "value": "<string>",
+                  "description": "The workspace to filter results on."
+                },
+                {
+                  "disabled": false,
+                  "key": "user",
+                  "value": "<string>",
+                  "description": "A string identifying a user. This can either be the string \"me\", an email, or the gid of a user."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f98ba8c6-8a18-4538-96f8-f0dd7cd90641",
+              "name": "Successfully retrieved portfolio memberships.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "portfolio",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"portfolio_membership\",\n      \"portfolio\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"portfolio\",\n        \"name\": \"Bug Portfolio\"\n      },\n      \"user\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      },\n      \"access_level\": \"admin\"\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"portfolio_membership\",\n      \"portfolio\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"portfolio\",\n        \"name\": \"Bug Portfolio\"\n      },\n      \"user\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      },\n      \"access_level\": \"admin\"\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"path\": \"/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"uri\": \"https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4fb29a1-0972-4296-834c-5fc384cd192d",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "portfolio",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "76da86c5-03e1-4913-964b-96db5ba3bbdb",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "portfolio",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7878d6c-a423-4d9f-a3dc-2caa1143cc68",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "portfolio",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55c9cfef-5a4b-4370-bffe-d5161848cc5d",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "portfolio",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4df36fc9-777c-4622-9405-2b1afec67540",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "portfolio",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1cdc26d0-8ce1-4735-8b2f-457005114d53",
+          "name": "Asana Get a portfolio membership",
+          "request": {
+            "name": "Asana Get a portfolio membership",
+            "description": {
+              "content": "Returns the complete portfolio record for a single portfolio membership.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "portfolio_memberships",
+                ":portfolio_membership_gid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "portfolio_membership_gid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7b432add-7e01-4df9-a580-d28a3e7d798d",
+              "name": "Successfully retrieved the requested portfolio membership.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships",
+                    ":portfolio_membership_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,portfolio,portfolio.name,user,user.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_membership_gid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"portfolio_membership\",\n    \"portfolio\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"portfolio\",\n      \"name\": \"Bug Portfolio\"\n    },\n    \"user\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"user\",\n      \"name\": \"Greg Sanchez\"\n    },\n    \"access_level\": \"admin\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41d83333-833b-400b-9547-4f5755f3f2b3",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships",
+                    ":portfolio_membership_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,portfolio,portfolio.name,user,user.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_membership_gid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ad624c7-8a86-493d-812c-00a9b43db999",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships",
+                    ":portfolio_membership_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,portfolio,portfolio.name,user,user.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_membership_gid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9a827cc1-e8c1-45f5-b047-8c1b9b6a6a57",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships",
+                    ":portfolio_membership_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,portfolio,portfolio.name,user,user.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_membership_gid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d110555-d4f9-4c92-8036-4668929a5bd5",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships",
+                    ":portfolio_membership_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,portfolio,portfolio.name,user,user.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_membership_gid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aacc1cb6-56c0-4766-baab-86e0c5f52323",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolio_memberships",
+                    ":portfolio_membership_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,portfolio,portfolio.name,user,user.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_membership_gid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "849f356c-4e67-4196-a76e-ce8cc17f61d5",
+          "name": "Asana Get memberships from a portfolio",
+          "request": {
+            "name": "Asana Get memberships from a portfolio",
+            "description": {
+              "content": "Returns the compact portfolio membership records for the portfolio.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "portfolios",
+                ":portfolio_gid",
+                "portfolio_memberships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "user",
+                  "value": "<string>",
+                  "description": "A string identifying a user. This can either be the string \"me\", an email, or the gid of a user."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "portfolio_gid",
+                  "description": "(Required) Globally unique identifier for the portfolio."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "65274f4e-16a4-4d22-9462-e8ed7bbd82f8",
+              "name": "Successfully retrieved the requested portfolio's memberships.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolios",
+                    ":portfolio_gid",
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_gid",
+                      "description": "(Required) Globally unique identifier for the portfolio."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"portfolio_membership\",\n      \"portfolio\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"portfolio\",\n        \"name\": \"Bug Portfolio\"\n      },\n      \"user\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      },\n      \"access_level\": \"admin\"\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"portfolio_membership\",\n      \"portfolio\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"portfolio\",\n        \"name\": \"Bug Portfolio\"\n      },\n      \"user\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      },\n      \"access_level\": \"admin\"\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"path\": \"/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"uri\": \"https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46bdd19b-f38a-449f-ab36-b34e8b114b24",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolios",
+                    ":portfolio_gid",
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_gid",
+                      "description": "(Required) Globally unique identifier for the portfolio."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "82e39a8e-064a-4933-85ef-723273d55936",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolios",
+                    ":portfolio_gid",
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_gid",
+                      "description": "(Required) Globally unique identifier for the portfolio."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba68f5ae-2d5b-45bb-9dfe-30b4b22c3de1",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolios",
+                    ":portfolio_gid",
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_gid",
+                      "description": "(Required) Globally unique identifier for the portfolio."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b523f0eb-eb00-43a1-98b1-2e7c383cb0d0",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolios",
+                    ":portfolio_gid",
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_gid",
+                      "description": "(Required) Globally unique identifier for the portfolio."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "84d81b4c-a56a-4b22-a477-fd5df6d57eaa",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "portfolios",
+                    ":portfolio_gid",
+                    "portfolio_memberships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "access_level,offset,path,portfolio,portfolio.name,uri,user,user.name"
+                    },
+                    {
+                      "key": "user",
+                      "value": "me"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "portfolio_gid",
+                      "description": "(Required) Globally unique identifier for the portfolio."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.asana.com/api/1.0",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ccfd948b-4c3a-42fb-9b53-78b6816e3067",
+    "name": "Asana Allocations Portfolio Memberships API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.\n\nContact Support:\n Name: Asana Support",
+      "type": "text/plain"
+    }
+  }
+}

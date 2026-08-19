@@ -1,0 +1,146 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Allocations Workspace Memberships API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workspace Memberships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get a workspace membership",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/workspace_memberships/:workspace_membership_gid",
+            "params": [
+              {
+                "name": "workspace_membership_gid",
+                "value": "12345",
+                "type": "path"
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "created_at,is_active,is_admin,is_guest,user,user.name,user_task_list,user_task_list.name,user_task_list.owner,user_task_list.workspace,vacation_dates,vacation_dates.end_on,vacation_dates.start_on,workspace,workspace.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "Returns the complete workspace record for a single workspace membership."
+        },
+        {
+          "info": {
+            "name": "Asana Get workspace memberships for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/users/:user_gid/workspace_memberships",
+            "params": [
+              {
+                "name": "user_gid",
+                "value": "me",
+                "type": "path",
+                "description": "A string identifying a user. This can either be the string \"me\", an email, or the gid of a user."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "created_at,is_active,is_admin,is_guest,offset,path,uri,user,user.name,user_task_list,user_task_list.name,user_task_list.owner,user_task_list.workspace,vacation_dates,vacation_dates.end_on,vacation_dates.start_on,workspace,workspace.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "Returns the compact workspace membership records for the user."
+        },
+        {
+          "info": {
+            "name": "Asana Get the workspace memberships for a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid/workspace_memberships",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the workspace or organization."
+              },
+              {
+                "name": "user",
+                "value": "me",
+                "type": "query",
+                "description": "A string identifying a user. This can either be the string \"me\", an email, or the gid of a user."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "created_at,is_active,is_admin,is_guest,offset,path,uri,user,user.name,user_task_list,user_task_list.name,user_task_list.owner,user_task_list.workspace,vacation_dates,vacation_dates.end_on,vacation_dates.start_on,workspace,workspace.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "Returns the compact workspace membership records for the workspace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Allocations Project Briefs API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Project Briefs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get a project brief",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/project_briefs/:project_brief_gid",
+            "params": [
+              {
+                "name": "project_brief_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the project brief."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "html_text,permalink_url,project,project.name,text,title",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "Get the full record for a project brief."
+        },
+        {
+          "info": {
+            "name": "Asana Update a project brief",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/project_briefs/:project_brief_gid",
+            "params": [
+              {
+                "name": "project_brief_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the project brief."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "html_text,permalink_url,project,project.name,text,title",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "An existing project brief can be updated by making a PUT request on the URL for\nthat project brief. Only the fields provided in the `data` block will be updated;\nany unspecified fields will remain unchanged.\n\nReturns the complete updated project brief record."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a project brief",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/project_briefs/:project_brief_gid",
+            "params": [
+              {
+                "name": "project_brief_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the project brief."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              }
+            ]
+          },
+          "docs": "Deletes a specific, existing project brief.\n\nReturns an empty data record."
+        },
+        {
+          "info": {
+            "name": "Asana Create a project brief",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/project_briefs",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "1331",
+                "type": "path",
+                "description": "Globally unique identifier for the project."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "html_text,permalink_url,project,project.name,text,title",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new project brief.\n\nReturns the full record of the newly created project brief."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

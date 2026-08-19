@@ -1,0 +1,110 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Allocations Custom Field Settings API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Custom Field Settings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get a project's custom fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/custom_field_settings",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "1331",
+                "type": "path",
+                "description": "Globally unique identifier for the project."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "custom_field,custom_field.asana_created_field,custom_field.created_by,custom_field.created_by.name,custom_field.currency_code,custom_field.custom_label,custom_field.custom_label_position,custom_field.date_value,custom_field.date_value.date,custom_field.date_value.date_time,custom_field.description,custom_field.display_value,custom_field.enabled,custom_field.enum_options,custom_field.enum_options.color,custom_field.enum_options.enabled,custom_field.enum_options.name,custom_field.enum_value,custom_field.enum_value.color,custom_field.enum_value.enabled,custom_field.enum_value.name,custom_field.format,custom_field.has_notifications_enabled,custom_field.id_prefix,custom_field.is_formula_field,custom_field.is_global_to_workspace,custom_field.is_value_read_only,custom_field.multi_enum_values,custom_field.multi_enum_values.color,custom_field.multi_enum_values.enabled,custom_field.multi_enum_values.name,custom_field.name,custom_field.number_value,custom_field.people_value,custom_field.people_value.name,custom_field.precision,custom_field.representation_type,custom_field.resource_subtype,custom_field.text_value,custom_field.type,is_important,offset,parent,parent.name,path,project,project.name,uri",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "Returns a list of all of the custom fields settings on a project, in compact form. Note that, as in all queries to collections which return compact representation, `opt_fields` can be used to include more data than is returned in the compact representation. See the [documentation for input/output options](https://developers.asana.com/docs/inputoutput-options) for more information."
+        },
+        {
+          "info": {
+            "name": "Asana Get a portfolio's custom fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/portfolios/:portfolio_gid/custom_field_settings",
+            "params": [
+              {
+                "name": "portfolio_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the portfolio."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "custom_field,custom_field.asana_created_field,custom_field.created_by,custom_field.created_by.name,custom_field.currency_code,custom_field.custom_label,custom_field.custom_label_position,custom_field.date_value,custom_field.date_value.date,custom_field.date_value.date_time,custom_field.description,custom_field.display_value,custom_field.enabled,custom_field.enum_options,custom_field.enum_options.color,custom_field.enum_options.enabled,custom_field.enum_options.name,custom_field.enum_value,custom_field.enum_value.color,custom_field.enum_value.enabled,custom_field.enum_value.name,custom_field.format,custom_field.has_notifications_enabled,custom_field.id_prefix,custom_field.is_formula_field,custom_field.is_global_to_workspace,custom_field.is_value_read_only,custom_field.multi_enum_values,custom_field.multi_enum_values.color,custom_field.multi_enum_values.enabled,custom_field.multi_enum_values.name,custom_field.name,custom_field.number_value,custom_field.people_value,custom_field.people_value.name,custom_field.precision,custom_field.representation_type,custom_field.resource_subtype,custom_field.text_value,custom_field.type,is_important,offset,parent,parent.name,path,project,project.name,uri",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "Returns a list of all of the custom fields settings on a portfolio, in compact form."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

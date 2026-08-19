@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Allocations Rules API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rules",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Trigger a rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/rule_triggers/:rule_trigger_gid/run",
+            "params": [
+              {
+                "name": "rule_trigger_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the incoming web request trigger. This value is a path parameter that is automatically generated for the API endpoint."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Trigger a rule which uses an [\"incoming web request\"](/docs/incoming-web-requests) trigger."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

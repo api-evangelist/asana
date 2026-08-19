@@ -1,0 +1,158 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Allocations Project Statuses API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Project Statuses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get a project status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/project_statuses/:project_status_gid",
+            "params": [
+              {
+                "name": "project_status_gid",
+                "value": "321654",
+                "type": "path",
+                "description": "The project status update to get."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "author,author.name,color,created_at,created_by,created_by.name,html_text,modified_at,text,title",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "*Deprecated: new integrations should prefer the `/status_updates/{status_gid}` route.*\n\nReturns the complete record for a single status update."
+        },
+        {
+          "info": {
+            "name": "Asana Delete a project status",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.asana.com/api/1.0/project_statuses/:project_status_gid",
+            "params": [
+              {
+                "name": "project_status_gid",
+                "value": "321654",
+                "type": "path",
+                "description": "The project status update to get."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              }
+            ]
+          },
+          "docs": "*Deprecated: new integrations should prefer the `/status_updates/{status_gid}` route.*\n\nDeletes a specific, existing project status update.\n\nReturns an empty data record."
+        },
+        {
+          "info": {
+            "name": "Asana Get statuses from a project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/project_statuses",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "1331",
+                "type": "path",
+                "description": "Globally unique identifier for the project."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "author,author.name,color,created_at,created_by,created_by.name,html_text,modified_at,offset,path,text,title,uri",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ]
+          },
+          "docs": "*Deprecated: new integrations should prefer the `/status_updates` route.*\n\nReturns the compact project status update records for all updates on the project."
+        },
+        {
+          "info": {
+            "name": "Asana Create a project status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/projects/:project_gid/project_statuses",
+            "params": [
+              {
+                "name": "project_gid",
+                "value": "1331",
+                "type": "path",
+                "description": "Globally unique identifier for the project."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "author,author.name,color,created_at,created_by,created_by.name,html_text,modified_at,text,title",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "*Deprecated: new integrations should prefer the `/status_updates` route.*\n\nCreates a new status update on the project.\n\nReturns the full record of the newly created project status update."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

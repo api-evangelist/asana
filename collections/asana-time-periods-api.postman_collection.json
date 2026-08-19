@@ -1,19 +1,22 @@
 {
   "item": [
     {
-      "id": "2cff5c9a-a742-4733-9116-520364b7eace",
+      "id": "c25a170d-fd22-4293-bd3d-dc78672d5b05",
       "name": "Time Periods",
       "description": {
-        "content": "Manage time periods for goals.",
+        "content": "A time period is an object that represents a domain-scoped date range that can be set on [goals](/reference/goals).",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "b7a1a541-f0dd-4040-9136-7355da6490de",
+          "id": "a852ed6f-69f9-4ba1-98c1-66a2b2ece688",
           "name": "Asana Get a time period",
           "request": {
             "name": "Asana Get a time period",
-            "description": {},
+            "description": {
+              "content": "Returns the full record for a single time period.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "time_periods",
@@ -22,14 +25,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "time_period_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the time period."
                 }
               ]
             },
@@ -44,8 +60,8 @@
           },
           "response": [
             {
-              "id": "d2d58dc9-6c14-43c9-93cf-3d1b67afecf3",
-              "name": "Successfully retrieved the time period.",
+              "id": "05d6afc8-d352-4bef-a154-f3623647cc80",
+              "name": "Successfully retrieved the record for a single time period.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -55,14 +71,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,period,start_on"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "time_period_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the time period."
                     }
                   ]
                 },
@@ -91,7 +116,312 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"string\",\n    \"resource_type\": \"time_period\",\n    \"display_name\": \"string\",\n    \"start_on\": \"2004-03-05\",\n    \"end_on\": \"1996-11-28\",\n    \"period\": \"string\",\n    \"parent\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"display_name\": \"string\"\n    }\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"time_period\",\n    \"end_on\": \"2019-09-14\",\n    \"start_on\": \"2019-09-13\",\n    \"period\": \"Q1\",\n    \"display_name\": \"Q1 FY22\",\n    \"parent\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"time_period\",\n      \"end_on\": \"2019-09-14\",\n      \"start_on\": \"2019-09-13\",\n      \"period\": \"Q1\",\n      \"display_name\": \"Q1 FY22\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d633a6e0-2aa9-4e3c-a480-2f5334d6415b",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods",
+                    ":time_period_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,period,start_on"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "time_period_gid",
+                      "description": "(Required) Globally unique identifier for the time period."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4fac0e9-81f9-401a-a393-3666782f553d",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods",
+                    ":time_period_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,period,start_on"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "time_period_gid",
+                      "description": "(Required) Globally unique identifier for the time period."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b9e23fc-a74f-46cb-84b0-b69e07590f7c",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods",
+                    ":time_period_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,period,start_on"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "time_period_gid",
+                      "description": "(Required) Globally unique identifier for the time period."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dbf2ecc6-1865-4483-8887-c939fcb757c7",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods",
+                    ":time_period_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,period,start_on"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "time_period_gid",
+                      "description": "(Required) Globally unique identifier for the time period."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96043465-d608-473f-bb8e-8caecf13019e",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods",
+                    ":time_period_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,period,start_on"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "time_period_gid",
+                      "description": "(Required) Globally unique identifier for the time period."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -102,11 +432,14 @@
           }
         },
         {
-          "id": "0f251fbb-512b-4e66-995c-a564c8214e7d",
+          "id": "51ea1e44-e978-45ad-bac9-1afcd5913a41",
           "name": "Asana Get time periods",
           "request": {
             "name": "Asana Get time periods",
-            "description": {},
+            "description": {
+              "content": "Returns compact time period records.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "time_periods"
@@ -117,29 +450,45 @@
               "query": [
                 {
                   "disabled": false,
-                  "key": "workspace",
-                  "value": "<string>",
-                  "description": "(Required) "
-                },
-                {
-                  "disabled": false,
                   "key": "start_on",
-                  "value": "<date>"
+                  "value": "<date>",
+                  "description": "ISO 8601 date string"
                 },
                 {
                   "disabled": false,
                   "key": "end_on",
-                  "value": "<date>"
+                  "value": "<date>",
+                  "description": "ISO 8601 date string"
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace",
+                  "value": "<string>",
+                  "description": "(Required) Globally unique identifier for the workspace."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
                 },
                 {
                   "disabled": false,
                   "key": "limit",
-                  "value": "<integer>"
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
                 },
                 {
                   "disabled": false,
                   "key": "offset",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
                 }
               ],
               "variable": []
@@ -155,8 +504,8 @@
           },
           "response": [
             {
-              "id": "050999c6-22a8-4225-ae0e-d69405934381",
-              "name": "Successfully retrieved time periods.",
+              "id": "39c5425a-9e6a-49c6-8165-180d457fd5ba",
+              "name": "Successfully retrieved the requested time periods.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -167,24 +516,32 @@
                   ],
                   "query": [
                     {
-                      "key": "workspace",
-                      "value": "<string>"
-                    },
-                    {
                       "key": "start_on",
-                      "value": "<date>"
+                      "value": "2019-09-15"
                     },
                     {
                       "key": "end_on",
-                      "value": "<date>"
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "31326"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,offset,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,path,period,start_on,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     },
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
                     }
                   ],
                   "variable": []
@@ -214,7 +571,367 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"time_period\",\n      \"display_name\": \"string\",\n      \"start_on\": \"2003-02-25\",\n      \"end_on\": \"2025-09-03\",\n      \"period\": \"FY\"\n    },\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"time_period\",\n      \"display_name\": \"string\",\n      \"start_on\": \"1955-09-07\",\n      \"end_on\": \"2017-01-27\",\n      \"period\": \"Q3\"\n    }\n  ]\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"time_period\",\n      \"end_on\": \"2019-09-14\",\n      \"start_on\": \"2019-09-13\",\n      \"period\": \"Q1\",\n      \"display_name\": \"Q1 FY22\"\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"time_period\",\n      \"end_on\": \"2019-09-14\",\n      \"start_on\": \"2019-09-13\",\n      \"period\": \"Q1\",\n      \"display_name\": \"Q1 FY22\"\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"path\": \"/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"uri\": \"https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0dc62f8a-a47c-4912-b6d5-12c217fabb80",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "end_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "31326"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,offset,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,path,period,start_on,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e92d03e6-15e6-404e-a356-55571a1e196c",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "end_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "31326"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,offset,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,path,period,start_on,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19442630-6902-4482-8210-8c50f5a01dd5",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "end_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "31326"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,offset,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,path,period,start_on,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8335832b-cabe-46b1-99f2-57badf298ead",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "end_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "31326"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,offset,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,path,period,start_on,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d818c3e-4773-4c25-a9a0-ab695327aa57",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "time_periods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "end_on",
+                      "value": "2019-09-15"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "31326"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "display_name,end_on,offset,parent,parent.display_name,parent.end_on,parent.period,parent.start_on,path,period,start_on,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -246,11 +963,11 @@
     ]
   },
   "info": {
-    "_postman_id": "c2aa4b87-45a3-4722-acd0-26856ef18fbe",
-    "name": "Asana Time Periods API",
+    "_postman_id": "12bb943c-8d76-4635-ad61-83f7cf386c7f",
+    "name": "Asana Allocations Time Periods API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Asana Time Periods API manages time periods that represent domain-scoped date ranges set on goals.\n\nContact Support:\n Name: Asana Support",
+      "content": "The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.\n\nContact Support:\n Name: Asana Support",
       "type": "text/plain"
     }
   }

@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Asana Teams API",
+    "name": "Asana Allocations Teams API",
     "version": "1.0"
   },
   "request": {
@@ -25,12 +25,26 @@
           "http": {
             "method": "POST",
             "url": "https://app.asana.com/api/1.0/teams",
+            "params": [
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,organization,organization.name,permalink_url,team_content_management_access_level,team_member_removal_access_level,visibility",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
             "body": {
               "type": "json",
               "data": "{}"
             }
           },
-          "docs": "Asana Create a team"
+          "docs": "Creates a team within the current workspace."
         },
         {
           "info": {
@@ -43,12 +57,35 @@
             "params": [
               {
                 "name": "team_gid",
-                "value": "",
-                "type": "path"
+                "value": "159874",
+                "type": "path",
+                "description": "Globally unique identifier for the team."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,organization,organization.name,permalink_url,team_content_management_access_level,team_member_removal_access_level,visibility",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
-            ]
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.asana.com/-/oauth_authorize",
+              "accessTokenUrl": "https://app.asana.com/-/oauth_token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
           },
-          "docs": "Asana Get a team"
+          "docs": "Returns the full record for a single team."
         },
         {
           "info": {
@@ -61,8 +98,21 @@
             "params": [
               {
                 "name": "team_gid",
-                "value": "",
-                "type": "path"
+                "value": "159874",
+                "type": "path",
+                "description": "Globally unique identifier for the team."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,organization,organization.name,permalink_url,team_content_management_access_level,team_member_removal_access_level,visibility",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
             ],
             "body": {
@@ -70,7 +120,7 @@
               "data": "{}"
             }
           },
-          "docs": "Asana Update a team"
+          "docs": "Updates a team within the current workspace."
         },
         {
           "info": {
@@ -83,22 +133,47 @@
             "params": [
               {
                 "name": "workspace_gid",
-                "value": "",
-                "type": "path"
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the workspace or organization."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               },
               {
                 "name": "limit",
-                "value": "",
-                "type": "query"
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
               },
               {
                 "name": "offset",
-                "value": "",
-                "type": "query"
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,offset,organization,organization.name,path,permalink_url,team_content_management_access_level,team_member_removal_access_level,uri,visibility",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
-            ]
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.asana.com/-/oauth_authorize",
+              "accessTokenUrl": "https://app.asana.com/-/oauth_token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
           },
-          "docs": "Asana Get teams in a workspace"
+          "docs": "Returns the compact records for all teams in the workspace visible to the authorized user."
         },
         {
           "info": {
@@ -111,17 +186,53 @@
             "params": [
               {
                 "name": "user_gid",
-                "value": "",
-                "type": "path"
+                "value": "me",
+                "type": "path",
+                "description": "A string identifying a user. This can either be the string \"me\", an email, or the gid of a user."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
               },
               {
                 "name": "organization",
-                "value": "",
-                "type": "query"
+                "value": "1331",
+                "type": "query",
+                "description": "The workspace or organization to filter teams on."
+              },
+              {
+                "name": "opt_fields",
+                "value": "description,edit_team_name_or_description_access_level,edit_team_visibility_or_trash_team_access_level,guest_invite_management_access_level,html_description,join_request_management_access_level,member_invite_management_access_level,name,offset,organization,organization.name,path,permalink_url,team_content_management_access_level,team_member_removal_access_level,uri,visibility",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
-            ]
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.asana.com/-/oauth_authorize",
+              "accessTokenUrl": "https://app.asana.com/-/oauth_token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
           },
-          "docs": "Asana Get teams for a user"
+          "docs": "Returns the compact records for all teams to which the given user is assigned."
         },
         {
           "info": {
@@ -134,8 +245,21 @@
             "params": [
               {
                 "name": "team_gid",
-                "value": "",
-                "type": "path"
+                "value": "159874",
+                "type": "path",
+                "description": "Globally unique identifier for the team."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "is_admin,is_guest,is_limited_access,team,team.name,user,user.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
             ],
             "body": {
@@ -143,7 +267,7 @@
               "data": "{}"
             }
           },
-          "docs": "Asana Add a user to a team"
+          "docs": "The user making this call must be a member of the team in order to add others. The user being added must exist in the same organization as the team.\n\nReturns the complete team membership record for the newly added user."
         },
         {
           "info": {
@@ -156,8 +280,15 @@
             "params": [
               {
                 "name": "team_gid",
-                "value": "",
-                "type": "path"
+                "value": "159874",
+                "type": "path",
+                "description": "Globally unique identifier for the team."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ],
             "body": {
@@ -165,7 +296,7 @@
               "data": "{}"
             }
           },
-          "docs": "Asana Remove a user from a team"
+          "docs": "The user making this call must be a member of the team in order to remove themselves or others."
         }
       ]
     }

@@ -1,15 +1,15 @@
 {
   "item": [
     {
-      "id": "4d6a7ab1-fead-407e-a9d2-f7d4607af642",
+      "id": "56965034-7a6e-4e54-9231-ec8c8f4347b3",
       "name": "Webhooks",
       "description": {
-        "content": "Manage webhook subscriptions for real-time event delivery.",
+        "content": "Webhooks allow you to subscribe to notifications about events that occur on Asana resources (e.g., tasks, projects, stories, etc.).\n\nFor a more detailed explanation of webhooks see the [overview of webhooks](/docs/webhooks-guide).",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "81d38006-5d54-420a-8f3f-acdefa216edf",
+          "id": "51687e0b-6a3a-4562-9d43-180289de0119",
           "name": "Asana Get multiple webhooks",
           "request": {
             "name": "Asana Get multiple webhooks",
@@ -27,6 +27,18 @@
               "query": [
                 {
                   "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+                },
+                {
+                  "disabled": false,
                   "key": "workspace",
                   "value": "<string>",
                   "description": "(Required) The workspace to query for webhooks in."
@@ -39,13 +51,15 @@
                 },
                 {
                   "disabled": false,
-                  "key": "limit",
-                  "value": "<integer>"
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
                 },
                 {
                   "disabled": false,
-                  "key": "offset",
-                  "value": "<string>"
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
                 }
               ],
               "variable": []
@@ -61,7 +75,7 @@
           },
           "response": [
             {
-              "id": "6de69b78-20f3-4490-8398-5b4e86f360f7",
+              "id": "b767aa95-3bf2-4f9b-856d-0aca799d84a4",
               "name": "Successfully retrieved the requested webhooks.",
               "originalRequest": {
                 "url": {
@@ -73,6 +87,14 @@
                   ],
                   "query": [
                     {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
                       "key": "workspace",
                       "value": "1331"
                     },
@@ -81,12 +103,12 @@
                       "value": "51648"
                     },
                     {
-                      "key": "limit",
-                      "value": "<integer>"
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,offset,path,resource,resource.name,target,uri"
                     },
                     {
-                      "key": "offset",
-                      "value": "<string>"
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": []
@@ -116,13 +138,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"webhook\",\n      \"active\": false,\n      \"resource\": {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      },\n      \"target\": \"https://example.com/receive-webhook/7654\",\n      \"created_at\": \"1998-04-11T00:13:05.215Z\",\n      \"last_failure_at\": \"1953-03-26T04:15:30.077Z\",\n      \"last_failure_content\": \"string\",\n      \"last_success_at\": \"2014-04-09T16:28:40.610Z\",\n      \"delivery_retry_count\": 1309,\n      \"next_attempt_after\": \"1958-06-23T04:46:43.107Z\",\n      \"failure_deletion_timestamp\": \"1953-04-12T04:41:33.302Z\",\n      \"filters\": [\n        {\n          \"resource_type\": \"task\",\n          \"resource_subtype\": \"milestone\",\n          \"action\": \"changed\",\n          \"fields\": [\n            \"due_at\",\n            \"due_on\",\n            \"dependencies\"\n          ]\n        },\n        {\n          \"resource_type\": \"task\",\n          \"resource_subtype\": \"milestone\",\n          \"action\": \"changed\",\n          \"fields\": [\n            \"due_at\",\n            \"due_on\",\n            \"dependencies\"\n          ]\n        }\n      ]\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"webhook\",\n      \"active\": false,\n      \"resource\": {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      },\n      \"target\": \"https://example.com/receive-webhook/7654\",\n      \"created_at\": \"2004-11-22T00:19:44.183Z\",\n      \"last_failure_at\": \"1985-05-12T16:56:10.162Z\",\n      \"last_failure_content\": \"string\",\n      \"last_success_at\": \"2022-12-24T19:34:28.768Z\",\n      \"delivery_retry_count\": 7313,\n      \"next_attempt_after\": \"1946-07-20T14:50:07.870Z\",\n      \"failure_deletion_timestamp\": \"1968-11-29T20:22:47.956Z\",\n      \"filters\": [\n        {\n          \"resource_type\": \"task\",\n          \"resource_subtype\": \"milestone\",\n          \"action\": \"changed\",\n          \"fields\": [\n            \"due_at\",\n            \"due_on\",\n            \"dependencies\"\n          ]\n        },\n        {\n          \"resource_type\": \"task\",\n          \"resource_subtype\": \"milestone\",\n          \"action\": \"changed\",\n          \"fields\": [\n            \"due_at\",\n            \"due_on\",\n            \"dependencies\"\n          ]\n        }\n      ]\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"string\",\n    \"path\": \"string\",\n    \"uri\": \"http://XvlcwVjyeFwAYcjcBtiTJUDQWCMSMWd.kpMCKTEPZlrZhld,zzW6hdQAgmtrr.Pz9Mdh6CY7rSRRdFYyxpR7T4njVvFn\"\n  }\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"webhook\",\n      \"active\": false,\n      \"resource\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"task\",\n        \"name\": \"Bug Task\"\n      },\n      \"target\": \"https://example.com/receive-webhook/7654\",\n      \"created_at\": \"2012-02-22T02:06:58.147Z\",\n      \"last_failure_at\": \"2012-02-22T02:06:58.147Z\",\n      \"last_failure_content\": \"500 Server Error\\\\n\\\\nCould not complete the request\",\n      \"last_success_at\": \"2012-02-22T02:06:58.147Z\",\n      \"delivery_retry_count\": 3,\n      \"next_attempt_after\": \"2012-02-22T02:06:58.147Z\",\n      \"failure_deletion_timestamp\": \"2012-02-22T02:06:58.147Z\",\n      \"filters\": [\n        {\n          \"resource_type\": \"task\",\n          \"resource_subtype\": \"milestone\",\n          \"action\": \"changed\",\n          \"fields\": [\n            \"due_at\",\n            \"due_on\",\n            \"dependencies\"\n          ]\n        },\n        {\n          \"resource_type\": \"task\",\n          \"resource_subtype\": \"milestone\",\n          \"action\": \"changed\",\n          \"fields\": [\n            \"due_at\",\n            \"due_on\",\n            \"dependencies\"\n          ]\n        }\n      ]\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"webhook\",\n      \"active\": false,\n      \"resource\": {\n        \"gid\": \"12345\",\n        \"resource_type\": \"task\",\n        \"name\": \"Bug Task\"\n      },\n      \"target\": \"https://example.com/receive-webhook/7654\",\n      \"created_at\": \"2012-02-22T02:06:58.147Z\",\n      \"last_failure_at\": \"2012-02-22T02:06:58.147Z\",\n      \"last_failure_content\": \"500 Server Error\\\\n\\\\nCould not complete the request\",\n      \"last_success_at\": \"2012-02-22T02:06:58.147Z\",\n      \"delivery_retry_count\": 3,\n      \"next_attempt_after\": \"2012-02-22T02:06:58.147Z\",\n      \"failure_deletion_timestamp\": \"2012-02-22T02:06:58.147Z\",\n      \"filters\": [\n        {\n          \"resource_type\": \"task\",\n          \"resource_subtype\": \"milestone\",\n          \"action\": \"changed\",\n          \"fields\": [\n            \"due_at\",\n            \"due_on\",\n            \"dependencies\"\n          ]\n        },\n        {\n          \"resource_type\": \"task\",\n          \"resource_subtype\": \"milestone\",\n          \"action\": \"changed\",\n          \"fields\": [\n            \"due_at\",\n            \"due_on\",\n            \"dependencies\"\n          ]\n        }\n      ]\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"path\": \"/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"uri\": \"https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "92e502f2-4c2b-43fc-a32d-5892b1952fc8",
-              "name": "Bad request.",
+              "id": "c315ef04-93e0-476a-9384-f1a8c70e5c4c",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -133,6 +155,14 @@
                   ],
                   "query": [
                     {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
                       "key": "workspace",
                       "value": "1331"
                     },
@@ -141,12 +171,12 @@
                       "value": "51648"
                     },
                     {
-                      "key": "limit",
-                      "value": "<integer>"
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,offset,path,resource,resource.name,target,uri"
                     },
                     {
-                      "key": "offset",
-                      "value": "<string>"
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": []
@@ -159,6 +189,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -169,16 +203,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "b0d3d5cc-ee30-49f8-8d92-b5b38bed5277",
-              "name": "Unauthorized.",
+              "id": "97533b3a-5208-4ea7-a3f8-a8aa52d172fe",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -189,6 +223,14 @@
                   ],
                   "query": [
                     {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
                       "key": "workspace",
                       "value": "1331"
                     },
@@ -197,12 +239,12 @@
                       "value": "51648"
                     },
                     {
-                      "key": "limit",
-                      "value": "<integer>"
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,offset,path,resource,resource.name,target,uri"
                     },
                     {
-                      "key": "offset",
-                      "value": "<string>"
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": []
@@ -215,6 +257,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -225,16 +271,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "3f2a2ed1-4f0d-4926-b185-f4c59dc46a8f",
-              "name": "Forbidden.",
+              "id": "567b7abb-4f0f-47e9-a004-1098a17ac2c3",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -245,6 +291,14 @@
                   ],
                   "query": [
                     {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
                       "key": "workspace",
                       "value": "1331"
                     },
@@ -253,12 +307,12 @@
                       "value": "51648"
                     },
                     {
-                      "key": "limit",
-                      "value": "<integer>"
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,offset,path,resource,resource.name,target,uri"
                     },
                     {
-                      "key": "offset",
-                      "value": "<string>"
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": []
@@ -271,6 +325,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -281,16 +339,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "7d5ea174-2517-4abf-b72d-dace824725df",
-              "name": "Not found.",
+              "id": "a496b076-7f29-4e67-8165-78ef9663cb8a",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -301,6 +359,14 @@
                   ],
                   "query": [
                     {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
                       "key": "workspace",
                       "value": "1331"
                     },
@@ -309,12 +375,12 @@
                       "value": "51648"
                     },
                     {
-                      "key": "limit",
-                      "value": "<integer>"
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,offset,path,resource,resource.name,target,uri"
                     },
                     {
-                      "key": "offset",
-                      "value": "<string>"
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": []
@@ -327,6 +393,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -337,16 +407,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "9f432ffd-4e7f-4844-a375-ee6ccec4ff59",
-              "name": "Internal server error.",
+              "id": "265372be-dc05-4562-aac8-b444db0a56e9",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -357,6 +427,14 @@
                   ],
                   "query": [
                     {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
                       "key": "workspace",
                       "value": "1331"
                     },
@@ -365,12 +443,12 @@
                       "value": "51648"
                     },
                     {
-                      "key": "limit",
-                      "value": "<integer>"
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,offset,path,resource,resource.name,target,uri"
                     },
                     {
-                      "key": "offset",
-                      "value": "<string>"
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": []
@@ -383,6 +461,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -393,12 +475,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -407,12 +489,12 @@
           }
         },
         {
-          "id": "a33b85eb-17d1-43e0-ada5-1f8c4446b02c",
+          "id": "85213845-ce55-4e45-a36d-b23082dd31c9",
           "name": "Asana Establish a webhook",
           "request": {
             "name": "Asana Establish a webhook",
             "description": {
-              "content": "Establishing a webhook is a two-part process. First, a simple HTTP POST request initiates the creation. Then a confirmation handshake occurs where we send a test POST to the target with an X-Hook-Secret header that must be echoed back.",
+              "content": "Establishing a webhook is a two-part process. First, a simple HTTP POST\nrequest initiates the creation similar to creating any other resource.\n\nNext, in the middle of this request comes the confirmation handshake.\nWhen a webhook is created, we will send a test POST to the target with an\n`X-Hook-Secret` header. The target must respond with a `200 OK` or `204\nNo Content` and a matching `X-Hook-Secret` header to confirm that this\nwebhook subscription is indeed expected. We strongly recommend storing\nthis secret to be used to verify future webhook event signatures.\n\nThe POST request to create the webhook will then return with the status\nof the request. If you do not acknowledge the webhook’s confirmation\nhandshake it will fail to setup, and you will receive an error in\nresponse to your attempt to create it. This means you need to be able to\nreceive and complete the webhook *while* the POST request is in-flight\n(in other words, have a server that can handle requests asynchronously).\n\nInvalid hostnames like localhost will receive a 403 Forbidden status code.\n\n```\n# Request\ncurl -H \"Authorization: Bearer <personal_access_token>\" \\\n-X POST https://app.asana.com/api/1.0/webhooks \\\n-d \"resource=8675309\" \\\n-d \"target=https://example.com/receive-webhook/7654\"\n```\n\n```\n# Handshake sent to https://example.com/\nPOST /receive-webhook/7654\nX-Hook-Secret: b537207f20cbfa02357cf448134da559e8bd39d61597dcd5631b8012eae53e81\n```\n\n```\n# Handshake response sent by example.com\nHTTP/1.1 200\nX-Hook-Secret: b537207f20cbfa02357cf448134da559e8bd39d61597dcd5631b8012eae53e81\n```\n\n```\n# Response\nHTTP/1.1 201\n{\n  \"data\": {\n    \"gid\": \"43214\",\n    \"resource\": {\n      \"gid\": \"8675309\",\n      \"name\": \"Bugs\"\n    },\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"active\": false,\n    \"last_success_at\": null,\n    \"last_failure_at\": null,\n    \"last_failure_content\": null\n  },\n  \"X-Hook-Secret\": \"b537207f20cbfa02357cf448134da559e8bd39d61597dcd5631b8012eae53e81\"\n}\n```",
               "type": "text/plain"
             },
             "url": {
@@ -422,7 +504,20 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": []
             },
             "header": [
@@ -439,7 +534,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"data\": {\n    \"resource\": \"<string>\",\n    \"target\": \"<uri>\",\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"<string>\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"<string>\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+              "raw": "{\n  \"data\": {\n    \"resource\": \"<string>\",\n    \"target\": \"<uri>\",\n    \"filters\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -449,8 +544,8 @@
           },
           "response": [
             {
-              "id": "4a9c9f0e-ec8c-4114-896a-0a5398916d91",
-              "name": "Successfully created the webhook.",
+              "id": "f9ece43d-e5b1-4849-8139-70a9964a9175",
+              "name": "Successfully created the requested webhook.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -459,7 +554,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -479,7 +583,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654?app_specific_param=app_specific_value\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -495,13 +599,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"webhook\",\n    \"active\": false,\n    \"resource\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"created_at\": \"2013-05-09T03:05:32.665Z\",\n    \"last_failure_at\": \"2009-05-09T09:01:34.627Z\",\n    \"last_failure_content\": \"string\",\n    \"last_success_at\": \"2025-07-20T23:34:05.494Z\",\n    \"delivery_retry_count\": 2340,\n    \"next_attempt_after\": \"2023-02-16T15:20:52.948Z\",\n    \"failure_deletion_timestamp\": \"1991-12-16T23:38:26.975Z\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"webhook\",\n    \"active\": false,\n    \"resource\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"task\",\n      \"name\": \"Bug Task\"\n    },\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"last_failure_at\": \"2012-02-22T02:06:58.147Z\",\n    \"last_failure_content\": \"500 Server Error\\\\n\\\\nCould not complete the request\",\n    \"last_success_at\": \"2012-02-22T02:06:58.147Z\",\n    \"delivery_retry_count\": 3,\n    \"next_attempt_after\": \"2012-02-22T02:06:58.147Z\",\n    \"failure_deletion_timestamp\": \"2012-02-22T02:06:58.147Z\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  },\n  \"X-Hook-Secret\": \"b537207f20cbfa02357cf448134da559e8bd39d61597dcd5631b8012eae53e81\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "eacce064-e453-4b8d-ae47-b951873ae3e7",
-              "name": "Bad request.",
+              "id": "68551c76-b328-4313-93a4-89a4f582cad8",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -510,7 +614,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -521,12 +634,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654?app_specific_param=app_specific_value\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -539,16 +656,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "e43fc687-c7c7-418f-874b-34d684076262",
-              "name": "Unauthorized.",
+              "id": "83104d3c-4c80-4f3e-b62f-2a7a501b16c3",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -557,7 +674,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -568,12 +694,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654?app_specific_param=app_specific_value\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -586,16 +716,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "a907cce8-bea1-4a9d-a982-b88616a22a3e",
-              "name": "Forbidden.",
+              "id": "09e1c4e0-4baa-4cf2-80ec-30895b3b344e",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -604,7 +734,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -615,12 +754,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654?app_specific_param=app_specific_value\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -633,16 +776,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "0fb9f1cc-bcbd-42d4-bcac-01fc6e372f07",
-              "name": "Internal server error.",
+              "id": "b492a528-c1fa-43b8-9964-e1fc6f2583da",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -651,7 +794,16 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -662,12 +814,76 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654?app_specific_param=app_specific_value\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e5f363a-6665-41fb-b883-3ba7ec587e6f",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"resource\": \"12345\",\n    \"target\": \"https://example.com/receive-webhook/7654?app_specific_param=app_specific_value\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -680,12 +896,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -694,7 +910,7 @@
           }
         },
         {
-          "id": "5c5922d9-f37c-4c5d-afec-72b3e8ae0065",
+          "id": "0e239224-fc8e-427f-b604-08c68b1c4d2a",
           "name": "Asana Get a webhook",
           "request": {
             "name": "Asana Get a webhook",
@@ -710,14 +926,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "webhook_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the webhook."
                 }
               ]
             },
@@ -732,8 +961,8 @@
           },
           "response": [
             {
-              "id": "18447b35-cdfa-4884-ba13-ce3f8c2b5c81",
-              "name": "Successfully retrieved the record for a single webhook.",
+              "id": "b9c2627c-d8c7-4ab3-be3b-18e8bd2f97dd",
+              "name": "Successfully retrieved the requested webhook.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -743,14 +972,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -779,13 +1017,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"webhook\",\n    \"active\": false,\n    \"resource\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"created_at\": \"2013-05-09T03:05:32.665Z\",\n    \"last_failure_at\": \"2009-05-09T09:01:34.627Z\",\n    \"last_failure_content\": \"string\",\n    \"last_success_at\": \"2025-07-20T23:34:05.494Z\",\n    \"delivery_retry_count\": 2340,\n    \"next_attempt_after\": \"2023-02-16T15:20:52.948Z\",\n    \"failure_deletion_timestamp\": \"1991-12-16T23:38:26.975Z\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"webhook\",\n    \"active\": false,\n    \"resource\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"task\",\n      \"name\": \"Bug Task\"\n    },\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"last_failure_at\": \"2012-02-22T02:06:58.147Z\",\n    \"last_failure_content\": \"500 Server Error\\\\n\\\\nCould not complete the request\",\n    \"last_success_at\": \"2012-02-22T02:06:58.147Z\",\n    \"delivery_retry_count\": 3,\n    \"next_attempt_after\": \"2012-02-22T02:06:58.147Z\",\n    \"failure_deletion_timestamp\": \"2012-02-22T02:06:58.147Z\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "bb1b2736-133e-436c-b556-acc055d3cb81",
-              "name": "Bad request.",
+              "id": "58af9304-b4bd-4106-ab58-ab6403fd9611",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -795,14 +1033,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -814,6 +1061,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -824,16 +1075,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "0538a217-3f76-40c5-a577-ccbaf166f5a8",
-              "name": "Unauthorized.",
+              "id": "8f8964f6-f50f-42b2-b066-7f3ab07f3363",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -843,14 +1094,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -862,6 +1122,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -872,16 +1136,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "161a989d-e811-4ec2-b8bb-b9079833dea1",
-              "name": "Forbidden.",
+              "id": "6d7b20dd-7996-4c6e-8dd7-1f466f4137d8",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -891,14 +1155,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -910,6 +1183,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -920,16 +1197,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "955edbfd-601f-486a-8f33-4b1aa4766c24",
-              "name": "Not found.",
+              "id": "55cdc98d-4597-4eea-819b-c508a1d983d1",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -939,14 +1216,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -958,6 +1244,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -968,16 +1258,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "337f4097-d585-4f3b-b6fc-635d1816b5ee",
-              "name": "Internal server error.",
+              "id": "06e06dad-eb5e-4627-82da-a98973c9950f",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -987,14 +1277,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1006,6 +1305,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -1016,12 +1319,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -1030,12 +1333,12 @@
           }
         },
         {
-          "id": "f8481998-f694-46af-b45e-87d9076dbac4",
+          "id": "bd5237b2-d18d-4f36-8c3b-d59378a54273",
           "name": "Asana Update a webhook",
           "request": {
             "name": "Asana Update a webhook",
             "description": {
-              "content": "Updates an existing webhook.",
+              "content": "An existing webhook's filters can be updated by making a PUT request on the URL for that webhook. Note that the webhook's previous `filters` array will be completely overwritten by the `filters` sent in the PUT request.",
               "type": "text/plain"
             },
             "url": {
@@ -1046,14 +1349,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "webhook_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the webhook."
                 }
               ]
             },
@@ -1071,7 +1387,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"data\": {\n    \"filters\": [\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"<string>\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"resource_type\": \"<string>\",\n        \"resource_subtype\": \"<string>\",\n        \"action\": \"<string>\",\n        \"fields\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}",
+              "raw": "{\n  \"data\": {\n    \"filters\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1081,7 +1397,7 @@
           },
           "response": [
             {
-              "id": "7e130c56-1f82-4561-806f-f1f99e356bb2",
+              "id": "56de9ac0-4d9b-407e-8968-44e6a1e5846f",
               "name": "Successfully updated the webhook.",
               "originalRequest": {
                 "url": {
@@ -1092,14 +1408,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1136,13 +1461,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"webhook\",\n    \"active\": false,\n    \"resource\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"created_at\": \"2013-05-09T03:05:32.665Z\",\n    \"last_failure_at\": \"2009-05-09T09:01:34.627Z\",\n    \"last_failure_content\": \"string\",\n    \"last_success_at\": \"2025-07-20T23:34:05.494Z\",\n    \"delivery_retry_count\": 2340,\n    \"next_attempt_after\": \"2023-02-16T15:20:52.948Z\",\n    \"failure_deletion_timestamp\": \"1991-12-16T23:38:26.975Z\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"webhook\",\n    \"active\": false,\n    \"resource\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"task\",\n      \"name\": \"Bug Task\"\n    },\n    \"target\": \"https://example.com/receive-webhook/7654\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"last_failure_at\": \"2012-02-22T02:06:58.147Z\",\n    \"last_failure_content\": \"500 Server Error\\\\n\\\\nCould not complete the request\",\n    \"last_success_at\": \"2012-02-22T02:06:58.147Z\",\n    \"delivery_retry_count\": 3,\n    \"next_attempt_after\": \"2012-02-22T02:06:58.147Z\",\n    \"failure_deletion_timestamp\": \"2012-02-22T02:06:58.147Z\",\n    \"filters\": [\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      },\n      {\n        \"resource_type\": \"task\",\n        \"resource_subtype\": \"milestone\",\n        \"action\": \"changed\",\n        \"fields\": [\n          \"due_at\",\n          \"due_on\",\n          \"dependencies\"\n        ]\n      }\n    ]\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "0a72f4cd-e25e-40b8-a08a-8f210f0cc135",
-              "name": "Bad request.",
+              "id": "d09c0421-8b4d-4747-aee5-a5b2a0d7a669",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1152,14 +1477,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1171,6 +1505,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
@@ -1189,16 +1527,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "be4a9448-6949-4863-896e-d9bd81643177",
-              "name": "Unauthorized.",
+              "id": "677f7f17-ddde-4e82-b357-db7207e42033",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1208,14 +1546,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1227,6 +1574,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
@@ -1245,16 +1596,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "74c30c19-c69a-40fe-8769-e10c1cef2656",
-              "name": "Forbidden.",
+              "id": "28253e09-c52a-4beb-8c27-b4dfb88a55b7",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1264,14 +1615,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1283,6 +1643,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
@@ -1301,16 +1665,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "6de89d3f-0077-44e8-8cab-1131c36a62b1",
-              "name": "Not found.",
+              "id": "d7183c4f-b951-46f5-beb6-71108789362e",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1320,14 +1684,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1339,6 +1712,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
@@ -1357,16 +1734,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "66bd0769-ff19-4735-a0ec-563ff164727e",
-              "name": "Internal server error.",
+              "id": "67096f1d-6bf8-4509-8c26-739cedf446fa",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1376,14 +1753,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1395,6 +1781,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
@@ -1413,12 +1803,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -1427,12 +1817,12 @@
           }
         },
         {
-          "id": "3c45c3a4-b349-41e1-a6aa-dcd05f25f6b1",
+          "id": "62a65549-c453-471d-a197-b991a9a10aaf",
           "name": "Asana Delete a webhook",
           "request": {
             "name": "Asana Delete a webhook",
             "description": {
-              "content": "Deletes the specified webhook.",
+              "content": "This method *permanently* removes a webhook. Note that it may be possible to receive a request that was already in flight after deleting the webhook, but no further requests will be issued.",
               "type": "text/plain"
             },
             "url": {
@@ -1443,14 +1833,21 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "webhook_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the webhook."
                 }
               ]
             },
@@ -1465,8 +1862,8 @@
           },
           "response": [
             {
-              "id": "ef95fde3-b813-4ffb-a790-f3fa2d83b9f3",
-              "name": "Successfully deleted the webhook.",
+              "id": "fffd39ca-5893-43d8-aec9-dfe1d716b579",
+              "name": "Successfully retrieved the requested webhook.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1476,14 +1873,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1517,8 +1919,8 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "7b19fbbe-22ca-41a8-8b18-86e70a94f4ca",
-              "name": "Bad request.",
+              "id": "fc4deda1-8275-4556-b219-21515832dd14",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1528,14 +1930,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1547,6 +1954,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -1557,16 +1968,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "ef60c95e-8178-4247-8c39-f3bf238954b3",
-              "name": "Unauthorized.",
+              "id": "6ee2c89f-ea03-4daa-b47f-5d3325d6000d",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1576,14 +1987,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1595,6 +2011,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -1605,16 +2025,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "947cfbbd-c25c-4d2f-86ea-e1d0eaedc9d7",
-              "name": "Forbidden.",
+              "id": "440d8983-d619-4ff8-b0de-49a03c0659a5",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1624,14 +2044,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1643,6 +2068,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -1653,16 +2082,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "5f62ebf2-f887-4f2b-9931-20c0d6127972",
-              "name": "Not found.",
+              "id": "0306cf9d-8ba1-4aad-8b08-5fa18f38b62f",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1672,14 +2101,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1691,6 +2125,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -1701,16 +2139,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "89184312-c762-4f02-89ef-f5a83c598c2f",
-              "name": "Internal server error.",
+              "id": "028a5936-2bdb-4f38-b588-3690ffb11107",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1720,14 +2158,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "webhook_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the webhook."
                     }
                   ]
                 },
@@ -1739,6 +2182,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -1749,12 +2196,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -1784,11 +2231,11 @@
     ]
   },
   "info": {
-    "_postman_id": "01c39526-2076-4fab-b596-121210bc025d",
-    "name": "Asana Webhooks API",
+    "_postman_id": "c185fd7c-6413-4721-94a5-3ec0f06cc1c2",
+    "name": "Asana Allocations Webhooks API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Asana Webhooks API allows you to subscribe to notifications about events on Asana resources. Webhooks use a confirmation handshake with X-Hook-Secret headers and deliver events via HTTP POST to your target URL.\n\nContact Support:\n Name: Asana Support",
+      "content": "The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.\n\nContact Support:\n Name: Asana Support",
       "type": "text/plain"
     }
   }

@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Asana Project Templates API",
+    "name": "Asana Allocations Project Templates API",
     "version": "1.0"
   },
   "request": {
@@ -28,12 +28,35 @@
             "params": [
               {
                 "name": "project_template_gid",
-                "value": "",
-                "type": "path"
+                "value": "1331",
+                "type": "path",
+                "description": "Globally unique identifier for the project template."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "color,description,html_description,name,owner,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
-            ]
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.asana.com/-/oauth_authorize",
+              "accessTokenUrl": "https://app.asana.com/-/oauth_token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
           },
-          "docs": "Asana Get a project template"
+          "docs": "Returns the complete project template record for a single project template."
         },
         {
           "info": {
@@ -46,12 +69,19 @@
             "params": [
               {
                 "name": "project_template_gid",
-                "value": "",
-                "type": "path"
+                "value": "1331",
+                "type": "path",
+                "description": "Globally unique identifier for the project template."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ]
           },
-          "docs": "Asana Delete a project template"
+          "docs": "A specific, existing project template can be deleted by making a DELETE request on the URL for that project template.\n\nReturns an empty data record."
         },
         {
           "info": {
@@ -63,28 +93,54 @@
             "url": "https://app.asana.com/api/1.0/project_templates",
             "params": [
               {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
                 "name": "workspace",
-                "value": "",
-                "type": "query"
+                "value": "12345",
+                "type": "query",
+                "description": "The workspace to filter results on."
               },
               {
                 "name": "team",
-                "value": "",
-                "type": "query"
+                "value": "14916",
+                "type": "query",
+                "description": "The team to filter projects on."
               },
               {
                 "name": "limit",
-                "value": "",
-                "type": "query"
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
               },
               {
                 "name": "offset",
-                "value": "",
-                "type": "query"
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
-            ]
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.asana.com/-/oauth_authorize",
+              "accessTokenUrl": "https://app.asana.com/-/oauth_token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
           },
-          "docs": "Asana Get multiple project templates"
+          "docs": "Returns the compact project template records for all project templates in the given team or workspace."
         },
         {
           "info": {
@@ -97,22 +153,47 @@
             "params": [
               {
                 "name": "team_gid",
-                "value": "",
-                "type": "path"
+                "value": "159874",
+                "type": "path",
+                "description": "Globally unique identifier for the team."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               },
               {
                 "name": "limit",
-                "value": "",
-                "type": "query"
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
               },
               {
                 "name": "offset",
-                "value": "",
-                "type": "query"
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
+                "name": "opt_fields",
+                "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
-            ]
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.asana.com/-/oauth_authorize",
+              "accessTokenUrl": "https://app.asana.com/-/oauth_token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
           },
-          "docs": "Asana Get a team's project templates"
+          "docs": "Returns the compact project template records for all project templates in the team."
         },
         {
           "info": {
@@ -125,16 +206,39 @@
             "params": [
               {
                 "name": "project_template_gid",
-                "value": "",
-                "type": "path"
+                "value": "1331",
+                "type": "path",
+                "description": "Globally unique identifier for the project template."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,new_task_template,new_task_template.name,resource_subtype,status",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
             ],
             "body": {
               "type": "json",
               "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.asana.com/-/oauth_authorize",
+              "accessTokenUrl": "https://app.asana.com/-/oauth_token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
             }
           },
-          "docs": "Asana Instantiate a project from a project template"
+          "docs": "Creates and returns a job that will asynchronously handle the project instantiation.\n\nTo form this request, it is recommended to first make a request to [get a project template](/reference/getprojecttemplate). Then, from the response, copy the `gid` from the object in the `requested_dates` array. This `gid` should be used in `requested_dates` to instantiate a project.\n\n_Note: The body of this request will differ if your workspace is an organization. To determine if your workspace is an organizat"
         }
       ]
     }

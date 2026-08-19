@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Asana Webhooks API",
+    "name": "Asana Allocations Webhooks API",
     "version": "1.0"
   },
   "request": {
@@ -27,6 +27,24 @@
             "url": "https://app.asana.com/api/1.0/webhooks",
             "params": [
               {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              },
+              {
                 "name": "workspace",
                 "value": "1331",
                 "type": "query",
@@ -39,14 +57,10 @@
                 "description": "Only return webhooks for the given resource."
               },
               {
-                "name": "limit",
-                "value": "",
-                "type": "query"
-              },
-              {
-                "name": "offset",
-                "value": "",
-                "type": "query"
+                "name": "opt_fields",
+                "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,offset,path,resource,resource.name,target,uri",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
             ]
           },
@@ -60,12 +74,26 @@
           "http": {
             "method": "POST",
             "url": "https://app.asana.com/api/1.0/webhooks",
+            "params": [
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
             "body": {
               "type": "json",
               "data": "{}"
             }
           },
-          "docs": "Establishing a webhook is a two-part process. First, a simple HTTP POST request initiates the creation. Then a confirmation handshake occurs where we send a test POST to the target with an X-Hook-Secret header that must be echoed back."
+          "docs": "Establishing a webhook is a two-part process. First, a simple HTTP POST\nrequest initiates the creation similar to creating any other resource.\n\nNext, in the middle of this request comes the confirmation handshake.\nWhen a webhook is created, we will send a test POST to the target with an\n`X-Hook-Secret` header. The target must respond with a `200 OK` or `204\nNo Content` and a matching `X-Hook-Secret` header to confirm that this\nwebhook subscription is indeed expected. We strongly recommend storin"
         },
         {
           "info": {
@@ -79,7 +107,20 @@
               {
                 "name": "webhook_gid",
                 "value": "12345",
-                "type": "path"
+                "type": "path",
+                "description": "Globally unique identifier for the webhook."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
             ]
           },
@@ -97,7 +138,20 @@
               {
                 "name": "webhook_gid",
                 "value": "12345",
-                "type": "path"
+                "type": "path",
+                "description": "Globally unique identifier for the webhook."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
               }
             ],
             "body": {
@@ -105,7 +159,7 @@
               "data": "{}"
             }
           },
-          "docs": "Updates an existing webhook."
+          "docs": "An existing webhook's filters can be updated by making a PUT request on the URL for that webhook. Note that the webhook's previous `filters` array will be completely overwritten by the `filters` sent in the PUT request."
         },
         {
           "info": {
@@ -119,11 +173,18 @@
               {
                 "name": "webhook_gid",
                 "value": "12345",
-                "type": "path"
+                "type": "path",
+                "description": "Globally unique identifier for the webhook."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ]
           },
-          "docs": "Deletes the specified webhook."
+          "docs": "This method *permanently* removes a webhook. Note that it may be possible to receive a request that was already in flight after deleting the webhook, but no further requests will be issued."
         }
       ]
     }

@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Allocations Batch API API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Batch API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Submit parallel requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/batch",
+            "params": [
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Make multiple API requests in a single call. The maximum number of actions allowed in a single batch request is 10."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

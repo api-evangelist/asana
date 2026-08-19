@@ -1,19 +1,22 @@
 {
   "item": [
     {
-      "id": "92921f8b-4919-4b40-aeb1-d35165307452",
+      "id": "10d3bdb7-03ad-4663-9455-f891229fed97",
       "name": "Project Templates",
       "description": {
-        "content": "Manage project templates for repeatable workflows.",
+        "content": "A project template is an object that allows new projects to be created\nwith a predefined setup, which may include tasks, sections, rules, etc.\nIt simplifies the process of running a workflow that involves a similar\nset of work every time.\n\n\nProject templates in organizations are shared with a single team. Currently, the\nteam of a project template cannot be changed via the API.",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "8a172be3-3da0-47e1-9a08-da413d89c524",
+          "id": "b3edf95a-8899-4535-86de-544ec53ffada",
           "name": "Asana Get a project template",
           "request": {
             "name": "Asana Get a project template",
-            "description": {},
+            "description": {
+              "content": "Returns the complete project template record for a single project template.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "project_templates",
@@ -22,14 +25,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "project_template_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the project template."
                 }
               ]
             },
@@ -40,12 +56,32 @@
               }
             ],
             "method": "GET",
-            "auth": null
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "default"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://app.asana.com/-/oauth_token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.asana.com/-/oauth_authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
           },
           "response": [
             {
-              "id": "e99d23b7-b7e9-45de-9042-dbc36389b8a5",
-              "name": "Successfully retrieved the project template.",
+              "id": "cd682f8c-3c16-4641-be4d-bc1de2742e20",
+              "name": "Successfully retrieved the requested project template.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -55,25 +91,34 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,owner,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_template_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project template."
                     }
                   ]
                 },
                 "header": [
                   {
                     "description": {
-                      "content": "Added as a part of security scheme: bearer",
+                      "content": "Added as a part of security scheme: oauth2",
                       "type": "text/plain"
                     },
                     "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "value": "<token>"
                   },
                   {
                     "key": "Accept",
@@ -91,7 +136,312 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"string\",\n    \"resource_type\": \"project_template\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"html_description\": \"string\",\n    \"color\": \"string\",\n    \"owner\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"team\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"public\": false,\n    \"requested_dates\": [\n      {\n        \"gid\": \"string\",\n        \"name\": \"string\",\n        \"description\": \"string\"\n      },\n      {\n        \"gid\": \"string\",\n        \"name\": \"string\",\n        \"description\": \"string\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"gid\": \"string\",\n        \"name\": \"string\"\n      }\n    ]\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"project_template\",\n    \"name\": \"Packing list\",\n    \"description\": \"These are things we need to pack for a trip.\",\n    \"html_description\": \"<body>These are things we need to pack for a trip.</body>\",\n    \"public\": false,\n    \"owner\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"user\",\n      \"name\": \"Greg Sanchez\"\n    },\n    \"team\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"team\",\n      \"name\": \"Marketing\"\n    },\n    \"requested_dates\": [\n      {\n        \"gid\": \"1\",\n        \"name\": \"Start Date\",\n        \"description\": \"Choose a start date for your project.\"\n      },\n      {\n        \"gid\": \"1\",\n        \"name\": \"Start Date\",\n        \"description\": \"Choose a start date for your project.\"\n      }\n    ],\n    \"color\": \"light-green\",\n    \"requested_roles\": [\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"task\",\n        \"name\": \"Designer\"\n      },\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"task\",\n        \"name\": \"Designer\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d20558f3-d609-4597-9dbe-88ab1625a721",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,owner,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "262fe1d8-369c-41b7-bd1b-67ec8dd36219",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,owner,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d63dd83-526c-4d33-b408-c62df3306a02",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,owner,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb0f1e90-70bf-4f27-b725-5d9eb6a78aab",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,owner,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58f200b1-d4bf-4268-b689-1739ad5acc23",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,owner,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -102,11 +452,14 @@
           }
         },
         {
-          "id": "4aa73ab8-3ad7-475d-b076-c5fcbf263d14",
+          "id": "2f61613a-ab3a-4a3e-88cd-05247be148b2",
           "name": "Asana Delete a project template",
           "request": {
             "name": "Asana Delete a project template",
-            "description": {},
+            "description": {
+              "content": "A specific, existing project template can be deleted by making a DELETE request on the URL for that project template.\n\nReturns an empty data record.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "project_templates",
@@ -115,24 +468,37 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "project_template_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the project template."
                 }
               ]
             },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "method": "DELETE",
             "auth": null
           },
           "response": [
             {
-              "id": "ca0ae955-4845-4815-8269-08eefd91c46d",
-              "name": "Successfully deleted the project template.",
+              "id": "0d65ec2d-7070-4f80-af4c-16b909431a0b",
+              "name": "Successfully deleted the specified project template.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -142,14 +508,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_template_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project template."
                     }
                   ]
                 },
@@ -161,6 +532,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -171,12 +546,354 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"data\": {}\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d3deaac-d00d-4467-b4b1-69925a353ba5",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8822fc97-7e8e-4382-8550-17ecb50169e9",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62828e2d-9d2b-4063-b0c4-cd283ea591a1",
+              "name": "The request was valid, but the queried object or object mutation specified in the request is above your current premium level.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "871ce847-fd61-44ac-a9ab-f97d64210dd2",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b203108-99ff-4c7a-bfaa-0844baae28de",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b722b5b-7732-4901-9456-4ee43477b3bd",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -185,11 +902,14 @@
           }
         },
         {
-          "id": "a8fb09c2-d272-4bca-81ff-faa24467d38e",
+          "id": "703a489d-50b2-4114-bfac-250f4c57963b",
           "name": "Asana Get multiple project templates",
           "request": {
             "name": "Asana Get multiple project templates",
-            "description": {},
+            "description": {
+              "content": "Returns the compact project template records for all project templates in the given team or workspace.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "project_templates"
@@ -201,22 +921,38 @@
                 {
                   "disabled": false,
                   "key": "workspace",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "description": "The workspace to filter results on."
                 },
                 {
                   "disabled": false,
                   "key": "team",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "description": "The team to filter projects on."
                 },
                 {
                   "disabled": false,
                   "key": "limit",
-                  "value": "<integer>"
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
                 },
                 {
                   "disabled": false,
                   "key": "offset",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
                 }
               ],
               "variable": []
@@ -228,12 +964,32 @@
               }
             ],
             "method": "GET",
-            "auth": null
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "default"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://app.asana.com/-/oauth_token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.asana.com/-/oauth_authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
           },
           "response": [
             {
-              "id": "76a3a769-d970-4852-baf4-1863158dc2d4",
-              "name": "Successfully retrieved project templates.",
+              "id": "54afc70c-87d6-4fad-850d-5b9142175339",
+              "name": "Successfully retrieved the requested team's or workspace's project templates.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -245,19 +1001,27 @@
                   "query": [
                     {
                       "key": "workspace",
-                      "value": "<string>"
+                      "value": "12345"
                     },
                     {
                       "key": "team",
-                      "value": "<string>"
+                      "value": "14916"
                     },
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": []
@@ -265,11 +1029,11 @@
                 "header": [
                   {
                     "description": {
-                      "content": "Added as a part of security scheme: bearer",
+                      "content": "Added as a part of security scheme: oauth2",
                       "type": "text/plain"
                     },
                     "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "value": "<token>"
                   },
                   {
                     "key": "Accept",
@@ -287,7 +1051,347 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"project_template\",\n      \"name\": \"string\"\n    },\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"project_template\",\n      \"name\": \"string\"\n    }\n  ]\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project_template\",\n      \"name\": \"Packing list\"\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project_template\",\n      \"name\": \"Packing list\"\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"path\": \"/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"uri\": \"https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6ba7856-e794-49af-a541-9f6687778765",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "team",
+                      "value": "14916"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29e13f12-7996-4a79-b18a-458e86623ecc",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "team",
+                      "value": "14916"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0158f81-f871-4929-8f53-b4363aa1caba",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "team",
+                      "value": "14916"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb47f331-8e04-4808-a0ca-4df496222744",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "team",
+                      "value": "14916"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64145c65-bb4d-41a3-8394-745fd94ffe2c",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "workspace",
+                      "value": "12345"
+                    },
+                    {
+                      "key": "team",
+                      "value": "14916"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -298,11 +1402,14 @@
           }
         },
         {
-          "id": "80aa8f66-69c3-41c4-a024-3d94d6847207",
+          "id": "e53a6fce-7f0a-49a4-88fb-f1614a555e2d",
           "name": "Asana Get a team's project templates",
           "request": {
             "name": "Asana Get a team's project templates",
-            "description": {},
+            "description": {
+              "content": "Returns the compact project template records for all project templates in the team.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "teams",
@@ -316,12 +1423,26 @@
                 {
                   "disabled": false,
                   "key": "limit",
-                  "value": "<integer>"
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
                 },
                 {
                   "disabled": false,
                   "key": "offset",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
                 }
               ],
               "variable": [
@@ -330,7 +1451,7 @@
                   "type": "any",
                   "value": "<string>",
                   "key": "team_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the team."
                 }
               ]
             },
@@ -341,12 +1462,32 @@
               }
             ],
             "method": "GET",
-            "auth": null
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "default"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://app.asana.com/-/oauth_token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.asana.com/-/oauth_authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
           },
           "response": [
             {
-              "id": "0a9d619b-8e03-464c-98eb-8ec8a52c39b9",
-              "name": "Successfully retrieved the team's project templates.",
+              "id": "22b151e0-2b2e-4781-a017-cb298a03ffa3",
+              "name": "Successfully retrieved the requested team's project templates.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -360,11 +1501,19 @@
                   "query": [
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": [
@@ -373,18 +1522,18 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "team_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the team."
                     }
                   ]
                 },
                 "header": [
                   {
                     "description": {
-                      "content": "Added as a part of security scheme: bearer",
+                      "content": "Added as a part of security scheme: oauth2",
                       "type": "text/plain"
                     },
                     "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "value": "<token>"
                   },
                   {
                     "key": "Accept",
@@ -402,7 +1551,357 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"project_template\",\n      \"name\": \"string\"\n    },\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"project_template\",\n      \"name\": \"string\"\n    }\n  ]\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project_template\",\n      \"name\": \"Packing list\"\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project_template\",\n      \"name\": \"Packing list\"\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"path\": \"/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"uri\": \"https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "201b871f-6ee9-4c26-acc9-be00227366bf",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team_gid",
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team_gid",
+                      "description": "(Required) Globally unique identifier for the team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f495842-d727-44e0-bc50-65a8214de2da",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team_gid",
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team_gid",
+                      "description": "(Required) Globally unique identifier for the team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "445a5227-0dcf-43e8-8036-5aac30fffe2b",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team_gid",
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team_gid",
+                      "description": "(Required) Globally unique identifier for the team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b85261d8-7756-4d61-9a78-2912e4be2837",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team_gid",
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team_gid",
+                      "description": "(Required) Globally unique identifier for the team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4bca79c1-a362-4eb7-9015-8384dd194fe7",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "teams",
+                    ":team_gid",
+                    "project_templates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,description,html_description,name,offset,owner,path,public,requested_dates,requested_dates.description,requested_dates.name,requested_roles,requested_roles.name,team,team.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "team_gid",
+                      "description": "(Required) Globally unique identifier for the team."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -413,11 +1912,14 @@
           }
         },
         {
-          "id": "bfed0869-e2d9-4e42-b2c2-83cb8490fcd1",
+          "id": "0dd5afcc-2893-4a13-844e-e558eae2a84e",
           "name": "Asana Instantiate a project from a project template",
           "request": {
             "name": "Asana Instantiate a project from a project template",
-            "description": {},
+            "description": {
+              "content": "Creates and returns a job that will asynchronously handle the project instantiation.\n\nTo form this request, it is recommended to first make a request to [get a project template](/reference/getprojecttemplate). Then, from the response, copy the `gid` from the object in the `requested_dates` array. This `gid` should be used in `requested_dates` to instantiate a project.\n\n_Note: The body of this request will differ if your workspace is an organization. To determine if your workspace is an organization, use the [is_organization](/reference/workspaces) parameter._",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "project_templates",
@@ -427,14 +1929,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "project_template_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the project template."
                 }
               ]
             },
@@ -449,10 +1964,30 @@
               }
             ],
             "method": "POST",
-            "auth": null,
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "default"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://app.asana.com/-/oauth_token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.asana.com/-/oauth_authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"public\": \"<boolean>\",\n    \"is_strict\": \"<boolean>\",\n    \"requested_dates\": [\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<date>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<date>\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<string>\"\n      }\n    ]\n  }\n}",
+              "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"public\": \"<boolean>\",\n    \"privacy_setting\": \"<string>\",\n    \"is_strict\": \"<boolean>\",\n    \"requested_dates\": [\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<dateTime>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<dateTime>\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<string>\"\n      }\n    ]\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -462,8 +1997,8 @@
           },
           "response": [
             {
-              "id": "85e575fe-e322-4a9a-93fc-36a2c105bf18",
-              "name": "Successfully instantiated the project.",
+              "id": "3ca4eea6-21e1-4a97-a0c1-cb50f522d6f8",
+              "name": "Successfully created the job to handle project instantiation.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -474,25 +2009,34 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,new_task_template,new_task_template.name,resource_subtype,status"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_template_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project template."
                     }
                   ]
                 },
                 "header": [
                   {
                     "description": {
-                      "content": "Added as a part of security scheme: bearer",
+                      "content": "Added as a part of security scheme: oauth2",
                       "type": "text/plain"
                     },
                     "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "value": "<token>"
                   },
                   {
                     "key": "Accept",
@@ -502,7 +2046,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"team\": \"<string>\",\n    \"public\": \"<boolean>\",\n    \"is_strict\": \"<boolean>\",\n    \"requested_dates\": [\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<date>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<date>\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<string>\"\n      },\n      {\n        \"gid\": \"<string>\",\n        \"value\": \"<string>\"\n      }\n    ]\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"New Project Name\",\n    \"team\": \"12345\",\n    \"public\": true,\n    \"privacy_setting\": \"public_to_workspace\",\n    \"is_strict\": true,\n    \"requested_dates\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"2023-05-29T01:23:44.850Z\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"1964-08-26T23:08:23.485Z\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      }\n    ]\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -518,7 +2062,357 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"string\",\n    \"resource_type\": \"string\",\n    \"status\": \"string\",\n    \"new_project\": {\n      \"gid\": \"string\",\n      \"name\": \"string\"\n    }\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"job\",\n    \"resource_subtype\": \"duplicate_task\",\n    \"status\": \"in_progress\",\n    \"new_project\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project\",\n      \"name\": \"Stuff to buy\"\n    },\n    \"new_task\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"task\",\n      \"name\": \"Bug Task\",\n      \"resource_subtype\": \"default_task\",\n      \"created_by\": {\n        \"gid\": \"1111\",\n        \"resource_type\": \"user\"\n      }\n    },\n    \"new_project_template\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project_template\",\n      \"name\": \"Packing list\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "253f8f89-2c56-48b5-976b-e1b28cb5460e",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid",
+                    "instantiateProject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,new_task_template,new_task_template.name,resource_subtype,status"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"New Project Name\",\n    \"team\": \"12345\",\n    \"public\": true,\n    \"privacy_setting\": \"public_to_workspace\",\n    \"is_strict\": true,\n    \"requested_dates\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"2023-05-29T01:23:44.850Z\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"1964-08-26T23:08:23.485Z\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb683669-c3d4-472d-86c9-7c2f9c687e9d",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid",
+                    "instantiateProject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,new_task_template,new_task_template.name,resource_subtype,status"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"New Project Name\",\n    \"team\": \"12345\",\n    \"public\": true,\n    \"privacy_setting\": \"public_to_workspace\",\n    \"is_strict\": true,\n    \"requested_dates\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"2023-05-29T01:23:44.850Z\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"1964-08-26T23:08:23.485Z\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a871bcc6-40e5-40f0-852b-12f13e552ca0",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid",
+                    "instantiateProject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,new_task_template,new_task_template.name,resource_subtype,status"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"New Project Name\",\n    \"team\": \"12345\",\n    \"public\": true,\n    \"privacy_setting\": \"public_to_workspace\",\n    \"is_strict\": true,\n    \"requested_dates\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"2023-05-29T01:23:44.850Z\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"1964-08-26T23:08:23.485Z\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97bcbaa9-4bf2-4e14-9ef2-1cccae2f3376",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid",
+                    "instantiateProject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,new_task_template,new_task_template.name,resource_subtype,status"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"New Project Name\",\n    \"team\": \"12345\",\n    \"public\": true,\n    \"privacy_setting\": \"public_to_workspace\",\n    \"is_strict\": true,\n    \"requested_dates\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"2023-05-29T01:23:44.850Z\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"1964-08-26T23:08:23.485Z\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ffe06eed-a728-4513-81e7-3fe1c3d670fa",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "project_templates",
+                    ":project_template_gid",
+                    "instantiateProject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,new_task_template,new_task_template.name,resource_subtype,status"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_template_gid",
+                      "description": "(Required) Globally unique identifier for the project template."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"New Project Name\",\n    \"team\": \"12345\",\n    \"public\": true,\n    \"privacy_setting\": \"public_to_workspace\",\n    \"is_strict\": true,\n    \"requested_dates\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"2023-05-29T01:23:44.850Z\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"1964-08-26T23:08:23.485Z\"\n      }\n    ],\n    \"requested_roles\": [\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      },\n      {\n        \"gid\": \"1\",\n        \"value\": \"123\"\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -550,11 +2444,11 @@
     ]
   },
   "info": {
-    "_postman_id": "0af85c7d-52b3-4d71-a9a0-b9792d20ef94",
-    "name": "Asana Project Templates API",
+    "_postman_id": "762fae2f-398a-4782-8d50-de52ce88bd8b",
+    "name": "Asana Allocations Project Templates API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Asana Project Templates API allows users to manage project templates that enable new projects to be created with a predefined setup.\n\nContact Support:\n Name: Asana Support",
+      "content": "The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.\n\nContact Support:\n Name: Asana Support",
       "type": "text/plain"
     }
   }

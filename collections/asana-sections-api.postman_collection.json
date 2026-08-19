@@ -1,15 +1,15 @@
 {
   "item": [
     {
-      "id": "414af7c0-e162-4776-b22f-22ffede996a4",
+      "id": "279daa2a-9c5e-4083-9827-14d44488bb2a",
       "name": "Sections",
       "description": {
-        "content": "Manage sections within projects.",
+        "content": "A section is a subdivision of a project that groups tasks together. It can either be a header above a list of tasks in a list view or a column in a board view of a project.\n\nSections are largely a shared idiom in Asana’s API for both list and board views of a project regardless of the project’s layout.\n\nThe ‘memberships’ property when [getting a task](/reference/gettask) will return the information for the section or the column under ‘section’ in the response.",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "ce213cfd-c629-45a5-8921-de2f8cbec870",
+          "id": "30cd6642-af0d-4b52-86af-bd6164795d4f",
           "name": "Asana Get a section",
           "request": {
             "name": "Asana Get a section",
@@ -25,14 +25,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "section_gid",
-                  "description": "(Required) "
+                  "description": "(Required) The globally unique identifier for the section."
                 }
               ]
             },
@@ -47,7 +60,7 @@
           },
           "response": [
             {
-              "id": "a62515f2-2625-4e30-9171-972a2896ecd3",
+              "id": "e9f10b8c-12bb-4300-9031-26f9eac7ccbe",
               "name": "Successfully retrieved section.",
               "originalRequest": {
                 "url": {
@@ -58,14 +71,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -94,13 +116,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"321654\",\n    \"resource_type\": \"section\",\n    \"name\": \"Next Actions\",\n    \"created_at\": \"1987-02-04T17:05:26.759Z\",\n    \"project\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"projects\": [\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      }\n    ]\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"section\",\n    \"name\": \"Next Actions\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"project\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project\",\n      \"name\": \"Stuff to buy\"\n    },\n    \"projects\": [\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"project\",\n        \"name\": \"Stuff to buy\"\n      },\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"project\",\n        \"name\": \"Stuff to buy\"\n      }\n    ]\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "efd52d8f-48fd-4479-a481-c5681c83c438",
-              "name": "Bad request.",
+              "id": "a10e44ba-abd5-44c9-9de3-5f64dae28572",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -110,14 +132,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -129,6 +160,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -139,16 +174,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "f97703e6-c144-4185-87cb-a19fd24fa5e3",
-              "name": "Unauthorized.",
+              "id": "077ed0be-a185-4924-96dc-9bed15ddb671",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -158,14 +193,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -177,6 +221,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -187,16 +235,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "cbe53a4d-9071-459b-8923-46e844179741",
-              "name": "Forbidden.",
+              "id": "2996a2dd-5d8c-45ac-a092-ad152ad43f77",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -206,14 +254,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -225,6 +282,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -235,16 +296,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "7003bfbc-78ae-4b0f-a31e-5a9cd3b1a969",
-              "name": "Not found.",
+              "id": "79ae0340-38d5-4b70-877d-b5c5ef03cd86",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -254,14 +315,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -273,6 +343,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -283,16 +357,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "dc057765-8a34-4c99-9645-b1fa1ff4aeb7",
-              "name": "Internal server error.",
+              "id": "3fdd99b2-bb62-4899-ad91-1e8e55a3fb02",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -302,14 +376,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -321,6 +404,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -331,12 +418,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -345,12 +432,12 @@
           }
         },
         {
-          "id": "716a999b-792d-4100-afc4-0b695f2947b0",
+          "id": "8f831ff7-7317-41e7-8ff5-fb79b42d8d59",
           "name": "Asana Update a section",
           "request": {
             "name": "Asana Update a section",
             "description": {
-              "content": "Updates an existing section.",
+              "content": "A specific, existing section can be updated by making a PUT request on\nthe URL for that project. Only the fields provided in the `data` block\nwill be updated; any unspecified fields will remain unchanged. (note that\nat this time, the only field that can be updated is the `name` field.)\n\nWhen using this method, it is best to specify only those fields you wish\nto change, or else you may overwrite changes made by another user since\nyou last retrieved the task.\n\nReturns the complete updated section record.",
               "type": "text/plain"
             },
             "url": {
@@ -361,14 +448,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "section_gid",
-                  "description": "(Required) "
+                  "description": "(Required) The globally unique identifier for the section."
                 }
               ]
             },
@@ -396,8 +496,8 @@
           },
           "response": [
             {
-              "id": "c7190fc6-9d7d-4f3b-a7a9-5220f31a4661",
-              "name": "Successfully updated the section.",
+              "id": "dd2082d1-959b-4d94-862d-c606650d2c2e",
+              "name": "Successfully updated the specified section.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -407,14 +507,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -435,7 +544,7 @@
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -451,13 +560,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"321654\",\n    \"resource_type\": \"section\",\n    \"name\": \"Next Actions\",\n    \"created_at\": \"1987-02-04T17:05:26.759Z\",\n    \"project\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"projects\": [\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      }\n    ]\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"section\",\n    \"name\": \"Next Actions\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"project\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project\",\n      \"name\": \"Stuff to buy\"\n    },\n    \"projects\": [\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"project\",\n        \"name\": \"Stuff to buy\"\n      },\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"project\",\n        \"name\": \"Stuff to buy\"\n      }\n    ]\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "d5d59adc-9d00-4c5b-bd01-4c60e31a996b",
-              "name": "Bad request.",
+              "id": "a7cf6b96-41eb-46f0-80e5-f7c5c0dceaaf",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -467,14 +576,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -486,12 +604,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -504,16 +626,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "66384845-e08c-4776-a9dd-4d9a38eba298",
-              "name": "Unauthorized.",
+              "id": "465be91f-452b-449e-94a4-f593f94a24e7",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -523,14 +645,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -542,12 +673,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -560,16 +695,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "d7ef72fd-3e35-4ce5-a66b-fd0d62511e50",
-              "name": "Forbidden.",
+              "id": "526f73de-90fb-491d-9b22-5d039fddeff4",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -579,14 +714,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -598,12 +742,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -616,16 +764,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "9ade7933-2de0-47e4-add6-945a3620bf66",
-              "name": "Not found.",
+              "id": "259176b6-09f8-43f5-8fc9-57959609b70b",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -635,14 +783,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -654,12 +811,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -672,16 +833,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "4e5b8fce-4c08-4865-8dc1-e6f474263996",
-              "name": "Internal server error.",
+              "id": "4f6d221c-25ac-4901-8754-1edf8622634a",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -691,14 +852,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -710,12 +880,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "PUT",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -728,12 +902,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -742,12 +916,12 @@
           }
         },
         {
-          "id": "2e4e7123-9751-4e2e-a6d3-daeb0483f0c9",
+          "id": "2ee5ec16-a2b7-4e45-8acf-2b4c39fe62ff",
           "name": "Asana Delete a section",
           "request": {
             "name": "Asana Delete a section",
             "description": {
-              "content": "Deletes a specific, existing section.",
+              "content": "A specific, existing section can be deleted by making a DELETE request on\nthe URL for that section.\n\nNote that sections must be empty to be deleted.\n\nThe last remaining section cannot be deleted.\n\nReturns an empty data block.",
               "type": "text/plain"
             },
             "url": {
@@ -758,14 +932,21 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "section_gid",
-                  "description": "(Required) "
+                  "description": "(Required) The globally unique identifier for the section."
                 }
               ]
             },
@@ -780,8 +961,8 @@
           },
           "response": [
             {
-              "id": "e318efc5-7977-4f7c-b8e8-01f8d51c04af",
-              "name": "Successfully deleted the section.",
+              "id": "b8157a08-3b16-4b65-991d-05a053f356ea",
+              "name": "Successfully deleted the specified section.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -791,14 +972,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -832,8 +1018,8 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "fbede88d-c062-4958-979f-954b70381c75",
-              "name": "Bad request.",
+              "id": "e245ae8c-3027-49c9-a1d1-2043e87d6f60",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -843,14 +1029,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -862,6 +1053,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -872,16 +1067,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "f2c84c2e-b310-4ff1-a51b-bbb5210b175a",
-              "name": "Unauthorized.",
+              "id": "458b5876-5992-4006-b449-e289964a83d7",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -891,14 +1086,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -910,6 +1110,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -920,16 +1124,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "0f9d444b-a145-4b6c-a957-250ee6917813",
-              "name": "Forbidden.",
+              "id": "7fd32833-f769-42d2-9e8d-8ab53473008c",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -939,14 +1143,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -958,6 +1167,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -968,16 +1181,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "eb83e946-4c40-4f91-93f1-d550653de01e",
-              "name": "Not found.",
+              "id": "7870fc78-83ec-4e84-8738-4e476e0fb728",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -987,14 +1200,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -1006,6 +1224,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -1016,16 +1238,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "bcf696cb-0210-4984-8b9c-ba0b5f520e50",
-              "name": "Internal server error.",
+              "id": "6240aa36-54cf-41ef-b8d2-97cc065a41ba",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1035,14 +1257,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
@@ -1054,6 +1281,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "DELETE",
@@ -1064,12 +1295,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -1078,7 +1309,7 @@
           }
         },
         {
-          "id": "e6f54171-e3eb-4fc3-8af8-8a2f37af9be3",
+          "id": "7ffb45fc-2cda-4e00-9595-2e52e0b34bfd",
           "name": "Asana Get sections in a project",
           "request": {
             "name": "Asana Get sections in a project",
@@ -1099,12 +1330,26 @@
                 {
                   "disabled": false,
                   "key": "limit",
-                  "value": "<integer>"
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
                 },
                 {
                   "disabled": false,
                   "key": "offset",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
                 }
               ],
               "variable": [
@@ -1113,7 +1358,7 @@
                   "type": "any",
                   "value": "<string>",
                   "key": "project_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the project."
                 }
               ]
             },
@@ -1128,8 +1373,8 @@
           },
           "response": [
             {
-              "id": "1f9a87f6-4a8c-41bb-b958-db3b743563bd",
-              "name": "Successfully retrieved sections.",
+              "id": "42bb39c2-de59-420b-b26f-ed9ae35fea29",
+              "name": "Successfully retrieved sections in project.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1143,11 +1388,19 @@
                   "query": [
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,offset,path,project,project.name,projects,projects.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": [
@@ -1156,7 +1409,7 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -1185,13 +1438,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"321654\",\n      \"resource_type\": \"section\",\n      \"name\": \"Next Actions\"\n    },\n    {\n      \"gid\": \"321654\",\n      \"resource_type\": \"section\",\n      \"name\": \"Next Actions\"\n    }\n  ]\n}",
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"section\",\n      \"name\": \"Next Actions\"\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"section\",\n      \"name\": \"Next Actions\"\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"path\": \"/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"uri\": \"https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "3267340d-4ec2-44ca-b025-75b5d705c3ba",
-              "name": "Bad request.",
+              "id": "46525ae3-91ae-4d0c-8304-824bb888d820",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1205,11 +1458,19 @@
                   "query": [
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,offset,path,project,project.name,projects,projects.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": [
@@ -1218,7 +1479,7 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -1230,6 +1491,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -1240,16 +1505,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "b6d5342c-e526-4c15-8452-5d521fd5f4be",
-              "name": "Unauthorized.",
+              "id": "38625a17-55dc-4e85-8442-2f8be3452037",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1263,11 +1528,19 @@
                   "query": [
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,offset,path,project,project.name,projects,projects.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": [
@@ -1276,7 +1549,7 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -1288,6 +1561,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -1298,16 +1575,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "f45a45cc-4d82-4d4e-8268-7e901df1dee2",
-              "name": "Forbidden.",
+              "id": "a11aec57-6e38-4408-a217-d3769ee84428",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1321,11 +1598,19 @@
                   "query": [
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,offset,path,project,project.name,projects,projects.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": [
@@ -1334,7 +1619,7 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -1346,6 +1631,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -1356,16 +1645,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "6fda967f-6cc7-42ef-8145-24bb4b330cea",
-              "name": "Not found.",
+              "id": "cea82da9-9c88-4571-8f7e-a9115df10d12",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1379,11 +1668,19 @@
                   "query": [
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,offset,path,project,project.name,projects,projects.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": [
@@ -1392,7 +1689,7 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -1404,6 +1701,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -1414,16 +1715,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "7831ce45-0d67-45c9-a628-a48130d0aea0",
-              "name": "Internal server error.",
+              "id": "7ae7440c-3821-4e45-ae68-2c73def5df09",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1437,11 +1738,19 @@
                   "query": [
                     {
                       "key": "limit",
-                      "value": "<integer>"
+                      "value": "50"
                     },
                     {
                       "key": "offset",
-                      "value": "<string>"
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,offset,path,project,project.name,projects,projects.name,uri"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
                     }
                   ],
                   "variable": [
@@ -1450,7 +1759,7 @@
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -1462,6 +1771,10 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "GET",
@@ -1472,12 +1785,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -1486,12 +1799,12 @@
           }
         },
         {
-          "id": "08610856-bd41-454f-bd01-48172515f684",
+          "id": "35de6d9f-710a-4080-b1e1-f30607670475",
           "name": "Asana Create a section in a project",
           "request": {
             "name": "Asana Create a section in a project",
             "description": {
-              "content": "Creates a new section in a project.",
+              "content": "Creates a new section in a project.\nReturns the full record of the newly created section.",
               "type": "text/plain"
             },
             "url": {
@@ -1503,14 +1816,27 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "project_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the project."
                 }
               ]
             },
@@ -1538,8 +1864,8 @@
           },
           "response": [
             {
-              "id": "84ded605-6048-4b30-af8f-cac475219072",
-              "name": "Successfully created the section.",
+              "id": "fb02e0a8-8e4c-4ec0-8bc4-5e33b8cb21f6",
+              "name": "Successfully created the specified section.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1550,14 +1876,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -1578,7 +1913,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1594,13 +1929,13 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"data\": {\n    \"gid\": \"321654\",\n    \"resource_type\": \"section\",\n    \"name\": \"Next Actions\",\n    \"created_at\": \"1987-02-04T17:05:26.759Z\",\n    \"project\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"projects\": [\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      }\n    ]\n  }\n}",
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"section\",\n    \"name\": \"Next Actions\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"project\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"project\",\n      \"name\": \"Stuff to buy\"\n    },\n    \"projects\": [\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"project\",\n        \"name\": \"Stuff to buy\"\n      },\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"project\",\n        \"name\": \"Stuff to buy\"\n      }\n    ]\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "58e8b65b-cec5-44ba-ad64-900b11b00abd",
-              "name": "Bad request.",
+              "id": "dc7940a4-1c32-4d51-9b54-7c0491725671",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -1611,357 +1946,23 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "9b4f01a2-714e-496d-a317-9a968dac1759",
-              "name": "Unauthorized.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "projects",
-                    ":project_gid",
-                    "sections"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "project_gid",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "09258663-041b-454d-8494-1af24cb02719",
-              "name": "Forbidden.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "projects",
-                    ":project_gid",
-                    "sections"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "project_gid",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Forbidden",
-              "code": 403,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "2aaca5fc-38b4-4451-85cc-0f4009b55a41",
-              "name": "Not found.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "projects",
-                    ":project_gid",
-                    "sections"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "project_gid",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "ed720ce8-c1f0-4443-bf69-090cdb6ebf1e",
-              "name": "Internal server error.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "projects",
-                    ":project_gid",
-                    "sections"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "project_gid",
-                      "description": "(Required) "
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"string\",\n    \"insert_after\": \"string\"\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Internal Server Error",
-              "code": 500,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "e29fe1bb-46ac-4f3d-9ea4-660494b949e1",
-          "name": "Asana Add task to section",
-          "request": {
-            "name": "Asana Add task to section",
-            "description": {
-              "content": "Add a task to a specific, existing section.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "sections",
-                ":section_gid",
-                "addTask"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "section_gid",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"data\": {\n    \"task\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "154239c4-33b0-4bd9-a1f2-2a674e3e7fe4",
-              "name": "Successfully added the task.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "sections",
-                    ":section_gid",
-                    "addTask"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -1982,7 +1983,438 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"task\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eba75f02-b5bd-419b-bba6-e81a2e152106",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_gid",
+                    "sections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_gid",
+                      "description": "(Required) Globally unique identifier for the project."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41e80651-1758-4dc9-aecf-e3a3af45d7a1",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_gid",
+                    "sections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_gid",
+                      "description": "(Required) Globally unique identifier for the project."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2c264d6-3c72-4a75-99a9-bcee10354d47",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_gid",
+                    "sections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_gid",
+                      "description": "(Required) Globally unique identifier for the project."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "628d4a4f-095b-4b65-ba71-3889c9040851",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_gid",
+                    "sections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "created_at,name,project,project.name,projects,projects.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "project_gid",
+                      "description": "(Required) Globally unique identifier for the project."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Next Actions\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e64d1eb5-644b-45eb-ba07-77b370cbd70a",
+          "name": "Asana Add task to section",
+          "request": {
+            "name": "Asana Add task to section",
+            "description": {
+              "content": "Add a task to a specific, existing section. This will remove the task from other sections of the project.\n\nThe task will be inserted at the top of a section unless an insert_before or insert_after parameter is declared.\n\nThis does not work for separators (tasks with the resource_subtype of section).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sections",
+                ":section_gid",
+                "addTask"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "section_gid",
+                  "description": "(Required) The globally unique identifier for the section."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "default"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://app.asana.com/-/oauth_token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.asana.com/-/oauth_authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"task\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "378f575b-cbdc-49c2-abbb-3c953df93215",
+              "name": "Successfully added the task.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sections",
+                    ":section_gid",
+                    "addTask"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "section_gid",
+                      "description": "(Required) The globally unique identifier for the section."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"task\": \"123456\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2003,8 +2435,8 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "07bad99d-142d-431e-9564-669e7ff1f16a",
-              "name": "Bad request.",
+              "id": "932c6acc-f1dc-4e42-a62d-88f73ee2481c",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2015,31 +2447,40 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
                 "header": [
                   {
                     "description": {
-                      "content": "Added as a part of security scheme: bearer",
+                      "content": "Added as a part of security scheme: oauth2",
                       "type": "text/plain"
                     },
                     "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"task\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"task\": \"123456\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2052,16 +2493,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "dd40dcb2-1d74-4555-ad4a-10fecb2cd299",
-              "name": "Unauthorized.",
+              "id": "e4de5c00-7345-45c1-a734-955963bc7b8e",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2072,31 +2513,40 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
                 "header": [
                   {
                     "description": {
-                      "content": "Added as a part of security scheme: bearer",
+                      "content": "Added as a part of security scheme: oauth2",
                       "type": "text/plain"
                     },
                     "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"task\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"task\": \"123456\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2109,16 +2559,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "fc3ed82b-9bc2-4a7f-9727-9298db1cf2bb",
-              "name": "Forbidden.",
+              "id": "d4640506-cdba-4ddb-8cee-762bfb2d211c",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2129,31 +2579,40 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
                 "header": [
                   {
                     "description": {
-                      "content": "Added as a part of security scheme: bearer",
+                      "content": "Added as a part of security scheme: oauth2",
                       "type": "text/plain"
                     },
                     "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"task\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"task\": \"123456\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2166,16 +2625,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "9a7013a7-e5f6-4a2e-8060-cffb1b087945",
-              "name": "Not found.",
+              "id": "c00ccbf2-098d-4129-81bf-96ebd06d98cb",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2186,31 +2645,40 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
                 "header": [
                   {
                     "description": {
-                      "content": "Added as a part of security scheme: bearer",
+                      "content": "Added as a part of security scheme: oauth2",
                       "type": "text/plain"
                     },
                     "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"task\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"task\": \"123456\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2223,16 +2691,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "79c5ef5a-7c0d-4bce-83c9-d4addbf4a9e4",
-              "name": "Internal server error.",
+              "id": "a0b443f5-dac2-490b-b90a-316c1c5b92e6",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2243,31 +2711,40 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "section_gid",
-                      "description": "(Required) "
+                      "description": "(Required) The globally unique identifier for the section."
                     }
                   ]
                 },
                 "header": [
                   {
                     "description": {
-                      "content": "Added as a part of security scheme: bearer",
+                      "content": "Added as a part of security scheme: oauth2",
                       "type": "text/plain"
                     },
                     "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"task\": \"<string>\",\n    \"insert_before\": \"<string>\",\n    \"insert_after\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"task\": \"123456\",\n    \"insert_before\": \"86420\",\n    \"insert_after\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2280,12 +2757,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -2294,12 +2771,12 @@
           }
         },
         {
-          "id": "0143be7c-6704-4362-a876-b04b785fedb9",
-          "name": "Asana Move or insert sections",
+          "id": "3bc3d736-ee22-40e7-8ba1-7b6bb707a719",
+          "name": "Asana Move or Insert sections",
           "request": {
-            "name": "Asana Move or insert sections",
+            "name": "Asana Move or Insert sections",
             "description": {
-              "content": "Move sections relative to each other in a board view.",
+              "content": "Move sections relative to each other. One of\n`before_section` or `after_section` is required.\n\nSections cannot be moved between projects.\n\nReturns an empty data block.",
               "type": "text/plain"
             },
             "url": {
@@ -2312,14 +2789,21 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "project_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the project."
                 }
               ]
             },
@@ -2347,8 +2831,8 @@
           },
           "response": [
             {
-              "id": "567afc37-f7c9-42fe-ab07-b431db34cc36",
-              "name": "Successfully moved the section.",
+              "id": "60ae24de-514c-4918-b0be-d586c3b418fb",
+              "name": "Successfully moved the specified section.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2360,14 +2844,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -2388,7 +2877,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"section\": \"<string>\",\n    \"before_section\": \"<string>\",\n    \"after_section\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"section\": \"321654\",\n    \"before_section\": \"86420\",\n    \"after_section\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2409,8 +2898,8 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "4d099975-1bbe-4588-a269-4d6521063218",
-              "name": "Bad request.",
+              "id": "af86c0b8-1f4d-4d73-98a1-1bf320f1a689",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2422,14 +2911,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -2441,12 +2935,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"section\": \"<string>\",\n    \"before_section\": \"<string>\",\n    \"after_section\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"section\": \"321654\",\n    \"before_section\": \"86420\",\n    \"after_section\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2459,16 +2957,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "63dd2320-8f48-4e98-8ec3-e25688c6cf71",
-              "name": "Unauthorized.",
+              "id": "829484fa-4970-416a-a985-ab588e21ef64",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2480,14 +2978,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -2499,12 +3002,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"section\": \"<string>\",\n    \"before_section\": \"<string>\",\n    \"after_section\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"section\": \"321654\",\n    \"before_section\": \"86420\",\n    \"after_section\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2517,16 +3024,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "8a140951-f4d4-40fe-b93a-d8ee800f56b5",
-              "name": "Forbidden.",
+              "id": "18add56a-a64f-437b-bd4d-f58c3c6e496a",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2538,14 +3045,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -2557,12 +3069,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"section\": \"<string>\",\n    \"before_section\": \"<string>\",\n    \"after_section\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"section\": \"321654\",\n    \"before_section\": \"86420\",\n    \"after_section\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2575,16 +3091,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "8e4f8c79-fb38-432a-bd58-76c5c5f681b4",
-              "name": "Not found.",
+              "id": "79e75a58-5466-4856-8a4e-a91dfd0f33f0",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2596,14 +3112,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -2615,12 +3136,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"section\": \"<string>\",\n    \"before_section\": \"<string>\",\n    \"after_section\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"section\": \"321654\",\n    \"before_section\": \"86420\",\n    \"after_section\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2633,16 +3158,16 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             },
             {
-              "id": "9cccc737-fbe5-4122-9dba-64ff3674c672",
-              "name": "Internal server error.",
+              "id": "a0382d79-5ac9-4bd3-8183-99678de6b068",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
               "originalRequest": {
                 "url": {
                   "path": [
@@ -2654,14 +3179,19 @@
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
                   "variable": [
                     {
                       "disabled": false,
                       "type": "any",
                       "value": "<string>",
                       "key": "project_gid",
-                      "description": "(Required) "
+                      "description": "(Required) Globally unique identifier for the project."
                     }
                   ]
                 },
@@ -2673,12 +3203,16 @@
                     },
                     "key": "Authorization",
                     "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
                   }
                 ],
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"data\": {\n    \"section\": \"<string>\",\n    \"before_section\": \"<string>\",\n    \"after_section\": \"<string>\"\n  }\n}",
+                  "raw": "{\n  \"data\": {\n    \"section\": \"321654\",\n    \"before_section\": \"86420\",\n    \"after_section\": \"987654\"\n  }\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2691,12 +3225,12 @@
               "header": [
                 {
                   "key": "Content-Type",
-                  "value": "text/plain"
+                  "value": "application/json"
                 }
               ],
-              "body": "",
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
               "cookie": [],
-              "_postman_previewlanguage": "text"
+              "_postman_previewlanguage": "json"
             }
           ],
           "event": [],
@@ -2726,11 +3260,11 @@
     ]
   },
   "info": {
-    "_postman_id": "40798812-34e7-4011-a4de-1a133cfd6255",
-    "name": "Asana Sections API",
+    "_postman_id": "8b14067d-2f8e-43c3-bd70-05430302a099",
+    "name": "Asana Allocations Sections API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Asana Sections API allows developers to manage sections within projects. A section is a subdivision of a project that groups tasks together, appearing as a header in list view or a column in board view.\n\nContact Support:\n Name: Asana Support",
+      "content": "The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.\n\nContact Support:\n Name: Asana Support",
       "type": "text/plain"
     }
   }

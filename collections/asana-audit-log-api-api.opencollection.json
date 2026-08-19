@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Asana Allocations Audit Log API API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Audit Log API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Asana Get audit log events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.asana.com/api/1.0/workspaces/:workspace_gid/audit_log_events",
+            "params": [
+              {
+                "name": "workspace_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the workspace or organization."
+              },
+              {
+                "name": "start_at",
+                "value": "",
+                "type": "query",
+                "description": "Filter to events created after this time (inclusive)."
+              },
+              {
+                "name": "end_at",
+                "value": "",
+                "type": "query",
+                "description": "Filter to events created before this time (exclusive)."
+              },
+              {
+                "name": "event_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter to events of this type.\nRefer to the [supported audit log events](/docs/audit-log-events#supported-audit-log-events) for a full list of values."
+              },
+              {
+                "name": "actor_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter to events with an actor of this type.\nThis only needs to be included if querying for actor types without an ID. If `actor_gid` is included, this should be excluded."
+              },
+              {
+                "name": "actor_gid",
+                "value": "",
+                "type": "query",
+                "description": "Filter to events triggered by the actor with this ID."
+              },
+              {
+                "name": "resource_gid",
+                "value": "",
+                "type": "query",
+                "description": "Filter to events with this resource ID."
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
+              },
+              {
+                "name": "offset",
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+              }
+            ]
+          },
+          "docs": "Retrieve the audit log events that have been captured in your domain.\n\nThis endpoint will return a list of [AuditLogEvent](/reference/audit-log-api) objects, sorted by creation time in ascending order. Note that the Audit Log API captures events from October 8th, 2021 and later. Queries for events before this date will not return results.\n\nThere are a number of query parameters (below) that can be used to filter the set of [AuditLogEvent](/reference/audit-log-api) objects that are returned in th"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

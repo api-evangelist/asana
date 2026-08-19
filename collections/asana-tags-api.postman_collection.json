@@ -1,61 +1,22 @@
 {
   "item": [
     {
-      "id": "2ea099d4-46cf-4b6d-b482-6bd895c03465",
+      "id": "de80c012-6f16-4f12-9d82-7703d147f0af",
       "name": "Tags",
       "description": {
-        "content": "Manage tags for tasks.",
+        "content": "",
         "type": "text/plain"
       },
-      "item": [],
-      "event": []
-    },
-    {
-      "id": "aae18dc7-33a4-4fae-a1de-bfc52c58d25f",
-      "name": "Asana Get multiple tags",
-      "request": {
-        "name": "Asana Get multiple tags",
-        "description": {},
-        "url": {
-          "path": [
-            "tags"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [
-            {
-              "disabled": false,
-              "key": "workspace",
-              "value": "<string>"
-            },
-            {
-              "disabled": false,
-              "key": "limit",
-              "value": "<integer>"
-            },
-            {
-              "disabled": false,
-              "key": "offset",
-              "value": "<string>"
-            }
-          ],
-          "variable": []
-        },
-        "header": [
-          {
-            "key": "Accept",
-            "value": "application/json"
-          }
-        ],
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
+      "item": [
         {
-          "id": "062e8037-583a-4c5a-9904-c2ffa8b2dd3b",
-          "name": "Successfully retrieved tags.",
-          "originalRequest": {
+          "id": "fe4b8d36-9513-402f-9000-0b241a240f56",
+          "name": "Asana Get multiple tags",
+          "request": {
+            "name": "Asana Get multiple tags",
+            "description": {
+              "content": "Returns the compact tag records for some filtered set of tags. Use one or more of the parameters provided to filter the tags returned.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "tags"
@@ -65,98 +26,447 @@
               ],
               "query": [
                 {
-                  "key": "workspace",
-                  "value": "<string>"
-                },
-                {
+                  "disabled": false,
                   "key": "limit",
-                  "value": "<integer>"
+                  "value": "<integer>",
+                  "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
                 },
                 {
+                  "disabled": false,
                   "key": "offset",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
+                },
+                {
+                  "disabled": false,
+                  "key": "workspace",
+                  "value": "<string>",
+                  "description": "The workspace to filter tags on."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
                 }
               ],
               "variable": []
             },
             "header": [
               {
-                "description": {
-                  "content": "Added as a part of security scheme: bearer",
-                  "type": "text/plain"
-                },
-                "key": "Authorization",
-                "value": "Bearer <token>"
-              },
-              {
                 "key": "Accept",
                 "value": "application/json"
               }
             ],
             "method": "GET",
-            "body": {}
+            "auth": null
           },
-          "status": "OK",
-          "code": 200,
-          "header": [
+          "response": [
             {
-              "key": "Content-Type",
-              "value": "application/json"
+              "id": "a8fbc6ff-b41d-4d19-b7a9-bb6bbb200fd4",
+              "name": "Successfully retrieved the specified set of tags.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "1331"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,offset,path,permalink_url,uri,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"tag\",\n      \"name\": \"Stuff to buy\"\n    },\n    {\n      \"gid\": \"12345\",\n      \"resource_type\": \"tag\",\n      \"name\": \"Stuff to buy\"\n    }\n  ],\n  \"next_page\": {\n    \"offset\": \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"path\": \"/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\",\n    \"uri\": \"https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38894aeb-c96e-4248-a955-644097798a67",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "1331"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,offset,path,permalink_url,uri,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e39309c7-66c4-4f37-8a38-90ebb478f52d",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "1331"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,offset,path,permalink_url,uri,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d83c3e8-ad1f-41b3-86aa-ec1c9bf4a226",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "1331"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,offset,path,permalink_url,uri,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bbf932c7-3b44-4881-8038-027dbf5361bd",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "1331"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,offset,path,permalink_url,uri,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2455f3c6-d9b9-4c57-a57e-f4ee13574a1d",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9"
+                    },
+                    {
+                      "key": "workspace",
+                      "value": "1331"
+                    },
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,offset,path,permalink_url,uri,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
             }
           ],
-          "body": "{\n  \"data\": [\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"tag\",\n      \"name\": \"Stuff to buy\"\n    },\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"tag\",\n      \"name\": \"Stuff to buy\"\n    }\n  ]\n}",
-          "cookie": [],
-          "_postman_previewlanguage": "json"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "f665b4bd-b7d6-441d-934e-f7c315eee24c",
-      "name": "Asana Create a tag",
-      "request": {
-        "name": "Asana Create a tag",
-        "description": {},
-        "url": {
-          "path": [
-            "tags"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         },
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept",
-            "value": "application/json"
-          }
-        ],
-        "method": "POST",
-        "auth": null,
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      },
-      "response": [
         {
-          "id": "4137218f-b9eb-428d-aebf-ce8a89253d28",
-          "name": "Successfully created a new tag.",
-          "originalRequest": {
+          "id": "4f36f1cb-91d9-4fdd-8e1f-fe8f63434c12",
+          "name": "Asana Create a tag",
+          "request": {
+            "name": "Asana Create a tag",
+            "description": {
+              "content": "Creates a new tag in a workspace or organization.\n\nEvery tag is required to be created in a specific workspace or\norganization, and this cannot be changed once set. Note that you can use\nthe workspace parameter regardless of whether or not it is an\norganization.\n\nReturns the full record of the newly created tag.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "tags"
@@ -164,17 +474,26 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": []
             },
             "header": [
               {
-                "description": {
-                  "content": "Added as a part of security scheme: bearer",
-                  "type": "text/plain"
-                },
-                "key": "Authorization",
-                "value": "Bearer <token>"
+                "key": "Content-Type",
+                "value": "application/json"
               },
               {
                 "key": "Accept",
@@ -182,9 +501,10 @@
               }
             ],
             "method": "POST",
+            "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"data\": {\n    \"name\": \"string\",\n    \"color\": \"string\",\n    \"workspace\": \"string\",\n    \"followers\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"notes\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"workspace\": \"<string>\"\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -192,63 +512,382 @@
               }
             }
           },
-          "status": "Created",
-          "code": 201,
-          "header": [
+          "response": [
             {
-              "key": "Content-Type",
-              "value": "application/json"
+              "id": "522f86b0-6d7c-4a10-904d-a6ca51ef48cd",
+              "name": "Successfully created the newly specified tag.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Stuff to buy\",\n    \"color\": \"light-green\",\n    \"notes\": \"Mittens really likes the stuff from Humboldt.\",\n    \"followers\": [\n      \"12345\",\n      \"42563\"\n    ],\n    \"workspace\": \"12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"tag\",\n    \"name\": \"Stuff to buy\",\n    \"color\": \"light-green\",\n    \"notes\": \"Mittens really likes the stuff from Humboldt.\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"followers\": [\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      },\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"workspace\",\n      \"name\": \"My Company Workspace\"\n    },\n    \"permalink_url\": \"https://app.asana.com/0/resource/123456789/list\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f4ca4f3-5b46-450a-992b-2bc231bec5b7",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Stuff to buy\",\n    \"color\": \"light-green\",\n    \"notes\": \"Mittens really likes the stuff from Humboldt.\",\n    \"followers\": [\n      \"12345\",\n      \"42563\"\n    ],\n    \"workspace\": \"12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "689c5c7a-b6ae-4b39-966a-c7753cb5404a",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Stuff to buy\",\n    \"color\": \"light-green\",\n    \"notes\": \"Mittens really likes the stuff from Humboldt.\",\n    \"followers\": [\n      \"12345\",\n      \"42563\"\n    ],\n    \"workspace\": \"12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7e76dd9-63db-4a78-b97a-58ce2829096a",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Stuff to buy\",\n    \"color\": \"light-green\",\n    \"notes\": \"Mittens really likes the stuff from Humboldt.\",\n    \"followers\": [\n      \"12345\",\n      \"42563\"\n    ],\n    \"workspace\": \"12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b17dd489-5a36-4d95-aded-a10ad492452d",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Stuff to buy\",\n    \"color\": \"light-green\",\n    \"notes\": \"Mittens really likes the stuff from Humboldt.\",\n    \"followers\": [\n      \"12345\",\n      \"42563\"\n    ],\n    \"workspace\": \"12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ab38015-ed81-45af-a683-5a34babb6e12",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"name\": \"Stuff to buy\",\n    \"color\": \"light-green\",\n    \"notes\": \"Mittens really likes the stuff from Humboldt.\",\n    \"followers\": [\n      \"12345\",\n      \"42563\"\n    ],\n    \"workspace\": \"12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
             }
           ],
-          "body": "{\n  \"data\": {\n    \"gid\": \"string\",\n    \"resource_type\": \"tag\",\n    \"name\": \"string\",\n    \"color\": \"string\",\n    \"created_at\": \"1983-07-10T07:23:28.063Z\",\n    \"followers\": [\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"permalink_url\": \"string\"\n  }\n}",
-          "cookie": [],
-          "_postman_previewlanguage": "json"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "d041945a-f2d5-4b12-903e-38b2bbd8cfbc",
-      "name": "Asana Get a tag",
-      "request": {
-        "name": "Asana Get a tag",
-        "description": {},
-        "url": {
-          "path": [
-            "tags",
-            ":tag_gid"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "tag_gid",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "header": [
-          {
-            "key": "Accept",
-            "value": "application/json"
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
           }
-        ],
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
+        },
         {
-          "id": "b627d180-06ca-45ef-87c8-0e729ecf28f9",
-          "name": "Successfully retrieved the tag.",
-          "originalRequest": {
+          "id": "76ec524f-0d3c-45a9-a4f7-a6bcb51dd35e",
+          "name": "Asana Get a tag",
+          "request": {
+            "name": "Asana Get a tag",
+            "description": {
+              "content": "Returns the complete tag record for a single tag.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "tags",
@@ -257,104 +896,421 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "tag_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the tag."
                 }
               ]
             },
             "header": [
-              {
-                "description": {
-                  "content": "Added as a part of security scheme: bearer",
-                  "type": "text/plain"
-                },
-                "key": "Authorization",
-                "value": "Bearer <token>"
-              },
               {
                 "key": "Accept",
                 "value": "application/json"
               }
             ],
             "method": "GET",
-            "body": {}
+            "auth": null
           },
-          "status": "OK",
-          "code": 200,
-          "header": [
+          "response": [
             {
-              "key": "Content-Type",
-              "value": "application/json"
+              "id": "811e534f-4720-46c8-b97a-cd4c500c51ba",
+              "name": "Successfully retrieved the specified tag.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"tag\",\n    \"name\": \"Stuff to buy\",\n    \"color\": \"light-green\",\n    \"notes\": \"Mittens really likes the stuff from Humboldt.\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"followers\": [\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      },\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"workspace\",\n      \"name\": \"My Company Workspace\"\n    },\n    \"permalink_url\": \"https://app.asana.com/0/resource/123456789/list\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38d3fe00-0400-4e37-927b-7c933f0fb6b2",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3000da1-408a-497f-b637-cd8856a0c3a3",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "367999f2-2224-41b2-9fd7-23e484817de5",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1cd441f1-43b2-4016-8912-28c96f250589",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a65ca424-91c7-45fb-9fb5-121401094b1d",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
             }
           ],
-          "body": "{\n  \"data\": {\n    \"gid\": \"string\",\n    \"resource_type\": \"tag\",\n    \"name\": \"string\",\n    \"color\": \"string\",\n    \"created_at\": \"1983-07-10T07:23:28.063Z\",\n    \"followers\": [\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"permalink_url\": \"string\"\n  }\n}",
-          "cookie": [],
-          "_postman_previewlanguage": "json"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "5e7af269-38ca-4f37-8aee-df24577fb71a",
-      "name": "Asana Update a tag",
-      "request": {
-        "name": "Asana Update a tag",
-        "description": {},
-        "url": {
-          "path": [
-            "tags",
-            ":tag_gid"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "tag_gid",
-              "description": "(Required) "
-            }
-          ]
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         },
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept",
-            "value": "application/json"
-          }
-        ],
-        "method": "PUT",
-        "auth": null,
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      },
-      "response": [
         {
-          "id": "1544333f-097a-454a-9e57-7a926748d13d",
-          "name": "Successfully updated the tag.",
-          "originalRequest": {
+          "id": "bc8e33f0-67f6-48f3-a516-796a6792b226",
+          "name": "Asana Update a tag",
+          "request": {
+            "name": "Asana Update a tag",
+            "description": {
+              "content": "Updates the properties of a tag. Only the fields provided in the `data`\nblock will be updated; any unspecified fields will remain unchanged.\n\nWhen using this method, it is best to specify only those fields you wish\nto change, or else you may overwrite changes made by another user since\nyou last retrieved the tag.\n\nReturns the complete updated tag record.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "tags",
@@ -363,93 +1319,421 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_fields",
+                  "value": "<string>,<string>",
+                  "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+                },
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "tag_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the tag."
                 }
               ]
             },
             "header": [
-              {
-                "description": {
-                  "content": "Added as a part of security scheme: bearer",
-                  "type": "text/plain"
-                },
-                "key": "Authorization",
-                "value": "Bearer <token>"
-              },
               {
                 "key": "Accept",
                 "value": "application/json"
               }
             ],
             "method": "PUT",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"data\": {\n    \"name\": \"string\",\n    \"color\": \"string\",\n    \"workspace\": \"string\",\n    \"followers\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
+            "auth": null
           },
-          "status": "OK",
-          "code": 200,
-          "header": [
+          "response": [
             {
-              "key": "Content-Type",
-              "value": "application/json"
+              "id": "a1976673-ddde-4a6d-8e9b-d99e396124d9",
+              "name": "Successfully updated the specified tag.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"gid\": \"12345\",\n    \"resource_type\": \"tag\",\n    \"name\": \"Stuff to buy\",\n    \"color\": \"light-green\",\n    \"notes\": \"Mittens really likes the stuff from Humboldt.\",\n    \"created_at\": \"2012-02-22T02:06:58.147Z\",\n    \"followers\": [\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      },\n      {\n        \"gid\": \"12345\",\n        \"resource_type\": \"user\",\n        \"name\": \"Greg Sanchez\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"12345\",\n      \"resource_type\": \"workspace\",\n      \"name\": \"My Company Workspace\"\n    },\n    \"permalink_url\": \"https://app.asana.com/0/resource/123456789/list\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa81c1ef-7e9d-4d1d-9540-aeae34298ce5",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e63dc517-7509-4f2e-85b0-6f120b56d1b6",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c2f713f-6f95-43d3-912a-311103a7713a",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0df23fb7-1dd9-439d-bc42-371dd6882223",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44dafc4e-2572-4f37-8965-94c43a97fd50",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_fields",
+                      "value": "color,created_at,followers,followers.name,name,notes,permalink_url,workspace,workspace.name"
+                    },
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
             }
           ],
-          "body": "{\n  \"data\": {\n    \"gid\": \"string\",\n    \"resource_type\": \"tag\",\n    \"name\": \"string\",\n    \"color\": \"string\",\n    \"created_at\": \"1983-07-10T07:23:28.063Z\",\n    \"followers\": [\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"permalink_url\": \"string\"\n  }\n}",
-          "cookie": [],
-          "_postman_previewlanguage": "json"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "3f9a0450-6cf7-4935-8572-43c16d16e40e",
-      "name": "Asana Delete a tag",
-      "request": {
-        "name": "Asana Delete a tag",
-        "description": {},
-        "url": {
-          "path": [
-            "tags",
-            ":tag_gid"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "tag_gid",
-              "description": "(Required) "
-            }
-          ]
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         },
-        "method": "DELETE",
-        "auth": null
-      },
-      "response": [
         {
-          "id": "4eceb3c2-d5d5-48b0-b1a3-d1c0bedb225e",
-          "name": "Successfully deleted the tag.",
-          "originalRequest": {
+          "id": "faaf411a-58a6-4d28-8de3-598b84a412e1",
+          "name": "Asana Delete a tag",
+          "request": {
+            "name": "Asana Delete a tag",
+            "description": {
+              "content": "A specific, existing tag can be deleted by making a DELETE request on\nthe URL for that tag.\n\nReturns an empty data record.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "tags",
@@ -458,278 +1742,384 @@
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "opt_pretty",
+                  "value": "<boolean>",
+                  "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
                   "key": "tag_gid",
-                  "description": "(Required) "
+                  "description": "(Required) Globally unique identifier for the tag."
                 }
               ]
             },
             "header": [
               {
-                "description": {
-                  "content": "Added as a part of security scheme: bearer",
-                  "type": "text/plain"
-                },
-                "key": "Authorization",
-                "value": "Bearer <token>"
+                "key": "Accept",
+                "value": "application/json"
               }
             ],
             "method": "DELETE",
-            "body": {}
+            "auth": null
           },
-          "status": "OK",
-          "code": 200,
-          "header": [
+          "response": [
             {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "db41e759-3f8a-4c36-ad68-d4a1b1eae2ad",
-      "name": "Asana Get tags in a workspace",
-      "request": {
-        "name": "Asana Get tags in a workspace",
-        "description": {},
-        "url": {
-          "path": [
-            "workspaces",
-            ":workspace_gid",
-            "tags"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [
-            {
-              "disabled": false,
-              "key": "limit",
-              "value": "<integer>"
-            },
-            {
-              "disabled": false,
-              "key": "offset",
-              "value": "<string>"
-            }
-          ],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "workspace_gid",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "header": [
-          {
-            "key": "Accept",
-            "value": "application/json"
-          }
-        ],
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "78cb9a80-64fe-41a1-b0f1-2fa9bb35979d",
-          "name": "Successfully retrieved tags for the workspace.",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "workspaces",
-                ":workspace_gid",
-                "tags"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "limit",
-                  "value": "<integer>"
+              "id": "7a937042-ff13-4a9c-9aab-4d607e336379",
+              "name": "Successfully deleted the specified tag.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
                 },
-                {
-                  "key": "offset",
-                  "value": "<string>"
-                }
-              ],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "workspace_gid",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "header": [
-              {
-                "description": {
-                  "content": "Added as a part of security scheme: bearer",
-                  "type": "text/plain"
-                },
-                "key": "Authorization",
-                "value": "Bearer <token>"
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
               },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
-          "body": "{\n  \"data\": [\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"tag\",\n      \"name\": \"Stuff to buy\"\n    },\n    {\n      \"gid\": \"string\",\n      \"resource_type\": \"tag\",\n      \"name\": \"Stuff to buy\"\n    }\n  ]\n}",
-          "cookie": [],
-          "_postman_previewlanguage": "json"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "185a23c0-110d-40f7-bb1b-1adac1969c50",
-      "name": "Asana Create a tag in a workspace",
-      "request": {
-        "name": "Asana Create a tag in a workspace",
-        "description": {},
-        "url": {
-          "path": [
-            "workspaces",
-            ":workspace_gid",
-            "tags"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "workspace_gid",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept",
-            "value": "application/json"
-          }
-        ],
-        "method": "POST",
-        "auth": null,
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"data\": {\n    \"name\": \"<string>\",\n    \"color\": \"<string>\",\n    \"workspace\": \"<string>\",\n    \"followers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      },
-      "response": [
-        {
-          "id": "585192af-f73c-46be-9587-f19cdb055c76",
-          "name": "Successfully created the tag.",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "workspaces",
-                ":workspace_gid",
-                "tags"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
+              "status": "OK",
+              "code": 200,
+              "header": [
                 {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "workspace_gid",
-                  "description": "(Required) "
+                  "key": "Content-Type",
+                  "value": "application/json"
                 }
-              ]
+              ],
+              "body": "{\n  \"data\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
             },
-            "header": [
-              {
-                "description": {
-                  "content": "Added as a part of security scheme: bearer",
-                  "type": "text/plain"
-                },
-                "key": "Authorization",
-                "value": "Bearer <token>"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"data\": {\n    \"name\": \"string\",\n    \"color\": \"string\",\n    \"workspace\": \"string\",\n    \"followers\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "status": "Created",
-          "code": 201,
-          "header": [
             {
-              "key": "Content-Type",
-              "value": "application/json"
+              "id": "30ac9414-9562-40e8-9221-da7ee18c265c",
+              "name": "This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b88e28a3-1f37-49b4-a635-98a17cffa778",
+              "name": "A valid authentication token was not provided with the request, so the API could not associate a user with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c186158f-85a5-47e3-9b25-4eb58092b8b5",
+              "name": "The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba8d316c-60fd-46e2-89f6-05492e42db91",
+              "name": "Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e81664d-a66b-43e9-81ac-b4d90833e7a1",
+              "name": "There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags",
+                    ":tag_gid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "opt_pretty",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag_gid",
+                      "description": "(Required) Globally unique identifier for the tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    },\n    {\n      \"message\": \"project: Missing input\",\n      \"help\": \"For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'\",\n      \"phrase\": \"6 sad squid snuggle softly\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
             }
           ],
-          "body": "{\n  \"data\": {\n    \"gid\": \"string\",\n    \"resource_type\": \"tag\",\n    \"name\": \"string\",\n    \"color\": \"string\",\n    \"created_at\": \"1983-07-10T07:23:28.063Z\",\n    \"followers\": [\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"gid\": \"string\",\n        \"resource_type\": \"string\",\n        \"name\": \"string\"\n      }\n    ],\n    \"workspace\": {\n      \"gid\": \"string\",\n      \"resource_type\": \"string\",\n      \"name\": \"string\"\n    },\n    \"permalink_url\": \"string\"\n  }\n}",
-          "cookie": [],
-          "_postman_previewlanguage": "json"
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         }
       ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
+      "event": []
     }
   ],
   "event": [],
@@ -750,11 +2140,11 @@
     ]
   },
   "info": {
-    "_postman_id": "c17a29a1-eca5-4993-83ed-3efc42a62f14",
-    "name": "Asana Tags API",
+    "_postman_id": "cc602df6-0d0f-4172-9089-c10567c5fcd2",
+    "name": "Asana Allocations Tags API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Asana Tags API allows developers to manage tags that can be attached to any task in Asana. A tag exists in a single workspace or organization.\n\nContact Support:\n Name: Asana Support",
+      "content": "The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.\n\nContact Support:\n Name: Asana Support",
       "type": "text/plain"
     }
   }

@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Asana Goals API",
+    "name": "Asana Allocations Goals API",
     "version": "1.0"
   },
   "request": {
@@ -26,6 +26,12 @@
             "method": "GET",
             "url": "https://app.asana.com/api/1.0/goals",
             "params": [
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
               {
                 "name": "workspace",
                 "value": "",
@@ -73,6 +79,14 @@
           "http": {
             "method": "POST",
             "url": "https://app.asana.com/api/1.0/goals",
+            "params": [
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              }
+            ],
             "body": {
               "type": "json",
               "data": "{}"
@@ -92,7 +106,14 @@
               {
                 "name": "goal_gid",
                 "value": "12345",
-                "type": "path"
+                "type": "path",
+                "description": "Globally unique identifier for the goal."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ]
           },
@@ -110,7 +131,14 @@
               {
                 "name": "goal_gid",
                 "value": "12345",
-                "type": "path"
+                "type": "path",
+                "description": "Globally unique identifier for the goal."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ],
             "body": {
@@ -132,7 +160,14 @@
               {
                 "name": "goal_gid",
                 "value": "12345",
-                "type": "path"
+                "type": "path",
+                "description": "Globally unique identifier for the goal."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ]
           },
@@ -149,8 +184,15 @@
             "params": [
               {
                 "name": "goal_gid",
-                "value": "",
-                "type": "path"
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the goal."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ],
             "body": {
@@ -171,8 +213,15 @@
             "params": [
               {
                 "name": "goal_gid",
-                "value": "",
-                "type": "path"
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the goal."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ],
             "body": {
@@ -193,12 +242,89 @@
             "params": [
               {
                 "name": "goal_gid",
-                "value": "",
-                "type": "path"
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the goal."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ]
           },
           "docs": "Returns a compact representation of all parent goals of a goal."
+        },
+        {
+          "info": {
+            "name": "Asana Create a goal metric",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid/setMetric",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the goal."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "current_status_update,current_status_update.resource_subtype,current_status_update.title,due_on,followers,followers.name,html_notes,is_workspace_level,liked,likes,likes.user,likes.user.name,metric,metric.can_manage,metric.currency_code,metric.current_display_value,metric.current_number_value,metric.initial_number_value,metric.is_custom_weight,metric.precision,metric.progress_source,metric.resource_subtype,metric.target_number_value,metric.unit,name,notes,num_likes,owner,owner.name,start_on,status,team,team.name,time_period,time_period.display_name,time_period.end_on,time_period.period,time_period.start_on,workspace,workspace.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates and adds a goal metric to a specified goal. Note that this replaces an existing goal metric if one already exists."
+        },
+        {
+          "info": {
+            "name": "Asana Update a goal metric",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/goals/:goal_gid/setMetricCurrentValue",
+            "params": [
+              {
+                "name": "goal_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the goal."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "current_status_update,current_status_update.resource_subtype,current_status_update.title,due_on,followers,followers.name,html_notes,is_workspace_level,liked,likes,likes.user,likes.user.name,metric,metric.can_manage,metric.currency_code,metric.current_display_value,metric.current_number_value,metric.initial_number_value,metric.is_custom_weight,metric.precision,metric.progress_source,metric.resource_subtype,metric.target_number_value,metric.unit,name,notes,num_likes,owner,owner.name,start_on,status,team,team.name,time_period,time_period.display_name,time_period.end_on,time_period.period,time_period.start_on,workspace,workspace.name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a goal's existing metric's `current_number_value` if one exists,\notherwise responds with a 400 status code.\n\nReturns the complete updated goal metric record."
         }
       ]
     }

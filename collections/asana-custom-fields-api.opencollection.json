@@ -1,7 +1,7 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Asana Custom Fields API",
+    "name": "Asana Allocations Custom Fields API",
     "version": "1.0"
   },
   "request": {
@@ -25,6 +25,14 @@
           "http": {
             "method": "POST",
             "url": "https://app.asana.com/api/1.0/custom_fields",
+            "params": [
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              }
+            ],
             "body": {
               "type": "json",
               "data": "{}"
@@ -46,6 +54,12 @@
                 "value": "12345",
                 "type": "path",
                 "description": "Globally unique identifier for the custom field."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ]
           },
@@ -63,7 +77,14 @@
               {
                 "name": "custom_field_gid",
                 "value": "12345",
-                "type": "path"
+                "type": "path",
+                "description": "Globally unique identifier for the custom field."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ],
             "body": {
@@ -85,7 +106,14 @@
               {
                 "name": "custom_field_gid",
                 "value": "12345",
-                "type": "path"
+                "type": "path",
+                "description": "Globally unique identifier for the custom field."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               }
             ]
           },
@@ -103,21 +131,135 @@
               {
                 "name": "workspace_gid",
                 "value": "12345",
-                "type": "path"
+                "type": "path",
+                "description": "Globally unique identifier for the workspace or organization."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
               },
               {
                 "name": "limit",
-                "value": "",
-                "type": "query"
+                "value": "50",
+                "type": "query",
+                "description": "Results per page.\nThe number of objects to return per page. The value must be between 1 and 100."
               },
               {
                 "name": "offset",
-                "value": "",
-                "type": "query"
+                "value": "eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9",
+                "type": "query",
+                "description": "Offset token.\nAn offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.\n*Note: You can only pass in an offset that was returned to you via a previously paginated request.*"
               }
             ]
           },
           "docs": "Returns a list of the compact representation of all custom fields in a workspace."
+        },
+        {
+          "info": {
+            "name": "Asana Create an enum option",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/custom_fields/:custom_field_gid/enum_options",
+            "params": [
+              {
+                "name": "custom_field_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the custom field."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "color,enabled,name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an enum option and adds it to this custom field’s list of enum options. A custom field can have at most 500 enum options (including disabled options). By default new enum options are inserted at the end of a custom field’s list.\nLocked custom fields can only have enum options added by the user who locked the field.\nReturns the full record of the newly created enum option."
+        },
+        {
+          "info": {
+            "name": "Asana Reorder a custom field's enum",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.asana.com/api/1.0/custom_fields/:custom_field_gid/enum_options/insert",
+            "params": [
+              {
+                "name": "custom_field_gid",
+                "value": "12345",
+                "type": "path",
+                "description": "Globally unique identifier for the custom field."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "color,enabled,name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Moves a particular enum option to be either before or after another specified enum option in the custom field.\nLocked custom fields can only be reordered by the user who locked the field."
+        },
+        {
+          "info": {
+            "name": "Asana Update an enum option",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://app.asana.com/api/1.0/enum_options/:enum_option_gid",
+            "params": [
+              {
+                "name": "enum_option_gid",
+                "value": "124578",
+                "type": "path",
+                "description": "Globally unique identifier for the enum option."
+              },
+              {
+                "name": "opt_pretty",
+                "value": "true",
+                "type": "query",
+                "description": "Provides “pretty” output.\nProvides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging."
+              },
+              {
+                "name": "opt_fields",
+                "value": "color,enabled,name",
+                "type": "query",
+                "description": "This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing enum option. Enum custom fields require at least one enabled enum option.\nLocked custom fields can only be updated by the user who locked the field.\nReturns the full record of the updated enum option."
         }
       ]
     }
