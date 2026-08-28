@@ -1,0 +1,92 @@
+slug: asana
+provider: Asana
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 8
+edges:
+- tag: Projects
+  spec_file: asana-projects-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.85
+  evidence: POST /projects 'Create a project', PUT /projects/{project_gid} 'Update a project', GET /workspaces/{workspace_gid}/projects
+    'Get all projects in a workspace'
+  reason: Core CRUD over project objects in a team work-management product; plainly realises project execution/tracking.
+    Ignore the misleading 'Allocations' title — operations are project lifecycle.
+- tag: Tasks
+  spec_file: asana-tasks-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.85
+  evidence: POST /tasks 'Create a task', GET /projects/{project_gid}/tasks 'Get tasks from a project',
+    GET /tasks/{task_gid}/subtasks 'Get subtasks from a task'
+  reason: Work item lifecycle with subtasks, dependencies (ModifyDependenciesRequest) and project association
+    — the canonical project execution, planning and tracking surface.
+- tag: Project Statuses
+  spec_file: asana-project-statuses-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.8
+  evidence: POST /projects/{project_gid}/project_statuses createProjectStatusForProject Asana Create a
+    project status
+  reason: Project status updates posted against a project are core project tracking/reporting within project
+    execution.
+- tag: Allocations
+  spec_file: asana-allocations-api-openapi.yml
+  capability_id: BC-900.60
+  capability_id_l1: BC-900
+  capability_name: Demand & Capacity Management
+  confidence: 0.75
+  evidence: '"An allocation object represents how much of a resource (e.g. person, team) is dedicated
+    to a specific work object (e.g. project, portfolio) over a specific period of time"'
+  reason: Allocating people/teams to projects and portfolios with effort percentages is project resource
+    capacity planning within a PPM tool.
+- tag: Goals
+  spec_file: asana-goals-api-openapi.yml
+  capability_id: BC-100.20
+  capability_id_l1: BC-100
+  capability_name: Strategy Execution Management
+  confidence: 0.75
+  evidence: POST /goals/{goal_gid}/setMetric createGoalMetric Asana Create a goal metric
+  reason: Create/update goals with metrics, current values, parent goals and collaborators — this is objective/OKR
+    management, i.e. translating strategy into measurable objectives.
+- tag: Portfolios
+  spec_file: asana-portfolios-api-openapi.yml
+  capability_id: BC-900.10
+  capability_id_l1: BC-900
+  capability_name: Portfolio Management
+  confidence: 0.75
+  evidence: POST /portfolios/{portfolio_gid}/addItem addItemForPortfolio Asana Add a portfolio item
+  reason: Creates and maintains portfolios that group projects (ProjectCompact items) — this is project
+    portfolio management in a work-management tool.
+- tag: Goal Relationships
+  spec_file: asana-goal-relationships-api-openapi.yml
+  capability_id: BC-100.20
+  capability_id_l1: BC-100
+  capability_name: Strategy Execution Management
+  confidence: 0.7
+  evidence: POST /goals/{goal_gid}/addSupportingRelationship Asana Add a supporting goal relationship
+  reason: Manages hierarchies of supporting/parent goals (OKR-style goal trees), which is strategy execution
+    / objective cascading. Slightly thin context, moderate confidence.
+- tag: Project Briefs
+  spec_file: asana-project-briefs-api-openapi.yml
+  capability_id: BC-900.30
+  capability_id_l1: BC-900
+  capability_name: Project Management
+  confidence: 0.7
+  evidence: POST /projects/{project_gid}/project_briefs createProjectBrief Asana Create a project brief
+  reason: Project brief documents describing project scope/plan are project management artefacts within
+    a project execution tool.
