@@ -11,8 +11,8 @@ info:
     through that single source.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: assign-and-follow-task
@@ -44,7 +44,7 @@ workflows:
   steps:
   - stepId: createAssignedTask
     description: Create the task and assign it to the owner.
-    operationId: $sourceDescriptions.asanaApi.createTask
+    operationId: $sourceDescriptions.tasksApi.createTask
     requestBody:
       contentType: application/json
       payload:
@@ -58,7 +58,7 @@ workflows:
       taskGid: $response.body#/data/gid
   - stepId: addFollowers
     description: Add followers who should be notified on the task.
-    operationId: $sourceDescriptions.asanaApi.addFollowersForTask
+    operationId: $sourceDescriptions.tasksApi.addFollowersForTask
     parameters:
     - name: task_gid
       in: path

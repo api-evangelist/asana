@@ -12,8 +12,11 @@ info:
     that single source.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: customFieldsApi
+  url: ../openapi/asana-custom-fields-api-openapi.yml
+  type: openapi
+- name: projectsApi
+  url: ../openapi/asana-projects-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: add-custom-field-to-project
@@ -47,7 +50,7 @@ workflows:
   steps:
   - stepId: createCustomField
     description: Create the custom field in the workspace.
-    operationId: $sourceDescriptions.asanaApi.createCustomField
+    operationId: $sourceDescriptions.customFieldsApi.createCustomField
     requestBody:
       contentType: application/json
       payload:
@@ -61,7 +64,7 @@ workflows:
       customFieldGid: $response.body#/data/gid
   - stepId: attachToProject
     description: Attach the custom field to the project as a custom field setting.
-    operationId: $sourceDescriptions.asanaApi.addCustomFieldSettingForProject
+    operationId: $sourceDescriptions.projectsApi.addCustomFieldSettingForProject
     parameters:
     - name: project_gid
       in: path

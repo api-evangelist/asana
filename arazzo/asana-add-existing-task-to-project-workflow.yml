@@ -12,8 +12,11 @@ info:
     source.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: storiesApi
+  url: ../openapi/asana-stories-api-openapi.yml
+  type: openapi
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: add-existing-task-to-project
@@ -43,7 +46,7 @@ workflows:
   steps:
   - stepId: readTask
     description: Read the task to confirm it exists before moving it.
-    operationId: $sourceDescriptions.asanaApi.getTask
+    operationId: $sourceDescriptions.tasksApi.getTask
     parameters:
     - name: task_gid
       in: path
@@ -57,7 +60,7 @@ workflows:
       taskName: $response.body#/data/name
   - stepId: addToProject
     description: Add the task to the project and place it in the section.
-    operationId: $sourceDescriptions.asanaApi.addProjectForTask
+    operationId: $sourceDescriptions.tasksApi.addProjectForTask
     parameters:
     - name: task_gid
       in: path
@@ -74,7 +77,7 @@ workflows:
       result: $response.body#/data
   - stepId: postNote
     description: Post a comment noting the move.
-    operationId: $sourceDescriptions.asanaApi.createStoryForTask
+    operationId: $sourceDescriptions.storiesApi.createStoryForTask
     parameters:
     - name: task_gid
       in: path

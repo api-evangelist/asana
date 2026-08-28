@@ -11,8 +11,11 @@ info:
     Asana description, so every step is addressed through that one source.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: sectionsApi
+  url: ../openapi/asana-sections-api-openapi.yml
+  type: openapi
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: triage-and-tag-task
@@ -46,7 +49,7 @@ workflows:
   steps:
   - stepId: createTask
     description: Create the task in the workspace.
-    operationId: $sourceDescriptions.asanaApi.createTask
+    operationId: $sourceDescriptions.tasksApi.createTask
     requestBody:
       contentType: application/json
       payload:
@@ -60,7 +63,7 @@ workflows:
       taskGid: $response.body#/data/gid
   - stepId: addToSection
     description: Move the new task into the target section.
-    operationId: $sourceDescriptions.asanaApi.addTaskForSection
+    operationId: $sourceDescriptions.sectionsApi.addTaskForSection
     parameters:
     - name: section_gid
       in: path
@@ -76,7 +79,7 @@ workflows:
       sectionResult: $response.body#/data
   - stepId: applyTag
     description: Apply the tag to the task for categorization.
-    operationId: $sourceDescriptions.asanaApi.addTagForTask
+    operationId: $sourceDescriptions.tasksApi.addTagForTask
     parameters:
     - name: task_gid
       in: path

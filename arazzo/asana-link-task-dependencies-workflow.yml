@@ -11,8 +11,8 @@ info:
     description, so every step is addressed through that single source.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: link-task-dependencies
@@ -38,7 +38,7 @@ workflows:
   steps:
   - stepId: createBlockingTask
     description: Create the task that must complete first.
-    operationId: $sourceDescriptions.asanaApi.createTask
+    operationId: $sourceDescriptions.tasksApi.createTask
     requestBody:
       contentType: application/json
       payload:
@@ -51,7 +51,7 @@ workflows:
       blockingGid: $response.body#/data/gid
   - stepId: createDependentTask
     description: Create the task that is blocked by the first task.
-    operationId: $sourceDescriptions.asanaApi.createTask
+    operationId: $sourceDescriptions.tasksApi.createTask
     requestBody:
       contentType: application/json
       payload:
@@ -64,7 +64,7 @@ workflows:
       dependentGid: $response.body#/data/gid
   - stepId: addDependency
     description: Declare the dependent task as blocked by the blocking task.
-    operationId: $sourceDescriptions.asanaApi.addDependenciesForTask
+    operationId: $sourceDescriptions.tasksApi.addDependenciesForTask
     parameters:
     - name: task_gid
       in: path

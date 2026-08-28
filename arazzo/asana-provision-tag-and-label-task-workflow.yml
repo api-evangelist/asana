@@ -11,8 +11,11 @@ info:
     OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
+  type: openapi
+- name: workspacesApi
+  url: ../openapi/asana-workspaces-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: provision-tag-and-label-task
@@ -41,7 +44,7 @@ workflows:
   steps:
   - stepId: createTag
     description: Create a new tag in the workspace.
-    operationId: $sourceDescriptions.asanaApi.createTagForWorkspace
+    operationId: $sourceDescriptions.workspacesApi.createTagForWorkspace
     parameters:
     - name: workspace_gid
       in: path
@@ -58,7 +61,7 @@ workflows:
       tagGid: $response.body#/data/gid
   - stepId: labelTask
     description: Apply the new tag to the existing task.
-    operationId: $sourceDescriptions.asanaApi.addTagForTask
+    operationId: $sourceDescriptions.tasksApi.addTagForTask
     parameters:
     - name: task_gid
       in: path

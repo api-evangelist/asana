@@ -13,8 +13,17 @@ info:
     unambiguous.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: projectsApi
+  url: ../openapi/asana-projects-api-openapi.yml
+  type: openapi
+- name: sectionsApi
+  url: ../openapi/asana-sections-api-openapi.yml
+  type: openapi
+- name: storiesApi
+  url: ../openapi/asana-stories-api-openapi.yml
+  type: openapi
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: bootstrap-project-board
@@ -55,7 +64,7 @@ workflows:
   steps:
   - stepId: createProject
     description: Create a new project under the supplied team.
-    operationId: $sourceDescriptions.asanaApi.createProjectForTeam
+    operationId: $sourceDescriptions.projectsApi.createProjectForTeam
     parameters:
     - name: team_gid
       in: path
@@ -72,7 +81,7 @@ workflows:
       projectGid: $response.body#/data/gid
   - stepId: createSection
     description: Add a named section to the newly created project.
-    operationId: $sourceDescriptions.asanaApi.createSectionForProject
+    operationId: $sourceDescriptions.sectionsApi.createSectionForProject
     parameters:
     - name: project_gid
       in: path
@@ -88,7 +97,7 @@ workflows:
       sectionGid: $response.body#/data/gid
   - stepId: createTask
     description: Create the first task inside the project.
-    operationId: $sourceDescriptions.asanaApi.createTask
+    operationId: $sourceDescriptions.tasksApi.createTask
     requestBody:
       contentType: application/json
       payload:
@@ -104,7 +113,7 @@ workflows:
       taskGid: $response.body#/data/gid
   - stepId: postComment
     description: Post an opening comment (story) on the first task.
-    operationId: $sourceDescriptions.asanaApi.createStoryForTask
+    operationId: $sourceDescriptions.storiesApi.createStoryForTask
     parameters:
     - name: task_gid
       in: path

@@ -11,8 +11,11 @@ info:
     without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: storiesApi
+  url: ../openapi/asana-stories-api-openapi.yml
+  type: openapi
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: complete-task-with-comment
@@ -35,7 +38,7 @@ workflows:
   steps:
   - stepId: readTask
     description: Read the task and capture its current completed state.
-    operationId: $sourceDescriptions.asanaApi.getTask
+    operationId: $sourceDescriptions.tasksApi.getTask
     parameters:
     - name: task_gid
       in: path
@@ -63,7 +66,7 @@ workflows:
         type: jsonpath
   - stepId: postClosingComment
     description: Post a closing comment describing the resolution.
-    operationId: $sourceDescriptions.asanaApi.createStoryForTask
+    operationId: $sourceDescriptions.storiesApi.createStoryForTask
     parameters:
     - name: task_gid
       in: path
@@ -79,7 +82,7 @@ workflows:
       storyGid: $response.body#/data/gid
   - stepId: completeTask
     description: Mark the task complete.
-    operationId: $sourceDescriptions.asanaApi.updateTask
+    operationId: $sourceDescriptions.tasksApi.updateTask
     parameters:
     - name: task_gid
       in: path

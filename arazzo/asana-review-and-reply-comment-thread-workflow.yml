@@ -11,8 +11,8 @@ info:
     every step is addressed through that single source.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: storiesApi
+  url: ../openapi/asana-stories-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: review-and-reply-comment-thread
@@ -34,7 +34,7 @@ workflows:
   steps:
   - stepId: readStories
     description: Read the existing stories (comments) on the task.
-    operationId: $sourceDescriptions.asanaApi.getStoriesForTask
+    operationId: $sourceDescriptions.storiesApi.getStoriesForTask
     parameters:
     - name: task_gid
       in: path
@@ -48,7 +48,7 @@ workflows:
       latestStoryText: $response.body#/data/0/text
   - stepId: postReply
     description: Post a reply comment to the task thread.
-    operationId: $sourceDescriptions.asanaApi.createStoryForTask
+    operationId: $sourceDescriptions.storiesApi.createStoryForTask
     parameters:
     - name: task_gid
       in: path

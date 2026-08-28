@@ -11,8 +11,8 @@ info:
     step is addressed through that single source.
   version: 1.0.0
 sourceDescriptions:
-- name: asanaApi
-  url: ../openapi/asana-openapi.yml
+- name: tasksApi
+  url: ../openapi/asana-tasks-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: promote-task-to-subtask
@@ -38,7 +38,7 @@ workflows:
   steps:
   - stepId: createTask
     description: Create the standalone task in the workspace.
-    operationId: $sourceDescriptions.asanaApi.createTask
+    operationId: $sourceDescriptions.tasksApi.createTask
     requestBody:
       contentType: application/json
       payload:
@@ -51,7 +51,7 @@ workflows:
       taskGid: $response.body#/data/gid
   - stepId: setParent
     description: Nest the new task under the parent task.
-    operationId: $sourceDescriptions.asanaApi.setParentForTask
+    operationId: $sourceDescriptions.tasksApi.setParentForTask
     parameters:
     - name: task_gid
       in: path
