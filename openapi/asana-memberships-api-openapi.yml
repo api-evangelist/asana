@@ -1,8 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Asana Allocations Memberships API
-  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
-  version: '1.0'
+  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
+  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
+  title: Asana Memberships API
   termsOfService: https://asana.com/terms
   contact:
     name: Asana Support
@@ -10,6 +10,76 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '1.0'
+  x-docs-schema-whitelist:
+  - AsanaResource
+  - AsanaNamedResource
+  - AuditLogEvent
+  - AttachmentResponse
+  - AttachmentCompact
+  - BatchResponse
+  - CustomFieldSettingResponse
+  - CustomFieldSettingCompact
+  - CustomFieldResponse
+  - CustomFieldCompact
+  - EnumOption
+  - EventResponse
+  - ErrorResponse
+  - GoalResponse
+  - GoalCompact
+  - GoalMembershipCompact
+  - GoalMembershipBase
+  - GoalMembershipResponse
+  - GoalRelationshipResponse
+  - GoalRelationshipCompact
+  - JobResponse
+  - JobCompact
+  - OrganizationExportResponse
+  - OrganizationExportCompact
+  - PortfolioMembershipResponse
+  - PortfolioMembershipCompact
+  - PortfolioResponse
+  - PortfolioCompact
+  - ProjectBriefResponse
+  - ProjectBriefCompact
+  - ProjectMembershipCompactResponse
+  - ProjectMembershipNormalResponse
+  - ProjectMembershipCompact
+  - ProjectResponse
+  - ProjectCompact
+  - ProjectStatusResponse
+  - ProjectStatusCompact
+  - ProjectTemplateCompact
+  - ProjectTemplateResponse
+  - RuleTriggerResponse
+  - SectionResponse
+  - SectionCompact
+  - StatusUpdateResponse
+  - StatusUpdateCompact
+  - StoryResponse
+  - StoryCompact
+  - TagResponse
+  - TagCompact
+  - TaskResponse
+  - TaskCompact
+  - TaskCountResponse
+  - TeamMembershipResponse
+  - TeamMembershipCompact
+  - TeamResponse
+  - TeamCompact
+  - TimePeriodResponse
+  - TimePeriodCompact
+  - UserTaskListResponse
+  - UserTaskListCompact
+  - UserResponse
+  - UserCompact
+  - WebhookFilter
+  - WebhookResponse
+  - WebhookCompact
+  - WorkspaceMembershipResponse
+  - WorkspaceMembershipCompact
+  - WorkspaceResponse
+  - WorkspaceCompact
 servers:
 - url: https://app.asana.com/api/1.0
   description: Main endpoint.
@@ -18,41 +88,57 @@ security:
 - oauth2: []
 tags:
 - name: Memberships
-  description: Manage memberships for goals, projects, and portfolios.
+  description: 'A membership object represents the relationship between a team or user and an object in Asana. Currently, the
+
+    supported types of memberships are for goals, projects, and portfolios. For example, a project membership
+
+    can be used to add a user to a project.'
 paths:
   /memberships:
     parameters:
     - $ref: '#/components/parameters/pretty'
     get:
       summary: Asana Get multiple memberships
-      description: Returns compact membership records.
-      operationId: getMemberships
+      description: Returns compact `goal_membership`, `project_membership`, or `portfolio_membership` records. The possible types for `parent` in this request are `goal`, `project`, or `portfolio`. An additional member (user GID or team GID) can be passed in to filter to a specific membership. Teams are not supported for portfolios yet.
       tags:
       - Memberships
+      operationId: getMemberships
       parameters:
       - name: parent
         in: query
-        required: false
+        description: Globally unique identifier for `goal`, `project`, or `portfolio`.
         schema:
           type: string
+        example: '159874'
       - name: member
         in: query
+        description: Globally unique identifier for `team` or `user`.
+        schema:
+          type: string
+        example: '1061493'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
         required: false
+        example:
+        - offset
+        - path
+        - uri
         schema:
-          type: string
-      - name: limit
-        in: query
-        schema:
-          type: integer
-          minimum: 1
-          maximum: 100
-      - name: offset
-        in: query
-        schema:
-          type: string
+          type: array
+          items:
+            type: string
+            enum:
+            - offset
+            - path
+            - uri
+        style: form
+        explode: false
       responses:
-        '200':
-          description: Successfully retrieved the requested memberships.
+        200:
+          description: Successfully retrieved the requested membership.
           content:
             application/json:
               schema:
@@ -62,22 +148,68 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/MembershipCompact'
-        '400':
-          description: Bad request.
-        '401':
-          description: Unauthorized.
-        '403':
-          description: Forbidden.
-        '500':
-          description: Internal server error.
+                  next_page:
+                    $ref: '#/components/schemas/NextPage'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet membershipsApiInstance = new Asana.MembershipsApi();\nlet opts = { \n    'parent': \"159874\", \n    'member': \"1061493\", \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"offset,path,uri\"\n};\nmembershipsApiInstance.getMemberships(opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.memberships.getMemberships({param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nmemberships_api_instance = asana.MembershipsApi(api_client)\nopts = {\n    'parent': \"159874\", # str | Globally unique identifier for `goal`, `project`, or `portfolio`.\n    'member': \"1061493\", # str | Globally unique identifier for `team` or `user`.\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"offset,path,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get multiple memberships\n    api_response = memberships_api_instance.get_memberships(opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling MembershipsApi->get_memberships: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.memberships.get_memberships({''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->memberships->getMemberships(array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.memberships.get_memberships(parent: '&#x27;parent_example&#x27;', param: \"value\", param: \"value\", options: {pretty: true})"
     post:
       summary: Asana Create a membership
-      description: Creates a new membership.
-      operationId: createMembership
+      description: 'Creates a new membership in a `goal`, `project`, or `portfolio`. Teams or users can be members of `goals` or `projects`. Portfolios only support `users` as members.
+
+
+        Returns the full record of the newly created membership.'
       tags:
       - Memberships
+      operationId: createMembership
       requestBody:
-        required: true
+        description: The updated fields for the membership.
+        required: false
         content:
           application/json:
             schema:
@@ -86,118 +218,8 @@ paths:
                 data:
                   $ref: '#/components/schemas/CreateMembershipRequest'
       responses:
-        '200':
-          description: Successfully created the membership.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/MembershipResponse'
-        '400':
-          description: Bad request.
-        '401':
-          description: Unauthorized.
-        '403':
-          description: Forbidden.
-        '500':
-          description: Internal server error.
-  /memberships/{membership_gid}:
-    parameters:
-    - $ref: '#/components/parameters/membership_path_gid'
-    - $ref: '#/components/parameters/pretty'
-    get:
-      summary: Asana Get a membership
-      description: Returns the complete record for a single membership.
-      operationId: getMembership
-      tags:
-      - Memberships
-      parameters:
-      - name: membership_gid
-        in: path
-        required: true
-        schema:
-          type: string
-        example: '12345'
-      responses:
-        '200':
-          description: Successfully retrieved the record for a single membership.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/MembershipResponse'
-        '400':
-          description: Bad request.
-        '401':
-          description: Unauthorized.
-        '403':
-          description: Forbidden.
-        '404':
-          description: Not found.
-        '500':
-          description: Internal server error.
-    put:
-      summary: Asana Update a membership
-      description: Updates a membership's properties.
-      operationId: updateMembership
-      tags:
-      - Memberships
-      parameters:
-      - name: membership_gid
-        in: path
-        required: true
-        schema:
-          type: string
-        example: '12345'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                data:
-                  $ref: '#/components/schemas/MembershipUpdateRequest'
-      responses:
-        '200':
-          description: Successfully updated the membership.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/MembershipResponse'
-        '400':
-          description: Bad request.
-        '401':
-          description: Unauthorized.
-        '403':
-          description: Forbidden.
-        '404':
-          description: Not found.
-        '500':
-          description: Internal server error.
-    delete:
-      summary: Asana Delete a membership
-      description: Deletes a membership.
-      operationId: deleteMembership
-      tags:
-      - Memberships
-      parameters:
-      - name: membership_gid
-        in: path
-        required: true
-        schema:
-          type: string
-        example: '12345'
-      responses:
-        '200':
-          description: Successfully deleted the membership.
+        201:
+          description: Successfully created the requested membership.
           content:
             application/json:
               schema:
@@ -205,103 +227,723 @@ paths:
                 properties:
                   data:
                     type: object
-        '400':
-          description: Bad request.
-        '401':
-          description: Unauthorized.
-        '403':
-          description: Forbidden.
-        '404':
-          description: Not found.
-        '500':
-          description: Internal server error.
+                    $ref: '#/components/schemas/MembershipResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet membershipsApiInstance = new Asana.MembershipsApi();\nlet opts = { \n    'body': {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}\n};\nmembershipsApiInstance.createMembership(opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.memberships.createMembership({field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nmemberships_api_instance = asana.MembershipsApi(api_client)\nopts = {\n    'body': {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}, # dict | The updated fields for the membership.\n}\n\ntry:\n    # Create a membership\n    api_response = memberships_api_instance.create_membership(opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling MembershipsApi->create_membership: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.memberships.create_membership({''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->memberships->createMembership(array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.memberships.create_membership(field: \"value\", field: \"value\", options: {pretty: true})"
+  /memberships/{membership_gid}:
+    parameters:
+    - $ref: '#/components/parameters/membership_path_gid'
+    - $ref: '#/components/parameters/pretty'
+    get:
+      summary: Asana Get a membership
+      description: Returns compact `project_membership` record for a single membership. `GET` only supports project memberships currently
+      tags:
+      - Memberships
+      operationId: getMembership
+      parameters:
+      - name: opt_fields
+        in: query
+        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
+        required: false
+        example:
+        - access_level
+        - member
+        - member.name
+        - parent
+        - parent.name
+        - resource_subtype
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - access_level
+            - member
+            - member.name
+            - parent
+            - parent.name
+            - resource_subtype
+        style: form
+        explode: false
+      responses:
+        200:
+          description: Successfully retrieved the record for a single membership.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectMembershipCompactResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet membershipsApiInstance = new Asana.MembershipsApi();\nlet membership_gid = \"12345\"; // String | Globally unique identifier for the membership.\nlet opts = { \n    'opt_fields': \"access_level,member,member.name,parent,parent.name,resource_subtype\"\n};\nmembershipsApiInstance.getMembership(membership_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.memberships.getMembership(membershipGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nmemberships_api_instance = asana.MembershipsApi(api_client)\nmembership_gid = \"12345\" # str | Globally unique identifier for the membership.\nopts = {\n    'opt_fields': \"access_level,member,member.name,parent,parent.name,resource_subtype\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a membership\n    api_response = memberships_api_instance.get_membership(membership_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling MembershipsApi->get_membership: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.memberships.get_membership(membership_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+    put:
+      summary: Asana Update a membership
+      description: 'An existing membership can be updated by making a `PUT` request on the membership. Only the fields provided in the `data` block will be updated;
+
+        any unspecified fields will remain unchanged. Memberships on `goals`, `projects` and `portfolios` can be updated.
+
+
+        Returns the full record of the updated membership.'
+      tags:
+      - Memberships
+      operationId: updateMembership
+      requestBody:
+        description: The membership to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/MembershipRequest'
+      responses:
+        200:
+          description: Successfully updated the requested membership.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MembershipResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet membershipsApiInstance = new Asana.MembershipsApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The membership to update.\nlet membership_gid = \"12345\"; // String | Globally unique identifier for the membership.\n\nmembershipsApiInstance.updateMembership(body, membership_gid).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.memberships.updateMembership(membershipGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nmemberships_api_instance = asana.MembershipsApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The membership to update.\nmembership_gid = \"12345\" # str | Globally unique identifier for the membership.\n\n\ntry:\n    # Update a membership\n    api_response = memberships_api_instance.update_membership(body, membership_gid)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling MembershipsApi->update_membership: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.memberships.update_membership(membership_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->memberships->updateMembership($membership_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.memberships.update_membership(membership_gid: 'membership_gid', field: \"value\", field: \"value\", options: {pretty: true})"
+    delete:
+      summary: Asana Delete a membership
+      description: 'A specific, existing membership for a `goal`, `project` and `portfolio` can be deleted by making a `DELETE` request
+
+        on the URL for that membership.
+
+
+        Returns an empty data record.'
+      tags:
+      - Memberships
+      operationId: deleteMembership
+      responses:
+        200:
+          description: Successfully deleted the requested membership.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EmptyResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      x-readme:
+        code-samples:
+        - language: node
+          install: npm install asana
+          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet membershipsApiInstance = new Asana.MembershipsApi();\nlet membership_gid = \"12345\"; // String | Globally unique identifier for the membership.\n\nmembershipsApiInstance.deleteMembership(membership_gid).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
+          name: node-sdk-v3
+        - language: node
+          install: npm install asana@1.0.5
+          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.memberships.deleteMembership(membershipGid)\n    .then((result) => {\n        console.log(result);\n    });"
+          name: node-sdk-v1
+        - language: python
+          install: pip install asana
+          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nmemberships_api_instance = asana.MembershipsApi(api_client)\nmembership_gid = \"12345\" # str | Globally unique identifier for the membership.\n\n\ntry:\n    # Delete a membership\n    api_response = memberships_api_instance.delete_membership(membership_gid)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling MembershipsApi->delete_membership: %s\\n\" % e)"
+          name: python-sdk-v5
+        - language: python
+          install: pip install asana==3.2.3
+          code: 'import asana
+
+
+            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
+
+
+            result = client.memberships.delete_membership(membership_gid, opt_pretty=True)'
+          name: python-sdk-v3
+        - language: php
+          install: composer require asana/asana
+          code: '<?php
+
+            require ''vendor/autoload.php'';
+
+
+            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
+
+
+            $result = $client->memberships->deleteMembership($membership_gid, array(''opt_pretty'' => ''true''))'
+        - language: ruby
+          install: gem install asana
+          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.memberships.delete_membership(membership_gid: 'membership_gid', options: {pretty: true})"
 components:
   schemas:
+    MembershipCompact:
+      anyOf:
+      - $ref: '#/components/schemas/GoalMembershipCompact'
+      - $ref: '#/components/schemas/ProjectMembershipCompactResponse'
+      - $ref: '#/components/schemas/PortfolioMembershipCompactResponse'
     CreateMembershipRequest:
+      allOf:
+      - $ref: '#/components/schemas/MembershipRequest'
+      - type: object
+        properties:
+          member:
+            description: The gid of the user or team.
+            type: string
+            example: 12345
+          parent:
+            description: The gid of the `goal`, `project`, or `portfolio` to add the member to.
+            type: string
+            example: '987654'
+          role:
+            description: '*Deprecated: new integrations should use access_level* The role given to the member. Optional argument, will default to `commenter` for goals and the default project role for projects. Can be `editor` or `commenter` for goals. Can be `admin`,`editor` or `commenter` for projects.'
+            type: string
+            deprecated: true
+            example: editor
+    GoalMembershipResponse:
+      allOf:
+      - $ref: '#/components/schemas/GoalMembershipBase'
+      - type: object
+        properties:
+          user:
+            allOf:
+            - $ref: '#/components/schemas/UserCompact'
+            - type: object
+              deprecated: true
+              readOnly: true
+              description: '*Deprecated: new integrations should prefer the `member` field.* A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.'
+          workspace:
+            allOf:
+            - $ref: '#/components/schemas/WorkspaceCompact'
+            - type: object
+              deprecated: true
+              readOnly: true
+              description: '*Deprecated:* A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.'
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    Error:
       type: object
       properties:
-        member:
+        message:
           type: string
-          example: '12345'
-        parent:
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
           type: string
-          example: '12345'
-        role:
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
           type: string
-          enum:
-          - editor
-          - commenter
-          - viewer
-        is_active:
-          type: boolean
-    MembershipResponse:
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
       type: object
       properties:
         gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
           readOnly: true
           example: '12345'
+          x-insert-after: false
         resource_type:
+          description: The base type of this resource.
           type: string
           readOnly: true
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    PortfolioMembershipCompactResponse:
+      allOf:
+      - $ref: '#/components/schemas/PortfolioMembershipCompact'
+      - type: object
+        properties:
+          resource_type:
+            description: The base type of this resource.
+            type: string
+            example: membership
+          resource_subtype:
+            description: Type of the membership.
+            type: string
+            example: portfolio_membership
+    PortfolioMembershipResponse:
+      $ref: '#/components/schemas/PortfolioMembershipBase'
+    ProjectMembershipCompactResponse:
+      allOf:
+      - $ref: '#/components/schemas/ProjectMembershipCompact'
+      - type: object
+        properties:
+          resource_type:
+            description: The base type of this resource.
+            type: string
+            example: membership
+          resource_subtype:
+            description: Type of the membership.
+            type: string
+            example: project_membership
+    MembershipResponse:
+      anyOf:
+      - $ref: '#/components/schemas/GoalMembershipResponse'
+      - $ref: '#/components/schemas/ProjectMembershipCompactResponse'
+      - $ref: '#/components/schemas/PortfolioMembershipResponse'
+    GoalMembershipCompact:
+      allOf:
+      - $ref: '#/components/schemas/GoalMembershipBase'
+      - type: object
+        properties:
+          is_commenter:
+            type: boolean
+            deprecated: true
+            readOnly: true
+            description: '*Deprecated: new integrations should prefer the `role` field.* Describes if the member is comment only in goal.'
+            example: false
+          is_editor:
+            type: boolean
+            deprecated: true
+            readOnly: true
+            description: '*Deprecated: new integrations should prefer the `role` field.* Describes if the member is editor in goal.'
+            example: false
+    PortfolioMembershipBase:
+      $ref: '#/components/schemas/PortfolioMembershipCompact'
+    GoalMembershipBase:
+      description: This object represents a user's connection to a goal.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
           example: membership
+        resource_subtype:
+          type: string
+          readOnly: true
+          description: The type of membership.
+          example: goal_membership
         member:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
+          $ref: '#/components/schemas/MemberCompact'
         parent:
-          type: object
-          properties:
-            gid:
-              type: string
-            resource_type:
-              type: string
-            name:
-              type: string
+          allOf:
+          - $ref: '#/components/schemas/GoalCompact'
+          - type: object
+            readOnly: true
         role:
           type: string
+          description: '*Deprecated: Describes if the member is a commenter or editor in goal.*'
           enum:
-          - editor
           - commenter
-          - viewer
-        is_active:
-          type: boolean
-        is_guest:
-          type: boolean
-          readOnly: true
-        is_editable:
-          type: boolean
-          readOnly: true
+          - editor
+          deprecated: true
+          example: editor
         access_level:
           type: string
-          readOnly: true
-    MembershipCompact:
+          description: Describes if member is commenter or editor in goal. This is preferred over role
+          enum:
+          - commenter
+          - editor
+          example: editor
+        goal:
+          allOf:
+          - $ref: '#/components/schemas/GoalCompact'
+          - type: object
+            readOnly: true
+            deprecated: true
+            description: '*Deprecated: new integrations should prefer the `parent` field.* A *Goal* is an object in the goal-tracking system that helps your organization drive measurable results.'
+    ProjectMembershipCompact:
+      description: This object describes a team or a user's membership to a project including their level of access (Admin, Editor, Commenter, or Viewer).
       type: object
       properties:
         gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
           readOnly: true
           example: '12345'
+          x-insert-after: false
         resource_type:
+          description: The base type of this resource.
           type: string
           readOnly: true
-          example: membership
-    MembershipUpdateRequest:
-      type: object
-      properties:
-        role:
+          example: project_membership
+          x-insert-after: gid
+        parent:
+          description: '[Opt In](/docs/inputoutput-options). The project the user is a member of.'
+          $ref: '#/components/schemas/ProjectCompact'
+        member:
+          description: Member can be a user or a team.
+          $ref: '#/components/schemas/MemberCompact'
+        access_level:
+          description: Whether the member has admin, editor, commenter, or viewer access to the project.
           type: string
           enum:
+          - admin
           - editor
           - commenter
           - viewer
-        is_active:
-          type: boolean
+          readOnly: true
+          example: admin
+    WorkspaceCompact:
+      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: workspace
+          x-insert-after: gid
+        name:
+          description: The name of the workspace.
+          type: string
+          example: My Company Workspace
+    GoalCompact:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: goal
+          x-insert-after: gid
+        name:
+          type: string
+          description: The name of the goal.
+          example: Grow web traffic by 30%
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/UserCompact'
+          - type:
+            - object
+            - 'null'
+    MembershipRequest:
+      type: object
+      properties:
+        access_level:
+          description: Sets the access level for the member. Goals can have access levels `editor` or `commenter`. Projects can have access levels `admin`, `editor` or `commenter`. Portfolios can have access levels `admin`, `editor` or `viewer`.
+          type: string
+          example: editor
+    PortfolioMembershipCompact:
+      description: This object determines if a user is a member of a portfolio.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: portfolio_membership
+          x-insert-after: gid
+        parent:
+          description: The portfolio the user is a member of.
+          $ref: '#/components/schemas/PortfolioCompact'
+        member:
+          $ref: '#/components/schemas/UserCompact'
+        access_level:
+          description: Whether the member has admin, editor, or viewer access to the portfolio. Portfolios do not support commenter access yet.
+          type: string
+          enum:
+          - admin
+          - editor
+          - viewer
+          readOnly: true
+          example: admin
+    PortfolioCompact:
+      description: 'A *portfolio* gives a high-level overview of the status of multiple initiatives in Asana. Portfolios provide a dashboard overview of the state of multiple projects, including a progress report and the most recent [project status](/reference/project-statuses) update.
+
+        Portfolios have some restrictions on size. Each portfolio has a max of 1500 items and, like projects, a max of 20 custom fields.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: portfolio
+          x-insert-after: gid
+        name:
+          description: The name of the portfolio.
+          type: string
+          example: Bug Portfolio
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    MemberCompact:
+      description: A *member* object represents either a team or user.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          type: string
+          description: The type of the member (team or user)
+          example: user
+        name:
+          type: string
+          description: The name of the member
+          example: Greg Sanchez
+  responses:
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
     membership_path_gid:
       name: membership_gid
@@ -312,6 +954,17 @@ components:
         type: string
       example: '12345'
       x-env-variable: membership
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
     pretty:
       name: opt_pretty
       in: query
@@ -324,17 +977,50 @@ components:
         type: boolean
       style: form
       example: true
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
   securitySchemes:
     personalAccessToken:
       type: http
-      description: A personal access token for the Asana API.
+      description: A personal access token allows access to the api for the user who created it. This should be kept a secret and be treated like a password.
       scheme: bearer
     oauth2:
       type: oauth2
-      description: OAuth 2.0 authorization code flow.
+      description: 'We require that applications designed to access the Asana API on behalf of multiple users implement OAuth 2.0.
+
+        Asana supports the Authorization Code Grant flow.'
       flows:
         authorizationCode:
           authorizationUrl: https://app.asana.com/-/oauth_authorize
           tokenUrl: https://app.asana.com/-/oauth_token
+          refreshUrl: https://app.asana.com/-/oauth_token
           scopes:
-            default: Provides access to all endpoints documented in the API reference.
+            default: Provides access to all endpoints documented in our API reference. If no scopes are requested, this scope is assumed by default.
+            openid: Provides access to OpenID Connect ID tokens and the OpenID Connect user info endpoint.
+            email: Provides access to the user’s email through the OpenID Connect user info endpoint.
+            profile: Provides access to the user’s name and profile photo through the OpenID Connect user info endpoint.
+            attachments:write: Create and modify access to attachments
+            goals:read: View access to goals
+            tasks:read: View access to tasks
+            tasks:write: Create and modify access to tasks
+            tasks:delete: Delete access to tasks
+            portfolios:read: View access to portfolios
+            project_templates:read: View access to project templates
+            projects:delete: Delete access to projects
+            projects:read: View access to projects
+            projects:write: Create and modify access to projects
+            users:read: View access to users
+            teams:read: View access to teams
+            stories:read: View access to stories
+            workspaces:read: View access to workspaces
+x-readme:
+  proxy-enabled: false

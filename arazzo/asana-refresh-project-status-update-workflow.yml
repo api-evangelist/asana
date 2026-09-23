@@ -40,7 +40,7 @@ workflows:
   steps:
   - stepId: readLatestStatus
     description: Read the existing status updates on the project.
-    operationId: getStatusUpdatesForObject
+    operationId: getStatusesForObject
     parameters:
     - name: parent
       in: query
@@ -54,7 +54,7 @@ workflows:
       latestStatusGid: $response.body#/data/0/gid
   - stepId: postFreshStatus
     description: Post a fresh status update on the project.
-    operationId: createStatusUpdateForObject
+    operationId: createStatusForObject
     requestBody:
       contentType: application/json
       payload:

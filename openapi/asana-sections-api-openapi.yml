@@ -1,8 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Asana Allocations Sections API
-  description: The Asana Allocations API allows users to manage and allocate resources within their Asana project management system. An allocation object represents how much of a resource (e.g. person, team) is dedicated to a specific work object (e.g. project, portfolio) over a specific period of time. The effort value can be a percentage or number of hours.
-  version: '1.0'
+  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
+  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
+  title: Asana Sections API
   termsOfService: https://asana.com/terms
   contact:
     name: Asana Support
@@ -10,6 +10,76 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '1.0'
+  x-docs-schema-whitelist:
+  - AsanaResource
+  - AsanaNamedResource
+  - AuditLogEvent
+  - AttachmentResponse
+  - AttachmentCompact
+  - BatchResponse
+  - CustomFieldSettingResponse
+  - CustomFieldSettingCompact
+  - CustomFieldResponse
+  - CustomFieldCompact
+  - EnumOption
+  - EventResponse
+  - ErrorResponse
+  - GoalResponse
+  - GoalCompact
+  - GoalMembershipCompact
+  - GoalMembershipBase
+  - GoalMembershipResponse
+  - GoalRelationshipResponse
+  - GoalRelationshipCompact
+  - JobResponse
+  - JobCompact
+  - OrganizationExportResponse
+  - OrganizationExportCompact
+  - PortfolioMembershipResponse
+  - PortfolioMembershipCompact
+  - PortfolioResponse
+  - PortfolioCompact
+  - ProjectBriefResponse
+  - ProjectBriefCompact
+  - ProjectMembershipCompactResponse
+  - ProjectMembershipNormalResponse
+  - ProjectMembershipCompact
+  - ProjectResponse
+  - ProjectCompact
+  - ProjectStatusResponse
+  - ProjectStatusCompact
+  - ProjectTemplateCompact
+  - ProjectTemplateResponse
+  - RuleTriggerResponse
+  - SectionResponse
+  - SectionCompact
+  - StatusUpdateResponse
+  - StatusUpdateCompact
+  - StoryResponse
+  - StoryCompact
+  - TagResponse
+  - TagCompact
+  - TaskResponse
+  - TaskCompact
+  - TaskCountResponse
+  - TeamMembershipResponse
+  - TeamMembershipCompact
+  - TeamResponse
+  - TeamCompact
+  - TimePeriodResponse
+  - TimePeriodCompact
+  - UserTaskListResponse
+  - UserTaskListCompact
+  - UserResponse
+  - UserCompact
+  - WebhookFilter
+  - WebhookResponse
+  - WebhookCompact
+  - WorkspaceMembershipResponse
+  - WorkspaceMembershipCompact
+  - WorkspaceResponse
+  - WorkspaceCompact
 servers:
 - url: https://app.asana.com/api/1.0
   description: Main endpoint.
@@ -24,7 +94,7 @@ tags:
     Sections are largely a shared idiom in Asana’s API for both list and board views of a project regardless of the project’s layout.
 
 
-    The ‘memberships’ property when [getting a task](/reference/gettask) will return the information for the section or the column under ‘section’ in the response.'
+    The ‘memberships’ property when getting a task will return the information for the section or the column under ‘section’ in the response.'
 paths:
   /sections/{section_gid}:
     parameters:
@@ -707,26 +777,28 @@ paths:
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.sections.insert_section_for_project(project_gid: 'project_gid', field: \"value\", field: \"value\", options: {pretty: true})"
 components:
   schemas:
-    EmptyResponse:
-      type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    SectionTaskInsertRequest:
-      type: object
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
       properties:
-        task:
-          description: The task to add to this section.
+        offset:
           type: string
-          example: '123456'
-        insert_before:
-          description: An existing task within this section before which the added task should be inserted. Cannot be provided together with insert_after.
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
           type: string
-          example: '86420'
-        insert_after:
-          description: An existing task within this section after which the added task should be inserted. Cannot be provided together with insert_before.
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
           type: string
-          example: '987654'
-      required:
-      - task
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
     Error:
       type: object
       properties:
@@ -745,6 +817,26 @@ components:
           readOnly: true
           description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
           example: 6 sad squid snuggle softly
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -773,26 +865,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-    ProjectCompact:
-      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: project
-          x-insert-after: gid
-        name:
-          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
-          type: string
-          example: Stuff to buy
+    SectionResponse:
+      allOf:
+      - $ref: '#/components/schemas/SectionBase'
+      - type: object
+        properties:
+          created_at:
+            description: The time at which this resource was created.
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+          project:
+            $ref: '#/components/schemas/ProjectCompact'
+          projects:
+            description: '*Deprecated - please use project instead*'
+            type: array
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/ProjectCompact'
     SectionCompact:
       description: A *section* is a subdivision of a project that groups tasks together. It can either be a header above a list of tasks in a list view or a column in a board view of a project.
       type: object
@@ -813,48 +904,6 @@ components:
           description: The name of the section (i.e. the text displayed as the section header).
           type: string
           example: Next Actions
-    NextPage:
-      type: object
-      nullable: true
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    SectionResponse:
-      allOf:
-      - $ref: '#/components/schemas/SectionBase'
-      - type: object
-        properties:
-          created_at:
-            description: The time at which this resource was created.
-            type: string
-            format: date-time
-            readOnly: true
-            example: '2012-02-22T02:06:58.147Z'
-          project:
-            $ref: '#/components/schemas/ProjectCompact'
-          projects:
-            description: '*Deprecated - please use project instead*'
-            type: array
-            readOnly: true
-            items:
-              $ref: '#/components/schemas/ProjectCompact'
-    SectionBase:
-      $ref: '#/components/schemas/SectionCompact'
     ProjectSectionInsertRequest:
       type: object
       properties:
@@ -872,6 +921,8 @@ components:
           example: '987654'
       required:
       - section
+    SectionBase:
+      $ref: '#/components/schemas/SectionCompact'
     SectionRequest:
       type: object
       properties:
@@ -889,15 +940,35 @@ components:
           example: '987654'
       required:
       - name
+    SectionTaskInsertRequest:
+      type: object
+      properties:
+        task:
+          description: The task to add to this section.
+          type: string
+          example: '123456'
+        insert_before:
+          description: An existing task within this section before which the added task should be inserted. Cannot be provided together with insert_after.
+          type: string
+          example: '86420'
+        insert_after:
+          description: An existing task within this section after which the added task should be inserted. Cannot be provided together with insert_before.
+          type: string
+          example: '987654'
+      required:
+      - task
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
   responses:
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
       content:
         application/json:
           schema:
@@ -908,8 +979,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
       content:
         application/json:
           schema:
@@ -921,38 +992,6 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
-    project_path_gid:
-      name: project_gid
-      in: path
-      description: Globally unique identifier for the project.
-      required: true
-      schema:
-        type: string
-      example: '1331'
-      x-env-variable: project
     section_path_gid:
       name: section_gid
       in: path
@@ -973,17 +1012,71 @@ components:
         type: integer
         minimum: 1
         maximum: 100
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    project_path_gid:
+      name: project_gid
+      in: path
+      description: Globally unique identifier for the project.
+      required: true
+      schema:
+        type: string
+      example: '1331'
+      x-env-variable: project
   securitySchemes:
     personalAccessToken:
       type: http
-      description: A personal access token for the Asana API.
+      description: A personal access token allows access to the api for the user who created it. This should be kept a secret and be treated like a password.
       scheme: bearer
     oauth2:
       type: oauth2
-      description: OAuth 2.0 authorization code flow.
+      description: 'We require that applications designed to access the Asana API on behalf of multiple users implement OAuth 2.0.
+
+        Asana supports the Authorization Code Grant flow.'
       flows:
         authorizationCode:
           authorizationUrl: https://app.asana.com/-/oauth_authorize
           tokenUrl: https://app.asana.com/-/oauth_token
+          refreshUrl: https://app.asana.com/-/oauth_token
           scopes:
-            default: Provides access to all endpoints documented in the API reference.
+            default: Provides access to all endpoints documented in our API reference. If no scopes are requested, this scope is assumed by default.
+            openid: Provides access to OpenID Connect ID tokens and the OpenID Connect user info endpoint.
+            email: Provides access to the user’s email through the OpenID Connect user info endpoint.
+            profile: Provides access to the user’s name and profile photo through the OpenID Connect user info endpoint.
+            attachments:write: Create and modify access to attachments
+            goals:read: View access to goals
+            tasks:read: View access to tasks
+            tasks:write: Create and modify access to tasks
+            tasks:delete: Delete access to tasks
+            portfolios:read: View access to portfolios
+            project_templates:read: View access to project templates
+            projects:delete: Delete access to projects
+            projects:read: View access to projects
+            projects:write: Create and modify access to projects
+            users:read: View access to users
+            teams:read: View access to teams
+            stories:read: View access to stories
+            workspaces:read: View access to workspaces
+x-readme:
+  proxy-enabled: false
