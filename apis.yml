@@ -13,8 +13,6 @@ apis:
     type: OpenAPI
   - url: https://developers.asana.com/reference/allocations
     type: Documentation
-  - url: graphql/asana-graphql.md
-    type: GraphQL
   description: >-
     The Asana Allocations API is a tool that allows users to manage and allocate resources within their
     Asana project management system. With this API, users can easily assign tasks and track the progress
@@ -408,18 +406,6 @@ apis:
     a budget for a specific parent resource such as a project and tracks values in either time or cost
     formats. When the type is time, values are expressed in minutes; for cost, values use the domain's
     currency. The API supports creating, retrieving, updating, and deleting budgets.
-- aid: asana:asana-custom-field-settings-api
-  name: Asana Custom Field Settings API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/custom-field-settings
-    type: Documentation
-  description: >-
-    The Asana Custom Field Settings API manages the association between custom fields and projects, portfolios,
-    teams, and goals. Custom fields are attached to a particular project with the custom field settings
-    resource, which represents the many-to-many join of the custom field and project. The API allows developers
-    to add or remove custom field settings and retrieve them for various resource types.
 - aid: asana:asana-custom-types-api
   name: Asana Custom Types API
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
@@ -444,55 +430,6 @@ apis:
     from Asana. Exports are generated in gzipped JSONL format with presigned S3 URLs that expire in one
     hour. The API supports exporting multiple resource types including portfolios, projects, tasks, and
     goals. Graph exports are available to users in Enterprise and Enterprise+ organizations.
-- aid: asana:asana-portfolio-memberships-api
-  name: Asana Portfolio Memberships API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/portfolio-memberships
-    type: Documentation
-  description: >-
-    The Asana Portfolio Memberships API allows developers to retrieve portfolio membership information.
-    A portfolio membership represents the relationship between a user and a portfolio, including their
-    access level such as admin, editor, or viewer. The API provides endpoints to get multiple portfolio
-    memberships, get a specific portfolio membership, and get memberships from a specific portfolio.
-- aid: asana:asana-project-briefs-api
-  name: Asana Project Briefs API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/project-briefs
-    type: Documentation
-  description: >-
-    The Asana Project Briefs API allows developers to manage rich text documents that describe projects.
-    A project brief includes a title, rich text content, and a permalink URL. The API supports creating,
-    retrieving, updating, and deleting project briefs, providing teams with a programmatic way to maintain
-    project descriptions and documentation.
-- aid: asana:asana-project-memberships-api
-  name: Asana Project Memberships API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/project-memberships
-    type: Documentation
-  description: >-
-    The Asana Project Memberships API provides endpoints for retrieving project membership records. These
-    endpoints enable developers to query membership information for projects, including setting membership
-    access levels and managing team members. Note that the newer Memberships API offers enhanced functionality
-    for projects including setting membership access levels and adding teams as members.
-- aid: asana:asana-project-statuses-api
-  name: Asana Project Statuses API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/project-statuses
-    type: Documentation
-  description: >-
-    The Asana Project Statuses API allows developers to manage progress updates on projects. A project
-    status includes descriptive text and color codes indicating the project state such as green for on
-    track, yellow for at risk, red for behind, or blue for on hold. The API supports creating, retrieving,
-    and deleting project statuses. Note that project statuses are deprecated for new integrations in favor
-    of the Status Updates API.
 - aid: asana:asana-rates-api
   name: Asana Rates API
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
@@ -529,67 +466,6 @@ apis:
     at the domain level. The API supports creating, retrieving, updating, and deleting roles. Read access
     is available to users with Admin or Super Admin privileges, while write access requires the specific
     RBAC permission to manage roles. Creating and managing custom roles requires the Enterprise+ tier.
-- aid: asana:asana-rules-api
-  name: Asana Rules API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/rules
-    type: Documentation
-  description: >-
-    The Asana Rules API allows developers to automate common patterns and workflows by combining triggers
-    with automatic actions. The API supports triggering rules via incoming web requests, enabling external
-    applications to connect to Asana through rule-based automation. This allows cross-application workflows
-    where external systems can integrate with Asana and perform operations on Asana data.
-- aid: asana:asana-stories-api
-  name: Asana Stories API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/stories
-    type: Documentation
-  description: >-
-    The Asana Stories API allows developers to manage stories, which are records of activity associated
-    with objects in the Asana system. Stories are generated by the system when users take actions such
-    as creating or assigning tasks, or moving tasks between projects. Comments are also a form of user-generated
-    story. The API supports getting, updating, deleting stories, and creating stories on tasks.
-- aid: asana:asana-team-memberships-api
-  name: Asana Team Memberships API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/team-memberships
-    type: Documentation
-  description: >-
-    The Asana Team Memberships API allows developers to retrieve team membership records. A team membership
-    represents the relationship between a user and a team, including flags for guest status, limited access,
-    and admin privileges. The API provides endpoints to get a specific team membership, get multiple team
-    memberships, get memberships from a team, and get memberships for a user.
-- aid: asana:asana-typeahead-api
-  name: Asana Typeahead API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/typeahead
-    type: Documentation
-  description: >-
-    The Asana Typeahead API provides search functionality for objects within a single workspace. This
-    API enables developers to build autocomplete and search-as-you-type features by retrieving Asana objects
-    by name. The API returns results as named resources with globally unique identifiers and resource
-    type information, supporting efficient object lookup and discovery.
-- aid: asana:asana-workspace-memberships-api
-  name: Asana Workspace Memberships API
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.asana.com/
-  properties:
-  - url: https://developers.asana.com/reference/workspace-memberships
-    type: Documentation
-  description: >-
-    The Asana Workspace Memberships API allows developers to determine if a user is a member of a workspace
-    and retrieve membership details. The API provides endpoints to get a specific workspace membership,
-    get workspace memberships for a user, and get workspace memberships for a workspace. Membership records
-    include details such as active status, admin status, guest status, view-only access, and associated
-    user task list information.
 - aid: asana:asana-audit-log-api-api
   name: Asana Audit Log API
   description: >-
@@ -644,11 +520,10 @@ apis:
     url: https://developers.asana.com/reference/triggerrule
 - aid: asana:asana-custom-field-settings-api
   name: Asana Custom Field Settings API
-  description: >-
-    Custom fields are attached to a particular project with the custom field settings resource. This resource
-    both represents the many-to-many join of the custom field and project as well as stores information
-    that is relevant to that particular pairing. For instance, the `is_important` property determines
-    some possible application-specific handling of that custom field.
+  description: The Asana Custom Field Settings API manages the association between custom fields and projects,
+    portfolios, teams, and goals. Custom fields are attached to a particular project with the custom field
+    settings resource, which represents the many-to-many join of the custom field and project. The API allows
+    developers to add or remove custom field settings and retrieve them for various resource types.
   humanURL: https://developers.asana.com/
   tags:
   - Custom Field Settings
@@ -659,9 +534,15 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/custom-field-settings
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 - aid: asana:asana-portfolio-memberships-api
   name: Asana Portfolio Memberships API
-  description: This object determines if a user is a member of a portfolio.
+  description: The Asana Portfolio Memberships API allows developers to retrieve portfolio membership information.
+    A portfolio membership represents the relationship between a user and a portfolio, including their access
+    level such as admin, editor, or viewer. The API provides endpoints to get multiple portfolio memberships,
+    get a specific portfolio membership, and get memberships from a specific portfolio.
   humanURL: https://developers.asana.com/
   tags:
   - Portfolio Memberships
@@ -672,16 +553,15 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/portfolio-memberships
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 - aid: asana:asana-project-briefs-api
   name: Asana Project Briefs API
-  description: >-
-    A project brief object represents a rich text document that describes a project.
-
-
-    Please note that this API is in *preview*, and is expected to change. This API is to be used for development
-    and testing only as an advance view into the upcoming rich text format experience in the task description.
-    For more information, see [this post](https://forum.asana.com/t/project-brief-api-now-available-as-a-preview/150885)
-    in the developer forum.
+  description: The Asana Project Briefs API allows developers to manage rich text documents that describe
+    projects. A project brief includes a title, rich text content, and a permalink URL. The API supports
+    creating, retrieving, updating, and deleting project briefs, providing teams with a programmatic way
+    to maintain project descriptions and documentation.
   humanURL: https://developers.asana.com/
   tags:
   - Project Briefs
@@ -692,12 +572,15 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/project-briefs
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 - aid: asana:asana-project-memberships-api
   name: Asana Project Memberships API
-  description: >-
-    With the introduction of “comment-only” projects in Asana, a user’s membership in a project comes
-    with associated permissions. These permissions (i.e., whether a user has full access to the project
-    or comment-only access) are accessible through the project memberships endpoints described here.
+  description: The Asana Project Memberships API provides endpoints for retrieving project membership records.
+    These endpoints enable developers to query membership information for projects, including setting membership
+    access levels and managing team members. Note that the newer Memberships API offers enhanced functionality
+    for projects including setting membership access levels and adding teams as members.
   humanURL: https://developers.asana.com/
   tags:
   - Project Memberships
@@ -708,26 +591,16 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/project-memberships
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 - aid: asana:asana-project-statuses-api
   name: Asana Project Statuses API
-  description: >-
-    *Deprecated: new integrations should prefer using [status updates](/reference/status-updates)*
-
-
-    A project status is an update on the progress of a particular project,
-
-    and is sent out to all project followers when created. These updates
-
-    include both text describing the update and a color code intended to
-
-    represent the overall state of the project: "green" for projects that
-
-    are on track, "yellow" for projects at risk, "red" for projects that
-
-    are behind, and "blue" for projects on hold.
-
-
-    Project statuses can be created and deleted, but not modified.
+  description: The Asana Project Statuses API allows developers to manage progress updates on projects.
+    A project status includes descriptive text and color codes indicating the project state such as green
+    for on track, yellow for at risk, red for behind, or blue for on hold. The API supports creating, retrieving,
+    and deleting project statuses. Note that project statuses are deprecated for new integrations in favor
+    of the Status Updates API.
   humanURL: https://developers.asana.com/
   tags:
   - Project Statuses
@@ -738,26 +611,15 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/project-statuses
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 - aid: asana:asana-rules-api
   name: Asana Rules API
-  description: >-
-    [Asana rules](https://help.asana.com/s/article/rules?language=en_US) allow you to automate common
-    patterns
-
-    and workflows in Asana. Rules comprise triggers that will automatically perform actions. For example,
-    you
-
-    can create a rule to automatically assign a task (action) when a due date is set (trigger).
-
-
-    To support cross-application workflows, the API supports
-
-    [incoming web requests](https://developers.asana.com/docs/incoming-web-requests) as a generic trigger
-    to
-
-    connect external applications to Asana through rules. This API allows users to set up workflows outside
-
-    of Asana that can perform operations on data within Asana.
+  description: The Asana Rules API allows developers to automate common patterns and workflows by combining
+    triggers with automatic actions. The API supports triggering rules via incoming web requests, enabling
+    external applications to connect to Asana through rule-based automation. This allows cross-application
+    workflows where external systems can integrate with Asana and perform operations on Asana data.
   humanURL: https://developers.asana.com/
   tags:
   - Rules
@@ -768,16 +630,15 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/rules
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 - aid: asana:asana-stories-api
   name: Asana Stories API
-  description: >-
-    *See [our forum post](https://forum.asana.com/t/no-more-parsing-story-text-new-fields-on-stories/42924)
-    for more info on when conditional fields are returned.*
-
-
-    A story represents an activity associated with an object in the Asana system. Stories are generated
-    by the system whenever users take actions such as creating or assigning tasks, or moving tasks between
-    projects. "Comments" are also a form of user-generated story.
+  description: The Asana Stories API allows developers to manage stories, which are records of activity
+    associated with objects in the Asana system. Stories are generated by the system when users take actions
+    such as creating or assigning tasks, or moving tasks between projects. Comments are also a form of user-generated
+    story. The API supports getting, updating, deleting stories, and creating stories on tasks.
   humanURL: https://developers.asana.com/
   tags:
   - Stories
@@ -788,9 +649,15 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/stories
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 - aid: asana:asana-team-memberships-api
   name: Asana Team Memberships API
-  description: This object determines if a user is a member of a team.
+  description: The Asana Team Memberships API allows developers to retrieve team membership records. A team
+    membership represents the relationship between a user and a team, including flags for guest status,
+    limited access, and admin privileges. The API provides endpoints to get a specific team membership,
+    get multiple team memberships, get memberships from a team, and get memberships for a user.
   humanURL: https://developers.asana.com/
   tags:
   - Team Memberships
@@ -801,9 +668,15 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/team-memberships
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 - aid: asana:asana-typeahead-api
   name: Asana Typeahead API
-  description: The typeahead search API provides search for objects from a single workspace.
+  description: The Asana Typeahead API provides search functionality for objects within a single workspace.
+    This API enables developers to build autocomplete and search-as-you-type features by retrieving Asana
+    objects by name. The API returns results as named resources with globally unique identifiers and resource
+    type information, supporting efficient object lookup and discovery.
   humanURL: https://developers.asana.com/
   tags:
   - Typeahead
@@ -814,9 +687,16 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/typeahead
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 - aid: asana:asana-workspace-memberships-api
   name: Asana Workspace Memberships API
-  description: This object determines if a user is a member of a workspace.
+  description: The Asana Workspace Memberships API allows developers to determine if a user is a member
+    of a workspace and retrieve membership details. The API provides endpoints to get a specific workspace
+    membership, get workspace memberships for a user, and get workspace memberships for a workspace. Membership
+    records include details such as active status, admin status, guest status, view-only access, and associated
+    user task list information.
   humanURL: https://developers.asana.com/
   tags:
   - Workspace Memberships
@@ -827,6 +707,9 @@ apis:
     url: https://developers.asana.com/reference/batch-api
   - type: Documentation
     url: https://developers.asana.com/reference/triggerrule
+  - url: https://developers.asana.com/reference/workspace-memberships
+    type: Documentation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 name: Asana
 tags:
 - Collaboration
