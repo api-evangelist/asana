@@ -648,6 +648,20 @@ paths:
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.project_templates.instantiate_project(project_template_gid: 'project_template_gid', field: \"value\", field: \"value\", options: {pretty: true})"
 components:
   schemas:
+    DateVariableRequest:
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the date field in the project template. A value of `1` refers to the project start date, while `2` refers to the project due date.
+          type: string
+          example: '1'
+        value:
+          description: The date with which the date variable should be replaced when instantiating a project. This takes a date with `YYYY-MM-DD` format.
+          type:
+          - string
+          - 'null'
+          format: date-time
+          example: '2022-01-01'
     ProjectTemplateCompact:
       description: A *project template* is an object that allows new projects to be created with a predefined setup, which may include tasks, sections, Rules, etc. It simplifies the process of running a workflow that involves a similar set of work every time.
       type: object
@@ -668,106 +682,35 @@ components:
           description: Name of the project template.
           type: string
           example: Packing list
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
-    ProjectCompact:
-      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+    DateVariableCompact:
       type: object
       properties:
         gid:
-          description: Globally unique identifier of the resource, as a string.
+          description: Globally unique identifier of the date field in the project template. A value of `1` refers to the project start date, while `2` refers to the project due date.
           type: string
           readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: project
-          x-insert-after: gid
+          example: '1'
         name:
-          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          description: The name of the date variable.
           type: string
-          example: Stuff to buy
-    ProjectTemplateInstantiateProjectRequest:
+          readOnly: true
+          example: Start Date
+        description:
+          description: The description of what the date variable is used for when instantiating a project.
+          type: string
+          readOnly: true
+          example: Choose a start date for your project.
+    RequestedRoleRequest:
       type: object
-      required:
-      - name
       properties:
-        name:
-          description: The name of the new project.
+        gid:
+          description: Globally unique identifier of the template role in the project template.
           type: string
-          example: New Project Name
-        team:
-          description: '*Optional*. Sets the team of the new project. If the project template exists in an _organization_, you may specify a value for `team`. If no value is provided then it defaults to the same team as the project template.'
+          example: '1'
+        value:
+          description: The user id that should be assigned to the template role.
           type: string
-          example: '12345'
-        public:
-          description: '*Deprecated:* new integrations use `privacy_setting` instead.'
-          deprecated: true
-          type: boolean
-          example: true
-        privacy_setting:
-          description: 'The privacy setting of the project. *Note: Administrators in your organization may restrict the values of `privacy_setting`.*'
-          type: string
-          enum:
-          - public_to_workspace
-          - private_to_team
-          - private
-          example: public_to_workspace
-        is_strict:
-          description: '*Optional*. If set to `true`, the endpoint returns an "Unprocessable Entity" error if you fail to provide a calendar date value for any date variable. If set to `false`, a default date is used for each unfulfilled date variable (e.g., the current date is used as the Start Date of a project).'
-          type: boolean
-          example: true
-        requested_dates:
-          description: Array of mappings of date variables to calendar dates.
-          type: array
-          items:
-            $ref: '#/components/schemas/DateVariableRequest'
-        requested_roles:
-          description: Array of mappings of template roles to user ids
-          type: array
-          items:
-            $ref: '#/components/schemas/RequestedRoleRequest'
+          example: '123'
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -796,8 +739,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
       type: object
       properties:
         gid:
@@ -810,12 +753,33 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: user
+          example: project
           x-insert-after: gid
         name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
           type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
+          example: Stuff to buy
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ProjectTemplateResponse:
+      allOf:
+      - $ref: '#/components/schemas/ProjectTemplateBase'
     TaskCompact:
       description: The *task* is the basic object around which many operations in Asana are centered.
       type: object
@@ -859,6 +823,68 @@ components:
               description: The type of resource.
               type: string
               example: user
+    ProjectTemplateInstantiateProjectRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          description: The name of the new project.
+          type: string
+          example: New Project Name
+        team:
+          description: '*Optional*. Sets the team of the new project. If the project template exists in an _organization_, you may specify a value for `team`. If no value is provided then it defaults to the same team as the project template.'
+          type: string
+          example: '12345'
+        public:
+          description: '*Deprecated:* new integrations use `privacy_setting` instead.'
+          deprecated: true
+          type: boolean
+          example: true
+        privacy_setting:
+          description: 'The privacy setting of the project. *Note: Administrators in your organization may restrict the values of `privacy_setting`.*'
+          type: string
+          enum:
+          - public_to_workspace
+          - private_to_team
+          - private
+          example: public_to_workspace
+        is_strict:
+          description: '*Optional*. If set to `true`, the endpoint returns an "Unprocessable Entity" error if you fail to provide a calendar date value for any date variable. If set to `false`, a default date is used for each unfulfilled date variable (e.g., the current date is used as the Start Date of a project).'
+          type: boolean
+          example: true
+        requested_dates:
+          description: Array of mappings of date variables to calendar dates.
+          type: array
+          items:
+            $ref: '#/components/schemas/DateVariableRequest'
+        requested_roles:
+          description: Array of mappings of template roles to user ids
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestedRoleRequest'
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    JobResponse:
+      $ref: '#/components/schemas/JobBase'
     TemplateRole:
       description: A generic Asana Resource, containing a globally unique identifier.
       type: object
@@ -879,51 +905,6 @@ components:
           type: string
           description: Name of the template role.
           example: Designer
-    TeamCompact:
-      description: A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: team
-          x-insert-after: gid
-        name:
-          description: The name of the team.
-          type: string
-          example: Marketing
-    ProjectTemplateResponse:
-      allOf:
-      - $ref: '#/components/schemas/ProjectTemplateBase'
-    JobResponse:
-      $ref: '#/components/schemas/JobBase'
-    JobBase:
-      $ref: '#/components/schemas/JobCompact'
-    DateVariableCompact:
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the date field in the project template. A value of `1` refers to the project start date, while `2` refers to the project due date.
-          type: string
-          readOnly: true
-          example: '1'
-        name:
-          description: The name of the date variable.
-          type: string
-          readOnly: true
-          example: Start Date
-        description:
-          description: The description of what the date variable is used for when instantiating a project.
-          type: string
-          readOnly: true
-          example: Choose a start date for your project.
     JobCompact:
       description: A *job* is an object representing a process that handles asynchronous work.
       type: object
@@ -1029,37 +1010,56 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/TemplateRole'
+    TeamCompact:
+      description: A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: team
+          x-insert-after: gid
+        name:
+          description: The name of the team.
+          type: string
+          example: Marketing
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    JobBase:
+      $ref: '#/components/schemas/JobCompact'
     EmptyResponse:
       type: object
       description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    DateVariableRequest:
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the date field in the project template. A value of `1` refers to the project start date, while `2` refers to the project due date.
-          type: string
-          example: '1'
-        value:
-          description: The date with which the date variable should be replaced when instantiating a project. This takes a date with `YYYY-MM-DD` format.
-          type:
-          - string
-          - 'null'
-          format: date-time
-          example: '2022-01-01'
-    RequestedRoleRequest:
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the template role in the project template.
-          type: string
-          example: '1'
-        value:
-          description: The user id that should be assigned to the template role.
-          type: string
-          example: '123'
   responses:
-    PaymentRequired:
-      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
       content:
         application/json:
           schema:
@@ -1070,8 +1070,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+    PaymentRequired:
+      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
       content:
         application/json:
           schema:
@@ -1082,14 +1082,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
       content:
         application/json:
           schema:
@@ -1104,25 +1104,6 @@ components:
         type: string
       example: '1331'
       x-env-variable: project_template
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    workspace_query_param:
-      name: workspace
-      in: query
-      description: The workspace to filter results on.
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: workspace
     team_query_param:
       name: team
       in: query
@@ -1130,27 +1111,6 @@ components:
       schema:
         type: string
       example: '14916'
-      x-env-variable: team
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
-    team_path_gid:
-      name: team_gid
-      in: path
-      description: Globally unique identifier for the team.
-      required: true
-      schema:
-        type: string
-      example: '159874'
       x-env-variable: team
     offset:
       name: offset
@@ -1163,6 +1123,46 @@ components:
       example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
       schema:
         type: string
+    workspace_query_param:
+      name: workspace
+      in: query
+      description: The workspace to filter results on.
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    team_path_gid:
+      name: team_gid
+      in: path
+      description: Globally unique identifier for the team.
+      required: true
+      schema:
+        type: string
+      example: '159874'
+      x-env-variable: team
   securitySchemes:
     personalAccessToken:
       type: http

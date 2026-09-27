@@ -6281,6 +6281,113 @@ paths:
           install: gem install asana
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.tasks.search_tasks_for_workspace(workspace_gid: 'workspace_gid', param: \"value\", param: \"value\", options: {pretty: true})"
 components:
+  parameters:
+    user_task_list_path_gid:
+      name: user_task_list_gid
+      in: path
+      description: Globally unique identifier for the user task list.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: user_task_list
+    project_path_gid:
+      name: project_gid
+      in: path
+      description: Globally unique identifier for the project.
+      required: true
+      schema:
+        type: string
+      example: '1331'
+      x-env-variable: project
+    tag_path_gid:
+      name: tag_gid
+      in: path
+      description: Globally unique identifier for the tag.
+      required: true
+      schema:
+        type: string
+      example: '11235'
+      x-env-variable: tag
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    section_path_gid:
+      name: section_gid
+      in: path
+      required: true
+      description: The globally unique identifier for the section.
+      schema:
+        type: string
+      example: '321654'
+      x-env-variable: section
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    completed_since:
+      name: completed_since
+      in: query
+      required: false
+      description: 'Only return tasks that are either incomplete or that have been completed since this time. Accepts a date-time string or the keyword *now*.
+
+        '
+      schema:
+        type: string
+      example: '2012-02-22T02:06:58.158Z'
+    task_path_gid:
+      name: task_gid
+      in: path
+      required: true
+      description: The task to operate on.
+      schema:
+        type: string
+      example: '321654'
+      x-env-variable: task
+    workspace_path_gid:
+      name: workspace_gid
+      in: path
+      description: Globally unique identifier for the workspace or organization.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
+    custom_id:
+      name: custom_id
+      in: path
+      description: Generated custom ID for a task.
+      required: true
+      schema:
+        type: string
+      example: EX-1
   schemas:
     ProjectTemplateCompact:
       description: A *project template* is an object that allows new projects to be created with a predefined setup, which may include tasks, sections, Rules, etc. It simplifies the process of running a workflow that involves a similar set of work every time.
@@ -6302,48 +6409,8 @@ components:
           description: Name of the project template.
           type: string
           example: Packing list
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
-    ProjectCompact:
-      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+    WorkspaceCompact:
+      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
       type: object
       properties:
         gid:
@@ -6356,12 +6423,108 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: project
+          example: workspace
           x-insert-after: gid
         name:
-          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          description: The name of the workspace.
           type: string
-          example: Stuff to buy
+          example: My Company Workspace
+    ModifyDependentsRequest:
+      description: A set of dependent tasks.
+      type: object
+      properties:
+        dependents:
+          description: An array of task gids that are dependents of the given task.
+          type: array
+          items:
+            type: string
+      example:
+        dependents:
+        - '133713'
+        - '184253'
+    Like:
+      type: object
+      description: An object to represent a user's like.
+      properties:
+        gid:
+          description: Globally unique identifier of the object, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+        user:
+          $ref: '#/components/schemas/UserCompact'
+    EnumOption:
+      description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
+
+
+        You can add enum options to a custom field by using the `POST /custom_fields/custom_field_gid/enum_options` endpoint.
+
+
+        **It is not possible to remove or delete an enum option**. Instead, enum options can be disabled by updating the `enabled` field to false with the `PUT /enum_options/enum_option_gid` endpoint. Other attributes can be updated similarly.
+
+
+        On creation of an enum option, `enabled` is always set to `true`, meaning the enum option is a selectable value for the custom field. Setting `enabled=false` is equivalent to “trashing” the enum option in the Asana web app within the “Edit Fields” dialog. The enum option will no longer be selectable but, if the enum option value was previously set within a task, the task will retain the value.
+
+
+        Enum options are an ordered list and by default new enum options are inserted at the end. Ordering in relation to existing enum options can be specified on creation by using `insert_before` or `insert_after` to reference an existing enum option. Only one of `insert_before` and `insert_after` can be provided when creating a new enum option.
+
+
+        An enum options list can be reordered with the `POST /custom_fields/custom_field_gid/enum_options/insert` endpoint.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: enum_option
+          x-insert-after: gid
+        name:
+          description: The name of the enum option.
+          type: string
+          example: Low
+        enabled:
+          description: Whether or not the enum option is a selectable value for the custom field.
+          type: boolean
+          example: true
+        color:
+          description: The color of the enum option. Defaults to ‘none’.
+          type: string
+          example: blue
+    TaskSetParentRequest:
+      type: object
+      properties:
+        parent:
+          description: The new parent of the task, or `null` for no parent.
+          type: string
+          example: '987654'
+        insert_after:
+          description: A subtask of the parent to insert the task after, or `null` to insert at the beginning of the list.
+          type: string
+          example: 'null'
+        insert_before:
+          description: A subtask of the parent to insert the task before, or `null` to insert at the end of the list.
+          type: string
+          example: '124816'
+      required:
+      - parent
+    ModifyDependenciesRequest:
+      type: object
+      properties:
+        dependencies:
+          description: An array of task gids that a task depends on.
+          type: array
+          items:
+            type: string
+      example:
+        dependencies:
+        - '133713'
+        - '184253'
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -6390,6 +6553,53 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    TaskRemoveProjectRequest:
+      type: object
+      properties:
+        project:
+          description: The project to remove the task from.
+          type: string
+          example: '13579'
+      required:
+      - project
     CustomFieldBase:
       allOf:
       - $ref: '#/components/schemas/CustomFieldCompact'
@@ -6599,46 +6809,48 @@ components:
             - word_count
             - null
             example: priority
-    SectionCompact:
-      description: A *section* is a subdivision of a project that groups tasks together. It can either be a header above a list of tasks in a list view or a column in a board view of a project.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: section
-          x-insert-after: gid
-        name:
-          description: The name of the section (i.e. the text displayed as the section header).
-          type: string
-          example: Next Actions
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: user
-          x-insert-after: gid
-        name:
-          type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
+    CustomFieldResponse:
+      allOf:
+      - $ref: '#/components/schemas/CustomFieldBase'
+      - type: object
+        properties:
+          representation_type:
+            description: This field tells the type of the custom field.
+            type: string
+            example: number
+            readOnly: true
+            enum:
+            - text
+            - enum
+            - multi_enum
+            - number
+            - date
+            - people
+            - formula
+            - custom_id
+          id_prefix:
+            description: This field is the unique custom ID string for the custom field.
+            type:
+            - string
+            - 'null'
+            example: ID
+          is_formula_field:
+            description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
+            type: boolean
+            example: false
+          is_value_read_only:
+            description: '*Conditional*. This flag describes whether a custom field is read only.'
+            type: boolean
+            example: false
+          created_by:
+            allOf:
+            - $ref: '#/components/schemas/UserCompact'
+            - {}
+          people_value:
+            description: '*Conditional*. Only relevant for custom fields of type `people`. This array of [compact user](/reference/users) objects reflects the values of a `people` custom field.'
+            type: array
+            items:
+              $ref: '#/components/schemas/UserCompact'
     TaskBase:
       allOf:
       - $ref: '#/components/schemas/TaskCompact'
@@ -6823,6 +7035,15 @@ components:
             - 'null'
             example: 200
             readOnly: true
+    TaskRemoveTagRequest:
+      type: object
+      properties:
+        tag:
+          description: The tag's gid to remove from the task.
+          type: string
+          example: '13579'
+      required:
+      - tag
     AsanaResource:
       description: A generic Asana Resource, containing a globally unique identifier.
       type: object
@@ -6882,6 +7103,51 @@ components:
               description: The type of resource.
               type: string
               example: user
+    TaskAddFollowersRequest:
+      type: object
+      properties:
+        followers:
+          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
+          type: array
+          items:
+            type: string
+          example:
+          - '13579'
+          - '321654'
+      required:
+      - followers
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    TaskAddTagRequest:
+      type: object
+      properties:
+        tag:
+          description: The tag's gid to add to the task.
+          type: string
+          example: '13579'
+      required:
+      - tag
     TaskDuplicateRequest:
       type: object
       properties:
@@ -6917,24 +7183,28 @@ components:
           pattern: ([notes|assignee|subtasks|attachments|tags|followers|projects|dates|dependencies|parent])(,\1)*
           example:
           - notes,assignee,subtasks,attachments,tags,followers,projects,dates,dependencies,parent
-    TaskAddTagRequest:
+    JobResponse:
+      $ref: '#/components/schemas/JobBase'
+    SectionCompact:
+      description: A *section* is a subdivision of a project that groups tasks together. It can either be a header above a list of tasks in a list view or a column in a board view of a project.
       type: object
       properties:
-        tag:
-          description: The tag's gid to add to the task.
+        gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
-          example: '13579'
-      required:
-      - tag
-    TaskRemoveProjectRequest:
-      type: object
-      properties:
-        project:
-          description: The project to remove the task from.
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
           type: string
-          example: '13579'
-      required:
-      - project
+          readOnly: true
+          example: section
+          x-insert-after: gid
+        name:
+          description: The name of the section (i.e. the text displayed as the section header).
+          type: string
+          example: Next Actions
     TaskAddProjectRequest:
       type: object
       properties:
@@ -6962,204 +7232,6 @@ components:
           example: '987654'
       required:
       - project
-    TaskRequest:
-      allOf:
-      - $ref: '#/components/schemas/TaskBase'
-      - type: object
-        properties:
-          assignee:
-            type:
-            - string
-            - 'null'
-            readOnly: false
-            x-env-variable: true
-            description: Gid of a user.
-            example: '12345'
-          assignee_section:
-            type:
-            - string
-            - 'null'
-            description: 'The *assignee section* is a subdivision of a project that groups tasks together in the assignee''s "My Tasks" list. It can either be a header above a list of tasks in a list view or a column in a board view of "My Tasks."
-
-              The `assignee_section` property will be returned in the response only if the request was sent by the user who is the assignee of the task. Note that you can only write to `assignee_section` with the gid of an existing section visible in the user''s "My Tasks" list.'
-            example: '12345'
-          custom_fields:
-            description: An object where each key is the GID of a custom field and its corresponding value is either an enum GID, string, number, object, or array (depending on the custom field type). See the [custom fields guide](/docs/custom-fields-guide) for details on creating and updating custom field values.
-            type: object
-            additionalProperties:
-              type: string
-              description: '"{custom_field_gid}" => Value (can be text, a number, etc.). For date, use format "YYYY-MM-DD" (e.g., 2019-09-15). For date-time, use ISO 8601 date string in UTC (e.g., 2019-09-15T02:06:58.147Z).'
-            example:
-              '5678904321': On Hold
-              '4578152156': Not Started
-          followers:
-            type: array
-            description: '*Create-Only* An array of strings identifying users. These can either be the string "me", an email, or the gid of a user. In order to change followers on an existing task use `addFollowers` and `removeFollowers`.'
-            items:
-              type: string
-              description: Gid of a user.
-            example:
-            - '12345'
-          parent:
-            type:
-            - string
-            - 'null'
-            readOnly: false
-            x-env-variable: true
-            description: Gid of a task.
-            example: '12345'
-          projects:
-            type: array
-            description: '*Create-Only* Array of project gids. In order to change projects on an existing task use `addProject` and `removeProject`.'
-            items:
-              type: string
-              description: Gid of a project.
-            example:
-            - '12345'
-          tags:
-            type: array
-            description: '*Create-Only* Array of tag gids. In order to change tags on an existing task use `addTag` and `removeTag`.'
-            items:
-              type: string
-              description: Gid of a tag.
-            example:
-            - '12345'
-          workspace:
-            type: string
-            readOnly: false
-            x-env-variable: true
-            description: Gid of a workspace.
-            example: '12345'
-    JobResponse:
-      $ref: '#/components/schemas/JobBase'
-    TaskSetParentRequest:
-      type: object
-      properties:
-        parent:
-          description: The new parent of the task, or `null` for no parent.
-          type: string
-          example: '987654'
-        insert_after:
-          description: A subtask of the parent to insert the task after, or `null` to insert at the beginning of the list.
-          type: string
-          example: 'null'
-        insert_before:
-          description: A subtask of the parent to insert the task before, or `null` to insert at the end of the list.
-          type: string
-          example: '124816'
-      required:
-      - parent
-    TaskAddFollowersRequest:
-      type: object
-      properties:
-        followers:
-          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
-          type: array
-          items:
-            type: string
-          example:
-          - '13579'
-          - '321654'
-      required:
-      - followers
-    JobBase:
-      $ref: '#/components/schemas/JobCompact'
-    CustomFieldResponse:
-      allOf:
-      - $ref: '#/components/schemas/CustomFieldBase'
-      - type: object
-        properties:
-          representation_type:
-            description: This field tells the type of the custom field.
-            type: string
-            example: number
-            readOnly: true
-            enum:
-            - text
-            - enum
-            - multi_enum
-            - number
-            - date
-            - people
-            - formula
-            - custom_id
-          id_prefix:
-            description: This field is the unique custom ID string for the custom field.
-            type:
-            - string
-            - 'null'
-            example: ID
-          is_formula_field:
-            description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
-            type: boolean
-            example: false
-          is_value_read_only:
-            description: '*Conditional*. This flag describes whether a custom field is read only.'
-            type: boolean
-            example: false
-          created_by:
-            allOf:
-            - $ref: '#/components/schemas/UserCompact'
-            - {}
-          people_value:
-            description: '*Conditional*. Only relevant for custom fields of type `people`. This array of [compact user](/reference/users) objects reflects the values of a `people` custom field.'
-            type: array
-            items:
-              $ref: '#/components/schemas/UserCompact'
-    JobCompact:
-      description: A *job* is an object representing a process that handles asynchronous work.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: job
-          x-insert-after: gid
-        resource_subtype:
-          description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
-          type: string
-          readOnly: true
-          example: duplicate_task
-        status:
-          description: 'The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.'
-          type: string
-          enum:
-          - not_started
-          - in_progress
-          - succeeded
-          - failed
-          readOnly: true
-          example: in_progress
-        new_project:
-          $ref: '#/components/schemas/ProjectCompact'
-        new_task:
-          allOf:
-          - $ref: '#/components/schemas/TaskCompact'
-          - type:
-            - object
-            - 'null'
-        new_project_template:
-          $ref: '#/components/schemas/ProjectTemplateCompact'
-    ModifyDependentsRequest:
-      description: A set of dependent tasks.
-      type: object
-      properties:
-        dependents:
-          description: An array of task gids that are dependents of the given task.
-          type: array
-          items:
-            type: string
-      example:
-        dependents:
-        - '133713'
-        - '184253'
     TaskResponse:
       allOf:
       - $ref: '#/components/schemas/TaskBase'
@@ -7224,8 +7296,8 @@ components:
             readOnly: true
             description: A url that points directly to the object within Asana.
             example: https://app.asana.com/0/resource/123456789/list
-    TagCompact:
-      description: A *tag* is a label that can be attached to any task in Asana. It exists in a single workspace or organization.
+    JobCompact:
+      description: A *job* is an object representing a process that handles asynchronous work.
       type: object
       properties:
         gid:
@@ -7238,84 +7310,46 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: tag
+          example: job
           x-insert-after: gid
-        name:
-          description: Name of the tag. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
-          type: string
-          example: Stuff to buy
-    WorkspaceCompact:
-      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
+        resource_subtype:
+          description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
           type: string
           readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
+          example: duplicate_task
+        status:
+          description: 'The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.'
           type: string
+          enum:
+          - not_started
+          - in_progress
+          - succeeded
+          - failed
           readOnly: true
-          example: workspace
-          x-insert-after: gid
-        name:
-          description: The name of the workspace.
-          type: string
-          example: My Company Workspace
-    TaskRemoveTagRequest:
+          example: in_progress
+        new_project:
+          $ref: '#/components/schemas/ProjectCompact'
+        new_task:
+          allOf:
+          - $ref: '#/components/schemas/TaskCompact'
+          - type:
+            - object
+            - 'null'
+        new_project_template:
+          $ref: '#/components/schemas/ProjectTemplateCompact'
+    TaskRemoveFollowersRequest:
       type: object
       properties:
-        tag:
-          description: The tag's gid to remove from the task.
-          type: string
-          example: '13579'
+        followers:
+          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
+          type: array
+          items:
+            type: string
+          example:
+          - '13579'
+          - '321654'
       required:
-      - tag
-    EnumOption:
-      description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
-
-
-        You can add enum options to a custom field by using the `POST /custom_fields/custom_field_gid/enum_options` endpoint.
-
-
-        **It is not possible to remove or delete an enum option**. Instead, enum options can be disabled by updating the `enabled` field to false with the `PUT /enum_options/enum_option_gid` endpoint. Other attributes can be updated similarly.
-
-
-        On creation of an enum option, `enabled` is always set to `true`, meaning the enum option is a selectable value for the custom field. Setting `enabled=false` is equivalent to “trashing” the enum option in the Asana web app within the “Edit Fields” dialog. The enum option will no longer be selectable but, if the enum option value was previously set within a task, the task will retain the value.
-
-
-        Enum options are an ordered list and by default new enum options are inserted at the end. Ordering in relation to existing enum options can be specified on creation by using `insert_before` or `insert_after` to reference an existing enum option. Only one of `insert_before` and `insert_after` can be provided when creating a new enum option.
-
-
-        An enum options list can be reordered with the `POST /custom_fields/custom_field_gid/enum_options/insert` endpoint.'
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: enum_option
-          x-insert-after: gid
-        name:
-          description: The name of the enum option.
-          type: string
-          example: Low
-        enabled:
-          description: Whether or not the enum option is a selectable value for the custom field.
-          type: boolean
-          example: true
-        color:
-          description: The color of the enum option. Defaults to ‘none’.
-          type: string
-          example: blue
+      - followers
     CustomFieldCompact:
       description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
 
@@ -7445,155 +7479,121 @@ components:
           - 'null'
           readOnly: true
           example: blue
-    TaskRemoveFollowersRequest:
-      type: object
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
       properties:
-        followers:
-          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
-          type: array
-          items:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    JobBase:
+      $ref: '#/components/schemas/JobCompact'
+    TaskRequest:
+      allOf:
+      - $ref: '#/components/schemas/TaskBase'
+      - type: object
+        properties:
+          assignee:
+            type:
+            - string
+            - 'null'
+            readOnly: false
+            x-env-variable: true
+            description: Gid of a user.
+            example: '12345'
+          assignee_section:
+            type:
+            - string
+            - 'null'
+            description: 'The *assignee section* is a subdivision of a project that groups tasks together in the assignee''s "My Tasks" list. It can either be a header above a list of tasks in a list view or a column in a board view of "My Tasks."
+
+              The `assignee_section` property will be returned in the response only if the request was sent by the user who is the assignee of the task. Note that you can only write to `assignee_section` with the gid of an existing section visible in the user''s "My Tasks" list.'
+            example: '12345'
+          custom_fields:
+            description: An object where each key is the GID of a custom field and its corresponding value is either an enum GID, string, number, object, or array (depending on the custom field type). See the [custom fields guide](/docs/custom-fields-guide) for details on creating and updating custom field values.
+            type: object
+            additionalProperties:
+              type: string
+              description: '"{custom_field_gid}" => Value (can be text, a number, etc.). For date, use format "YYYY-MM-DD" (e.g., 2019-09-15). For date-time, use ISO 8601 date string in UTC (e.g., 2019-09-15T02:06:58.147Z).'
+            example:
+              '5678904321': On Hold
+              '4578152156': Not Started
+          followers:
+            type: array
+            description: '*Create-Only* An array of strings identifying users. These can either be the string "me", an email, or the gid of a user. In order to change followers on an existing task use `addFollowers` and `removeFollowers`.'
+            items:
+              type: string
+              description: Gid of a user.
+            example:
+            - '12345'
+          parent:
+            type:
+            - string
+            - 'null'
+            readOnly: false
+            x-env-variable: true
+            description: Gid of a task.
+            example: '12345'
+          projects:
+            type: array
+            description: '*Create-Only* Array of project gids. In order to change projects on an existing task use `addProject` and `removeProject`.'
+            items:
+              type: string
+              description: Gid of a project.
+            example:
+            - '12345'
+          tags:
+            type: array
+            description: '*Create-Only* Array of tag gids. In order to change tags on an existing task use `addTag` and `removeTag`.'
+            items:
+              type: string
+              description: Gid of a tag.
+            example:
+            - '12345'
+          workspace:
             type: string
-          example:
-          - '13579'
-          - '321654'
-      required:
-      - followers
-    EmptyResponse:
+            readOnly: false
+            x-env-variable: true
+            description: Gid of a workspace.
+            example: '12345'
+    TagCompact:
+      description: A *tag* is a label that can be attached to any task in Asana. It exists in a single workspace or organization.
       type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    ModifyDependenciesRequest:
-      type: object
-      properties:
-        dependencies:
-          description: An array of task gids that a task depends on.
-          type: array
-          items:
-            type: string
-      example:
-        dependencies:
-        - '133713'
-        - '184253'
-    Like:
-      type: object
-      description: An object to represent a user's like.
       properties:
         gid:
-          description: Globally unique identifier of the object, as a string.
+          description: Globally unique identifier of the resource, as a string.
           type: string
           readOnly: true
           example: '12345'
-        user:
-          $ref: '#/components/schemas/UserCompact'
-  parameters:
-    user_task_list_path_gid:
-      name: user_task_list_gid
-      in: path
-      description: Globally unique identifier for the user task list.
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: user_task_list
-    custom_id:
-      name: custom_id
-      in: path
-      description: Generated custom ID for a task.
-      required: true
-      schema:
-        type: string
-      example: EX-1
-    tag_path_gid:
-      name: tag_gid
-      in: path
-      description: Globally unique identifier for the tag.
-      required: true
-      schema:
-        type: string
-      example: '11235'
-      x-env-variable: tag
-    section_path_gid:
-      name: section_gid
-      in: path
-      required: true
-      description: The globally unique identifier for the section.
-      schema:
-        type: string
-      example: '321654'
-      x-env-variable: section
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    completed_since:
-      name: completed_since
-      in: query
-      required: false
-      description: 'Only return tasks that are either incomplete or that have been completed since this time. Accepts a date-time string or the keyword *now*.
-
-        '
-      schema:
-        type: string
-      example: '2012-02-22T02:06:58.158Z'
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
-    workspace_path_gid:
-      name: workspace_gid
-      in: path
-      description: Globally unique identifier for the workspace or organization.
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: workspace
-    task_path_gid:
-      name: task_gid
-      in: path
-      required: true
-      description: The task to operate on.
-      schema:
-        type: string
-      example: '321654'
-      x-env-variable: task
-    project_path_gid:
-      name: project_gid
-      in: path
-      description: Globally unique identifier for the project.
-      required: true
-      schema:
-        type: string
-      example: '1331'
-      x-env-variable: project
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: tag
+          x-insert-after: gid
+        name:
+          description: Name of the tag. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
   responses:
-    PaymentRequired:
-      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
       content:
         application/json:
           schema:
@@ -7604,8 +7604,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+    PaymentRequired:
+      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
       content:
         application/json:
           schema:
@@ -7616,14 +7616,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
       content:
         application/json:
           schema:

@@ -899,8 +899,245 @@ paths:
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.teams.remove_user_for_team(team_gid: 'team_gid', field: \"value\", field: \"value\", options: {pretty: true})"
 components:
   schemas:
+    TeamMembershipResponse:
+      $ref: '#/components/schemas/TeamMembershipBase'
+    WorkspaceCompact:
+      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: workspace
+          x-insert-after: gid
+        name:
+          description: The name of the workspace.
+          type: string
+          example: My Company Workspace
+    TeamRequest:
+      allOf:
+      - $ref: '#/components/schemas/TeamBase'
+      - type: object
+        properties:
+          description:
+            description: 'The description of the team.
+
+              '
+            type: string
+            example: All developers should be members of this team.
+          html_description:
+            description: 'The description of the team with formatting as HTML.
+
+              '
+            type: string
+            example: <body><em>All</em> developers should be members of this team.</body>
+          organization:
+            type: string
+            description: 'The organization/workspace the team belongs to. This must be the same organization you are in and cannot be changed once set.
+
+              '
+            example: '123456789'
+          visibility:
+            description: 'The visibility of the team to users in the same organization
+
+              '
+            type: string
+            enum:
+            - secret
+            - request_to_join
+            - public
+          edit_team_name_or_description_access_level:
+            description: 'Controls who can edit team name and description
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          edit_team_visibility_or_trash_team_access_level:
+            description: 'Controls who can edit team visibility and trash teams
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          member_invite_management_access_level:
+            description: 'Controls who can accept or deny member invites for a given team
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          guest_invite_management_access_level:
+            description: 'Controls who can accept or deny guest invites for a given team
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          join_request_management_access_level:
+            description: 'Controls who can accept or deny join team requests for a Membership by Request team
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          team_member_removal_access_level:
+            description: 'Controls who can remove team members
+
+              '
+            type: string
+            readOnly: true
+            enum:
+            - all_team_members
+            - only_team_admins
+          team_content_management_access_level:
+            description: 'Controls who can create and share content with the team
+
+              '
+            type: string
+            enum:
+            - no_restriction
+            - only_team_admins
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    TeamMembershipCompact:
+      description: This object represents a user's connection to a team.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: team_membership
+          x-insert-after: gid
+        user:
+          $ref: '#/components/schemas/UserCompact'
+        team:
+          $ref: '#/components/schemas/TeamCompact'
+        is_guest:
+          type: boolean
+          description: Describes if the user is a guest in the team.
+          example: false
+        is_limited_access:
+          type: boolean
+          readOnly: true
+          description: Describes if the user has limited access to the team.
+          example: false
+        is_admin:
+          type: boolean
+          description: Describes if the user is a team admin.
+          example: false
+    TeamBase:
+      $ref: '#/components/schemas/TeamCompact'
     TeamMembershipBase:
       $ref: '#/components/schemas/TeamMembershipCompact'
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    TeamCompact:
+      description: A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: team
+          x-insert-after: gid
+        name:
+          description: The name of the team.
+          type: string
+          example: Marketing
     TeamResponse:
       allOf:
       - $ref: '#/components/schemas/TeamBase'
@@ -1001,6 +1238,14 @@ components:
             enum:
             - no_restriction
             - only_team_admins
+    TeamAddUserRequest:
+      type: object
+      description: A user identification object for specification with the addUser/removeUser endpoints.
+      properties:
+        user:
+          description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+          type: string
+          example: '12345'
     NextPage:
       type:
       - object
@@ -1023,94 +1268,6 @@ components:
           readOnly: true
           description: A full uri containing the query parameters to fetch for next_page
           example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
-    TeamBase:
-      $ref: '#/components/schemas/TeamCompact'
-    ErrorResponse:
-      description: 'Sadly, sometimes requests to the API are not successful. Failures can
-
-        occur for a wide range of reasons. In all cases, the API should return
-
-        an HTTP Status Code that indicates the nature of the failure,
-
-        with a response body in JSON format containing additional information.
-
-
-
-        In the event of a server error the response body will contain an error
-
-        phrase. These phrases are automatically generated using the
-
-        [node-asana-phrase
-
-        library](https://github.com/Asana/node-asana-phrase) and can be used by
-
-        Asana support to quickly look up the incident that caused the server
-
-        error.'
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: user
-          x-insert-after: gid
-        name:
-          type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
-    TeamCompact:
-      description: A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: team
-          x-insert-after: gid
-        name:
-          description: The name of the team.
-          type: string
-          example: Marketing
     TeamRemoveUserRequest:
       type: object
       description: A user identification object for specification with the addUser/removeUser endpoints.
@@ -1119,175 +1276,18 @@ components:
           description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
           type: string
           example: '12345'
-    TeamMembershipCompact:
-      description: This object represents a user's connection to a team.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: team_membership
-          x-insert-after: gid
-        user:
-          $ref: '#/components/schemas/UserCompact'
-        team:
-          $ref: '#/components/schemas/TeamCompact'
-        is_guest:
-          type: boolean
-          description: Describes if the user is a guest in the team.
-          example: false
-        is_limited_access:
-          type: boolean
-          readOnly: true
-          description: Describes if the user has limited access to the team.
-          example: false
-        is_admin:
-          type: boolean
-          description: Describes if the user is a team admin.
-          example: false
-    WorkspaceCompact:
-      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: workspace
-          x-insert-after: gid
-        name:
-          description: The name of the workspace.
-          type: string
-          example: My Company Workspace
-    TeamAddUserRequest:
-      type: object
-      description: A user identification object for specification with the addUser/removeUser endpoints.
-      properties:
-        user:
-          description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
-          type: string
-          example: '12345'
-    TeamRequest:
-      allOf:
-      - $ref: '#/components/schemas/TeamBase'
-      - type: object
-        properties:
-          description:
-            description: 'The description of the team.
-
-              '
-            type: string
-            example: All developers should be members of this team.
-          html_description:
-            description: 'The description of the team with formatting as HTML.
-
-              '
-            type: string
-            example: <body><em>All</em> developers should be members of this team.</body>
-          organization:
-            type: string
-            description: 'The organization/workspace the team belongs to. This must be the same organization you are in and cannot be changed once set.
-
-              '
-            example: '123456789'
-          visibility:
-            description: 'The visibility of the team to users in the same organization
-
-              '
-            type: string
-            enum:
-            - secret
-            - request_to_join
-            - public
-          edit_team_name_or_description_access_level:
-            description: 'Controls who can edit team name and description
-
-              '
-            type: string
-            readOnly: true
-            enum:
-            - all_team_members
-            - only_team_admins
-          edit_team_visibility_or_trash_team_access_level:
-            description: 'Controls who can edit team visibility and trash teams
-
-              '
-            type: string
-            readOnly: true
-            enum:
-            - all_team_members
-            - only_team_admins
-          member_invite_management_access_level:
-            description: 'Controls who can accept or deny member invites for a given team
-
-              '
-            type: string
-            readOnly: true
-            enum:
-            - all_team_members
-            - only_team_admins
-          guest_invite_management_access_level:
-            description: 'Controls who can accept or deny guest invites for a given team
-
-              '
-            type: string
-            readOnly: true
-            enum:
-            - all_team_members
-            - only_team_admins
-          join_request_management_access_level:
-            description: 'Controls who can accept or deny join team requests for a Membership by Request team
-
-              '
-            type: string
-            readOnly: true
-            enum:
-            - all_team_members
-            - only_team_admins
-          team_member_removal_access_level:
-            description: 'Controls who can remove team members
-
-              '
-            type: string
-            readOnly: true
-            enum:
-            - all_team_members
-            - only_team_admins
-          team_content_management_access_level:
-            description: 'Controls who can create and share content with the team
-
-              '
-            type: string
-            enum:
-            - no_restriction
-            - only_team_admins
-    TeamMembershipResponse:
-      $ref: '#/components/schemas/TeamMembershipBase'
     EmptyResponse:
       type: object
       description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
   responses:
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
       content:
         application/json:
           schema:
@@ -1298,19 +1298,42 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     InternalServerError:
       description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
     limit:
       name: limit
       in: query
@@ -1331,38 +1354,6 @@ components:
         type: string
       x-env-variable: user
       example: me
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
-    team_path_gid:
-      name: team_gid
-      in: path
-      description: Globally unique identifier for the team.
-      required: true
-      schema:
-        type: string
-      example: '159874'
-      x-env-variable: team
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
     workspace_path_gid:
       name: workspace_gid
       in: path
@@ -1372,6 +1363,15 @@ components:
         type: string
       example: '12345'
       x-env-variable: workspace
+    team_path_gid:
+      name: team_gid
+      in: path
+      description: Globally unique identifier for the team.
+      required: true
+      schema:
+        type: string
+      example: '159874'
+      x-env-variable: team
   securitySchemes:
     personalAccessToken:
       type: http

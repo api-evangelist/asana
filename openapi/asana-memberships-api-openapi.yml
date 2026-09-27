@@ -505,11 +505,57 @@ paths:
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.memberships.delete_membership(membership_gid: 'membership_gid', options: {pretty: true})"
 components:
   schemas:
-    MembershipCompact:
-      anyOf:
-      - $ref: '#/components/schemas/GoalMembershipCompact'
-      - $ref: '#/components/schemas/ProjectMembershipCompactResponse'
-      - $ref: '#/components/schemas/PortfolioMembershipCompactResponse'
+    GoalCompact:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: goal
+          x-insert-after: gid
+        name:
+          type: string
+          description: The name of the goal.
+          example: Grow web traffic by 30%
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/UserCompact'
+          - type:
+            - object
+            - 'null'
+    MemberCompact:
+      description: A *member* object represents either a team or user.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          type: string
+          description: The type of the member (team or user)
+          example: user
+        name:
+          type: string
+          description: The name of the member
+          example: Greg Sanchez
+    MembershipRequest:
+      type: object
+      properties:
+        access_level:
+          description: Sets the access level for the member. Goals can have access levels `editor` or `commenter`. Projects can have access levels `admin`, `editor` or `commenter`. Portfolios can have access levels `admin`, `editor` or `viewer`.
+          type: string
+          example: editor
     CreateMembershipRequest:
       allOf:
       - $ref: '#/components/schemas/MembershipRequest'
@@ -528,67 +574,8 @@ components:
             type: string
             deprecated: true
             example: editor
-    GoalMembershipResponse:
-      allOf:
-      - $ref: '#/components/schemas/GoalMembershipBase'
-      - type: object
-        properties:
-          user:
-            allOf:
-            - $ref: '#/components/schemas/UserCompact'
-            - type: object
-              deprecated: true
-              readOnly: true
-              description: '*Deprecated: new integrations should prefer the `member` field.* A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.'
-          workspace:
-            allOf:
-            - $ref: '#/components/schemas/WorkspaceCompact'
-            - type: object
-              deprecated: true
-              readOnly: true
-              description: '*Deprecated:* A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.'
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
-    ProjectCompact:
-      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+    WorkspaceCompact:
+      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
       type: object
       properties:
         gid:
@@ -601,12 +588,12 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: project
+          example: workspace
           x-insert-after: gid
         name:
-          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          description: The name of the workspace.
           type: string
-          example: Stuff to buy
+          example: My Company Workspace
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -635,6 +622,137 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    MembershipResponse:
+      anyOf:
+      - $ref: '#/components/schemas/GoalMembershipResponse'
+      - $ref: '#/components/schemas/ProjectMembershipCompactResponse'
+      - $ref: '#/components/schemas/PortfolioMembershipResponse'
+    PortfolioMembershipCompactResponse:
+      allOf:
+      - $ref: '#/components/schemas/PortfolioMembershipCompact'
+      - type: object
+        properties:
+          resource_type:
+            description: The base type of this resource.
+            type: string
+            example: membership
+          resource_subtype:
+            description: Type of the membership.
+            type: string
+            example: portfolio_membership
+    GoalMembershipCompact:
+      allOf:
+      - $ref: '#/components/schemas/GoalMembershipBase'
+      - type: object
+        properties:
+          is_commenter:
+            type: boolean
+            deprecated: true
+            readOnly: true
+            description: '*Deprecated: new integrations should prefer the `role` field.* Describes if the member is comment only in goal.'
+            example: false
+          is_editor:
+            type: boolean
+            deprecated: true
+            readOnly: true
+            description: '*Deprecated: new integrations should prefer the `role` field.* Describes if the member is editor in goal.'
+            example: false
+    PortfolioCompact:
+      description: 'A *portfolio* gives a high-level overview of the status of multiple initiatives in Asana. Portfolios provide a dashboard overview of the state of multiple projects, including a progress report and the most recent [project status](/reference/project-statuses) update.
+
+        Portfolios have some restrictions on size. Each portfolio has a max of 1500 items and, like projects, a max of 20 custom fields.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: portfolio
+          x-insert-after: gid
+        name:
+          description: The name of the portfolio.
+          type: string
+          example: Bug Portfolio
+    PortfolioMembershipBase:
+      $ref: '#/components/schemas/PortfolioMembershipCompact'
+    GoalMembershipResponse:
+      allOf:
+      - $ref: '#/components/schemas/GoalMembershipBase'
+      - type: object
+        properties:
+          user:
+            allOf:
+            - $ref: '#/components/schemas/UserCompact'
+            - type: object
+              deprecated: true
+              readOnly: true
+              description: '*Deprecated: new integrations should prefer the `member` field.* A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.'
+          workspace:
+            allOf:
+            - $ref: '#/components/schemas/WorkspaceCompact'
+            - type: object
+              deprecated: true
+              readOnly: true
+              description: '*Deprecated:* A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.'
+    ProjectMembershipCompactResponse:
+      allOf:
+      - $ref: '#/components/schemas/ProjectMembershipCompact'
+      - type: object
+        properties:
+          resource_type:
+            description: The base type of this resource.
+            type: string
+            example: membership
+          resource_subtype:
+            description: Type of the membership.
+            type: string
+            example: project_membership
+    PortfolioMembershipResponse:
+      $ref: '#/components/schemas/PortfolioMembershipBase'
     UserCompact:
       description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
       type: object
@@ -655,58 +773,63 @@ components:
           type: string
           description: '*Read-only except when same user as requester*. The user’s name.'
           example: Greg Sanchez
-    PortfolioMembershipCompactResponse:
-      allOf:
-      - $ref: '#/components/schemas/PortfolioMembershipCompact'
-      - type: object
-        properties:
-          resource_type:
-            description: The base type of this resource.
-            type: string
-            example: membership
-          resource_subtype:
-            description: Type of the membership.
-            type: string
-            example: portfolio_membership
-    PortfolioMembershipResponse:
-      $ref: '#/components/schemas/PortfolioMembershipBase'
-    ProjectMembershipCompactResponse:
-      allOf:
-      - $ref: '#/components/schemas/ProjectMembershipCompact'
-      - type: object
-        properties:
-          resource_type:
-            description: The base type of this resource.
-            type: string
-            example: membership
-          resource_subtype:
-            description: Type of the membership.
-            type: string
-            example: project_membership
-    MembershipResponse:
+    PortfolioMembershipCompact:
+      description: This object determines if a user is a member of a portfolio.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: portfolio_membership
+          x-insert-after: gid
+        parent:
+          description: The portfolio the user is a member of.
+          $ref: '#/components/schemas/PortfolioCompact'
+        member:
+          $ref: '#/components/schemas/UserCompact'
+        access_level:
+          description: Whether the member has admin, editor, or viewer access to the portfolio. Portfolios do not support commenter access yet.
+          type: string
+          enum:
+          - admin
+          - editor
+          - viewer
+          readOnly: true
+          example: admin
+    MembershipCompact:
       anyOf:
-      - $ref: '#/components/schemas/GoalMembershipResponse'
+      - $ref: '#/components/schemas/GoalMembershipCompact'
       - $ref: '#/components/schemas/ProjectMembershipCompactResponse'
-      - $ref: '#/components/schemas/PortfolioMembershipResponse'
-    GoalMembershipCompact:
-      allOf:
-      - $ref: '#/components/schemas/GoalMembershipBase'
-      - type: object
-        properties:
-          is_commenter:
-            type: boolean
-            deprecated: true
-            readOnly: true
-            description: '*Deprecated: new integrations should prefer the `role` field.* Describes if the member is comment only in goal.'
-            example: false
-          is_editor:
-            type: boolean
-            deprecated: true
-            readOnly: true
-            description: '*Deprecated: new integrations should prefer the `role` field.* Describes if the member is editor in goal.'
-            example: false
-    PortfolioMembershipBase:
-      $ref: '#/components/schemas/PortfolioMembershipCompact'
+      - $ref: '#/components/schemas/PortfolioMembershipCompactResponse'
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
     GoalMembershipBase:
       description: This object represents a user's connection to a goal.
       type: object
@@ -787,141 +910,18 @@ components:
           - viewer
           readOnly: true
           example: admin
-    WorkspaceCompact:
-      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: workspace
-          x-insert-after: gid
-        name:
-          description: The name of the workspace.
-          type: string
-          example: My Company Workspace
-    GoalCompact:
-      description: A generic Asana Resource, containing a globally unique identifier.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: goal
-          x-insert-after: gid
-        name:
-          type: string
-          description: The name of the goal.
-          example: Grow web traffic by 30%
-        owner:
-          allOf:
-          - $ref: '#/components/schemas/UserCompact'
-          - type:
-            - object
-            - 'null'
-    MembershipRequest:
-      type: object
-      properties:
-        access_level:
-          description: Sets the access level for the member. Goals can have access levels `editor` or `commenter`. Projects can have access levels `admin`, `editor` or `commenter`. Portfolios can have access levels `admin`, `editor` or `viewer`.
-          type: string
-          example: editor
-    PortfolioMembershipCompact:
-      description: This object determines if a user is a member of a portfolio.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: portfolio_membership
-          x-insert-after: gid
-        parent:
-          description: The portfolio the user is a member of.
-          $ref: '#/components/schemas/PortfolioCompact'
-        member:
-          $ref: '#/components/schemas/UserCompact'
-        access_level:
-          description: Whether the member has admin, editor, or viewer access to the portfolio. Portfolios do not support commenter access yet.
-          type: string
-          enum:
-          - admin
-          - editor
-          - viewer
-          readOnly: true
-          example: admin
-    PortfolioCompact:
-      description: 'A *portfolio* gives a high-level overview of the status of multiple initiatives in Asana. Portfolios provide a dashboard overview of the state of multiple projects, including a progress report and the most recent [project status](/reference/project-statuses) update.
-
-        Portfolios have some restrictions on size. Each portfolio has a max of 1500 items and, like projects, a max of 20 custom fields.'
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: portfolio
-          x-insert-after: gid
-        name:
-          description: The name of the portfolio.
-          type: string
-          example: Bug Portfolio
     EmptyResponse:
       type: object
       description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    MemberCompact:
-      description: A *member* object represents either a team or user.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          type: string
-          description: The type of the member (team or user)
-          example: user
-        name:
-          type: string
-          description: The name of the member
-          example: Greg Sanchez
   responses:
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
       content:
         application/json:
           schema:
@@ -932,14 +932,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
       content:
         application/json:
           schema:
@@ -954,17 +954,17 @@ components:
         type: string
       example: '12345'
       x-env-variable: membership
-    limit:
-      name: limit
+    offset:
+      name: offset
       in: query
-      description: 'Results per page.
+      description: 'Offset token.
 
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
       schema:
-        type: integer
-        minimum: 1
-        maximum: 100
+        type: string
     pretty:
       name: opt_pretty
       in: query
@@ -977,17 +977,17 @@ components:
         type: boolean
       style: form
       example: true
-    offset:
-      name: offset
+    limit:
+      name: limit
       in: query
-      description: 'Offset token.
+      description: 'Results per page.
 
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
       schema:
-        type: string
+        type: integer
+        minimum: 1
+        maximum: 100
   securitySchemes:
     personalAccessToken:
       type: http
