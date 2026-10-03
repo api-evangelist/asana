@@ -821,38 +821,132 @@ paths:
           install: gem install asana
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.workspaces.remove_user_for_workspace(workspace_gid: 'workspace_gid', field: \"value\", field: \"value\", options: {pretty: true})"
 components:
-  responses:
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    TagCreateTagForWorkspaceRequest:
+      allOf:
+      - $ref: '#/components/schemas/TagBase'
+      - type: object
+        properties:
+          followers:
+            type: array
+            description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
+            items:
+              type: string
+            example:
+            - '12345'
+            - '42563'
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    UserBase:
+      $ref: '#/components/schemas/UserCompact'
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    UserBaseResponse:
+      allOf:
+      - $ref: '#/components/schemas/UserBase'
+      - type: object
+        properties:
+          email:
+            type: string
+            format: email
+            readOnly: true
+            description: The user's email address.
+            example: gsanchez@example.com
+          photo:
+            type:
+            - object
+            - 'null'
+            properties:
+              image_21x21:
+                type: string
+                format: uri
+              image_27x27:
+                type: string
+                format: uri
+              image_36x36:
+                type: string
+                format: uri
+              image_60x60:
+                type: string
+                format: uri
+              image_128x128:
+                type: string
+                format: uri
+              image_1024x1024:
+                type: string
+                format: uri
+            readOnly: true
+            description: A map of the user’s profile photo in various sizes, or null if no photo is set. Sizes provided are 21, 27, 36, 60, 128, and 1024. All images are in PNG format, except for 1024 (which is in JPEG format).
+            example:
+              image_21x21: https://...
+              image_27x27: https://...
+              image_36x36: https://...
+              image_60x60: https://...
+              image_128x128: https://...
+              image_1024x1024: https://...
+    WorkspaceRequest:
+      $ref: '#/components/schemas/WorkspaceBase'
+    TagCompact:
+      description: A *tag* is a label that can be attached to any task in Asana. It exists in a single workspace or organization.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: tag
+          x-insert-after: gid
+        name:
+          description: Name of the tag. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
     WorkspaceCompact:
       description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
       type: object
@@ -873,16 +967,30 @@ components:
           description: The name of the workspace.
           type: string
           example: My Company Workspace
-    WorkspaceBase:
-      $ref: '#/components/schemas/WorkspaceCompact'
-    WorkspaceAddUserRequest:
-      type: object
-      description: A user identification object for specification with the addUser/removeUser endpoints.
-      properties:
-        user:
-          description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
-          type: string
-          example: '12345'
+    TagResponse:
+      allOf:
+      - $ref: '#/components/schemas/TagBase'
+      - type: object
+        properties:
+          created_at:
+            description: The time at which this resource was created.
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+          followers:
+            description: Array of users following this tag.
+            type: array
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/UserCompact'
+          workspace:
+            $ref: '#/components/schemas/WorkspaceCompact'
+          permalink_url:
+            type: string
+            readOnly: true
+            description: A url that points directly to the object within Asana.
+            example: https://app.asana.com/0/resource/123456789/list
     WorkspaceRemoveUserRequest:
       type: object
       description: A user identification object for specification with the addUser/removeUser endpoints.
@@ -926,6 +1034,8 @@ components:
             description: Free-form textual information associated with the tag (i.e. its description).
             type: string
             example: Mittens really likes the stuff from Humboldt.
+    WorkspaceBase:
+      $ref: '#/components/schemas/WorkspaceCompact'
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -972,30 +1082,14 @@ components:
           readOnly: true
           description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
           example: 6 sad squid snuggle softly
-    TagResponse:
-      allOf:
-      - $ref: '#/components/schemas/TagBase'
-      - type: object
-        properties:
-          created_at:
-            description: The time at which this resource was created.
-            type: string
-            format: date-time
-            readOnly: true
-            example: '2012-02-22T02:06:58.147Z'
-          followers:
-            description: Array of users following this tag.
-            type: array
-            readOnly: true
-            items:
-              $ref: '#/components/schemas/UserCompact'
-          workspace:
-            $ref: '#/components/schemas/WorkspaceCompact'
-          permalink_url:
-            type: string
-            readOnly: true
-            description: A url that points directly to the object within Asana.
-            example: https://app.asana.com/0/resource/123456789/list
+    WorkspaceAddUserRequest:
+      type: object
+      description: A user identification object for specification with the addUser/removeUser endpoints.
+      properties:
+        user:
+          description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+          type: string
+          example: '12345'
     WorkspaceResponse:
       allOf:
       - $ref: '#/components/schemas/WorkspaceBase'
@@ -1013,155 +1107,7 @@ components:
             description: Whether the workspace is an *organization*.
             type: boolean
             example: false
-    UserBaseResponse:
-      allOf:
-      - $ref: '#/components/schemas/UserBase'
-      - type: object
-        properties:
-          email:
-            type: string
-            format: email
-            readOnly: true
-            description: The user's email address.
-            example: gsanchez@example.com
-          photo:
-            type:
-            - object
-            - 'null'
-            properties:
-              image_21x21:
-                type: string
-                format: uri
-              image_27x27:
-                type: string
-                format: uri
-              image_36x36:
-                type: string
-                format: uri
-              image_60x60:
-                type: string
-                format: uri
-              image_128x128:
-                type: string
-                format: uri
-              image_1024x1024:
-                type: string
-                format: uri
-            readOnly: true
-            description: A map of the user’s profile photo in various sizes, or null if no photo is set. Sizes provided are 21, 27, 36, 60, 128, and 1024. All images are in PNG format, except for 1024 (which is in JPEG format).
-            example:
-              image_21x21: https://...
-              image_27x27: https://...
-              image_36x36: https://...
-              image_60x60: https://...
-              image_128x128: https://...
-              image_1024x1024: https://...
-    TagCreateTagForWorkspaceRequest:
-      allOf:
-      - $ref: '#/components/schemas/TagBase'
-      - type: object
-        properties:
-          followers:
-            type: array
-            description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
-            items:
-              type: string
-            example:
-            - '12345'
-            - '42563'
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: user
-          x-insert-after: gid
-        name:
-          type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
-    WorkspaceRequest:
-      $ref: '#/components/schemas/WorkspaceBase'
-    UserBase:
-      $ref: '#/components/schemas/UserCompact'
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    EmptyResponse:
-      type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    TagCompact:
-      description: A *tag* is a label that can be attached to any task in Asana. It exists in a single workspace or organization.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: tag
-          x-insert-after: gid
-        name:
-          description: Name of the tag. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
-          type: string
-          example: Stuff to buy
   parameters:
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
     limit:
       name: limit
       in: query
@@ -1182,6 +1128,60 @@ components:
         type: string
       example: '12345'
       x-env-variable: workspace
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     personalAccessToken:
       type: http

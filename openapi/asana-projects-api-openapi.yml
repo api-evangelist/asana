@@ -5212,152 +5212,48 @@ paths:
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.projects.project_save_as_template(project_gid: 'project_gid', field: \"value\", field: \"value\", options: {pretty: true})"
 components:
   schemas:
-    RemoveMembersRequest:
-      type: object
-      required:
-      - members
-      properties:
-        members:
-          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
-          type: string
-          example: 521621,621373
-    ProjectTemplateCompact:
-      description: A *project template* is an object that allows new projects to be created with a predefined setup, which may include tasks, sections, Rules, etc. It simplifies the process of running a workflow that involves a similar set of work every time.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: project_template
-          x-insert-after: gid
-        name:
-          description: Name of the project template.
-          type: string
-          example: Packing list
-    CustomFieldSettingResponse:
+    CustomFieldResponse:
       allOf:
-      - $ref: '#/components/schemas/CustomFieldSettingBase'
+      - $ref: '#/components/schemas/CustomFieldBase'
       - type: object
         properties:
-          project:
-            allOf:
-            - $ref: '#/components/schemas/ProjectCompact'
-            - type: object
-              description: '*Deprecated: new integrations should prefer the `parent` field.* The id of the project that this custom field settings refers to.'
-              readOnly: true
-          is_important:
-            description: '`is_important` is used in the Asana web application to determine if this custom field is displayed in the list/grid view of a project or portfolio.'
-            type: boolean
-            readOnly: true
-            example: false
-          parent:
-            allOf:
-            - $ref: '#/components/schemas/ProjectCompact'
-            - type: object
-              description: The parent to which the custom field is applied. This can be a project or portfolio and indicates that the tasks or projects that the parent contains may be given custom field values for this custom field.
-              readOnly: true
-          custom_field:
-            allOf:
-            - $ref: '#/components/schemas/CustomFieldResponse'
-            - type: object
-              description: The custom field that is applied to the `parent`.
-              readOnly: true
-    ProjectRequest:
-      allOf:
-      - $ref: '#/components/schemas/ProjectBase'
-      - type: object
-        properties:
-          custom_fields:
-            description: An object where each key is the GID of a custom field and its corresponding value is either an enum GID, string, number, or object (depending on the custom field type). See the [custom fields guide](/docs/custom-fields-guide) for details on creating and updating custom field values.
-            type: object
-            additionalProperties:
-              type: string
-              description: '"{custom_field_gid}" => Value (can be text, a number, etc.). For date, use format "YYYY-MM-DD" (e.g., 2019-09-15). For date-time, use ISO 8601 date string in UTC (e.g., 2019-09-15T02:06:58.147Z).'
-            example:
-              '5678904321': On Hold
-              '4578152156': Not Started
-          followers:
-            description: '*Create-only*. Comma separated string of users. Followers are a subset of members who have opted in to receive "tasks added" notifications for a project.'
+          representation_type:
+            description: This field tells the type of the custom field.
             type: string
-            example: 12345,23456
-          owner:
-            description: The current owner of the project, may be null.
+            example: number
+            readOnly: true
+            enum:
+            - text
+            - enum
+            - multi_enum
+            - number
+            - date
+            - people
+            - formula
+            - custom_id
+          id_prefix:
+            description: This field is the unique custom ID string for the custom field.
             type:
             - string
             - 'null'
-            example: '12345'
-          team:
-            description: The team that this project is shared with.
-            type: string
-            example: '12345'
-          workspace:
-            type: string
-            description: The `gid` of a workspace.
-            example: '12345'
-    RemoveCustomFieldSettingRequest:
-      type: object
-      required:
-      - custom_field
-      properties:
-        custom_field:
-          description: The custom field to remove from this portfolio.
-          type: string
-          example: '14916'
-    WorkspaceCompact:
-      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: workspace
-          x-insert-after: gid
-        name:
-          description: The name of the workspace.
-          type: string
-          example: My Company Workspace
-    TaskCountResponse:
-      description: A response object returned from the task count endpoint.
-      type: object
-      properties:
-        num_tasks:
-          description: The number of tasks in a project.
-          type: integer
-          example: 200
-        num_incomplete_tasks:
-          description: The number of incomplete tasks in a project.
-          type: integer
-          example: 50
-        num_completed_tasks:
-          description: The number of completed tasks in a project.
-          type: integer
-          example: 150
-        num_milestones:
-          description: The number of milestones in a project.
-          type: integer
-          example: 10
-        num_incomplete_milestones:
-          description: The number of incomplete milestones in a project.
-          type: integer
-          example: 7
-        num_completed_milestones:
-          description: The number of completed milestones in a project.
-          type: integer
-          example: 3
+            example: ID
+          is_formula_field:
+            description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
+            type: boolean
+            example: false
+          is_value_read_only:
+            description: '*Conditional*. This flag describes whether a custom field is read only.'
+            type: boolean
+            example: false
+          created_by:
+            allOf:
+            - $ref: '#/components/schemas/UserCompact'
+            - {}
+          people_value:
+            description: '*Conditional*. Only relevant for custom fields of type `people`. This array of [compact user](/reference/users) objects reflects the values of a `people` custom field.'
+            type: array
+            items:
+              $ref: '#/components/schemas/UserCompact'
     EnumOption:
       description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
 
@@ -5401,6 +5297,383 @@ components:
           description: The color of the enum option. Defaults to ‘none’.
           type: string
           example: blue
+    ProjectTemplateCompact:
+      description: A *project template* is an object that allows new projects to be created with a predefined setup, which may include tasks, sections, Rules, etc. It simplifies the process of running a workflow that involves a similar set of work every time.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project_template
+          x-insert-after: gid
+        name:
+          description: Name of the project template.
+          type: string
+          example: Packing list
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    JobResponse:
+      $ref: '#/components/schemas/JobBase'
+    CustomFieldCompact:
+      description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
+
+
+        Users in Asana can [lock custom fields](https://asana.com/guide/help/premium/custom-fields#gl-lock-fields), which will make them read-only when accessed by other users. Attempting to edit a locked custom field will return HTTP error code `403 Forbidden`.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: custom_field
+          x-insert-after: gid
+        name:
+          description: The name of the custom field.
+          type: string
+          example: Status
+        resource_subtype:
+          description: 'The type of the custom field. Must be one of the given values.
+
+            '
+          type: string
+          readOnly: true
+          example: text
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+        type:
+          description: '*Deprecated: new integrations should prefer the resource_subtype field.* The type of the custom field. Must be one of the given values.
+
+            '
+          type: string
+          readOnly: true
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+        enum_options:
+          description: '*Conditional*. Only relevant for custom fields of type `enum`. This array specifies the possible values which an `enum` custom field can adopt. To modify the enum options, refer to [working with enum options](/reference/createenumoptionforcustomfield).'
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumOption'
+        enabled:
+          description: '*Conditional*. Determines if the custom field is enabled or not.'
+          type: boolean
+          readOnly: true
+          example: true
+        representation_type:
+          description: This field tells the type of the custom field.
+          type: string
+          example: number
+          readOnly: true
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+          - formula
+          - custom_id
+        id_prefix:
+          description: This field is the unique custom ID string for the custom field.
+          type:
+          - string
+          - 'null'
+          example: ID
+        is_formula_field:
+          description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
+          type: boolean
+          example: false
+        date_value:
+          description: '*Conditional*. Only relevant for custom fields of type `date`. This object reflects the chosen date (and optionally, time) value of a `date` custom field. If no date is selected, the value of `date_value` will be `null`.'
+          type:
+          - object
+          - 'null'
+          properties:
+            date:
+              type: string
+              description: A string representing the date in YYYY-MM-DD format.
+              example: '2024-08-23'
+            date_time:
+              type: string
+              description: A string representing the date in ISO 8601 format. If no time value is selected, the value of `date-time` will be `null`.
+              example: '2024-08-23T22:00:00.000Z'
+        enum_value:
+          allOf:
+          - $ref: '#/components/schemas/EnumOption'
+          - type:
+            - object
+            - 'null'
+            description: '*Conditional*. Only relevant for custom fields of type `enum`. This object is the chosen value of an `enum` custom field.'
+        multi_enum_values:
+          description: '*Conditional*. Only relevant for custom fields of type `multi_enum`. This object is the chosen values of a `multi_enum` custom field.'
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumOption'
+        number_value:
+          description: '*Conditional*. This number is the value of a `number` custom field.'
+          type:
+          - number
+          - 'null'
+          example: 5.2
+        text_value:
+          description: '*Conditional*. This string is the value of a `text` custom field.'
+          type:
+          - string
+          - 'null'
+          example: Some Value
+        display_value:
+          description: A string representation for the value of the custom field. Integrations that don't require the underlying type should use this field to read values. Using this field will future-proof an app against new custom field types.
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          example: blue
+    CustomFieldSettingCompact:
+      description: Custom Fields Settings objects represent the many-to-many join of the Custom Field and Project as well as stores information that is relevant to that particular pairing.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: custom_field_setting
+          x-insert-after: gid
+    ProjectRequest:
+      allOf:
+      - $ref: '#/components/schemas/ProjectBase'
+      - type: object
+        properties:
+          custom_fields:
+            description: An object where each key is the GID of a custom field and its corresponding value is either an enum GID, string, number, or object (depending on the custom field type). See the [custom fields guide](/docs/custom-fields-guide) for details on creating and updating custom field values.
+            type: object
+            additionalProperties:
+              type: string
+              description: '"{custom_field_gid}" => Value (can be text, a number, etc.). For date, use format "YYYY-MM-DD" (e.g., 2019-09-15). For date-time, use ISO 8601 date string in UTC (e.g., 2019-09-15T02:06:58.147Z).'
+            example:
+              '5678904321': On Hold
+              '4578152156': Not Started
+          followers:
+            description: '*Create-only*. Comma separated string of users. Followers are a subset of members who have opted in to receive "tasks added" notifications for a project.'
+            type: string
+            example: 12345,23456
+          owner:
+            description: The current owner of the project, may be null.
+            type:
+            - string
+            - 'null'
+            example: '12345'
+          team:
+            description: The team that this project is shared with.
+            type: string
+            example: '12345'
+          workspace:
+            type: string
+            description: The `gid` of a workspace.
+            example: '12345'
+    CustomFieldSettingResponse:
+      allOf:
+      - $ref: '#/components/schemas/CustomFieldSettingBase'
+      - type: object
+        properties:
+          project:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: '*Deprecated: new integrations should prefer the `parent` field.* The id of the project that this custom field settings refers to.'
+              readOnly: true
+          is_important:
+            description: '`is_important` is used in the Asana web application to determine if this custom field is displayed in the list/grid view of a project or portfolio.'
+            type: boolean
+            readOnly: true
+            example: false
+          parent:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: The parent to which the custom field is applied. This can be a project or portfolio and indicates that the tasks or projects that the parent contains may be given custom field values for this custom field.
+              readOnly: true
+          custom_field:
+            allOf:
+            - $ref: '#/components/schemas/CustomFieldResponse'
+            - type: object
+              description: The custom field that is applied to the `parent`.
+              readOnly: true
+    JobBase:
+      $ref: '#/components/schemas/JobCompact'
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    ProjectBriefCompact:
+      description: A *Project Brief* allows you to explain the what and why of the project to your team.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: project_brief
+          x-insert-after: gid
+    CustomFieldSettingBase:
+      $ref: '#/components/schemas/CustomFieldSettingCompact'
+    ProjectDuplicateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          description: The name of the new project.
+          type: string
+          example: New Project Name
+        team:
+          description: Sets the team of the new project. If team is not defined, the new project will be in the same team as the the original project.
+          type: string
+          example: '12345'
+        include:
+          description: 'A comma-separated list of elements that will be duplicated to the new project. Tasks are always included.
+
+            ##### Fields
+
+            - allocations
+
+            - forms
+
+            - members
+
+            - notes
+
+            - task_assignee
+
+            - task_attachments
+
+            - task_dates
+
+            - task_dependencies
+
+            - task_followers
+
+            - task_notes
+
+            - task_projects
+
+            - task_subtasks
+
+            - task_tags'
+          type: string
+          pattern: ([allocations|members|notes|forms|task_notes|task_assignee|task_subtasks|task_attachments|task_dates|task_dependencies|task_followers|task_tags|task_projects])(,\1)*
+          example:
+          - allocations,members,notes,forms,task_notes,task_assignee,task_subtasks,task_attachments,task_dates,task_dependencies,task_followers,task_tags,task_projects
+        schedule_dates:
+          description: A dictionary of options to auto-shift dates. `task_dates` must be included to use this option. Requires either `start_on` or `due_on`, but not both.
+          type: object
+          required:
+          - should_skip_weekends
+          properties:
+            should_skip_weekends:
+              description: Determines if the auto-shifted dates should skip weekends.
+              type: boolean
+              example: true
+            due_on:
+              description: Sets the last due date in the duplicated project to the given date. The rest of the due dates will be offset by the same amount as the due dates in the original project.
+              type: string
+              example: '2019-05-21'
+            start_on:
+              description: Sets the first start date in the duplicated project to the given date. The rest of the start dates will be offset by the same amount as the start dates in the original project.
+              type: string
+              example: '2019-05-21'
     ProjectStatusCompact:
       description: '*Deprecated: new integrations should prefer the `status_update` resource.*
 
@@ -5423,59 +5696,234 @@ components:
           description: The title of the project status update.
           type: string
           example: Status Update - Jun 15
-    ProjectStatusResponse:
+    AddCustomFieldSettingRequest:
+      type: object
+      required:
+      - custom_field
+      properties:
+        custom_field:
+          description: The custom field to associate with this container.
+          type: string
+          example: '14916'
+        is_important:
+          description: Whether this field should be considered important to this container (for instance, to display in the list view of items in the container).
+          type: boolean
+          example: true
+        insert_before:
+          description: A gid of a Custom Field Setting on this container, before which the new Custom Field Setting will be added.  `insert_before` and `insert_after` parameters cannot both be specified.
+          type: string
+          example: '1331'
+        insert_after:
+          description: A gid of a Custom Field Setting on this container, after which the new Custom Field Setting will be added.  `insert_before` and `insert_after` parameters cannot both be specified.
+          type: string
+          example: '1331'
+    TaskCountResponse:
+      description: A response object returned from the task count endpoint.
+      type: object
+      properties:
+        num_tasks:
+          description: The number of tasks in a project.
+          type: integer
+          example: 200
+        num_incomplete_tasks:
+          description: The number of incomplete tasks in a project.
+          type: integer
+          example: 50
+        num_completed_tasks:
+          description: The number of completed tasks in a project.
+          type: integer
+          example: 150
+        num_milestones:
+          description: The number of milestones in a project.
+          type: integer
+          example: 10
+        num_incomplete_milestones:
+          description: The number of incomplete milestones in a project.
+          type: integer
+          example: 7
+        num_completed_milestones:
+          description: The number of completed milestones in a project.
+          type: integer
+          example: 3
+    ProjectBase:
       allOf:
-      - $ref: '#/components/schemas/ProjectStatusBase'
+      - $ref: '#/components/schemas/ProjectCompact'
       - type: object
         properties:
-          author:
-            $ref: '#/components/schemas/UserCompact'
+          archived:
+            description: True if the project is archived, false if not. Archived projects do not show in the UI by default and may be treated differently for queries.
+            type: boolean
+            example: false
+          color:
+            description: Color of the project.
+            type:
+            - string
+            - 'null'
+            enum:
+            - dark-pink
+            - dark-green
+            - dark-blue
+            - dark-red
+            - dark-teal
+            - dark-brown
+            - dark-orange
+            - dark-purple
+            - dark-warm-gray
+            - light-pink
+            - light-green
+            - light-blue
+            - light-red
+            - light-teal
+            - light-brown
+            - light-orange
+            - light-purple
+            - light-warm-gray
+            - none
+            - null
+            example: light-green
           created_at:
             description: The time at which this resource was created.
             type: string
             format: date-time
             readOnly: true
             example: '2012-02-22T02:06:58.147Z'
-          created_by:
-            $ref: '#/components/schemas/UserCompact'
-          modified_at:
-            description: 'The time at which this project status was last modified.
-
-              *Note: This does not currently reflect any changes in associations such as comments that may have been added or removed from the project status.*'
-            type: string
-            format: date-time
+          current_status:
+            allOf:
+            - $ref: '#/components/schemas/ProjectStatusResponse'
+            - type:
+              - object
+              - 'null'
+              description: '*Deprecated: new integrations should prefer the `current_status_update` resource.*'
+          current_status_update:
+            allOf:
+            - $ref: '#/components/schemas/StatusUpdateCompact'
+            - type:
+              - object
+              - 'null'
+              description: The latest `status_update` posted to this project.
+          custom_field_settings:
+            description: Array of Custom Field Settings (in compact form).
             readOnly: true
+            type: array
+            items:
+              $ref: '#/components/schemas/CustomFieldSettingResponse'
+          default_view:
+            description: The default view (list, board, calendar, or timeline) of a project.
+            type: string
+            enum:
+            - list
+            - board
+            - calendar
+            - timeline
+            example: calendar
+          due_date:
+            description: '*Deprecated: new integrations should prefer the `due_on` field.*'
+            type:
+            - string
+            - 'null'
+            format: date
+            example: '2019-09-15'
+          due_on:
+            description: The day on which this project is due. This takes a date with format YYYY-MM-DD.
+            type:
+            - string
+            - 'null'
+            format: date
+            example: '2019-09-15'
+          html_notes:
+            description: '[Opt In](/docs/inputoutput-options). The notes of the project with formatting as HTML.'
+            type: string
+            example: <body>These are things we need to purchase.</body>
+          members:
+            description: Array of users who are members of this project.
+            type: array
+            items:
+              $ref: '#/components/schemas/UserCompact'
+            readOnly: true
+          modified_at:
+            description: 'The time at which this project was last modified.
+
+              *Note: This does not currently reflect any changes in associations such as tasks or comments that may have been added or removed from the project.*'
+            type: string
+            readOnly: true
+            format: date-time
             example: '2012-02-22T02:06:58.147Z'
-    ErrorResponse:
-      description: 'Sadly, sometimes requests to the API are not successful. Failures can
-
-        occur for a wide range of reasons. In all cases, the API should return
-
-        an HTTP Status Code that indicates the nature of the failure,
-
-        with a response body in JSON format containing additional information.
-
-
-
-        In the event of a server error the response body will contain an error
-
-        phrase. These phrases are automatically generated using the
-
-        [node-asana-phrase
-
-        library](https://github.com/Asana/node-asana-phrase) and can be used by
-
-        Asana support to quickly look up the incident that caused the server
-
-        error.'
+          notes:
+            description: Free-form textual information associated with the project (ie., its description).
+            type: string
+            example: These are things we need to purchase.
+          public:
+            description: '*Deprecated:* new integrations use `privacy_setting` instead.'
+            type: boolean
+            deprecated: true
+            example: false
+          privacy_setting:
+            description: 'The privacy setting of the project. *Note: Administrators in your organization may restrict the values of `privacy_setting`.*'
+            type: string
+            enum:
+            - public_to_workspace
+            - private_to_team
+            - private
+            example: public_to_workspace
+          start_on:
+            description: 'The day on which work for this project begins, or null if the project has no start date. This takes a date with `YYYY-MM-DD` format. *Note: `due_on` or `due_at` must be present in the request when setting or unsetting the `start_on` parameter. Additionally, `start_on` and `due_on` cannot be the same date.*'
+            type:
+            - string
+            - 'null'
+            format: date
+            example: '2019-09-14'
+          default_access_level:
+            description: The default access for users or teams who join or are added as members to the project.
+            type: string
+            enum:
+            - admin
+            - editor
+            - commenter
+            - viewer
+            example: admin
+          minimum_access_level_for_customization:
+            description: The minimum access level needed for project members to modify this project's workflow and appearance.
+            type: string
+            enum:
+            - admin
+            - editor
+            example: admin
+          minimum_access_level_for_sharing:
+            description: The minimum access level needed for project members to share the project and manage project memberships.
+            type: string
+            enum:
+            - admin
+            - editor
+            example: admin
+    AddMembersRequest:
       type: object
+      required:
+      - members
       properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-    ProjectCompact:
-      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+        members:
+          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
+          type: string
+          example: 521621,621373
+    RemoveCustomFieldSettingRequest:
+      type: object
+      required:
+      - custom_field
+      properties:
+        custom_field:
+          description: The custom field to remove from this portfolio.
+          type: string
+          example: '14916'
+    RemoveFollowersRequest:
+      type: object
+      required:
+      - followers
+      properties:
+        followers:
+          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
+          type: string
+          example: 521621,621373
+    WorkspaceCompact:
+      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
       type: object
       properties:
         gid:
@@ -5488,36 +5936,127 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: project
+          example: workspace
           x-insert-after: gid
         name:
-          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          description: The name of the workspace.
           type: string
-          example: Stuff to buy
-    Error:
+          example: My Company Workspace
+    ProjectUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/ProjectBase'
+      - type: object
+        properties:
+          custom_fields:
+            description: An object where each key is the GID of a custom field and its corresponding value is either an enum GID, string, number, or object (depending on the custom field type). See the [custom fields guide](/docs/custom-fields-guide) for details on creating and updating custom field values.
+            type: object
+            additionalProperties:
+              type: string
+              description: '"{custom_field_gid}" => Value (can be text, a number, etc.). For date, use format "YYYY-MM-DD" (e.g., 2019-09-15). For date-time, use ISO 8601 date string in UTC (e.g., 2019-09-15T02:06:58.147Z).'
+            example:
+              '5678904321': On Hold
+              '4578152156': Not Started
+          followers:
+            description: '*Create-only*. Comma separated string of users. Followers are a subset of members who have opted in to receive "tasks added" notifications for a project.'
+            type: string
+            example: 12345,23456
+          owner:
+            description: The current owner of the project, may be null.
+            type:
+            - string
+            - 'null'
+            example: '12345'
+          team:
+            description: The team that this project is shared with.
+            type: string
+            example: '12345'
+    StatusUpdateCompact:
+      description: A *status update* is an update on the progress of a particular project, portfolio, or goal, and is sent out to all of its parent's followers when created. These updates include both text describing the update and a `status_type` intended to represent the overall state of the project.
       type: object
       properties:
-        message:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
           readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
           type: string
           readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
+          example: status_update
+          x-insert-after: gid
+        title:
+          description: The title of the status update.
+          type: string
+          example: Status Update - Jun 15
+        resource_subtype:
+          type: string
+          description: 'The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+
+            The `resource_subtype`s for `status` objects represent the type of their parent.'
+          enum:
+          - project_status_update
+          - portfolio_status_update
+          - goal_status_update
+          example: project_status_update
+          readOnly: true
+    JobCompact:
+      description: A *job* is an object representing a process that handles asynchronous work.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
           readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: job
+          x-insert-after: gid
+        resource_subtype:
+          description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+          type: string
+          readOnly: true
+          example: duplicate_task
+        status:
+          description: 'The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.'
+          type: string
+          enum:
+          - not_started
+          - in_progress
+          - succeeded
+          - failed
+          readOnly: true
+          example: in_progress
+        new_project:
+          $ref: '#/components/schemas/ProjectCompact'
+        new_task:
+          allOf:
+          - $ref: '#/components/schemas/TaskCompact'
+          - type:
+            - object
+            - 'null'
+        new_project_template:
+          $ref: '#/components/schemas/ProjectTemplateCompact'
     AddFollowersRequest:
       type: object
       required:
       - followers
       properties:
         followers:
+          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
+          type: string
+          example: 521621,621373
+    RemoveMembersRequest:
+      type: object
+      required:
+      - members
+      properties:
+        members:
           description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
           type: string
           example: 521621,621373
@@ -5730,124 +6269,8 @@ components:
             - word_count
             - null
             example: priority
-    CustomFieldResponse:
-      allOf:
-      - $ref: '#/components/schemas/CustomFieldBase'
-      - type: object
-        properties:
-          representation_type:
-            description: This field tells the type of the custom field.
-            type: string
-            example: number
-            readOnly: true
-            enum:
-            - text
-            - enum
-            - multi_enum
-            - number
-            - date
-            - people
-            - formula
-            - custom_id
-          id_prefix:
-            description: This field is the unique custom ID string for the custom field.
-            type:
-            - string
-            - 'null'
-            example: ID
-          is_formula_field:
-            description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
-            type: boolean
-            example: false
-          is_value_read_only:
-            description: '*Conditional*. This flag describes whether a custom field is read only.'
-            type: boolean
-            example: false
-          created_by:
-            allOf:
-            - $ref: '#/components/schemas/UserCompact'
-            - {}
-          people_value:
-            description: '*Conditional*. Only relevant for custom fields of type `people`. This array of [compact user](/reference/users) objects reflects the values of a `people` custom field.'
-            type: array
-            items:
-              $ref: '#/components/schemas/UserCompact'
-    RemoveFollowersRequest:
-      type: object
-      required:
-      - followers
-      properties:
-        followers:
-          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
-          type: string
-          example: 521621,621373
-    ProjectDuplicateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          description: The name of the new project.
-          type: string
-          example: New Project Name
-        team:
-          description: Sets the team of the new project. If team is not defined, the new project will be in the same team as the the original project.
-          type: string
-          example: '12345'
-        include:
-          description: 'A comma-separated list of elements that will be duplicated to the new project. Tasks are always included.
-
-            ##### Fields
-
-            - allocations
-
-            - forms
-
-            - members
-
-            - notes
-
-            - task_assignee
-
-            - task_attachments
-
-            - task_dates
-
-            - task_dependencies
-
-            - task_followers
-
-            - task_notes
-
-            - task_projects
-
-            - task_subtasks
-
-            - task_tags'
-          type: string
-          pattern: ([allocations|members|notes|forms|task_notes|task_assignee|task_subtasks|task_attachments|task_dates|task_dependencies|task_followers|task_tags|task_projects])(,\1)*
-          example:
-          - allocations,members,notes,forms,task_notes,task_assignee,task_subtasks,task_attachments,task_dates,task_dependencies,task_followers,task_tags,task_projects
-        schedule_dates:
-          description: A dictionary of options to auto-shift dates. `task_dates` must be included to use this option. Requires either `start_on` or `due_on`, but not both.
-          type: object
-          required:
-          - should_skip_weekends
-          properties:
-            should_skip_weekends:
-              description: Determines if the auto-shifted dates should skip weekends.
-              type: boolean
-              example: true
-            due_on:
-              description: Sets the last due date in the duplicated project to the given date. The rest of the due dates will be offset by the same amount as the due dates in the original project.
-              type: string
-              example: '2019-05-21'
-            start_on:
-              description: Sets the first start date in the duplicated project to the given date. The rest of the start dates will be offset by the same amount as the start dates in the original project.
-              type: string
-              example: '2019-05-21'
-    ProjectBriefCompact:
-      description: A *Project Brief* allows you to explain the what and why of the project to your team.
+    TeamCompact:
+      description: A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
       type: object
       properties:
         gid:
@@ -5860,8 +6283,12 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: project_brief
+          example: team
           x-insert-after: gid
+        name:
+          description: The name of the team.
+          type: string
+          example: Marketing
     TaskCompact:
       description: The *task* is the basic object around which many operations in Asana are centered.
       type: object
@@ -5905,130 +6332,29 @@ components:
               description: The type of resource.
               type: string
               example: user
-    AddCustomFieldSettingRequest:
-      type: object
-      required:
-      - custom_field
-      properties:
-        custom_field:
-          description: The custom field to associate with this container.
-          type: string
-          example: '14916'
-        is_important:
-          description: Whether this field should be considered important to this container (for instance, to display in the list view of items in the container).
-          type: boolean
-          example: true
-        insert_before:
-          description: A gid of a Custom Field Setting on this container, before which the new Custom Field Setting will be added.  `insert_before` and `insert_after` parameters cannot both be specified.
-          type: string
-          example: '1331'
-        insert_after:
-          description: A gid of a Custom Field Setting on this container, after which the new Custom Field Setting will be added.  `insert_before` and `insert_after` parameters cannot both be specified.
-          type: string
-          example: '1331'
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: user
-          x-insert-after: gid
-        name:
-          type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
-    JobResponse:
-      $ref: '#/components/schemas/JobBase'
-    ProjectUpdateRequest:
+    ProjectStatusResponse:
       allOf:
-      - $ref: '#/components/schemas/ProjectBase'
+      - $ref: '#/components/schemas/ProjectStatusBase'
       - type: object
         properties:
-          custom_fields:
-            description: An object where each key is the GID of a custom field and its corresponding value is either an enum GID, string, number, or object (depending on the custom field type). See the [custom fields guide](/docs/custom-fields-guide) for details on creating and updating custom field values.
-            type: object
-            additionalProperties:
-              type: string
-              description: '"{custom_field_gid}" => Value (can be text, a number, etc.). For date, use format "YYYY-MM-DD" (e.g., 2019-09-15). For date-time, use ISO 8601 date string in UTC (e.g., 2019-09-15T02:06:58.147Z).'
-            example:
-              '5678904321': On Hold
-              '4578152156': Not Started
-          followers:
-            description: '*Create-only*. Comma separated string of users. Followers are a subset of members who have opted in to receive "tasks added" notifications for a project.'
+          author:
+            $ref: '#/components/schemas/UserCompact'
+          created_at:
+            description: The time at which this resource was created.
             type: string
-            example: 12345,23456
-          owner:
-            description: The current owner of the project, may be null.
-            type:
-            - string
-            - 'null'
-            example: '12345'
-          team:
-            description: The team that this project is shared with.
-            type: string
-            example: '12345'
-    ProjectSaveAsTemplateRequest:
-      type: object
-      required:
-      - name
-      - public
-      properties:
-        name:
-          description: The name of the new project template.
-          type: string
-          example: New Project Template
-        team:
-          description: Sets the team of the new project template. If the project exists in an organization, specify team and not workspace.
-          type: string
-          example: '12345'
-        workspace:
-          description: Sets the workspace of the new project template. Only specify workspace if the project exists in a workspace.
-          type: string
-          example: '12345'
-        public:
-          description: Sets the project template to public to its team.
-          type: boolean
-          example: true
-    StatusUpdateCompact:
-      description: A *status update* is an update on the progress of a particular project, portfolio, or goal, and is sent out to all of its parent's followers when created. These updates include both text describing the update and a `status_type` intended to represent the overall state of the project.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: status_update
-          x-insert-after: gid
-        title:
-          description: The title of the status update.
-          type: string
-          example: Status Update - Jun 15
-        resource_subtype:
-          type: string
-          description: 'The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+          created_by:
+            $ref: '#/components/schemas/UserCompact'
+          modified_at:
+            description: 'The time at which this project status was last modified.
 
-            The `resource_subtype`s for `status` objects represent the type of their parent.'
-          enum:
-          - project_status_update
-          - portfolio_status_update
-          - goal_status_update
-          example: project_status_update
-          readOnly: true
+              *Note: This does not currently reflect any changes in associations such as comments that may have been added or removed from the project status.*'
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
     ProjectResponse:
       allOf:
       - $ref: '#/components/schemas/ProjectBase'
@@ -6140,373 +6466,74 @@ components:
             - type: object
               readOnly: true
               description: '*Create-only*. The workspace or organization this project is associated with. Once created, projects cannot be moved to a different workspace. This attribute can only be specified at creation time. If the workspace for your project is an organization, you must also supply a `team` in the request body.'
-    ProjectBase:
-      allOf:
-      - $ref: '#/components/schemas/ProjectCompact'
-      - type: object
-        properties:
-          archived:
-            description: True if the project is archived, false if not. Archived projects do not show in the UI by default and may be treated differently for queries.
-            type: boolean
-            example: false
-          color:
-            description: Color of the project.
-            type:
-            - string
-            - 'null'
-            enum:
-            - dark-pink
-            - dark-green
-            - dark-blue
-            - dark-red
-            - dark-teal
-            - dark-brown
-            - dark-orange
-            - dark-purple
-            - dark-warm-gray
-            - light-pink
-            - light-green
-            - light-blue
-            - light-red
-            - light-teal
-            - light-brown
-            - light-orange
-            - light-purple
-            - light-warm-gray
-            - none
-            - null
-            example: light-green
-          created_at:
-            description: The time at which this resource was created.
-            type: string
-            format: date-time
-            readOnly: true
-            example: '2012-02-22T02:06:58.147Z'
-          current_status:
-            allOf:
-            - $ref: '#/components/schemas/ProjectStatusResponse'
-            - type:
-              - object
-              - 'null'
-              description: '*Deprecated: new integrations should prefer the `current_status_update` resource.*'
-          current_status_update:
-            allOf:
-            - $ref: '#/components/schemas/StatusUpdateCompact'
-            - type:
-              - object
-              - 'null'
-              description: The latest `status_update` posted to this project.
-          custom_field_settings:
-            description: Array of Custom Field Settings (in compact form).
-            readOnly: true
-            type: array
-            items:
-              $ref: '#/components/schemas/CustomFieldSettingResponse'
-          default_view:
-            description: The default view (list, board, calendar, or timeline) of a project.
-            type: string
-            enum:
-            - list
-            - board
-            - calendar
-            - timeline
-            example: calendar
-          due_date:
-            description: '*Deprecated: new integrations should prefer the `due_on` field.*'
-            type:
-            - string
-            - 'null'
-            format: date
-            example: '2019-09-15'
-          due_on:
-            description: The day on which this project is due. This takes a date with format YYYY-MM-DD.
-            type:
-            - string
-            - 'null'
-            format: date
-            example: '2019-09-15'
-          html_notes:
-            description: '[Opt In](/docs/inputoutput-options). The notes of the project with formatting as HTML.'
-            type: string
-            example: <body>These are things we need to purchase.</body>
-          members:
-            description: Array of users who are members of this project.
-            type: array
-            items:
-              $ref: '#/components/schemas/UserCompact'
-            readOnly: true
-          modified_at:
-            description: 'The time at which this project was last modified.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
-              *Note: This does not currently reflect any changes in associations such as tasks or comments that may have been added or removed from the project.*'
-            type: string
-            readOnly: true
-            format: date-time
-            example: '2012-02-22T02:06:58.147Z'
-          notes:
-            description: Free-form textual information associated with the project (ie., its description).
-            type: string
-            example: These are things we need to purchase.
-          public:
-            description: '*Deprecated:* new integrations use `privacy_setting` instead.'
-            type: boolean
-            deprecated: true
-            example: false
-          privacy_setting:
-            description: 'The privacy setting of the project. *Note: Administrators in your organization may restrict the values of `privacy_setting`.*'
-            type: string
-            enum:
-            - public_to_workspace
-            - private_to_team
-            - private
-            example: public_to_workspace
-          start_on:
-            description: 'The day on which work for this project begins, or null if the project has no start date. This takes a date with `YYYY-MM-DD` format. *Note: `due_on` or `due_at` must be present in the request when setting or unsetting the `start_on` parameter. Additionally, `start_on` and `due_on` cannot be the same date.*'
-            type:
-            - string
-            - 'null'
-            format: date
-            example: '2019-09-14'
-          default_access_level:
-            description: The default access for users or teams who join or are added as members to the project.
-            type: string
-            enum:
-            - admin
-            - editor
-            - commenter
-            - viewer
-            example: admin
-          minimum_access_level_for_customization:
-            description: The minimum access level needed for project members to modify this project's workflow and appearance.
-            type: string
-            enum:
-            - admin
-            - editor
-            example: admin
-          minimum_access_level_for_sharing:
-            description: The minimum access level needed for project members to share the project and manage project memberships.
-            type: string
-            enum:
-            - admin
-            - editor
-            example: admin
-    CustomFieldSettingBase:
-      $ref: '#/components/schemas/CustomFieldSettingCompact'
-    CustomFieldSettingCompact:
-      description: Custom Fields Settings objects represent the many-to-many join of the Custom Field and Project as well as stores information that is relevant to that particular pairing.
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
       type: object
       properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: custom_field_setting
-          x-insert-after: gid
-    JobCompact:
-      description: A *job* is an object representing a process that handles asynchronous work.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: job
-          x-insert-after: gid
-        resource_subtype:
-          description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
-          type: string
-          readOnly: true
-          example: duplicate_task
-        status:
-          description: 'The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.'
-          type: string
-          enum:
-          - not_started
-          - in_progress
-          - succeeded
-          - failed
-          readOnly: true
-          example: in_progress
-        new_project:
-          $ref: '#/components/schemas/ProjectCompact'
-        new_task:
-          allOf:
-          - $ref: '#/components/schemas/TaskCompact'
-          - type:
-            - object
-            - 'null'
-        new_project_template:
-          $ref: '#/components/schemas/ProjectTemplateCompact'
-    AddMembersRequest:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    ProjectSaveAsTemplateRequest:
       type: object
       required:
-      - members
+      - name
+      - public
       properties:
-        members:
-          description: An array of strings identifying users. These can either be the string "me", an email, or the gid of a user.
-          type: string
-          example: 521621,621373
-    CustomFieldCompact:
-      description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
-
-
-        Users in Asana can [lock custom fields](https://asana.com/guide/help/premium/custom-fields#gl-lock-fields), which will make them read-only when accessed by other users. Attempting to edit a locked custom field will return HTTP error code `403 Forbidden`.'
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: custom_field
-          x-insert-after: gid
         name:
-          description: The name of the custom field.
+          description: The name of the new project template.
           type: string
-          example: Status
-        resource_subtype:
-          description: 'The type of the custom field. Must be one of the given values.
-
-            '
+          example: New Project Template
+        team:
+          description: Sets the team of the new project template. If the project exists in an organization, specify team and not workspace.
           type: string
-          readOnly: true
-          example: text
-          enum:
-          - text
-          - enum
-          - multi_enum
-          - number
-          - date
-          - people
-        type:
-          description: '*Deprecated: new integrations should prefer the resource_subtype field.* The type of the custom field. Must be one of the given values.
-
-            '
+          example: '12345'
+        workspace:
+          description: Sets the workspace of the new project template. Only specify workspace if the project exists in a workspace.
           type: string
-          readOnly: true
-          enum:
-          - text
-          - enum
-          - multi_enum
-          - number
-          - date
-          - people
-        enum_options:
-          description: '*Conditional*. Only relevant for custom fields of type `enum`. This array specifies the possible values which an `enum` custom field can adopt. To modify the enum options, refer to [working with enum options](/reference/createenumoptionforcustomfield).'
-          type: array
-          items:
-            $ref: '#/components/schemas/EnumOption'
-        enabled:
-          description: '*Conditional*. Determines if the custom field is enabled or not.'
+          example: '12345'
+        public:
+          description: Sets the project template to public to its team.
           type: boolean
-          readOnly: true
           example: true
-        representation_type:
-          description: This field tells the type of the custom field.
-          type: string
-          example: number
-          readOnly: true
-          enum:
-          - text
-          - enum
-          - multi_enum
-          - number
-          - date
-          - people
-          - formula
-          - custom_id
-        id_prefix:
-          description: This field is the unique custom ID string for the custom field.
-          type:
-          - string
-          - 'null'
-          example: ID
-        is_formula_field:
-          description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
-          type: boolean
-          example: false
-        date_value:
-          description: '*Conditional*. Only relevant for custom fields of type `date`. This object reflects the chosen date (and optionally, time) value of a `date` custom field. If no date is selected, the value of `date_value` will be `null`.'
-          type:
-          - object
-          - 'null'
-          properties:
-            date:
-              type: string
-              description: A string representing the date in YYYY-MM-DD format.
-              example: '2024-08-23'
-            date_time:
-              type: string
-              description: A string representing the date in ISO 8601 format. If no time value is selected, the value of `date-time` will be `null`.
-              example: '2024-08-23T22:00:00.000Z'
-        enum_value:
-          allOf:
-          - $ref: '#/components/schemas/EnumOption'
-          - type:
-            - object
-            - 'null'
-            description: '*Conditional*. Only relevant for custom fields of type `enum`. This object is the chosen value of an `enum` custom field.'
-        multi_enum_values:
-          description: '*Conditional*. Only relevant for custom fields of type `multi_enum`. This object is the chosen values of a `multi_enum` custom field.'
-          type: array
-          items:
-            $ref: '#/components/schemas/EnumOption'
-        number_value:
-          description: '*Conditional*. This number is the value of a `number` custom field.'
-          type:
-          - number
-          - 'null'
-          example: 5.2
-        text_value:
-          description: '*Conditional*. This string is the value of a `text` custom field.'
-          type:
-          - string
-          - 'null'
-          example: Some Value
-        display_value:
-          description: A string representation for the value of the custom field. Integrations that don't require the underlying type should use this field to read values. Using this field will future-proof an app against new custom field types.
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          example: blue
-    TeamCompact:
-      description: A *team* is used to group related projects and people together within an organization. Each project in an organization is associated with a team.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: team
-          x-insert-after: gid
-        name:
-          description: The name of the team.
-          type: string
-          example: Marketing
     ProjectStatusBase:
       allOf:
       - $ref: '#/components/schemas/ProjectStatusCompact'
@@ -6529,97 +6556,7 @@ components:
             - red
             - blue
             - complete
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    JobBase:
-      $ref: '#/components/schemas/JobCompact'
-    EmptyResponse:
-      type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-  responses:
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    project_path_gid:
-      name: project_gid
-      in: path
-      description: Globally unique identifier for the project.
-      required: true
-      schema:
-        type: string
-      example: '1331'
-      x-env-variable: project
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
     limit:
       name: limit
       in: query
@@ -6631,24 +6568,15 @@ components:
         type: integer
         minimum: 1
         maximum: 100
-    task_path_gid:
-      name: task_gid
+    project_path_gid:
+      name: project_gid
       in: path
-      required: true
-      description: The task to operate on.
-      schema:
-        type: string
-      example: '321654'
-      x-env-variable: task
-    workspace_path_gid:
-      name: workspace_gid
-      in: path
-      description: Globally unique identifier for the workspace or organization.
+      description: Globally unique identifier for the project.
       required: true
       schema:
         type: string
-      example: '12345'
-      x-env-variable: workspace
+      example: '1331'
+      x-env-variable: project
     archived_query_param:
       name: archived
       in: query
@@ -6665,6 +6593,78 @@ components:
         type: string
       example: '159874'
       x-env-variable: team
+    workspace_path_gid:
+      name: workspace_gid
+      in: path
+      description: Globally unique identifier for the workspace or organization.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    task_path_gid:
+      name: task_gid
+      in: path
+      required: true
+      description: The task to operate on.
+      schema:
+        type: string
+      example: '321654'
+      x-env-variable: task
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     personalAccessToken:
       type: http

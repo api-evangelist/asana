@@ -463,66 +463,49 @@ paths:
           install: gem install asana
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.custom_field_settings.get_custom_field_settings_for_portfolio(portfolio_gid: 'portfolio_gid', param: \"value\", param: \"value\", options: {pretty: true})"
 components:
-  responses:
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    CustomFieldSettingResponse:
+    CustomFieldResponse:
       allOf:
-      - $ref: '#/components/schemas/CustomFieldSettingBase'
+      - $ref: '#/components/schemas/CustomFieldBase'
       - type: object
         properties:
-          project:
-            allOf:
-            - $ref: '#/components/schemas/ProjectCompact'
-            - type: object
-              description: '*Deprecated: new integrations should prefer the `parent` field.* The id of the project that this custom field settings refers to.'
-              readOnly: true
-          is_important:
-            description: '`is_important` is used in the Asana web application to determine if this custom field is displayed in the list/grid view of a project or portfolio.'
-            type: boolean
+          representation_type:
+            description: This field tells the type of the custom field.
+            type: string
+            example: number
             readOnly: true
+            enum:
+            - text
+            - enum
+            - multi_enum
+            - number
+            - date
+            - people
+            - formula
+            - custom_id
+          id_prefix:
+            description: This field is the unique custom ID string for the custom field.
+            type:
+            - string
+            - 'null'
+            example: ID
+          is_formula_field:
+            description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
+            type: boolean
             example: false
-          parent:
+          is_value_read_only:
+            description: '*Conditional*. This flag describes whether a custom field is read only.'
+            type: boolean
+            example: false
+          created_by:
             allOf:
-            - $ref: '#/components/schemas/ProjectCompact'
-            - type: object
-              description: The parent to which the custom field is applied. This can be a project or portfolio and indicates that the tasks or projects that the parent contains may be given custom field values for this custom field.
-              readOnly: true
-          custom_field:
-            allOf:
-            - $ref: '#/components/schemas/CustomFieldResponse'
-            - type: object
-              description: The custom field that is applied to the `parent`.
-              readOnly: true
+            - $ref: '#/components/schemas/UserCompact'
+            - {}
+          people_value:
+            description: '*Conditional*. Only relevant for custom fields of type `people`. This array of [compact user](/reference/users) objects reflects the values of a `people` custom field.'
+            type: array
+            items:
+              $ref: '#/components/schemas/UserCompact'
     EnumOption:
       description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
 
@@ -566,34 +549,221 @@ components:
           description: The color of the enum option. Defaults to ‘none’.
           type: string
           example: blue
-    ErrorResponse:
-      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    CustomFieldCompact:
+      description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
 
-        occur for a wide range of reasons. In all cases, the API should return
 
-        an HTTP Status Code that indicates the nature of the failure,
-
-        with a response body in JSON format containing additional information.
-
-
-
-        In the event of a server error the response body will contain an error
-
-        phrase. These phrases are automatically generated using the
-
-        [node-asana-phrase
-
-        library](https://github.com/Asana/node-asana-phrase) and can be used by
-
-        Asana support to quickly look up the incident that caused the server
-
-        error.'
+        Users in Asana can [lock custom fields](https://asana.com/guide/help/premium/custom-fields#gl-lock-fields), which will make them read-only when accessed by other users. Attempting to edit a locked custom field will return HTTP error code `403 Forbidden`.'
       type: object
       properties:
-        errors:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: custom_field
+          x-insert-after: gid
+        name:
+          description: The name of the custom field.
+          type: string
+          example: Status
+        resource_subtype:
+          description: 'The type of the custom field. Must be one of the given values.
+
+            '
+          type: string
+          readOnly: true
+          example: text
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+        type:
+          description: '*Deprecated: new integrations should prefer the resource_subtype field.* The type of the custom field. Must be one of the given values.
+
+            '
+          type: string
+          readOnly: true
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+        enum_options:
+          description: '*Conditional*. Only relevant for custom fields of type `enum`. This array specifies the possible values which an `enum` custom field can adopt. To modify the enum options, refer to [working with enum options](/reference/createenumoptionforcustomfield).'
           type: array
           items:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/EnumOption'
+        enabled:
+          description: '*Conditional*. Determines if the custom field is enabled or not.'
+          type: boolean
+          readOnly: true
+          example: true
+        representation_type:
+          description: This field tells the type of the custom field.
+          type: string
+          example: number
+          readOnly: true
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+          - formula
+          - custom_id
+        id_prefix:
+          description: This field is the unique custom ID string for the custom field.
+          type:
+          - string
+          - 'null'
+          example: ID
+        is_formula_field:
+          description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
+          type: boolean
+          example: false
+        date_value:
+          description: '*Conditional*. Only relevant for custom fields of type `date`. This object reflects the chosen date (and optionally, time) value of a `date` custom field. If no date is selected, the value of `date_value` will be `null`.'
+          type:
+          - object
+          - 'null'
+          properties:
+            date:
+              type: string
+              description: A string representing the date in YYYY-MM-DD format.
+              example: '2024-08-23'
+            date_time:
+              type: string
+              description: A string representing the date in ISO 8601 format. If no time value is selected, the value of `date-time` will be `null`.
+              example: '2024-08-23T22:00:00.000Z'
+        enum_value:
+          allOf:
+          - $ref: '#/components/schemas/EnumOption'
+          - type:
+            - object
+            - 'null'
+            description: '*Conditional*. Only relevant for custom fields of type `enum`. This object is the chosen value of an `enum` custom field.'
+        multi_enum_values:
+          description: '*Conditional*. Only relevant for custom fields of type `multi_enum`. This object is the chosen values of a `multi_enum` custom field.'
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumOption'
+        number_value:
+          description: '*Conditional*. This number is the value of a `number` custom field.'
+          type:
+          - number
+          - 'null'
+          example: 5.2
+        text_value:
+          description: '*Conditional*. This string is the value of a `text` custom field.'
+          type:
+          - string
+          - 'null'
+          example: Some Value
+        display_value:
+          description: A string representation for the value of the custom field. Integrations that don't require the underlying type should use this field to read values. Using this field will future-proof an app against new custom field types.
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          example: blue
+    CustomFieldSettingCompact:
+      description: Custom Fields Settings objects represent the many-to-many join of the Custom Field and Project as well as stores information that is relevant to that particular pairing.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: custom_field_setting
+          x-insert-after: gid
+    CustomFieldSettingResponse:
+      allOf:
+      - $ref: '#/components/schemas/CustomFieldSettingBase'
+      - type: object
+        properties:
+          project:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: '*Deprecated: new integrations should prefer the `parent` field.* The id of the project that this custom field settings refers to.'
+              readOnly: true
+          is_important:
+            description: '`is_important` is used in the Asana web application to determine if this custom field is displayed in the list/grid view of a project or portfolio.'
+            type: boolean
+            readOnly: true
+            example: false
+          parent:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: The parent to which the custom field is applied. This can be a project or portfolio and indicates that the tasks or projects that the parent contains may be given custom field values for this custom field.
+              readOnly: true
+          custom_field:
+            allOf:
+            - $ref: '#/components/schemas/CustomFieldResponse'
+            - type: object
+              description: The custom field that is applied to the `parent`.
+              readOnly: true
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
     ProjectCompact:
       description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
       type: object
@@ -614,24 +784,8 @@ components:
           description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
           type: string
           example: Stuff to buy
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
+    CustomFieldSettingBase:
+      $ref: '#/components/schemas/CustomFieldSettingCompact'
     CustomFieldBase:
       allOf:
       - $ref: '#/components/schemas/CustomFieldCompact'
@@ -841,238 +995,64 @@ components:
             - word_count
             - null
             example: priority
-    CustomFieldResponse:
-      allOf:
-      - $ref: '#/components/schemas/CustomFieldBase'
-      - type: object
-        properties:
-          representation_type:
-            description: This field tells the type of the custom field.
-            type: string
-            example: number
-            readOnly: true
-            enum:
-            - text
-            - enum
-            - multi_enum
-            - number
-            - date
-            - people
-            - formula
-            - custom_id
-          id_prefix:
-            description: This field is the unique custom ID string for the custom field.
-            type:
-            - string
-            - 'null'
-            example: ID
-          is_formula_field:
-            description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
-            type: boolean
-            example: false
-          is_value_read_only:
-            description: '*Conditional*. This flag describes whether a custom field is read only.'
-            type: boolean
-            example: false
-          created_by:
-            allOf:
-            - $ref: '#/components/schemas/UserCompact'
-            - {}
-          people_value:
-            description: '*Conditional*. Only relevant for custom fields of type `people`. This array of [compact user](/reference/users) objects reflects the values of a `people` custom field.'
-            type: array
-            items:
-              $ref: '#/components/schemas/UserCompact'
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+    Error:
       type: object
       properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
+        message:
           type: string
           readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
           type: string
           readOnly: true
-          example: user
-          x-insert-after: gid
-        name:
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
           type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
-    CustomFieldSettingBase:
-      $ref: '#/components/schemas/CustomFieldSettingCompact'
-    CustomFieldSettingCompact:
-      description: Custom Fields Settings objects represent the many-to-many join of the Custom Field and Project as well as stores information that is relevant to that particular pairing.
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
       type: object
       properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: custom_field_setting
-          x-insert-after: gid
-    CustomFieldCompact:
-      description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
-
-
-        Users in Asana can [lock custom fields](https://asana.com/guide/help/premium/custom-fields#gl-lock-fields), which will make them read-only when accessed by other users. Attempting to edit a locked custom field will return HTTP error code `403 Forbidden`.'
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: custom_field
-          x-insert-after: gid
-        name:
-          description: The name of the custom field.
-          type: string
-          example: Status
-        resource_subtype:
-          description: 'The type of the custom field. Must be one of the given values.
-
-            '
-          type: string
-          readOnly: true
-          example: text
-          enum:
-          - text
-          - enum
-          - multi_enum
-          - number
-          - date
-          - people
-        type:
-          description: '*Deprecated: new integrations should prefer the resource_subtype field.* The type of the custom field. Must be one of the given values.
-
-            '
-          type: string
-          readOnly: true
-          enum:
-          - text
-          - enum
-          - multi_enum
-          - number
-          - date
-          - people
-        enum_options:
-          description: '*Conditional*. Only relevant for custom fields of type `enum`. This array specifies the possible values which an `enum` custom field can adopt. To modify the enum options, refer to [working with enum options](/reference/createenumoptionforcustomfield).'
+        errors:
           type: array
           items:
-            $ref: '#/components/schemas/EnumOption'
-        enabled:
-          description: '*Conditional*. Determines if the custom field is enabled or not.'
-          type: boolean
-          readOnly: true
-          example: true
-        representation_type:
-          description: This field tells the type of the custom field.
-          type: string
-          example: number
-          readOnly: true
-          enum:
-          - text
-          - enum
-          - multi_enum
-          - number
-          - date
-          - people
-          - formula
-          - custom_id
-        id_prefix:
-          description: This field is the unique custom ID string for the custom field.
-          type:
-          - string
-          - 'null'
-          example: ID
-        is_formula_field:
-          description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
-          type: boolean
-          example: false
-        date_value:
-          description: '*Conditional*. Only relevant for custom fields of type `date`. This object reflects the chosen date (and optionally, time) value of a `date` custom field. If no date is selected, the value of `date_value` will be `null`.'
-          type:
-          - object
-          - 'null'
-          properties:
-            date:
-              type: string
-              description: A string representing the date in YYYY-MM-DD format.
-              example: '2024-08-23'
-            date_time:
-              type: string
-              description: A string representing the date in ISO 8601 format. If no time value is selected, the value of `date-time` will be `null`.
-              example: '2024-08-23T22:00:00.000Z'
-        enum_value:
-          allOf:
-          - $ref: '#/components/schemas/EnumOption'
-          - type:
-            - object
-            - 'null'
-            description: '*Conditional*. Only relevant for custom fields of type `enum`. This object is the chosen value of an `enum` custom field.'
-        multi_enum_values:
-          description: '*Conditional*. Only relevant for custom fields of type `multi_enum`. This object is the chosen values of a `multi_enum` custom field.'
-          type: array
-          items:
-            $ref: '#/components/schemas/EnumOption'
-        number_value:
-          description: '*Conditional*. This number is the value of a `number` custom field.'
-          type:
-          - number
-          - 'null'
-          example: 5.2
-        text_value:
-          description: '*Conditional*. This string is the value of a `text` custom field.'
-          type:
-          - string
-          - 'null'
-          example: Some Value
-        display_value:
-          description: A string representation for the value of the custom field. Integrations that don't require the underlying type should use this field to read values. Using this field will future-proof an app against new custom field types.
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          example: blue
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+            $ref: '#/components/schemas/Error'
   parameters:
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
     project_path_gid:
       name: project_gid
       in: path
@@ -1082,17 +1062,15 @@ components:
         type: string
       example: '1331'
       x-env-variable: project
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    portfolio_path_gid:
+      name: portfolio_gid
+      in: path
+      description: Globally unique identifier for the portfolio.
+      required: true
       schema:
         type: string
+      example: '12345'
+      x-env-variable: portfolio
     pretty:
       name: opt_pretty
       in: query
@@ -1105,26 +1083,48 @@ components:
         type: boolean
       style: form
       example: true
-    limit:
-      name: limit
+    offset:
+      name: offset
       in: query
-      description: 'Results per page.
+      description: 'Offset token.
 
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    portfolio_path_gid:
-      name: portfolio_gid
-      in: path
-      description: Globally unique identifier for the portfolio.
-      required: true
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
       schema:
         type: string
-      example: '12345'
-      x-env-variable: portfolio
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     personalAccessToken:
       type: http

@@ -517,98 +517,60 @@ paths:
             result = client.time_tracking_entries.delete_time_tracking_entry(time_tracking_entry_gid, opt_pretty=True)'
           name: python-sdk-v3
 components:
-  responses:
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    task_path_gid:
+      name: task_gid
+      in: path
+      required: true
+      description: The task to operate on.
+      schema:
+        type: string
+      example: '321654'
+      x-env-variable: task
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    time_tracking_entry_path_gid:
+      name: time_tracking_entry_gid
+      in: path
+      description: Globally unique identifier for the time tracking entry.
+      required: true
+      schema:
+        type: string
+      example: '917392'
+      x-env-variable: time_tracking_entry
   schemas:
-    TimeTrackingEntryBase:
-      allOf:
-      - $ref: '#/components/schemas/TimeTrackingEntryCompact'
-      - type: object
-        properties:
-          task:
-            $ref: '#/components/schemas/TaskCompact'
-            readOnly: true
-          created_at:
-            description: The time at which this resource was created.
-            type: string
-            format: date-time
-            readOnly: true
-            example: '2012-02-22T02:06:58.147Z'
-    ErrorResponse:
-      description: 'Sadly, sometimes requests to the API are not successful. Failures can
-
-        occur for a wide range of reasons. In all cases, the API should return
-
-        an HTTP Status Code that indicates the nature of the failure,
-
-        with a response body in JSON format containing additional information.
-
-
-
-        In the event of a server error the response body will contain an error
-
-        phrase. These phrases are automatically generated using the
-
-        [node-asana-phrase
-
-        library](https://github.com/Asana/node-asana-phrase) and can be used by
-
-        Asana support to quickly look up the incident that caused the server
-
-        error.'
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
     NextPage:
       type:
       - object
@@ -631,61 +593,9 @@ components:
           readOnly: true
           description: A full uri containing the query parameters to fetch for next_page
           example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    UpdateTimeTrackingEntryRequest:
+    EmptyResponse:
       type: object
-      properties:
-        duration_minutes:
-          description: '*Optional*. Time in minutes tracked by the entry'
-          type: integer
-          example: 12
-        entered_on:
-          description: '*Optional*. The day that this entry is logged on. Defaults to today if no day specified'
-          type: string
-          format: date
-          example: '2023-03-19'
-    TaskCompact:
-      description: The *task* is the basic object around which many operations in Asana are centered.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: task
-          x-insert-after: gid
-        name:
-          description: The name of the task.
-          type: string
-          example: Bug Task
-        resource_subtype:
-          type: string
-          description: 'The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
-
-            The resource_subtype `milestone` represent a single moment in time. This means tasks with this subtype cannot have a start_date.'
-          enum:
-          - default_task
-          - milestone
-          - approval
-          example: default_task
-        created_by:
-          type: object
-          readOnly: true
-          description: '[Opt In](/docs/inputoutput-options). A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.'
-          properties:
-            gid:
-              description: Globally unique identifier of the resource.
-              type: string
-              example: '1111'
-            resource_type:
-              description: The type of resource.
-              type: string
-              example: user
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
     UserCompact:
       description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
       type: object
@@ -746,62 +656,152 @@ components:
         created_by:
           $ref: '#/components/schemas/UserCompact'
           readOnly: true
-    EmptyResponse:
+    TimeTrackingEntryBase:
+      allOf:
+      - $ref: '#/components/schemas/TimeTrackingEntryCompact'
+      - type: object
+        properties:
+          task:
+            $ref: '#/components/schemas/TaskCompact'
+            readOnly: true
+          created_at:
+            description: The time at which this resource was created.
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+    TaskCompact:
+      description: The *task* is the basic object around which many operations in Asana are centered.
       type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-  parameters:
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: task
+          x-insert-after: gid
+        name:
+          description: The name of the task.
+          type: string
+          example: Bug Task
+        resource_subtype:
+          type: string
+          description: 'The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
 
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+            The resource_subtype `milestone` represent a single moment in time. This means tasks with this subtype cannot have a start_date.'
+          enum:
+          - default_task
+          - milestone
+          - approval
+          example: default_task
+        created_by:
+          type: object
+          readOnly: true
+          description: '[Opt In](/docs/inputoutput-options). A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.'
+          properties:
+            gid:
+              description: Globally unique identifier of the resource.
+              type: string
+              example: '1111'
+            resource_type:
+              description: The type of resource.
+              type: string
+              example: user
+    UpdateTimeTrackingEntryRequest:
+      type: object
+      properties:
+        duration_minutes:
+          description: '*Optional*. Time in minutes tracked by the entry'
+          type: integer
+          example: 12
+        entered_on:
+          description: '*Optional*. The day that this entry is logged on. Defaults to today if no day specified'
+          type: string
+          format: date
+          example: '2023-03-19'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
+        occur for a wide range of reasons. In all cases, the API should return
 
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
+        an HTTP Status Code that indicates the nature of the failure,
 
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    task_path_gid:
-      name: task_gid
-      in: path
-      required: true
-      description: The task to operate on.
-      schema:
-        type: string
-      example: '321654'
-      x-env-variable: task
-    time_tracking_entry_path_gid:
-      name: time_tracking_entry_gid
-      in: path
-      description: Globally unique identifier for the time tracking entry.
-      required: true
-      schema:
-        type: string
-      example: '917392'
-      x-env-variable: time_tracking_entry
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     personalAccessToken:
       type: http
