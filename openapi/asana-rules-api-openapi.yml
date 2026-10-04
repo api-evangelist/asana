@@ -159,41 +159,6 @@ paths:
           name: python-sdk-v3
 components:
   schemas:
-    RuleTriggerRequest:
-      type: object
-      properties:
-        resource:
-          description: The ID of the resource. For the duration of the beta, this resource is always a task, and this task must exist in the project in which the rule is created.
-          type: string
-          example: '12345'
-        action_data:
-          type: object
-          additionalProperties: true
-          description: The dynamic keys and values of the request. These fields are intended to be used in the action for the rule associated with this trigger.
-          example:
-            jira_ticket_name: Test
-            jira_ticket_id: '123'
-      required:
-      - resource
-      - action_data
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -229,9 +194,44 @@ components:
           description: Message providing more detail about the result
           type: string
           example: Successfully saved the payload and ran the rule
+    RuleTriggerRequest:
+      type: object
+      properties:
+        resource:
+          description: The ID of the resource. For the duration of the beta, this resource is always a task, and this task must exist in the project in which the rule is created.
+          type: string
+          example: '12345'
+        action_data:
+          type: object
+          additionalProperties: true
+          description: The dynamic keys and values of the request. These fields are intended to be used in the action for the rule associated with this trigger.
+          example:
+            jira_ticket_name: Test
+            jira_ticket_id: '123'
+      required:
+      - resource
+      - action_data
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
   responses:
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
       content:
         application/json:
           schema:
@@ -248,20 +248,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    PaymentRequired:
-      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     BadRequest:
       description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PaymentRequired:
+      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
       content:
         application/json:
           schema:

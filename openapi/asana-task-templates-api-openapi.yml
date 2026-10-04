@@ -409,7 +409,108 @@ paths:
             result = client.task_templates.instantiate_task(task_template_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
           name: python-sdk-v3
 components:
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PaymentRequired:
+      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    task_template_path_gid:
+      name: task_template_gid
+      in: path
+      description: Globally unique identifier for the task template.
+      required: true
+      schema:
+        type: string
+      example: '1331'
+      x-env-variable: task_template
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
   schemas:
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
     TaskTemplateCompact:
       description: A *task template* is an object that allows new tasks to be created with a predefined setup.
       type: object
@@ -430,23 +531,29 @@ components:
           description: Name of the task template.
           type: string
           example: Packing list
-    EnumOption:
-      description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
-
-
-        You can add enum options to a custom field by using the `POST /custom_fields/custom_field_gid/enum_options` endpoint.
-
-
-        **It is not possible to remove or delete an enum option**. Instead, enum options can be disabled by updating the `enabled` field to false with the `PUT /enum_options/enum_option_gid` endpoint. Other attributes can be updated similarly.
-
-
-        On creation of an enum option, `enabled` is always set to `true`, meaning the enum option is a selectable value for the custom field. Setting `enabled=false` is equivalent to “trashing” the enum option in the Asana web app within the “Edit Fields” dialog. The enum option will no longer be selectable but, if the enum option value was previously set within a task, the task will retain the value.
-
-
-        Enum options are an ordered list and by default new enum options are inserted at the end. Ordering in relation to existing enum options can be specified on creation by using `insert_before` or `insert_after` to reference an existing enum option. Only one of `insert_before` and `insert_after` can be provided when creating a new enum option.
-
-
-        An enum options list can be reordered with the `POST /custom_fields/custom_field_gid/enum_options/insert` endpoint.'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    AttachmentCompact:
+      description: An *attachment* object represents any file attached to a task in Asana, whether it’s an uploaded file or one associated via a third-party service such as Dropbox or Google Drive.
       type: object
       properties:
         gid:
@@ -459,20 +566,17 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: enum_option
+          example: attachment
           x-insert-after: gid
         name:
-          description: The name of the enum option.
+          description: The name of the file.
           type: string
-          example: Low
-        enabled:
-          description: Whether or not the enum option is a selectable value for the custom field.
-          type: boolean
-          example: true
-        color:
-          description: The color of the enum option. Defaults to ‘none’.
+          readOnly: true
+          example: Screenshot.png
+        resource_subtype:
+          description: The service hosting the attachment. Valid values are `asana`, `dropbox`, `gdrive`, `onedrive`, `box`, `vimeo`, and `external`.
           type: string
-          example: blue
+          example: dropbox
     ProjectTemplateCompact:
       description: A *project template* is an object that allows new projects to be created with a predefined setup, which may include tasks, sections, Rules, etc. It simplifies the process of running a workflow that involves a similar set of work every time.
       type: object
@@ -493,86 +597,6 @@ components:
           description: Name of the project template.
           type: string
           example: Packing list
-    TaskTemplateInstantiateTaskRequest:
-      type: object
-      properties:
-        name:
-          description: The name of the new task. If not provided, the name of the task template will be used.
-          type: string
-          example: New Task
-    EmptyResponse:
-      type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    JobResponse:
-      $ref: '#/components/schemas/JobBase'
-    TaskTemplateRecipe:
-      allOf:
-      - $ref: '#/components/schemas/TaskTemplateRecipeCompact'
-      - type: object
-        properties:
-          description:
-            description: Description of the task that will be created from this template.
-            type: string
-            example: Please describe the bug you found and how to reproduce it.
-          html_description:
-            description: HTML description of the task that will be created from this template.
-            type: string
-            example: Please describe the bug you found and how to reproduce it.
-          memberships:
-            description: Array of projects that the task created from this template will be added to
-            type: array
-            items:
-              $ref: '#/components/schemas/ProjectCompact'
-          relative_start_on:
-            description: The number of days after the task has been instantiated on which that the task will start
-            type:
-            - integer
-            - 'null'
-            example: 1
-          relative_due_on:
-            description: The number of days after the task has been instantiated on which that the task will be due
-            type:
-            - integer
-            - 'null'
-            example: 2
-          due_time:
-            description: The time of day that the task will be due
-            type:
-            - string
-            - 'null'
-            example: 13:15:00.000Z
-          dependencies:
-            description: Array of task templates that the task created from this template will depend on
-            type: array
-            items:
-              $ref: '#/components/schemas/TaskTemplateRecipeCompact'
-          dependents:
-            description: Array of task templates that will depend on the task created from this template
-            type: array
-            items:
-              $ref: '#/components/schemas/TaskTemplateRecipeCompact'
-          followers:
-            description: Array of users that will be added as followers to the task created from this template
-            type: array
-            items:
-              $ref: '#/components/schemas/UserCompact'
-          attachments:
-            description: Array of attachments that will be added to the task created from this template
-            type: array
-            items:
-              $ref: '#/components/schemas/AttachmentCompact'
-          subtasks:
-            description: Array of subtasks that will be added to the task created from this template
-            type: array
-            items:
-              $ref: '#/components/schemas/TaskTemplateRecipeCompact'
-          custom_fields:
-            description: Array of custom fields that will be added to the task created from this template
-            type: array
-            items:
-              $ref: '#/components/schemas/CustomFieldCompact'
-    JobBase:
-      $ref: '#/components/schemas/JobCompact'
     CustomFieldCompact:
       description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
 
@@ -702,141 +726,6 @@ components:
           - 'null'
           readOnly: true
           example: blue
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: user
-          x-insert-after: gid
-        name:
-          type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
-    TaskTemplateResponse:
-      allOf:
-      - $ref: '#/components/schemas/TaskTemplateBase'
-      - type: object
-        properties:
-          name:
-            description: Name of the task template.
-            type: string
-            example: Bug Report Template
-          project:
-            description: The project that this task template belongs to.
-            allOf:
-            - $ref: '#/components/schemas/ProjectCompact'
-          template:
-            description: The configuration for the task that will be created from this template.
-            allOf:
-            - $ref: '#/components/schemas/TaskTemplateRecipe'
-          created_by:
-            description: The user who created this task template.
-            allOf:
-            - $ref: '#/components/schemas/UserCompact'
-          created_at:
-            description: The time at which this task template was created.
-            type: string
-            format: date-time
-            example: '2019-01-01T00:00:00.000Z'
-    ProjectCompact:
-      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: project
-          x-insert-after: gid
-        name:
-          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
-          type: string
-          example: Stuff to buy
-    AttachmentCompact:
-      description: An *attachment* object represents any file attached to a task in Asana, whether it’s an uploaded file or one associated via a third-party service such as Dropbox or Google Drive.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: attachment
-          x-insert-after: gid
-        name:
-          description: The name of the file.
-          type: string
-          readOnly: true
-          example: Screenshot.png
-        resource_subtype:
-          description: The service hosting the attachment. Valid values are `asana`, `dropbox`, `gdrive`, `onedrive`, `box`, `vimeo`, and `external`.
-          type: string
-          example: dropbox
-    TaskTemplateBase:
-      allOf:
-      - $ref: '#/components/schemas/TaskTemplateCompact'
-    JobCompact:
-      description: A *job* is an object representing a process that handles asynchronous work.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: job
-          x-insert-after: gid
-        resource_subtype:
-          description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
-          type: string
-          readOnly: true
-          example: duplicate_task
-        status:
-          description: 'The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.'
-          type: string
-          enum:
-          - not_started
-          - in_progress
-          - succeeded
-          - failed
-          readOnly: true
-          example: in_progress
-        new_project:
-          $ref: '#/components/schemas/ProjectCompact'
-        new_task:
-          allOf:
-          - $ref: '#/components/schemas/TaskCompact'
-          - type:
-            - object
-            - 'null'
-        new_project_template:
-          $ref: '#/components/schemas/ProjectTemplateCompact'
     TaskCompact:
       description: The *task* is the basic object around which many operations in Asana are centered.
       type: object
@@ -880,39 +769,119 @@ components:
               description: The type of resource.
               type: string
               example: user
-    TaskTemplateRecipeCompact:
+    JobResponse:
+      $ref: '#/components/schemas/JobBase'
+    TaskTemplateInstantiateTaskRequest:
       type: object
       properties:
         name:
-          description: Name of the task that will be created from this template.
+          description: The name of the new task. If not provided, the name of the task template will be used.
           type: string
-          example: Bug Report
-        task_resource_subtype:
-          type: string
-          description: The subtype of the task that will be created from this template.
-          enum:
-          - default_task
-          - milestone_task
-          - approval_task
-          example: default_task
-    Error:
+          example: New Task
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
       type: object
       properties:
-        message:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
           readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
           type: string
           readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          type: string
+          example: Stuff to buy
+    JobCompact:
+      description: A *job* is an object representing a process that handles asynchronous work.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
           readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: job
+          x-insert-after: gid
+        resource_subtype:
+          description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+          type: string
+          readOnly: true
+          example: duplicate_task
+        status:
+          description: 'The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.'
+          type: string
+          enum:
+          - not_started
+          - in_progress
+          - succeeded
+          - failed
+          readOnly: true
+          example: in_progress
+        new_project:
+          $ref: '#/components/schemas/ProjectCompact'
+        new_task:
+          allOf:
+          - $ref: '#/components/schemas/TaskCompact'
+          - type:
+            - object
+            - 'null'
+        new_project_template:
+          $ref: '#/components/schemas/ProjectTemplateCompact'
+    EnumOption:
+      description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
+
+
+        You can add enum options to a custom field by using the `POST /custom_fields/custom_field_gid/enum_options` endpoint.
+
+
+        **It is not possible to remove or delete an enum option**. Instead, enum options can be disabled by updating the `enabled` field to false with the `PUT /enum_options/enum_option_gid` endpoint. Other attributes can be updated similarly.
+
+
+        On creation of an enum option, `enabled` is always set to `true`, meaning the enum option is a selectable value for the custom field. Setting `enabled=false` is equivalent to “trashing” the enum option in the Asana web app within the “Edit Fields” dialog. The enum option will no longer be selectable but, if the enum option value was previously set within a task, the task will retain the value.
+
+
+        Enum options are an ordered list and by default new enum options are inserted at the end. Ordering in relation to existing enum options can be specified on creation by using `insert_before` or `insert_after` to reference an existing enum option. Only one of `insert_before` and `insert_after` can be provided when creating a new enum option.
+
+
+        An enum options list can be reordered with the `POST /custom_fields/custom_field_gid/enum_options/insert` endpoint.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: enum_option
+          x-insert-after: gid
+        name:
+          description: The name of the enum option.
+          type: string
+          example: Low
+        enabled:
+          description: Whether or not the enum option is a selectable value for the custom field.
+          type: boolean
+          example: true
+        color:
+          description: The color of the enum option. Defaults to ‘none’.
+          type: string
+          example: blue
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -941,87 +910,118 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-  parameters:
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    task_template_path_gid:
-      name: task_template_gid
-      in: path
-      description: Globally unique identifier for the task template.
-      required: true
-      schema:
-        type: string
-      example: '1331'
-      x-env-variable: task_template
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
-  responses:
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    PaymentRequired:
-      description: The request was valid, but the queried object or object mutation specified in the request is above your current premium level.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+    TaskTemplateBase:
+      allOf:
+      - $ref: '#/components/schemas/TaskTemplateCompact'
+    JobBase:
+      $ref: '#/components/schemas/JobCompact'
+    TaskTemplateResponse:
+      allOf:
+      - $ref: '#/components/schemas/TaskTemplateBase'
+      - type: object
+        properties:
+          name:
+            description: Name of the task template.
+            type: string
+            example: Bug Report Template
+          project:
+            description: The project that this task template belongs to.
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+          template:
+            description: The configuration for the task that will be created from this template.
+            allOf:
+            - $ref: '#/components/schemas/TaskTemplateRecipe'
+          created_by:
+            description: The user who created this task template.
+            allOf:
+            - $ref: '#/components/schemas/UserCompact'
+          created_at:
+            description: The time at which this task template was created.
+            type: string
+            format: date-time
+            example: '2019-01-01T00:00:00.000Z'
+    TaskTemplateRecipe:
+      allOf:
+      - $ref: '#/components/schemas/TaskTemplateRecipeCompact'
+      - type: object
+        properties:
+          description:
+            description: Description of the task that will be created from this template.
+            type: string
+            example: Please describe the bug you found and how to reproduce it.
+          html_description:
+            description: HTML description of the task that will be created from this template.
+            type: string
+            example: Please describe the bug you found and how to reproduce it.
+          memberships:
+            description: Array of projects that the task created from this template will be added to
+            type: array
+            items:
+              $ref: '#/components/schemas/ProjectCompact'
+          relative_start_on:
+            description: The number of days after the task has been instantiated on which that the task will start
+            type:
+            - integer
+            - 'null'
+            example: 1
+          relative_due_on:
+            description: The number of days after the task has been instantiated on which that the task will be due
+            type:
+            - integer
+            - 'null'
+            example: 2
+          due_time:
+            description: The time of day that the task will be due
+            type:
+            - string
+            - 'null'
+            example: 13:15:00.000Z
+          dependencies:
+            description: Array of task templates that the task created from this template will depend on
+            type: array
+            items:
+              $ref: '#/components/schemas/TaskTemplateRecipeCompact'
+          dependents:
+            description: Array of task templates that will depend on the task created from this template
+            type: array
+            items:
+              $ref: '#/components/schemas/TaskTemplateRecipeCompact'
+          followers:
+            description: Array of users that will be added as followers to the task created from this template
+            type: array
+            items:
+              $ref: '#/components/schemas/UserCompact'
+          attachments:
+            description: Array of attachments that will be added to the task created from this template
+            type: array
+            items:
+              $ref: '#/components/schemas/AttachmentCompact'
+          subtasks:
+            description: Array of subtasks that will be added to the task created from this template
+            type: array
+            items:
+              $ref: '#/components/schemas/TaskTemplateRecipeCompact'
+          custom_fields:
+            description: Array of custom fields that will be added to the task created from this template
+            type: array
+            items:
+              $ref: '#/components/schemas/CustomFieldCompact'
+    TaskTemplateRecipeCompact:
+      type: object
+      properties:
+        name:
+          description: Name of the task that will be created from this template.
+          type: string
+          example: Bug Report
+        task_resource_subtype:
+          type: string
+          description: The subtype of the task that will be created from this template.
+          enum:
+          - default_task
+          - milestone_task
+          - approval_task
+          example: default_task
   securitySchemes:
     personalAccessToken:
       type: http

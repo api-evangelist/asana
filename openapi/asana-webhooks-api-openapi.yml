@@ -764,74 +764,19 @@ paths:
           install: gem install asana
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.webhooks.delete_webhook(webhook_gid: 'webhook_gid', options: {pretty: true})"
 components:
-  parameters:
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
-    webhook_path_gid:
-      name: webhook_gid
-      in: path
-      description: Globally unique identifier for the webhook.
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: webhook
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
   schemas:
-    AsanaNamedResource:
-      description: A generic Asana Resource, containing a globally unique identifier.
+    WebhookRequest:
       type: object
       properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
+        resource:
+          description: A resource ID to subscribe to. Many Asana resources are valid to create webhooks on, but higher-level resources require filters.
           type: string
-          readOnly: true
           example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
+        target:
+          description: The URL to receive the HTTP POST. The full URL will be used to deliver events from this webhook (including parameters) which allows encoding of application-specific state when the webhook is created.
           type: string
-          readOnly: true
-          example: task
-          x-insert-after: gid
-        name:
-          description: The name of the object.
-          type: string
-          example: Bug Task
-    WebhookUpdateRequest:
-      type: object
-      properties:
+          format: uri
+          example: https://example.com/receive-webhook/7654?app_specific_param=app_specific_value
         filters:
           type: array
           description: An array of WebhookFilter objects to specify a whitelist of filters to apply to events from this webhook. If a webhook event passes any of the filters the event will be delivered; otherwise no event will be sent to the receiving server.
@@ -840,58 +785,9 @@ components:
             - $ref: '#/components/schemas/WebhookFilter'
             - description: A set of filters to specify a whitelist for what types of events will be delivered.
             - type: object
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    EmptyResponse:
-      type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    WebhookFilter:
-      type: object
-      description: A WebhookFilter can be passed on creation of a webhook in order to filter the types of actions that trigger delivery of an [event](/reference/events)
-      properties:
-        resource_type:
-          type: string
-          description: The type of the resource which created the event when modified; for example, to filter to changes on regular tasks this field should be set to `task`.
-          example: task
-        resource_subtype:
-          description: The resource subtype of the resource that the filter applies to. This should be set to the same value as is returned on the `resource_subtype` field on the resources themselves.
-          type: string
-          example: milestone
-        action:
-          type: string
-          description: The type of change on the **resource** to pass through the filter. For more information refer to `Event.action` in the [event](/reference/events) schema. This can be one of `changed`, `added`, `removed`, `deleted`, and `undeleted` depending on the nature of what has occurred on the resource.
-          example: changed
-        fields:
-          type: array
-          description: '*Conditional.* A whitelist of fields for events which will pass the filter when the resource is changed. These can be any combination of the fields on the resources themselves. This field is only valid for `action` of type `changed`
-
-            *Note: Subscriptions created on higher-level resources such as a Workspace, Team, or Portfolio do not support fields.*'
-          items:
-            type: string
-          example:
-          - due_at
-          - due_on
-          - dependencies
+      required:
+      - resource
+      - target
     WebhookCompact:
       description: Webhook objects represent the state of an active subscription for a server to be updated with information from Asana. This schema represents the subscription itself, not the objects that are sent to the server. For information on those please refer to the [event](/reference/events) schema.
       type: object
@@ -921,6 +817,107 @@ components:
           format: uri
           readOnly: true
           example: https://example.com/receive-webhook/7654
+    WebhookFilter:
+      type: object
+      description: A WebhookFilter can be passed on creation of a webhook in order to filter the types of actions that trigger delivery of an [event](/reference/events)
+      properties:
+        resource_type:
+          type: string
+          description: The type of the resource which created the event when modified; for example, to filter to changes on regular tasks this field should be set to `task`.
+          example: task
+        resource_subtype:
+          description: The resource subtype of the resource that the filter applies to. This should be set to the same value as is returned on the `resource_subtype` field on the resources themselves.
+          type: string
+          example: milestone
+        action:
+          type: string
+          description: The type of change on the **resource** to pass through the filter. For more information refer to `Event.action` in the [event](/reference/events) schema. This can be one of `changed`, `added`, `removed`, `deleted`, and `undeleted` depending on the nature of what has occurred on the resource.
+          example: changed
+        fields:
+          type: array
+          description: '*Conditional.* A whitelist of fields for events which will pass the filter when the resource is changed. These can be any combination of the fields on the resources themselves. This field is only valid for `action` of type `changed`
+
+            *Note: Subscriptions created on higher-level resources such as a Workspace, Team, or Portfolio do not support fields.*'
+          items:
+            type: string
+          example:
+          - due_at
+          - due_on
+          - dependencies
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    WebhookUpdateRequest:
+      type: object
+      properties:
+        filters:
+          type: array
+          description: An array of WebhookFilter objects to specify a whitelist of filters to apply to events from this webhook. If a webhook event passes any of the filters the event will be delivered; otherwise no event will be sent to the receiving server.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/WebhookFilter'
+            - description: A set of filters to specify a whitelist for what types of events will be delivered.
+            - type: object
+    AsanaNamedResource:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: task
+          x-insert-after: gid
+        name:
+          description: The name of the object.
+          type: string
+          example: Bug Task
     WebhookResponse:
       allOf:
       - $ref: '#/components/schemas/WebhookCompact'
@@ -974,47 +971,6 @@ components:
               - $ref: '#/components/schemas/WebhookFilter'
               - description: A set of filters to specify a whitelist for what types of events will be delivered.
               - type: object
-    WebhookRequest:
-      type: object
-      properties:
-        resource:
-          description: A resource ID to subscribe to. Many Asana resources are valid to create webhooks on, but higher-level resources require filters.
-          type: string
-          example: '12345'
-        target:
-          description: The URL to receive the HTTP POST. The full URL will be used to deliver events from this webhook (including parameters) which allows encoding of application-specific state when the webhook is created.
-          type: string
-          format: uri
-          example: https://example.com/receive-webhook/7654?app_specific_param=app_specific_value
-        filters:
-          type: array
-          description: An array of WebhookFilter objects to specify a whitelist of filters to apply to events from this webhook. If a webhook event passes any of the filters the event will be delivered; otherwise no event will be sent to the receiving server.
-          items:
-            allOf:
-            - $ref: '#/components/schemas/WebhookFilter'
-            - description: A set of filters to specify a whitelist for what types of events will be delivered.
-            - type: object
-      required:
-      - resource
-      - target
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -1056,14 +1012,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
       content:
         application/json:
           schema:
@@ -1074,6 +1030,50 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    webhook_path_gid:
+      name: webhook_gid
+      in: path
+      description: Globally unique identifier for the webhook.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: webhook
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
   securitySchemes:
     personalAccessToken:
       type: http

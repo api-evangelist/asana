@@ -517,18 +517,38 @@ paths:
             result = client.time_tracking_entries.delete_time_tracking_entry(time_tracking_entry_gid, opt_pretty=True)'
           name: python-sdk-v3
 components:
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
     pretty:
       name: opt_pretty
       in: query
@@ -570,7 +590,71 @@ components:
         type: string
       example: '917392'
       x-env-variable: time_tracking_entry
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
   schemas:
+    UpdateTimeTrackingEntryRequest:
+      type: object
+      properties:
+        duration_minutes:
+          description: '*Optional*. Time in minutes tracked by the entry'
+          type: integer
+          example: 12
+        entered_on:
+          description: '*Optional*. The day that this entry is logged on. Defaults to today if no day specified'
+          type: string
+          format: date
+          example: '2023-03-19'
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
     NextPage:
       type:
       - object
@@ -593,83 +677,6 @@ components:
           readOnly: true
           description: A full uri containing the query parameters to fetch for next_page
           example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    EmptyResponse:
-      type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: user
-          x-insert-after: gid
-        name:
-          type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
-    CreateTimeTrackingEntryRequest:
-      type: object
-      properties:
-        duration_minutes:
-          description: Time in minutes tracked by the entry. Must be greater than 0
-          type: integer
-          example: 12
-        entered_on:
-          description: '*Optional*. The day that this entry is logged on. Defaults to today if not specified'
-          type: string
-          format: date
-          example: '2023-03-19'
-    TimeTrackingEntryCompact:
-      description: A generic Asana Resource, containing a globally unique identifier.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: task
-          x-insert-after: gid
-        duration_minutes:
-          description: Time in minutes tracked by the entry.
-          type: integer
-          example: 12
-        entered_on:
-          description: The day that this entry is logged on.
-          type: string
-          format: date
-          example: '2015-03-14'
-        created_by:
-          $ref: '#/components/schemas/UserCompact'
-          readOnly: true
-    TimeTrackingEntryBase:
-      allOf:
-      - $ref: '#/components/schemas/TimeTrackingEntryCompact'
-      - type: object
-        properties:
-          task:
-            $ref: '#/components/schemas/TaskCompact'
-            readOnly: true
-          created_at:
-            description: The time at which this resource was created.
-            type: string
-            format: date-time
-            readOnly: true
-            example: '2012-02-22T02:06:58.147Z'
     TaskCompact:
       description: The *task* is the basic object around which many operations in Asana are centered.
       type: object
@@ -713,36 +720,32 @@ components:
               description: The type of resource.
               type: string
               example: user
-    UpdateTimeTrackingEntryRequest:
+    TimeTrackingEntryBase:
+      allOf:
+      - $ref: '#/components/schemas/TimeTrackingEntryCompact'
+      - type: object
+        properties:
+          task:
+            $ref: '#/components/schemas/TaskCompact'
+            readOnly: true
+          created_at:
+            description: The time at which this resource was created.
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+    CreateTimeTrackingEntryRequest:
       type: object
       properties:
         duration_minutes:
-          description: '*Optional*. Time in minutes tracked by the entry'
+          description: Time in minutes tracked by the entry. Must be greater than 0
           type: integer
           example: 12
         entered_on:
-          description: '*Optional*. The day that this entry is logged on. Defaults to today if no day specified'
+          description: '*Optional*. The day that this entry is logged on. Defaults to today if not specified'
           type: string
           format: date
           example: '2023-03-19'
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -771,37 +774,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-  responses:
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+    TimeTrackingEntryCompact:
+      description: A generic Asana Resource, containing a globally unique identifier.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: task
+          x-insert-after: gid
+        duration_minutes:
+          description: Time in minutes tracked by the entry.
+          type: integer
+          example: 12
+        entered_on:
+          description: The day that this entry is logged on.
+          type: string
+          format: date
+          example: '2015-03-14'
+        created_by:
+          $ref: '#/components/schemas/UserCompact'
+          readOnly: true
   securitySchemes:
     personalAccessToken:
       type: http

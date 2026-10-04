@@ -189,40 +189,6 @@ paths:
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.audit_log_api.get_audit_log_events(workspace_gid: 'workspace_gid', param: \"value\", param: \"value\", options: {pretty: true})"
 components:
   parameters:
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    audit_log_actor_type:
-      name: actor_type
-      in: query
-      description: 'Filter to events with an actor of this type.
-
-        This only needs to be included if querying for actor types without an ID. If `actor_gid` is included, this should be excluded.'
-      required: false
-      schema:
-        type: string
-        enum:
-        - user
-        - asana
-        - asana_support
-        - anonymous
-        - external_administrator
-    audit_log_start_at:
-      name: start_at
-      in: query
-      description: Filter to events created after this time (inclusive).
-      required: false
-      schema:
-        type: string
-        format: date-time
     audit_log_end_at:
       name: end_at
       in: query
@@ -231,15 +197,6 @@ components:
       schema:
         type: string
         format: date-time
-    workspace_path_gid:
-      name: workspace_gid
-      in: path
-      description: Globally unique identifier for the workspace or organization.
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: workspace
     audit_log_event_type:
       name: event_type
       in: query
@@ -256,13 +213,6 @@ components:
       required: false
       schema:
         type: string
-    audit_log_resource_gid:
-      name: resource_gid
-      in: query
-      description: Filter to events with this resource ID.
-      required: false
-      schema:
-        type: string
     offset:
       name: offset
       in: query
@@ -274,7 +224,175 @@ components:
       example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
       schema:
         type: string
+    audit_log_resource_gid:
+      name: resource_gid
+      in: query
+      description: Filter to events with this resource ID.
+      required: false
+      schema:
+        type: string
+    audit_log_start_at:
+      name: start_at
+      in: query
+      description: Filter to events created after this time (inclusive).
+      required: false
+      schema:
+        type: string
+        format: date-time
+    workspace_path_gid:
+      name: workspace_gid
+      in: path
+      description: Globally unique identifier for the workspace or organization.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
+    audit_log_actor_type:
+      name: actor_type
+      in: query
+      description: 'Filter to events with an actor of this type.
+
+        This only needs to be included if querying for actor types without an ID. If `actor_gid` is included, this should be excluded.'
+      required: false
+      schema:
+        type: string
+        enum:
+        - user
+        - asana
+        - asana_support
+        - anonymous
+        - external_administrator
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    AuditLogEventActor:
+      description: The entity that triggered the event. Will typically be a user.
+      type: object
+      properties:
+        actor_type:
+          description: 'The type of actor.
+
+            Can be one of `user`, `asana`, `asana_support`, `anonymous`, or `external_administrator`.'
+          type: string
+          enum:
+          - user
+          - asana
+          - asana_support
+          - anonymous
+          - external_administrator
+          example: user
+        gid:
+          description: Globally unique identifier of the actor, if it is a user.
+          type: string
+          example: '1111'
+        name:
+          description: The name of the actor, if it is a user.
+          type: string
+          example: Greg Sanchez
+        email:
+          description: The email of the actor, if it is a user.
+          type: string
+          example: gregsanchez@example.com
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    AuditLogEventDetails:
+      description: Event specific details. The schema will vary depending on the `event_type`.
+      type: object
+      properties:
+        old_value:
+          type:
+          - string
+          - 'null'
+        new_value:
+          type:
+          - string
+          - 'null'
+        group:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+    AuditLogEventResource:
+      description: The primary object that was affected by this event.
+      type: object
+      properties:
+        resource_type:
+          description: The type of resource.
+          type: string
+          example: task
+        resource_subtype:
+          description: The subtype of resource. Most resources will not have a subtype.
+          type: string
+          example: milestone
+        gid:
+          description: Globally unique identifier of the resource.
+          type: string
+          example: '1111'
+        name:
+          description: The name of the resource.
+          type:
+          - string
+          - 'null'
+          example: Example Task
+        email:
+          description: The email of the resource, if applicable.
+          type: string
     NextPage:
       type:
       - object
@@ -297,6 +415,67 @@ components:
           readOnly: true
           description: A full uri containing the query parameters to fetch for next_page
           example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    AuditLogEvent:
+      description: 'An object representing a single event within an Asana domain.
+
+
+        Every audit log event is comprised of an `event_type`, `actor`, `resource`, and `context`. Some events will include additional metadata about the event under `details`. See our [currently supported list of events](/docs/audit-log-events#supported-audit-log-events) for more details.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the `AuditLogEvent`, as a string.
+          type: string
+          example: '12345'
+          x-insert-after: false
+        created_at:
+          description: The time the event was created.
+          type: string
+          format: date-time
+          example: '2021-01-01T00:00:00.000Z'
+        event_type:
+          description: The type of the event.
+          type: string
+          example: task_deleted
+        event_category:
+          description: The category that this `event_type` belongs to.
+          type: string
+          example: deletion
+        actor:
+          $ref: '#/components/schemas/AuditLogEventActor'
+        resource:
+          $ref: '#/components/schemas/AuditLogEventResource'
+        details:
+          $ref: '#/components/schemas/AuditLogEventDetails'
+        context:
+          $ref: '#/components/schemas/AuditLogEventContext'
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
     AuditLogEventContext:
       description: The context from which this event originated.
       type: object
@@ -342,185 +521,6 @@ components:
           description: The name of the automation rule that initiated the event.
           type: string
           example: When Task is added to this project
-    AuditLogEventDetails:
-      description: Event specific details. The schema will vary depending on the `event_type`.
-      type: object
-      properties:
-        old_value:
-          type:
-          - string
-          - 'null'
-        new_value:
-          type:
-          - string
-          - 'null'
-        group:
-          type: object
-          additionalProperties: true
-      additionalProperties: true
-    AuditLogEvent:
-      description: 'An object representing a single event within an Asana domain.
-
-
-        Every audit log event is comprised of an `event_type`, `actor`, `resource`, and `context`. Some events will include additional metadata about the event under `details`. See our [currently supported list of events](/docs/audit-log-events#supported-audit-log-events) for more details.'
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the `AuditLogEvent`, as a string.
-          type: string
-          example: '12345'
-          x-insert-after: false
-        created_at:
-          description: The time the event was created.
-          type: string
-          format: date-time
-          example: '2021-01-01T00:00:00.000Z'
-        event_type:
-          description: The type of the event.
-          type: string
-          example: task_deleted
-        event_category:
-          description: The category that this `event_type` belongs to.
-          type: string
-          example: deletion
-        actor:
-          $ref: '#/components/schemas/AuditLogEventActor'
-        resource:
-          $ref: '#/components/schemas/AuditLogEventResource'
-        details:
-          $ref: '#/components/schemas/AuditLogEventDetails'
-        context:
-          $ref: '#/components/schemas/AuditLogEventContext'
-    AuditLogEventActor:
-      description: The entity that triggered the event. Will typically be a user.
-      type: object
-      properties:
-        actor_type:
-          description: 'The type of actor.
-
-            Can be one of `user`, `asana`, `asana_support`, `anonymous`, or `external_administrator`.'
-          type: string
-          enum:
-          - user
-          - asana
-          - asana_support
-          - anonymous
-          - external_administrator
-          example: user
-        gid:
-          description: Globally unique identifier of the actor, if it is a user.
-          type: string
-          example: '1111'
-        name:
-          description: The name of the actor, if it is a user.
-          type: string
-          example: Greg Sanchez
-        email:
-          description: The email of the actor, if it is a user.
-          type: string
-          example: gregsanchez@example.com
-    AuditLogEventResource:
-      description: The primary object that was affected by this event.
-      type: object
-      properties:
-        resource_type:
-          description: The type of resource.
-          type: string
-          example: task
-        resource_subtype:
-          description: The subtype of resource. Most resources will not have a subtype.
-          type: string
-          example: milestone
-        gid:
-          description: Globally unique identifier of the resource.
-          type: string
-          example: '1111'
-        name:
-          description: The name of the resource.
-          type:
-          - string
-          - 'null'
-          example: Example Task
-        email:
-          description: The email of the resource, if applicable.
-          type: string
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
-    ErrorResponse:
-      description: 'Sadly, sometimes requests to the API are not successful. Failures can
-
-        occur for a wide range of reasons. In all cases, the API should return
-
-        an HTTP Status Code that indicates the nature of the failure,
-
-        with a response body in JSON format containing additional information.
-
-
-
-        In the event of a server error the response body will contain an error
-
-        phrase. These phrases are automatically generated using the
-
-        [node-asana-phrase
-
-        library](https://github.com/Asana/node-asana-phrase) and can be used by
-
-        Asana support to quickly look up the incident that caused the server
-
-        error.'
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-  responses:
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     personalAccessToken:
       type: http

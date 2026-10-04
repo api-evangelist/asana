@@ -448,104 +448,9 @@ paths:
           install: gem install asana
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.workspace_memberships.get_workspace_memberships_for_workspace(workspace_gid: 'workspace_gid', param: \"value\", param: \"value\", options: {pretty: true})"
 components:
-  parameters:
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    workspace_membership_path_gid:
-      name: workspace_membership_gid
-      in: path
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: workspace_membership
-    workspace_path_gid:
-      name: workspace_gid
-      in: path
-      description: Globally unique identifier for the workspace or organization.
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: workspace
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
-    user_path_gid:
-      name: user_gid
-      in: path
-      description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
-      required: true
-      schema:
-        type: string
-      x-env-variable: user
-      example: me
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
-    user_query_param:
-      name: user
-      in: query
-      description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
-      schema:
-        type: string
-      x-env-variable: user
-      example: me
   schemas:
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    UserTaskListBase:
-      $ref: '#/components/schemas/UserTaskListCompact'
-    UserTaskListResponse:
-      $ref: '#/components/schemas/UserTaskListBase'
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+    UserTaskListCompact:
+      description: A user task list represents the tasks assigned to a particular user. It provides API access to a user’s [My Tasks](https://asana.com/guide/help/fundamentals/my-tasks) view in Asana.
       type: object
       properties:
         gid:
@@ -558,32 +463,26 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: user
+          example: user_task_list
           x-insert-after: gid
         name:
+          description: The name of the user task list.
           type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
-    WorkspaceMembershipCompact:
-      description: This object determines if a user is a member of a workspace.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
+          example: My Tasks in My Workspace
+        owner:
+          description: The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
           readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: workspace_membership
-          x-insert-after: gid
-        user:
-          $ref: '#/components/schemas/UserCompact'
+          allOf:
+          - $ref: '#/components/schemas/UserCompact'
         workspace:
-          $ref: '#/components/schemas/WorkspaceCompact'
+          description: The workspace in which the user task list is located.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/WorkspaceCompact'
+    WorkspaceMembershipBase:
+      $ref: '#/components/schemas/WorkspaceMembershipCompact'
+    UserTaskListResponse:
+      $ref: '#/components/schemas/UserTaskListBase'
     WorkspaceMembershipResponse:
       allOf:
       - $ref: '#/components/schemas/WorkspaceMembershipBase'
@@ -628,8 +527,8 @@ components:
             format: date-time
             readOnly: true
             example: '2012-02-22T02:06:58.147Z'
-    UserTaskListCompact:
-      description: A user task list represents the tasks assigned to a particular user. It provides API access to a user’s [My Tasks](https://asana.com/guide/help/fundamentals/my-tasks) view in Asana.
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
       type: object
       properties:
         gid:
@@ -642,22 +541,30 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: user_task_list
+          example: user
           x-insert-after: gid
         name:
-          description: The name of the user task list.
           type: string
-          example: My Tasks in My Workspace
-        owner:
-          description: The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
           readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/UserCompact'
-        workspace:
-          description: The workspace in which the user task list is located.
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
           readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/WorkspaceCompact'
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
     WorkspaceCompact:
       description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
       type: object
@@ -678,26 +585,50 @@ components:
           description: The name of the workspace.
           type: string
           example: My Company Workspace
-    WorkspaceMembershipBase:
-      $ref: '#/components/schemas/WorkspaceMembershipCompact'
-    Error:
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    UserTaskListBase:
+      $ref: '#/components/schemas/UserTaskListCompact'
+    WorkspaceMembershipCompact:
+      description: This object determines if a user is a member of a workspace.
       type: object
       properties:
-        message:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
           readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
           type: string
           readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
+          example: workspace_membership
+          x-insert-after: gid
+        user:
+          $ref: '#/components/schemas/UserCompact'
+        workspace:
+          $ref: '#/components/schemas/WorkspaceCompact'
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -739,14 +670,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
       content:
         application/json:
           schema:
@@ -757,6 +688,75 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+    user_query_param:
+      name: user
+      in: query
+      description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+      schema:
+        type: string
+      x-env-variable: user
+      example: me
+    workspace_path_gid:
+      name: workspace_gid
+      in: path
+      description: Globally unique identifier for the workspace or organization.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
+    workspace_membership_path_gid:
+      name: workspace_membership_gid
+      in: path
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace_membership
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    user_path_gid:
+      name: user_gid
+      in: path
+      description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+      required: true
+      schema:
+        type: string
+      x-env-variable: user
+      example: me
   securitySchemes:
     personalAccessToken:
       type: http

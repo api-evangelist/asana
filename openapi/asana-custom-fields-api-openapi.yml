@@ -1231,225 +1231,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/UserCompact'
-    EnumOption:
-      description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
-
-
-        You can add enum options to a custom field by using the `POST /custom_fields/custom_field_gid/enum_options` endpoint.
-
-
-        **It is not possible to remove or delete an enum option**. Instead, enum options can be disabled by updating the `enabled` field to false with the `PUT /enum_options/enum_option_gid` endpoint. Other attributes can be updated similarly.
-
-
-        On creation of an enum option, `enabled` is always set to `true`, meaning the enum option is a selectable value for the custom field. Setting `enabled=false` is equivalent to “trashing” the enum option in the Asana web app within the “Edit Fields” dialog. The enum option will no longer be selectable but, if the enum option value was previously set within a task, the task will retain the value.
-
-
-        Enum options are an ordered list and by default new enum options are inserted at the end. Ordering in relation to existing enum options can be specified on creation by using `insert_before` or `insert_after` to reference an existing enum option. Only one of `insert_before` and `insert_after` can be provided when creating a new enum option.
-
-
-        An enum options list can be reordered with the `POST /custom_fields/custom_field_gid/enum_options/insert` endpoint.'
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: enum_option
-          x-insert-after: gid
-        name:
-          description: The name of the enum option.
-          type: string
-          example: Low
-        enabled:
-          description: Whether or not the enum option is a selectable value for the custom field.
-          type: boolean
-          example: true
-        color:
-          description: The color of the enum option. Defaults to ‘none’.
-          type: string
-          example: blue
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    CustomFieldRequest:
-      allOf:
-      - $ref: '#/components/schemas/CustomFieldBase'
-      - type: object
-        required:
-        - workspace
-        properties:
-          workspace:
-            type: string
-            description: '*Create-Only* The workspace to create a custom field in.'
-            example: '1331'
-          owned_by_app:
-            type: boolean
-            description: '*Allow-listed*. Instructs the API that this Custom Field is app-owned. This parameter is allow-listed to specific apps at this point in time. For apps that are not allow-listed, providing this parameter will result in a `403 Forbidden`.'
-          people_value:
-            description: '*Conditional*. Only relevant for custom fields of type `people`. This array of user GIDs reflects the users to be written to a `people` custom field. Note that *write* operations will replace existing users (if any) in the custom field with the users specified in this array.'
-            type: array
-            items:
-              type: string
-              description: The GID of a user.
-            example:
-            - '12345'
-    EmptyResponse:
-      type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    CustomFieldCompact:
-      description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
-
-
-        Users in Asana can [lock custom fields](https://asana.com/guide/help/premium/custom-fields#gl-lock-fields), which will make them read-only when accessed by other users. Attempting to edit a locked custom field will return HTTP error code `403 Forbidden`.'
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: custom_field
-          x-insert-after: gid
-        name:
-          description: The name of the custom field.
-          type: string
-          example: Status
-        resource_subtype:
-          description: 'The type of the custom field. Must be one of the given values.
-
-            '
-          type: string
-          readOnly: true
-          example: text
-          enum:
-          - text
-          - enum
-          - multi_enum
-          - number
-          - date
-          - people
-        type:
-          description: '*Deprecated: new integrations should prefer the resource_subtype field.* The type of the custom field. Must be one of the given values.
-
-            '
-          type: string
-          readOnly: true
-          enum:
-          - text
-          - enum
-          - multi_enum
-          - number
-          - date
-          - people
-        enum_options:
-          description: '*Conditional*. Only relevant for custom fields of type `enum`. This array specifies the possible values which an `enum` custom field can adopt. To modify the enum options, refer to [working with enum options](/reference/createenumoptionforcustomfield).'
-          type: array
-          items:
-            $ref: '#/components/schemas/EnumOption'
-        enabled:
-          description: '*Conditional*. Determines if the custom field is enabled or not.'
-          type: boolean
-          readOnly: true
-          example: true
-        representation_type:
-          description: This field tells the type of the custom field.
-          type: string
-          example: number
-          readOnly: true
-          enum:
-          - text
-          - enum
-          - multi_enum
-          - number
-          - date
-          - people
-          - formula
-          - custom_id
-        id_prefix:
-          description: This field is the unique custom ID string for the custom field.
-          type:
-          - string
-          - 'null'
-          example: ID
-        is_formula_field:
-          description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
-          type: boolean
-          example: false
-        date_value:
-          description: '*Conditional*. Only relevant for custom fields of type `date`. This object reflects the chosen date (and optionally, time) value of a `date` custom field. If no date is selected, the value of `date_value` will be `null`.'
-          type:
-          - object
-          - 'null'
-          properties:
-            date:
-              type: string
-              description: A string representing the date in YYYY-MM-DD format.
-              example: '2024-08-23'
-            date_time:
-              type: string
-              description: A string representing the date in ISO 8601 format. If no time value is selected, the value of `date-time` will be `null`.
-              example: '2024-08-23T22:00:00.000Z'
-        enum_value:
-          allOf:
-          - $ref: '#/components/schemas/EnumOption'
-          - type:
-            - object
-            - 'null'
-            description: '*Conditional*. Only relevant for custom fields of type `enum`. This object is the chosen value of an `enum` custom field.'
-        multi_enum_values:
-          description: '*Conditional*. Only relevant for custom fields of type `multi_enum`. This object is the chosen values of a `multi_enum` custom field.'
-          type: array
-          items:
-            $ref: '#/components/schemas/EnumOption'
-        number_value:
-          description: '*Conditional*. This number is the value of a `number` custom field.'
-          type:
-          - number
-          - 'null'
-          example: 5.2
-        text_value:
-          description: '*Conditional*. This string is the value of a `text` custom field.'
-          type:
-          - string
-          - 'null'
-          example: Some Value
-        display_value:
-          description: A string representation for the value of the custom field. Integrations that don't require the underlying type should use this field to read values. Using this field will future-proof an app against new custom field types.
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          example: blue
     UserCompact:
       description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
       type: object
@@ -1470,19 +1251,6 @@ components:
           type: string
           description: '*Read-only except when same user as requester*. The user’s name.'
           example: Greg Sanchez
-    EnumOptionRequest:
-      allOf:
-      - $ref: '#/components/schemas/EnumOptionBase'
-      - type: object
-        properties:
-          insert_before:
-            type: string
-            description: An existing enum option within this custom field before which the new enum option should be inserted. Cannot be provided together with after_enum_option.
-            example: '12345'
-          insert_after:
-            type: string
-            description: An existing enum option within this custom field after which the new enum option should be inserted. Cannot be provided together with before_enum_option.
-            example: '12345'
     CustomFieldBase:
       allOf:
       - $ref: '#/components/schemas/CustomFieldCompact'
@@ -1692,23 +1460,8 @@ components:
             - word_count
             - null
             example: priority
-    EnumOptionInsertRequest:
-      type: object
-      required:
-      - enum_option
-      properties:
-        enum_option:
-          type: string
-          description: The gid of the enum option to relocate.
-          example: '97285'
-        before_enum_option:
-          type: string
-          description: An existing enum option within this custom field before which the new enum option should be inserted. Cannot be provided together with after_enum_option.
-          example: '12345'
-        after_enum_option:
-          type: string
-          description: An existing enum option within this custom field after which the new enum option should be inserted. Cannot be provided together with before_enum_option.
-          example: '12345'
+    EnumOptionBase:
+      $ref: '#/components/schemas/EnumOption'
     Error:
       type: object
       properties:
@@ -1727,6 +1480,225 @@ components:
           readOnly: true
           description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
           example: 6 sad squid snuggle softly
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
+      properties:
+        offset:
+          type: string
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
+          type: string
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
+          type: string
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    CustomFieldCompact:
+      description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
+
+
+        Users in Asana can [lock custom fields](https://asana.com/guide/help/premium/custom-fields#gl-lock-fields), which will make them read-only when accessed by other users. Attempting to edit a locked custom field will return HTTP error code `403 Forbidden`.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: custom_field
+          x-insert-after: gid
+        name:
+          description: The name of the custom field.
+          type: string
+          example: Status
+        resource_subtype:
+          description: 'The type of the custom field. Must be one of the given values.
+
+            '
+          type: string
+          readOnly: true
+          example: text
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+        type:
+          description: '*Deprecated: new integrations should prefer the resource_subtype field.* The type of the custom field. Must be one of the given values.
+
+            '
+          type: string
+          readOnly: true
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+        enum_options:
+          description: '*Conditional*. Only relevant for custom fields of type `enum`. This array specifies the possible values which an `enum` custom field can adopt. To modify the enum options, refer to [working with enum options](/reference/createenumoptionforcustomfield).'
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumOption'
+        enabled:
+          description: '*Conditional*. Determines if the custom field is enabled or not.'
+          type: boolean
+          readOnly: true
+          example: true
+        representation_type:
+          description: This field tells the type of the custom field.
+          type: string
+          example: number
+          readOnly: true
+          enum:
+          - text
+          - enum
+          - multi_enum
+          - number
+          - date
+          - people
+          - formula
+          - custom_id
+        id_prefix:
+          description: This field is the unique custom ID string for the custom field.
+          type:
+          - string
+          - 'null'
+          example: ID
+        is_formula_field:
+          description: '*Conditional*. This flag describes whether a custom field is a formula custom field.'
+          type: boolean
+          example: false
+        date_value:
+          description: '*Conditional*. Only relevant for custom fields of type `date`. This object reflects the chosen date (and optionally, time) value of a `date` custom field. If no date is selected, the value of `date_value` will be `null`.'
+          type:
+          - object
+          - 'null'
+          properties:
+            date:
+              type: string
+              description: A string representing the date in YYYY-MM-DD format.
+              example: '2024-08-23'
+            date_time:
+              type: string
+              description: A string representing the date in ISO 8601 format. If no time value is selected, the value of `date-time` will be `null`.
+              example: '2024-08-23T22:00:00.000Z'
+        enum_value:
+          allOf:
+          - $ref: '#/components/schemas/EnumOption'
+          - type:
+            - object
+            - 'null'
+            description: '*Conditional*. Only relevant for custom fields of type `enum`. This object is the chosen value of an `enum` custom field.'
+        multi_enum_values:
+          description: '*Conditional*. Only relevant for custom fields of type `multi_enum`. This object is the chosen values of a `multi_enum` custom field.'
+          type: array
+          items:
+            $ref: '#/components/schemas/EnumOption'
+        number_value:
+          description: '*Conditional*. This number is the value of a `number` custom field.'
+          type:
+          - number
+          - 'null'
+          example: 5.2
+        text_value:
+          description: '*Conditional*. This string is the value of a `text` custom field.'
+          type:
+          - string
+          - 'null'
+          example: Some Value
+        display_value:
+          description: A string representation for the value of the custom field. Integrations that don't require the underlying type should use this field to read values. Using this field will future-proof an app against new custom field types.
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          example: blue
+    CustomFieldRequest:
+      allOf:
+      - $ref: '#/components/schemas/CustomFieldBase'
+      - type: object
+        required:
+        - workspace
+        properties:
+          workspace:
+            type: string
+            description: '*Create-Only* The workspace to create a custom field in.'
+            example: '1331'
+          owned_by_app:
+            type: boolean
+            description: '*Allow-listed*. Instructs the API that this Custom Field is app-owned. This parameter is allow-listed to specific apps at this point in time. For apps that are not allow-listed, providing this parameter will result in a `403 Forbidden`.'
+          people_value:
+            description: '*Conditional*. Only relevant for custom fields of type `people`. This array of user GIDs reflects the users to be written to a `people` custom field. Note that *write* operations will replace existing users (if any) in the custom field with the users specified in this array.'
+            type: array
+            items:
+              type: string
+              description: The GID of a user.
+            example:
+            - '12345'
+    EnumOption:
+      description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
+
+
+        You can add enum options to a custom field by using the `POST /custom_fields/custom_field_gid/enum_options` endpoint.
+
+
+        **It is not possible to remove or delete an enum option**. Instead, enum options can be disabled by updating the `enabled` field to false with the `PUT /enum_options/enum_option_gid` endpoint. Other attributes can be updated similarly.
+
+
+        On creation of an enum option, `enabled` is always set to `true`, meaning the enum option is a selectable value for the custom field. Setting `enabled=false` is equivalent to “trashing” the enum option in the Asana web app within the “Edit Fields” dialog. The enum option will no longer be selectable but, if the enum option value was previously set within a task, the task will retain the value.
+
+
+        Enum options are an ordered list and by default new enum options are inserted at the end. Ordering in relation to existing enum options can be specified on creation by using `insert_before` or `insert_after` to reference an existing enum option. Only one of `insert_before` and `insert_after` can be provided when creating a new enum option.
+
+
+        An enum options list can be reordered with the `POST /custom_fields/custom_field_gid/enum_options/insert` endpoint.'
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: enum_option
+          x-insert-after: gid
+        name:
+          description: The name of the enum option.
+          type: string
+          example: Low
+        enabled:
+          description: Whether or not the enum option is a selectable value for the custom field.
+          type: boolean
+          example: true
+        color:
+          description: The color of the enum option. Defaults to ‘none’.
+          type: string
+          example: blue
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -1755,29 +1727,46 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-    EnumOptionBase:
-      $ref: '#/components/schemas/EnumOption'
+    EnumOptionInsertRequest:
+      type: object
+      required:
+      - enum_option
+      properties:
+        enum_option:
+          type: string
+          description: The gid of the enum option to relocate.
+          example: '97285'
+        before_enum_option:
+          type: string
+          description: An existing enum option within this custom field before which the new enum option should be inserted. Cannot be provided together with after_enum_option.
+          example: '12345'
+        after_enum_option:
+          type: string
+          description: An existing enum option within this custom field after which the new enum option should be inserted. Cannot be provided together with before_enum_option.
+          example: '12345'
+    EnumOptionRequest:
+      allOf:
+      - $ref: '#/components/schemas/EnumOptionBase'
+      - type: object
+        properties:
+          insert_before:
+            type: string
+            description: An existing enum option within this custom field before which the new enum option should be inserted. Cannot be provided together with after_enum_option.
+            example: '12345'
+          insert_after:
+            type: string
+            description: An existing enum option within this custom field after which the new enum option should be inserted. Cannot be provided together with before_enum_option.
+            example: '12345'
   parameters:
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    workspace_path_gid:
-      name: workspace_gid
+    custom_field_path_gid:
+      name: custom_field_gid
       in: path
-      description: Globally unique identifier for the workspace or organization.
+      description: Globally unique identifier for the custom field.
       required: true
       schema:
         type: string
       example: '12345'
-      x-env-variable: workspace
+      x-env-variable: custom_field
     pretty:
       name: opt_pretty
       in: query
@@ -1801,15 +1790,26 @@ components:
       example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
       schema:
         type: string
-    custom_field_path_gid:
-      name: custom_field_gid
+    workspace_path_gid:
+      name: workspace_gid
       in: path
-      description: Globally unique identifier for the custom field.
+      description: Globally unique identifier for the workspace or organization.
       required: true
       schema:
         type: string
       example: '12345'
-      x-env-variable: custom_field
+      x-env-variable: workspace
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
   responses:
     Forbidden:
       description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
@@ -1823,14 +1823,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
       content:
         application/json:
           schema:
