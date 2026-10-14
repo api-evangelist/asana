@@ -6,6 +6,7 @@ checked:
 - https://github.com/marketplace?type=apps
 - https://hightouch.com/docs/destinations/asana
 - https://marketplace.atlassian.com/
+- okta/integrations/okta-integration-edges.yml
 marketplace_apps: []
 edges:
 - partner_name: AWS Marketplace
@@ -23,24 +24,6 @@ edges:
   seller_name: Asana
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
-- partner_name: Hightouch
-  partner: hightouch
-  partner_match: aggregator
-  marketplace: coverage
-  channel: partner-built
-  direction: partner-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://hightouch.com/docs/destinations/asana
-  coverage_role:
-  - destination
-  cdp_signals:
-    destination:
-      catalog_entries:
-      - asana
-      status: released
-  detected_by: sweep-cdp.py
-  first_seen: '2026-10-14'
 - partner_name: GitHub Marketplace (apps)
   partner: github
   partner_match: aggregator
@@ -93,4 +76,54 @@ edges:
   publisher_name: Asana
   detected_by: sweep-devtools.py
   detected: '2026-10-14'
+- partner_name: Hightouch
+  partner: hightouch
+  partner_match: aggregator
+  marketplace: coverage
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://hightouch.com/docs/destinations/asana
+  coverage_role:
+  - destination
+  cdp_signals:
+    destination:
+      catalog_entries:
+      - asana
+      status: released
+  detected_by: sweep-cdp.py
+  first_seen: '2026-10-14'
+- partner_name: Okta (own)
+  partner: okta
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.okta.com/integrations/asana/
+  mirror_of: okta/integrations/okta-integration-edges.yml
+  apps:
+  - Asana
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Lifecycle Management
+  badges:
+  - OKTA_VERIFIED
+  features:
+  - CREATE
+  - CROSS_APP_ACCESS
+  - DEACTIVATE
+  - GROUP_LINKING
+  - GROUP_PUSH
+  - IDENTITY_SECURITY_POSTURE_MANAGEMENT
+  - MCP_SERVER
+  - SAML
+  - SECURE_IDENTITY_INTEGRATIONS_FUNDAMENTAL
+  - SWA
+  - UPDATE
+  - WORKFLOWS_CONNECTORS
 source: https://hightouch.com/docs/destinations/asana
