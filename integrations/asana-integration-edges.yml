@@ -2,7 +2,10 @@ generated: '2026-10-13'
 method: searched
 checked:
 - https://aws.amazon.com/marketplace/
+- https://github.com/marketplace?type=actions
+- https://github.com/marketplace?type=apps
 - https://hightouch.com/docs/destinations/asana
+- https://marketplace.atlassian.com/
 marketplace_apps: []
 edges:
 - partner_name: AWS Marketplace
@@ -38,4 +41,56 @@ edges:
       status: released
   detected_by: sweep-cdp.py
   first_seen: '2026-10-14'
+- partner_name: GitHub Marketplace (apps)
+  partner: github
+  partner_match: aggregator
+  type: marketplace
+  marketplace: github-apps
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://github.com/marketplace/asana-app-for-github
+  listing_count: 1
+  apps:
+  - Asana App for GitHub
+  publisher_name: Asana
+  badges:
+  - Verified creator
+  - Verified domain
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
+- partner_name: GitHub Marketplace (actions)
+  partner: github-actions
+  partner_match: aggregator
+  type: marketplace
+  marketplace: github-actions
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://github.com/marketplace/actions/attach-pull-request-to-asana-task
+  listing_count: 2
+  apps:
+  - Attach pull request to Asana task
+  - Add comment to Asana Task
+  publisher_name: Asana
+  badges:
+  - Verified creator
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
+- partner_name: Atlassian Marketplace
+  partner: atlassian
+  partner_match: aggregator
+  type: marketplace
+  marketplace: atlassian
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://marketplace.atlassian.com/vendors/1217411/asana
+  listing_count: 2
+  apps:
+  - Asana for Jira Data Center
+  - Asana for Jira Cloud
+  publisher_name: Asana
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
 source: https://hightouch.com/docs/destinations/asana
