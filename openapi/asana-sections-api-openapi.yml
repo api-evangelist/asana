@@ -776,102 +776,24 @@ paths:
           install: gem install asana
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.sections.insert_section_for_project(project_gid: 'project_gid', field: \"value\", field: \"value\", options: {pretty: true})"
 components:
-  responses:
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    SectionResponse:
-      allOf:
-      - $ref: '#/components/schemas/SectionBase'
-      - type: object
-        properties:
-          created_at:
-            description: The time at which this resource was created.
-            type: string
-            format: date-time
-            readOnly: true
-            example: '2012-02-22T02:06:58.147Z'
-          project:
-            $ref: '#/components/schemas/ProjectCompact'
-          projects:
-            description: '*Deprecated - please use project instead*'
-            type: array
-            readOnly: true
-            items:
-              $ref: '#/components/schemas/ProjectCompact'
-    Error:
+    SectionRequest:
       type: object
       properties:
-        message:
+        name:
+          description: The text to be displayed as the section name. This cannot be an empty string.
           type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
+          example: Next Actions
+        insert_before:
+          description: An existing section within this project before which the added section should be inserted. Cannot be provided together with insert_after.
           type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
+          example: '86420'
+        insert_after:
+          description: An existing section within this project after which the added section should be inserted. Cannot be provided together with insert_before.
           type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
-    EmptyResponse:
-      type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    SectionBase:
-      $ref: '#/components/schemas/SectionCompact'
+          example: '987654'
+      required:
+      - name
     ProjectCompact:
       description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
       type: object
@@ -892,23 +814,26 @@ components:
           description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
           type: string
           example: Stuff to buy
-    ProjectSectionInsertRequest:
+    SectionCompact:
+      description: A *section* is a subdivision of a project that groups tasks together. It can either be a header above a list of tasks in a list view or a column in a board view of a project.
       type: object
       properties:
-        section:
-          description: The section to reorder.
+        gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
-          example: '321654'
-        before_section:
-          description: Insert the given section immediately before the section specified by this parameter.
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
           type: string
-          example: '86420'
-        after_section:
-          description: Insert the given section immediately after the section specified by this parameter.
+          readOnly: true
+          example: section
+          x-insert-after: gid
+        name:
+          description: The name of the section (i.e. the text displayed as the section header).
           type: string
-          example: '987654'
-      required:
-      - section
+          example: Next Actions
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -937,23 +862,47 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-    SectionRequest:
-      type: object
+    NextPage:
+      type:
+      - object
+      - 'null'
+      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
       properties:
-        name:
-          description: The text to be displayed as the section name. This cannot be an empty string.
+        offset:
           type: string
-          example: Next Actions
-        insert_before:
-          description: An existing section within this project before which the added section should be inserted. Cannot be provided together with insert_after.
+          readOnly: true
+          description: Pagination offset for the request.
+          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        path:
           type: string
-          example: '86420'
-        insert_after:
-          description: An existing section within this project after which the added section should be inserted. Cannot be provided together with insert_before.
+          readOnly: true
+          description: A relative path containing the query parameters to fetch for next_page
+          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+        uri:
           type: string
-          example: '987654'
-      required:
-      - name
+          format: uri
+          readOnly: true
+          description: A full uri containing the query parameters to fetch for next_page
+          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    SectionResponse:
+      allOf:
+      - $ref: '#/components/schemas/SectionBase'
+      - type: object
+        properties:
+          created_at:
+            description: The time at which this resource was created.
+            type: string
+            format: date-time
+            readOnly: true
+            example: '2012-02-22T02:06:58.147Z'
+          project:
+            $ref: '#/components/schemas/ProjectCompact'
+          projects:
+            description: '*Deprecated - please use project instead*'
+            type: array
+            readOnly: true
+            items:
+              $ref: '#/components/schemas/ProjectCompact'
     SectionTaskInsertRequest:
       type: object
       properties:
@@ -971,26 +920,77 @@ components:
           example: '987654'
       required:
       - task
-    SectionCompact:
-      description: A *section* is a subdivision of a project that groups tasks together. It can either be a header above a list of tasks in a list view or a column in a board view of a project.
+    SectionBase:
+      $ref: '#/components/schemas/SectionCompact'
+    Error:
       type: object
       properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
+        message:
           type: string
           readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
           type: string
           readOnly: true
-          example: section
-          x-insert-after: gid
-        name:
-          description: The name of the section (i.e. the text displayed as the section header).
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
           type: string
-          example: Next Actions
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    ProjectSectionInsertRequest:
+      type: object
+      properties:
+        section:
+          description: The section to reorder.
+          type: string
+          example: '321654'
+        before_section:
+          description: Insert the given section immediately before the section specified by this parameter.
+          type: string
+          example: '86420'
+        after_section:
+          description: Insert the given section immediately after the section specified by this parameter.
+          type: string
+          example: '987654'
+      required:
+      - section
+  responses:
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
     pretty:
       name: opt_pretty
@@ -1004,15 +1004,6 @@ components:
         type: boolean
       style: form
       example: true
-    section_path_gid:
-      name: section_gid
-      in: path
-      required: true
-      description: The globally unique identifier for the section.
-      schema:
-        type: string
-      example: '321654'
-      x-env-variable: section
     project_path_gid:
       name: project_gid
       in: path
@@ -1033,6 +1024,15 @@ components:
       example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
       schema:
         type: string
+    section_path_gid:
+      name: section_gid
+      in: path
+      required: true
+      description: The globally unique identifier for the section.
+      schema:
+        type: string
+      example: '321654'
+      x-env-variable: section
     limit:
       name: limit
       in: query

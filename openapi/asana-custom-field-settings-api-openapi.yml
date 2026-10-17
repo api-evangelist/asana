@@ -464,22 +464,6 @@ paths:
           code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.custom_field_settings.get_custom_field_settings_for_portfolio(portfolio_gid: 'portfolio_gid', param: \"value\", param: \"value\", options: {pretty: true})"
 components:
   schemas:
-    CustomFieldSettingCompact:
-      description: Custom Fields Settings objects represent the many-to-many join of the Custom Field and Project as well as stores information that is relevant to that particular pairing.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: custom_field_setting
-          x-insert-after: gid
     CustomFieldResponse:
       allOf:
       - $ref: '#/components/schemas/CustomFieldBase'
@@ -522,26 +506,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/UserCompact'
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: user
-          x-insert-after: gid
-        name:
-          type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
     CustomFieldBase:
       allOf:
       - $ref: '#/components/schemas/CustomFieldCompact'
@@ -751,24 +715,82 @@ components:
             - word_count
             - null
             example: priority
-    Error:
+    ProjectCompact:
+      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
       type: object
       properties:
-        message:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
           type: string
           readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
           type: string
           readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
+          example: project
+          x-insert-after: gid
+        name:
+          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
           type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
+          example: Stuff to buy
+    CustomFieldSettingResponse:
+      allOf:
+      - $ref: '#/components/schemas/CustomFieldSettingBase'
+      - type: object
+        properties:
+          project:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: '*Deprecated: new integrations should prefer the `parent` field.* The id of the project that this custom field settings refers to.'
+              readOnly: true
+          is_important:
+            description: '`is_important` is used in the Asana web application to determine if this custom field is displayed in the list/grid view of a project or portfolio.'
+            type: boolean
+            readOnly: true
+            example: false
+          parent:
+            allOf:
+            - $ref: '#/components/schemas/ProjectCompact'
+            - type: object
+              description: The parent to which the custom field is applied. This can be a project or portfolio and indicates that the tasks or projects that the parent contains may be given custom field values for this custom field.
+              readOnly: true
+          custom_field:
+            allOf:
+            - $ref: '#/components/schemas/CustomFieldResponse'
+            - type: object
+              description: The custom field that is applied to the `parent`.
+              readOnly: true
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
     NextPage:
       type:
       - object
@@ -791,6 +813,28 @@ components:
           readOnly: true
           description: A full uri containing the query parameters to fetch for next_page
           example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+    UserCompact:
+      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+      type: object
+      properties:
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: user
+          x-insert-after: gid
+        name:
+          type: string
+          description: '*Read-only except when same user as requester*. The user’s name.'
+          example: Greg Sanchez
+    CustomFieldSettingBase:
+      $ref: '#/components/schemas/CustomFieldSettingCompact'
     CustomFieldCompact:
       description: 'Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [custom fields](/reference/custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
 
@@ -920,54 +964,24 @@ components:
           - 'null'
           readOnly: true
           example: blue
-    CustomFieldSettingResponse:
-      allOf:
-      - $ref: '#/components/schemas/CustomFieldSettingBase'
-      - type: object
-        properties:
-          project:
-            allOf:
-            - $ref: '#/components/schemas/ProjectCompact'
-            - type: object
-              description: '*Deprecated: new integrations should prefer the `parent` field.* The id of the project that this custom field settings refers to.'
-              readOnly: true
-          is_important:
-            description: '`is_important` is used in the Asana web application to determine if this custom field is displayed in the list/grid view of a project or portfolio.'
-            type: boolean
-            readOnly: true
-            example: false
-          parent:
-            allOf:
-            - $ref: '#/components/schemas/ProjectCompact'
-            - type: object
-              description: The parent to which the custom field is applied. This can be a project or portfolio and indicates that the tasks or projects that the parent contains may be given custom field values for this custom field.
-              readOnly: true
-          custom_field:
-            allOf:
-            - $ref: '#/components/schemas/CustomFieldResponse'
-            - type: object
-              description: The custom field that is applied to the `parent`.
-              readOnly: true
-    ProjectCompact:
-      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+    Error:
       type: object
       properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
+        message:
           type: string
           readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
           type: string
           readOnly: true
-          example: project
-          x-insert-after: gid
-        name:
-          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
           type: string
-          example: Stuff to buy
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
     EnumOption:
       description: 'Enum options are the possible values which an enum custom field can adopt. An enum custom field must contain at least 1 enum option but no more than 500.
 
@@ -1011,37 +1025,29 @@ components:
           description: The color of the enum option. Defaults to ‘none’.
           type: string
           example: blue
-    ErrorResponse:
-      description: 'Sadly, sometimes requests to the API are not successful. Failures can
-
-        occur for a wide range of reasons. In all cases, the API should return
-
-        an HTTP Status Code that indicates the nature of the failure,
-
-        with a response body in JSON format containing additional information.
-
-
-
-        In the event of a server error the response body will contain an error
-
-        phrase. These phrases are automatically generated using the
-
-        [node-asana-phrase
-
-        library](https://github.com/Asana/node-asana-phrase) and can be used by
-
-        Asana support to quickly look up the incident that caused the server
-
-        error.'
+    CustomFieldSettingCompact:
+      description: Custom Fields Settings objects represent the many-to-many join of the Custom Field and Project as well as stores information that is relevant to that particular pairing.
       type: object
       properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-    CustomFieldSettingBase:
-      $ref: '#/components/schemas/CustomFieldSettingCompact'
+        gid:
+          description: Globally unique identifier of the resource, as a string.
+          type: string
+          readOnly: true
+          example: '12345'
+          x-insert-after: false
+        resource_type:
+          description: The base type of this resource.
+          type: string
+          readOnly: true
+          example: custom_field_setting
+          x-insert-after: gid
   responses:
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     Forbidden:
       description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
       content:
@@ -1056,12 +1062,6 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
     Unauthorized:
       description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
       content:
         application/json:
           schema:
@@ -1085,6 +1085,15 @@ components:
         type: boolean
       style: form
       example: true
+    portfolio_path_gid:
+      name: portfolio_gid
+      in: path
+      description: Globally unique identifier for the portfolio.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: portfolio
     project_path_gid:
       name: project_gid
       in: path
@@ -1105,15 +1114,6 @@ components:
       example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
       schema:
         type: string
-    portfolio_path_gid:
-      name: portfolio_gid
-      in: path
-      description: Globally unique identifier for the portfolio.
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: portfolio
     limit:
       name: limit
       in: query
