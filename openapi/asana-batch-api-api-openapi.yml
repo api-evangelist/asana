@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
-  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
-  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
+  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/developer-docs/master/defs/asana_oas.yaml).
+  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/developer-docs/master/defs/asana_oas.yaml).
   title: Asana Batch API
   termsOfService: https://asana.com/terms
   contact:
@@ -42,8 +42,7 @@ info:
   - PortfolioCompact
   - ProjectBriefResponse
   - ProjectBriefCompact
-  - ProjectMembershipCompactResponse
-  - ProjectMembershipNormalResponse
+  - ProjectMembershipResponse
   - ProjectMembershipCompact
   - ProjectResponse
   - ProjectCompact
@@ -51,7 +50,6 @@ info:
   - ProjectStatusCompact
   - ProjectTemplateCompact
   - ProjectTemplateResponse
-  - RuleTriggerResponse
   - SectionResponse
   - SectionCompact
   - StatusUpdateResponse
@@ -88,36 +86,80 @@ security:
 - oauth2: []
 tags:
 - name: Batch API
-  description: There are many cases where you want to accomplish a variety of work in the Asana API but want to minimize the number of HTTP requests you make.
+  description: 'There are many cases where you want to accomplish a variety of work in the Asana API but want to minimize the number of HTTP requests you make. For example:
+
+
+    * Modern browsers limit the number of requests that a single web page can
+
+    make at once.
+
+    * Mobile apps will use more battery life to keep the cellular radio on
+
+    when making a series of requests.
+
+    * There is an overhead cost to developing software that can make multiple
+
+    requests in parallel.
+
+    * Some cloud platforms handle parallelism poorly, or disallow it
+
+    entirely.
+
+
+    To make development easier in these use cases, Asana provides a **batch API** that enables developers to perform multiple “actions” by making only a single HTTP request.
+
+
+    #### Making a batch request
+
+
+    To make a batch request, send a `POST` request to `/batch`. Like other `POST` endpoints, the body should contain a `data` envelope. Inside this envelope should be a single `actions` field, containing a list of “action” objects. Each action represents a standard request to an existing endpoint in the Asana API.
+
+
+    **The maximum number of actions allowed in a single batch request is 10**. Making a batch request with no actions in it will result in a `400 Bad Request`.
+
+
+    When the batch API receives the list of actions to execute, it will dispatch those actions to the already-implemented endpoints specified by the `relative_path` and `method` for each action. This happens in parallel, so all actions in the request will be processed simultaneously. There is no guarantee of the execution order for these actions, nor is there a way to use the output of one action as the input of another action (such as creating a task and then commenting on it).
+
+
+    The response to the batch request will contain (within the `data` envelope) a list of result objects, one for each action. The results are guaranteed to be in the same order as the actions in the request (e.g., the first result in the response corresponds to the first action in the request)
+
+
+    The batch API will always attempt to return a `200 Success` response with individual result objects for each individual action in the request. Only in certain cases (such as missing authorization or malformed JSON in the body) will the entire request fail with another status code. Even if every individual action in the request fails, the batch API will still return a `200 Success` response, and each result object in the response will contain the errors encountered with each action.
+
+
+    #### Rate limiting
+
+
+    The batch API fully respects all of our rate limiting. This means that a batch request counts against *both* the standard rate limiter and the concurrent request limiter as though you had made a separate HTTP request for every individual action. For example, a batch request with five actions counts as five separate requests in the standard rate limiter, and counts as five concurrent requests in the concurrent request limiter. The batch request itself incurs no cost.
+
+
+    If any of the actions in a batch request would exceed any of the enforced limits, the *entire* request will fail with a `429 Too Many Requests` error. This is to prevent the unpredictability of which actions might succeed if not all of them could succeed.
+
+
+    #### Restrictions
+
+
+    Not every endpoint can be accessed through the batch API. Specifically, the following actions cannot be taken and will result in a `400 Bad Request` for that action:
+
+
+    * Uploading attachments
+
+    * Creating, getting, or deleting organization exports
+
+    * Any SCIM operations
+
+    * Nested calls to the batch API'
 paths:
   /batch:
     parameters:
     - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/fields'
     post:
-      summary: Asana Submit parallel requests
+      summary: Submit parallel requests
       description: Make multiple requests in parallel to Asana's API.
       tags:
       - Batch API
       operationId: createBatchRequest
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - body
-        - headers
-        - status_code
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - body
-            - headers
-            - status_code
-        style: form
-        explode: false
       requestBody:
         description: The requests to batch together via the Batch API.
         required: true
@@ -150,47 +192,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<JsonElement> result = client.batchapi.createBatchRequest()\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet batchApiApiInstance = new Asana.BatchAPIApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The requests to batch together via the Batch API.\nlet opts = { \n    'opt_fields': \"body,headers,status_code\"\n};\nbatchApiApiInstance.createBatchRequest(body, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.batchapi.createBatchRequest({field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nbatch_api_api_instance = asana.BatchAPIApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The requests to batch together via the Batch API.\nopts = {\n    'opt_fields': \"body,headers,status_code\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Submit parallel requests\n    api_response = batch_api_api_instance.create_batch_request(body, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling BatchAPIApi->create_batch_request: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.batch_api.create_batch_request({''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->batchapi->createBatchRequest(array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.batch_api.create_batch_request(field: \"value\", field: \"value\", options: {pretty: true})"
 components:
   schemas:
     Error:
@@ -211,6 +212,36 @@ components:
           readOnly: true
           description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
           example: 6 sad squid snuggle softly
+    BatchRequest:
+      description: A request object for use in a batch request.
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchRequestAction'
+    BatchResponse:
+      description: A response object returned from a batch request.
+      type: object
+      properties:
+        status_code:
+          description: The HTTP status code that the invoked endpoint returned.
+          type: integer
+          example: 200
+        headers:
+          description: A map of HTTP headers specific to this result. This is primarily used for returning a `Location` header to accompany a `201 Created` result.  The parent HTTP response will contain all common headers.
+          type: object
+          example:
+            location: /tasks/1234
+        body:
+          description: The JSON body that the invoked endpoint returned.
+          type: object
+          example:
+            data:
+              gid: '1967'
+              completed: false
+              name: Hello, world!
+              notes: How are you today?
     BatchRequestAction:
       description: An action object for use in a batch request.
       type: object
@@ -267,36 +298,6 @@ components:
       required:
       - relative_path
       - method
-    BatchRequest:
-      description: A request object for use in a batch request.
-      type: object
-      properties:
-        actions:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchRequestAction'
-    BatchResponse:
-      description: A response object returned from a batch request.
-      type: object
-      properties:
-        status_code:
-          description: The HTTP status code that the invoked endpoint returned.
-          type: integer
-          example: 200
-        headers:
-          description: A map of HTTP headers specific to this result. This is primarily used for returning a `Location` header to accompany a `201 Created` result.  The parent HTTP response will contain all common headers.
-          type: object
-          example:
-            location: /tasks/1234
-        body:
-          description: The JSON body that the invoked endpoint returned.
-          type: object
-          example:
-            data:
-              gid: '1967'
-              completed: false
-              name: Hello, world!
-              notes: How are you today?
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -325,38 +326,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-  responses:
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    fields:
+      name: opt_fields
+      in: query
+      description: 'Defines fields to return.
+
+        Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below.
+
+        The id of included objects will always be returned, regardless of the field options.'
+      example:
+      - followers
+      - assignee
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: false
     pretty:
       name: opt_pretty
       in: query
@@ -369,6 +357,37 @@ components:
         type: boolean
       style: form
       example: true
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -389,19 +408,5 @@ components:
             openid: Provides access to OpenID Connect ID tokens and the OpenID Connect user info endpoint.
             email: Provides access to the user’s email through the OpenID Connect user info endpoint.
             profile: Provides access to the user’s name and profile photo through the OpenID Connect user info endpoint.
-            attachments:write: Create and modify access to attachments
-            goals:read: View access to goals
-            tasks:read: View access to tasks
-            tasks:write: Create and modify access to tasks
-            tasks:delete: Delete access to tasks
-            portfolios:read: View access to portfolios
-            project_templates:read: View access to project templates
-            projects:delete: Delete access to projects
-            projects:read: View access to projects
-            projects:write: Create and modify access to projects
-            users:read: View access to users
-            teams:read: View access to teams
-            stories:read: View access to stories
-            workspaces:read: View access to workspaces
 x-readme:
   proxy-enabled: false

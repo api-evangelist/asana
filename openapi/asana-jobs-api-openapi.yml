@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
-  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
-  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
+  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/developer-docs/master/defs/asana_oas.yaml).
+  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/developer-docs/master/defs/asana_oas.yaml).
   title: Asana Jobs API
   termsOfService: https://asana.com/terms
   contact:
@@ -42,8 +42,7 @@ info:
   - PortfolioCompact
   - ProjectBriefResponse
   - ProjectBriefCompact
-  - ProjectMembershipCompactResponse
-  - ProjectMembershipNormalResponse
+  - ProjectMembershipResponse
   - ProjectMembershipCompact
   - ProjectResponse
   - ProjectCompact
@@ -51,7 +50,6 @@ info:
   - ProjectStatusCompact
   - ProjectTemplateCompact
   - ProjectTemplateResponse
-  - RuleTriggerResponse
   - SectionResponse
   - SectionCompact
   - StatusUpdateResponse
@@ -88,55 +86,25 @@ security:
 - oauth2: []
 tags:
 - name: Jobs
-  description: Jobs represent processes that handle asynchronous work.
+  description: 'Jobs represent processes that handle asynchronous work. A job created when an endpoint requests an action that will be handled asynchronously, such as project or task duplication.
+
+
+    Only the creator of the duplication process can access the duplication status of the new object.
+
+
+    *Note*: With any work that is handled asynchronously (e.g., project instantation from a template, duplicating a task or project, etc.), the *intermittent states* of newly-created objects may not be consistent. That is, object properties may return different values each time when polled until the job `status` has returned a `succeeded` value.'
 paths:
   /jobs/{job_gid}:
     parameters:
     - $ref: '#/components/parameters/job_path_gid'
     - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/fields'
     get:
-      summary: Asana Get a job by id
+      summary: Get a job by id
       description: Returns the full record for a job.
       tags:
       - Jobs
       operationId: getJob
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - new_project
-        - new_project.name
-        - new_project_template
-        - new_project_template.name
-        - new_task
-        - new_task.created_by
-        - new_task.name
-        - new_task.resource_subtype
-        - new_task_template
-        - new_task_template.name
-        - resource_subtype
-        - status
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - new_project
-            - new_project.name
-            - new_project_template
-            - new_project_template.name
-            - new_task
-            - new_task.created_by
-            - new_task.name
-            - new_task.resource_subtype
-            - new_task_template
-            - new_task_template.name
-            - resource_subtype
-            - status
-        style: form
-        explode: false
       responses:
         200:
           description: Successfully retrieved Job.
@@ -157,79 +125,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJob result = client.jobs.getJob(jobGid)\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet jobsApiInstance = new Asana.JobsApi();\nlet job_gid = \"12345\"; // String | Globally unique identifier for the job.\nlet opts = { \n    'opt_fields': \"new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,resource_subtype,status\"\n};\njobsApiInstance.getJob(job_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.jobs.getJob(jobGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\njobs_api_instance = asana.JobsApi(api_client)\njob_gid = \"12345\" # str | Globally unique identifier for the job.\nopts = {\n    'opt_fields': \"new_project,new_project.name,new_project_template,new_project_template.name,new_task,new_task.created_by,new_task.name,new_task.resource_subtype,resource_subtype,status\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a job by id\n    api_response = jobs_api_instance.get_job(job_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling JobsApi->get_job: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.jobs.get_job(job_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->jobs->getJob($job_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.jobs.get_job(job_gid: 'job_gid', param: \"value\", param: \"value\", options: {pretty: true})"
 components:
-  responses:
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
     Error:
       type: object
@@ -249,30 +145,31 @@ components:
           readOnly: true
           description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
           example: 6 sad squid snuggle softly
-    JobResponse:
-      $ref: '#/components/schemas/JobBase'
-    ProjectTemplateCompact:
-      description: A *project template* is an object that allows new projects to be created with a predefined setup, which may include tasks, sections, Rules, etc. It simplifies the process of running a workflow that involves a similar set of work every time.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: project_template
-          x-insert-after: gid
-        name:
-          description: Name of the project template.
-          type: string
-          example: Packing list
     TaskCompact:
-      description: The *task* is the basic object around which many operations in Asana are centered.
+      allOf:
+      - $ref: '#/components/schemas/AsanaResource'
+      - type: object
+        description: The *task* is the basic object around which many operations in Asana are centered.
+        x-docs-overrides:
+          properties.resource_type.example: task
+        properties:
+          name:
+            description: The name of the task.
+            type: string
+            example: Bug Task
+          resource_subtype:
+            type: string
+            description: 'The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+
+              The resource_subtype `milestone` represent a single moment in time. This means tasks with this subtype cannot have a start_date.'
+            enum:
+            - default_task
+            - milestone
+            - section
+            - approval
+            example: default_task
+    AsanaResource:
+      description: A generic Asana Resource, containing a globally unique identifier.
       type: object
       properties:
         gid:
@@ -287,96 +184,63 @@ components:
           readOnly: true
           example: task
           x-insert-after: gid
-        name:
-          description: The name of the task.
-          type: string
-          example: Bug Task
-        resource_subtype:
-          type: string
-          description: 'The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
-
-            The resource_subtype `milestone` represent a single moment in time. This means tasks with this subtype cannot have a start_date.'
-          enum:
-          - default_task
-          - milestone
-          - approval
-          example: default_task
-        created_by:
-          type: object
-          readOnly: true
-          description: '[Opt In](/docs/inputoutput-options). A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.'
-          properties:
-            gid:
-              description: Globally unique identifier of the resource.
-              type: string
-              example: '1111'
-            resource_type:
-              description: The type of resource.
-              type: string
-              example: user
-    ProjectCompact:
-      description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: project
-          x-insert-after: gid
-        name:
-          description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
-          type: string
-          example: Stuff to buy
     JobBase:
       $ref: '#/components/schemas/JobCompact'
+    ProjectCompact:
+      allOf:
+      - $ref: '#/components/schemas/AsanaResource'
+      - type: object
+        description: A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
+        x-docs-overrides:
+          properties.resource_type.example: project
+        properties:
+          name:
+            description: Name of the project. This is generally a short sentence fragment that fits on a line in the UI for maximum readability. However, it can be longer.
+            type: string
+            example: Stuff to buy
+    JobResponse:
+      $ref: '#/components/schemas/JobBase'
     JobCompact:
-      description: A *job* is an object representing a process that handles asynchronous work.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: job
-          x-insert-after: gid
-        resource_subtype:
-          description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
-          type: string
-          readOnly: true
-          example: duplicate_task
-        status:
-          description: 'The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.'
-          type: string
-          enum:
-          - not_started
-          - in_progress
-          - succeeded
-          - failed
-          readOnly: true
-          example: in_progress
-        new_project:
-          $ref: '#/components/schemas/ProjectCompact'
-        new_task:
-          allOf:
-          - $ref: '#/components/schemas/TaskCompact'
-          - type:
-            - object
-            - 'null'
-        new_project_template:
-          $ref: '#/components/schemas/ProjectTemplateCompact'
+      allOf:
+      - $ref: '#/components/schemas/AsanaResource'
+      - type: object
+        description: A *job* is an object representing a process that handles asynchronous work.
+        x-docs-overrides:
+          properties.resource_type.example: job
+        properties:
+          resource_subtype:
+            description: The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
+            type: string
+            readOnly: true
+            example: duplicate_task
+          status:
+            description: 'The current status of this job. The value is one of: `not_started`, `in_progress`, `succeeded`, or `failed`.'
+            type: string
+            enum:
+            - not_started
+            - in_progress
+            - succeeded
+            - failed
+            readOnly: true
+            example: in_progress
+          new_project:
+            $ref: '#/components/schemas/ProjectCompact'
+          new_task:
+            $ref: '#/components/schemas/TaskCompact'
+          new_project_template:
+            $ref: '#/components/schemas/ProjectTemplateCompact'
+    ProjectTemplateCompact:
+      allOf:
+      - $ref: '#/components/schemas/AsanaResource'
+      - type: object
+        description: A *project template* is an object that allows new projects to be created with a predefined setup, which may include tasks, sections, Rules, etc. It simplifies the process of running a workflow that involves a similar set of work every time.
+        x-docs-overrides:
+          properties.resource_type.example: project_template
+        properties:
+          name:
+            description: Name of the project template.
+            type: string
+            example: Packing list
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -406,6 +270,15 @@ components:
           items:
             $ref: '#/components/schemas/Error'
   parameters:
+    job_path_gid:
+      name: job_gid
+      in: path
+      description: Globally unique identifier for the job.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: job
     pretty:
       name: opt_pretty
       in: query
@@ -418,15 +291,55 @@ components:
         type: boolean
       style: form
       example: true
-    job_path_gid:
-      name: job_gid
-      in: path
-      description: Globally unique identifier for the job.
-      required: true
+    fields:
+      name: opt_fields
+      in: query
+      description: 'Defines fields to return.
+
+        Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below.
+
+        The id of included objects will always be returned, regardless of the field options.'
+      example:
+      - followers
+      - assignee
+      required: false
       schema:
-        type: string
-      example: '12345'
-      x-env-variable: job
+        type: array
+        items:
+          type: string
+      style: form
+      explode: false
+  responses:
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -447,19 +360,5 @@ components:
             openid: Provides access to OpenID Connect ID tokens and the OpenID Connect user info endpoint.
             email: Provides access to the user’s email through the OpenID Connect user info endpoint.
             profile: Provides access to the user’s name and profile photo through the OpenID Connect user info endpoint.
-            attachments:write: Create and modify access to attachments
-            goals:read: View access to goals
-            tasks:read: View access to tasks
-            tasks:write: Create and modify access to tasks
-            tasks:delete: Delete access to tasks
-            portfolios:read: View access to portfolios
-            project_templates:read: View access to project templates
-            projects:delete: Delete access to projects
-            projects:read: View access to projects
-            projects:write: Create and modify access to projects
-            users:read: View access to users
-            teams:read: View access to teams
-            stories:read: View access to stories
-            workspaces:read: View access to workspaces
 x-readme:
   proxy-enabled: false

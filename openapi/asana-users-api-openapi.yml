@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
-  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
-  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
+  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/developer-docs/master/defs/asana_oas.yaml).
+  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/developer-docs/master/defs/asana_oas.yaml).
   title: Asana Users API
   termsOfService: https://asana.com/terms
   contact:
@@ -42,8 +42,7 @@ info:
   - PortfolioCompact
   - ProjectBriefResponse
   - ProjectBriefCompact
-  - ProjectMembershipCompactResponse
-  - ProjectMembershipNormalResponse
+  - ProjectMembershipResponse
   - ProjectMembershipCompact
   - ProjectResponse
   - ProjectCompact
@@ -51,7 +50,6 @@ info:
   - ProjectStatusCompact
   - ProjectTemplateCompact
   - ProjectTemplateResponse
-  - RuleTriggerResponse
   - SectionResponse
   - SectionCompact
   - StatusUpdateResponse
@@ -108,57 +106,17 @@ paths:
         type: string
       example: '15627'
     - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/fields'
     - $ref: '#/components/parameters/limit'
     - $ref: '#/components/parameters/offset'
     get:
-      summary: Asana Get multiple users
+      summary: Get multiple users
       description: 'Returns the user records for all users in all workspaces and organizations accessible to the authenticated user. Accepts an optional workspace ID parameter.
 
         Results are sorted by user ID.'
       tags:
       - Users
       operationId: getUsers
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - email
-        - name
-        - offset
-        - path
-        - photo
-        - photo.image_1024x1024
-        - photo.image_128x128
-        - photo.image_21x21
-        - photo.image_27x27
-        - photo.image_36x36
-        - photo.image_60x60
-        - uri
-        - workspaces
-        - workspaces.name
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - email
-            - name
-            - offset
-            - path
-            - photo
-            - photo.image_1024x1024
-            - photo.image_128x128
-            - photo.image_21x21
-            - photo.image_27x27
-            - photo.image_36x36
-            - photo.image_60x60
-            - uri
-            - workspaces
-            - workspaces.name
-        style: form
-        explode: false
       responses:
         200:
           description: Successfully retrieved the requested user records.
@@ -171,8 +129,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/UserCompact'
-                  next_page:
-                    $ref: '#/components/schemas/NextPage'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -183,95 +139,17 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      security:
-      - oauth2:
-        - users:read
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<User> result = client.users.getUsers(team, workspace)\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet usersApiInstance = new Asana.UsersApi();\nlet opts = { \n    'workspace': \"1331\", \n    'team': \"15627\", \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"email,name,offset,path,photo,photo.image_1024x1024,photo.image_128x128,photo.image_21x21,photo.image_27x27,photo.image_36x36,photo.image_60x60,uri,workspaces,workspaces.name\"\n};\nusersApiInstance.getUsers(opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.users.getUsers({param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nusers_api_instance = asana.UsersApi(api_client)\nopts = {\n    'workspace': \"1331\", # str | The workspace or organization ID to filter users on.\n    'team': \"15627\", # str | The team ID to filter users on.\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"email,name,offset,path,photo,photo.image_1024x1024,photo.image_128x128,photo.image_21x21,photo.image_27x27,photo.image_36x36,photo.image_60x60,uri,workspaces,workspaces.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get multiple users\n    api_response = users_api_instance.get_users(opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling UsersApi->get_users: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.users.get_users({''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->users->getUsers(array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.users.get_users(param: \"value\", param: \"value\", options: {pretty: true})"
   /users/{user_gid}:
     parameters:
     - $ref: '#/components/parameters/user_path_gid'
     - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/fields'
     get:
-      summary: Asana Get a user
+      summary: Get a user
       description: Returns the full user record for the single user with the provided ID.
       tags:
       - Users
       operationId: getUser
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - email
-        - name
-        - photo
-        - photo.image_1024x1024
-        - photo.image_128x128
-        - photo.image_21x21
-        - photo.image_27x27
-        - photo.image_36x36
-        - photo.image_60x60
-        - workspaces
-        - workspaces.name
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - email
-            - name
-            - photo
-            - photo.image_1024x1024
-            - photo.image_128x128
-            - photo.image_21x21
-            - photo.image_27x27
-            - photo.image_36x36
-            - photo.image_60x60
-            - workspaces
-            - workspaces.name
-        style: form
-        explode: false
       responses:
         200:
           description: Returns the user specified.
@@ -292,56 +170,11 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      security:
-      - oauth2:
-        - users:read
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nUser result = client.users.getUser(userGid)\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet usersApiInstance = new Asana.UsersApi();\nlet user_gid = \"me\"; // String | A string identifying a user. This can either be the string \\\"me\\\", an email, or the gid of a user.\nlet opts = { \n    'opt_fields': \"email,name,photo,photo.image_1024x1024,photo.image_128x128,photo.image_21x21,photo.image_27x27,photo.image_36x36,photo.image_60x60,workspaces,workspaces.name\"\n};\nusersApiInstance.getUser(user_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.users.getUser(userGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nusers_api_instance = asana.UsersApi(api_client)\nuser_gid = \"me\" # str | A string identifying a user. This can either be the string \\\"me\\\", an email, or the gid of a user.\nopts = {\n    'opt_fields': \"email,name,photo,photo.image_1024x1024,photo.image_128x128,photo.image_21x21,photo.image_27x27,photo.image_36x36,photo.image_60x60,workspaces,workspaces.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a user\n    api_response = users_api_instance.get_user(user_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling UsersApi->get_user: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.users.get_user(user_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->users->getUser($user_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.users.get_user(user_gid: 'user_gid', param: \"value\", param: \"value\", options: {pretty: true})"
   /users/{user_gid}/favorites:
     parameters:
     - $ref: '#/components/parameters/user_path_gid'
     - $ref: '#/components/parameters/pretty'
-    - $ref: '#/components/parameters/limit'
-    - $ref: '#/components/parameters/offset'
+    - $ref: '#/components/parameters/fields'
     - name: resource_type
       in: query
       required: true
@@ -364,34 +197,13 @@ paths:
         type: string
       example: '1234'
     get:
-      summary: Asana Get a user's favorites
+      summary: Get a user's favorites
       description: 'Returns all of a user''s favorites in the given workspace, of the given type.
 
         Results are given in order (The same order as Asana''s sidebar).'
       tags:
       - Users
       operationId: getFavoritesForUser
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - name
-        - offset
-        - path
-        - uri
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - name
-            - offset
-            - path
-            - uri
-        style: form
-        explode: false
       responses:
         200:
           description: Returns the specified user's favorites.
@@ -404,8 +216,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/AsanaNamedResource'
-                  next_page:
-                    $ref: '#/components/schemas/NextPage'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -416,98 +226,20 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      security:
-      - oauth2:
-        - users:read
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<JsonElement> result = client.users.getFavoritesForUser(userGid, workspace, resourceType)\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet usersApiInstance = new Asana.UsersApi();\nlet user_gid = \"me\"; // String | A string identifying a user. This can either be the string \\\"me\\\", an email, or the gid of a user.\nlet resource_type = \"project\"; // String | The resource type of favorites to be returned.\nlet workspace = \"1234\"; // String | The workspace in which to get favorites.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"name,offset,path,uri\"\n};\nusersApiInstance.getFavoritesForUser(user_gid, resource_type, workspace, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.users.getFavoritesForUser(userGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nusers_api_instance = asana.UsersApi(api_client)\nuser_gid = \"me\" # str | A string identifying a user. This can either be the string \\\"me\\\", an email, or the gid of a user.\nresource_type = \"project\" # str | The resource type of favorites to be returned.\nworkspace = \"1234\" # str | The workspace in which to get favorites.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"name,offset,path,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a user's favorites\n    api_response = users_api_instance.get_favorites_for_user(user_gid, resource_type, workspace, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling UsersApi->get_favorites_for_user: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.users.get_favorites_for_user(user_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->users->getFavoritesForUser($user_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.users.get_favorites_for_user(user_gid: 'user_gid', resource_type: '&#x27;resource_type_example&#x27;', workspace: '&#x27;workspace_example&#x27;', param: \"value\", param: \"value\", options: {pretty: true})"
   /teams/{team_gid}/users:
     parameters:
     - $ref: '#/components/parameters/team_path_gid'
     - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/fields'
     - $ref: '#/components/parameters/offset'
     get:
-      summary: Asana Get users in a team
+      summary: Get users in a team
       description: 'Returns the compact records for all users that are members of the team.
 
         Results are sorted alphabetically and limited to 2000. For more results use the `/users` endpoint.'
       tags:
       - Users
       operationId: getUsersForTeam
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - email
-        - name
-        - photo
-        - photo.image_1024x1024
-        - photo.image_128x128
-        - photo.image_21x21
-        - photo.image_27x27
-        - photo.image_36x36
-        - photo.image_60x60
-        - workspaces
-        - workspaces.name
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - email
-            - name
-            - photo
-            - photo.image_1024x1024
-            - photo.image_128x128
-            - photo.image_21x21
-            - photo.image_27x27
-            - photo.image_36x36
-            - photo.image_60x60
-            - workspaces
-            - workspaces.name
-        style: form
-        explode: false
       responses:
         200:
           description: Returns the user records for all the members of the team, including guests and limited access users
@@ -530,98 +262,20 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      security:
-      - oauth2:
-        - users:read
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<User> result = client.users.getUsersForTeam(teamGid)\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet usersApiInstance = new Asana.UsersApi();\nlet team_gid = \"159874\"; // String | Globally unique identifier for the team.\nlet opts = { \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"email,name,photo,photo.image_1024x1024,photo.image_128x128,photo.image_21x21,photo.image_27x27,photo.image_36x36,photo.image_60x60,workspaces,workspaces.name\"\n};\nusersApiInstance.getUsersForTeam(team_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.users.getUsersForTeam(teamGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nusers_api_instance = asana.UsersApi(api_client)\nteam_gid = \"159874\" # str | Globally unique identifier for the team.\nopts = {\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"email,name,photo,photo.image_1024x1024,photo.image_128x128,photo.image_21x21,photo.image_27x27,photo.image_36x36,photo.image_60x60,workspaces,workspaces.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get users in a team\n    api_response = users_api_instance.get_users_for_team(team_gid, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling UsersApi->get_users_for_team: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.users.get_users_for_team(team_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->users->getUsersForTeam($team_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.users.get_users_for_team(team_gid: 'team_gid', param: \"value\", param: \"value\", options: {pretty: true})"
   /workspaces/{workspace_gid}/users:
     parameters:
     - $ref: '#/components/parameters/workspace_path_gid'
     - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/fields'
     - $ref: '#/components/parameters/offset'
     get:
-      summary: Asana Get users in a workspace or organization
+      summary: Get users in a workspace or organization
       description: 'Returns the compact records for all users in the specified workspace or organization.
 
         Results are sorted alphabetically and limited to 2000. For more results use the `/users` endpoint.'
       tags:
       - Users
       operationId: getUsersForWorkspace
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - email
-        - name
-        - photo
-        - photo.image_1024x1024
-        - photo.image_128x128
-        - photo.image_21x21
-        - photo.image_27x27
-        - photo.image_36x36
-        - photo.image_60x60
-        - workspaces
-        - workspaces.name
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - email
-            - name
-            - photo
-            - photo.image_1024x1024
-            - photo.image_128x128
-            - photo.image_21x21
-            - photo.image_27x27
-            - photo.image_36x36
-            - photo.image_60x60
-            - workspaces
-            - workspaces.name
-        style: form
-        explode: false
       responses:
         200:
           description: Return the users in the specified workspace or org.
@@ -644,50 +298,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      security:
-      - oauth2:
-        - users:read
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<User> result = client.users.getUsersForWorkspace(workspaceGid)\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet usersApiInstance = new Asana.UsersApi();\nlet workspace_gid = \"12345\"; // String | Globally unique identifier for the workspace or organization.\nlet opts = { \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'opt_fields': \"email,name,photo,photo.image_1024x1024,photo.image_128x128,photo.image_21x21,photo.image_27x27,photo.image_36x36,photo.image_60x60,workspaces,workspaces.name\"\n};\nusersApiInstance.getUsersForWorkspace(workspace_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.users.getUsersForWorkspace(workspaceGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nusers_api_instance = asana.UsersApi(api_client)\nworkspace_gid = \"12345\" # str | Globally unique identifier for the workspace or organization.\nopts = {\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'opt_fields': \"email,name,photo,photo.image_1024x1024,photo.image_128x128,photo.image_21x21,photo.image_27x27,photo.image_36x36,photo.image_60x60,workspaces,workspaces.name\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get users in a workspace or organization\n    api_response = users_api_instance.get_users_for_workspace(workspace_gid, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling UsersApi->get_users_for_workspace: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.users.get_users_for_workspace(workspace_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->users->getUsersForWorkspace($workspace_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.users.get_users_for_workspace(workspace_gid: 'workspace_gid', param: \"value\", param: \"value\", options: {pretty: true})"
 components:
   responses:
     InternalServerError:
@@ -702,14 +312,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
       content:
         application/json:
           schema:
@@ -721,6 +331,60 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+    user_path_gid:
+      name: user_gid
+      in: path
+      description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
+      required: true
+      schema:
+        type: string
+      x-env-variable: user
+      example: me
+    team_path_gid:
+      name: team_gid
+      in: path
+      description: Globally unique identifier for the team.
+      required: true
+      schema:
+        type: string
+      example: '159874'
+      x-env-variable: team
+    fields:
+      name: opt_fields
+      in: query
+      description: 'Defines fields to return.
+
+        Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below.
+
+        The id of included objects will always be returned, regardless of the field options.'
+      example:
+      - followers
+      - assignee
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: false
+    workspace_path_gid:
+      name: workspace_gid
+      in: path
+      description: Globally unique identifier for the workspace or organization.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: workspace
     pretty:
       name: opt_pretty
       in: query
@@ -733,33 +397,6 @@ components:
         type: boolean
       style: form
       example: true
-    team_path_gid:
-      name: team_gid
-      in: path
-      description: Globally unique identifier for the team.
-      required: true
-      schema:
-        type: string
-      example: '159874'
-      x-env-variable: team
-    workspace_path_gid:
-      name: workspace_gid
-      in: path
-      description: Globally unique identifier for the workspace or organization.
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: workspace
-    user_path_gid:
-      name: user_gid
-      in: path
-      description: A string identifying a user. This can either be the string "me", an email, or the gid of a user.
-      required: true
-      schema:
-        type: string
-      x-env-variable: user
-      example: me
     offset:
       name: offset
       in: query
@@ -767,50 +404,52 @@ components:
 
         An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
 
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
+        ''Note: You can only pass in an offset that was returned to you via a previously paginated request.'''
       example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
       schema:
         type: string
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
   schemas:
-    ErrorResponse:
-      description: 'Sadly, sometimes requests to the API are not successful. Failures can
-
-        occur for a wide range of reasons. In all cases, the API should return
-
-        an HTTP Status Code that indicates the nature of the failure,
-
-        with a response body in JSON format containing additional information.
-
-
-
-        In the event of a server error the response body will contain an error
-
-        phrase. These phrases are automatically generated using the
-
-        [node-asana-phrase
-
-        library](https://github.com/Asana/node-asana-phrase) and can be used by
-
-        Asana support to quickly look up the incident that caused the server
-
-        error.'
+    Error:
       type: object
       properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    UserBase:
+      $ref: '#/components/schemas/UserCompact'
+    UserCompact:
+      allOf:
+      - $ref: '#/components/schemas/AsanaResource'
+      - type: object
+        description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
+        x-docs-overrides:
+          properties.resource_type.example: user
+        properties:
+          name:
+            type: string
+            description: '*Read-only except when same user as requester*. The user’s name.'
+            example: Greg Sanchez
+    AsanaNamedResource:
+      allOf:
+      - $ref: '#/components/schemas/AsanaResource'
+      - type: object
+        properties:
+          name:
+            description: The name of the object.
+            type: string
+            example: Bug Task
     UserBaseResponse:
       allOf:
       - $ref: '#/components/schemas/UserBase'
@@ -854,69 +493,32 @@ components:
               image_60x60: https://...
               image_128x128: https://...
               image_1024x1024: https://...
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    UserCompact:
-      description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: user
-          x-insert-after: gid
-        name:
-          type: string
-          description: '*Read-only except when same user as requester*. The user’s name.'
-          example: Greg Sanchez
+    UserResponse:
+      allOf:
+      - $ref: '#/components/schemas/UserBaseResponse'
+      - type: object
+        properties:
+          workspaces:
+            description: 'Workspaces and organizations this user may access.
+
+              Note\: The API will only return workspaces and organizations that also contain the authenticated user.'
+            readOnly: true
+            type: array
+            items:
+              $ref: '#/components/schemas/WorkspaceCompact'
     WorkspaceCompact:
-      description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: workspace
-          x-insert-after: gid
-        name:
-          description: The name of the workspace.
-          type: string
-          example: My Company Workspace
-    AsanaNamedResource:
+      allOf:
+      - $ref: '#/components/schemas/AsanaResource'
+      - type: object
+        description: A *workspace* is the highest-level organizational unit in Asana. All projects and tasks have an associated workspace.
+        x-docs-overrides:
+          properties.resource_type.example: workspace
+        properties:
+          name:
+            description: The name of the workspace.
+            type: string
+            example: My Company Workspace
+    AsanaResource:
       description: A generic Asana Resource, containing a globally unique identifier.
       type: object
       properties:
@@ -932,43 +534,34 @@ components:
           readOnly: true
           example: task
           x-insert-after: gid
-        name:
-          description: The name of the object.
-          type: string
-          example: Bug Task
-    Error:
+    ErrorResponse:
+      description: 'Sadly, sometimes requests to the API are not successful. Failures can
+
+        occur for a wide range of reasons. In all cases, the API should return
+
+        an HTTP Status Code that indicates the nature of the failure,
+
+        with a response body in JSON format containing additional information.
+
+
+
+        In the event of a server error the response body will contain an error
+
+        phrase. These phrases are automatically generated using the
+
+        [node-asana-phrase
+
+        library](https://github.com/Asana/node-asana-phrase) and can be used by
+
+        Asana support to quickly look up the incident that caused the server
+
+        error.'
       type: object
       properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
-    UserResponse:
-      allOf:
-      - $ref: '#/components/schemas/UserBaseResponse'
-      - type: object
-        properties:
-          workspaces:
-            description: 'Workspaces and organizations this user may access.
-
-              Note\: The API will only return workspaces and organizations that also contain the authenticated user.'
-            readOnly: true
-            type: array
-            items:
-              $ref: '#/components/schemas/WorkspaceCompact'
-    UserBase:
-      $ref: '#/components/schemas/UserCompact'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -989,19 +582,5 @@ components:
             openid: Provides access to OpenID Connect ID tokens and the OpenID Connect user info endpoint.
             email: Provides access to the user’s email through the OpenID Connect user info endpoint.
             profile: Provides access to the user’s name and profile photo through the OpenID Connect user info endpoint.
-            attachments:write: Create and modify access to attachments
-            goals:read: View access to goals
-            tasks:read: View access to tasks
-            tasks:write: Create and modify access to tasks
-            tasks:delete: Delete access to tasks
-            portfolios:read: View access to portfolios
-            project_templates:read: View access to project templates
-            projects:delete: Delete access to projects
-            projects:read: View access to projects
-            projects:write: Create and modify access to projects
-            users:read: View access to users
-            teams:read: View access to teams
-            stories:read: View access to stories
-            workspaces:read: View access to workspaces
 x-readme:
   proxy-enabled: false

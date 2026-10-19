@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
-  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
-  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/openapi/master/defs/asana_oas.yaml).
+  description: This is the interface for interacting with the Asana Platform. Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/developer-docs/master/defs/asana_oas.yaml).
+  x-public-description: This is the interface for interacting with the [Asana Platform](https://developers.asana.com). Our API reference is generated from our [OpenAPI spec] (https://raw.githubusercontent.com/Asana/developer-docs/master/defs/asana_oas.yaml).
   title: Asana Webhooks API
   termsOfService: https://asana.com/terms
   contact:
@@ -42,8 +42,7 @@ info:
   - PortfolioCompact
   - ProjectBriefResponse
   - ProjectBriefCompact
-  - ProjectMembershipCompactResponse
-  - ProjectMembershipNormalResponse
+  - ProjectMembershipResponse
   - ProjectMembershipCompact
   - ProjectResponse
   - ProjectCompact
@@ -51,7 +50,6 @@ info:
   - ProjectStatusCompact
   - ProjectTemplateCompact
   - ProjectTemplateResponse
-  - RuleTriggerResponse
   - SectionResponse
   - SectionCompact
   - StatusUpdateResponse
@@ -96,8 +94,9 @@ paths:
   /webhooks:
     parameters:
     - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/fields'
     get:
-      summary: Asana Get multiple webhooks
+      summary: Get multiple webhooks
       description: Get the compact representation of all webhooks your app has registered for the authenticated user in the given workspace.
       tags:
       - Webhooks
@@ -118,54 +117,6 @@ paths:
         schema:
           type: string
         example: '51648'
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - active
-        - created_at
-        - delivery_retry_count
-        - failure_deletion_timestamp
-        - filters
-        - filters.action
-        - filters.fields
-        - filters.resource_subtype
-        - last_failure_at
-        - last_failure_content
-        - last_success_at
-        - next_attempt_after
-        - offset
-        - path
-        - resource
-        - resource.name
-        - target
-        - uri
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - active
-            - created_at
-            - delivery_retry_count
-            - failure_deletion_timestamp
-            - filters
-            - filters.action
-            - filters.fields
-            - filters.resource_subtype
-            - last_failure_at
-            - last_failure_content
-            - last_success_at
-            - next_attempt_after
-            - offset
-            - path
-            - resource
-            - resource.name
-            - target
-            - uri
-        style: form
-        explode: false
       responses:
         200:
           description: Successfully retrieved the requested webhooks.
@@ -178,8 +129,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/WebhookResponse'
-                  next_page:
-                    $ref: '#/components/schemas/NextPage'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -190,49 +139,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nList<Webhook> result = client.webhooks.getWebhooks(resource, workspace)\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet webhooksApiInstance = new Asana.WebhooksApi();\nlet workspace = \"1331\"; // String | The workspace to query for webhooks in.\nlet opts = { \n    'limit': 50, \n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", \n    'resource': \"51648\", \n    'opt_fields': \"active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,offset,path,resource,resource.name,target,uri\"\n};\nwebhooksApiInstance.getWebhooks(workspace, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.webhooks.getWebhooks({param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nwebhooks_api_instance = asana.WebhooksApi(api_client)\nworkspace = \"1331\" # str | The workspace to query for webhooks in.\nopts = {\n    'limit': 50, # int | Results per page. The number of objects to return per page. The value must be between 1 and 100.\n    'offset': \"eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9\", # str | Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. *Note: You can only pass in an offset that was returned to you via a previously paginated request.*\n    'resource': \"51648\", # str | Only return webhooks for the given resource.\n    'opt_fields': \"active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,offset,path,resource,resource.name,target,uri\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get multiple webhooks\n    api_response = webhooks_api_instance.get_webhooks(workspace, opts)\n    for data in api_response:\n        pprint(data)\nexcept ApiException as e:\n    print(\"Exception when calling WebhooksApi->get_webhooks: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.webhooks.get_webhooks({''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->webhooks->getWebhooks(array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.webhooks.get_webhooks(workspace: '&#x27;workspace_example&#x27;', param: \"value\", param: \"value\", options: {pretty: true})"
     post:
-      summary: Asana Establish a webhook
+      summary: Establish a webhook
       description: 'Establishing a webhook is a two-part process. First, a simple HTTP POST
 
         request initiates the creation similar to creating any other resource.
@@ -264,7 +172,7 @@ paths:
         (in other words, have a server that can handle requests asynchronously).
 
 
-        Invalid hostnames like localhost will receive a 403 Forbidden status code.
+        Invalid hostnames like localhost will recieve a 403 Forbidden status code.
 
 
         ```
@@ -334,9 +242,7 @@ paths:
 
         "last_failure_content": null
 
-        },
-
-        "X-Hook-Secret": "b537207f20cbfa02357cf448134da559e8bd39d61597dcd5631b8012eae53e81"
+        }
 
         }
 
@@ -344,49 +250,6 @@ paths:
       tags:
       - Webhooks
       operationId: createWebhook
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - active
-        - created_at
-        - delivery_retry_count
-        - failure_deletion_timestamp
-        - filters
-        - filters.action
-        - filters.fields
-        - filters.resource_subtype
-        - last_failure_at
-        - last_failure_content
-        - last_success_at
-        - next_attempt_after
-        - resource
-        - resource.name
-        - target
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - active
-            - created_at
-            - delivery_retry_count
-            - failure_deletion_timestamp
-            - filters
-            - filters.action
-            - filters.fields
-            - filters.resource_subtype
-            - last_failure_at
-            - last_failure_content
-            - last_success_at
-            - next_attempt_after
-            - resource
-            - resource.name
-            - target
-        style: form
-        explode: false
       requestBody:
         description: The webhook workspace and target.
         required: true
@@ -407,10 +270,6 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/WebhookResponse'
-                  X-Hook-Secret:
-                    type: string
-                    description: The secret to be used to verify future webhook event signatures.
-                    example: b537207f20cbfa02357cf448134da559e8bd39d61597dcd5631b8012eae53e81
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -421,100 +280,17 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nWebhook result = client.webhooks.createWebhook()\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet webhooksApiInstance = new Asana.WebhooksApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The webhook workspace and target.\nlet opts = { \n    'opt_fields': \"active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target\"\n};\nwebhooksApiInstance.createWebhook(body, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.webhooks.createWebhook({field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nwebhooks_api_instance = asana.WebhooksApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The webhook workspace and target.\nopts = {\n    'opt_fields': \"active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Establish a webhook\n    api_response = webhooks_api_instance.create_webhook(body, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling WebhooksApi->create_webhook: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.webhooks.create_webhook({''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->webhooks->createWebhook(array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.webhooks.create_webhook(field: \"value\", field: \"value\", options: {pretty: true})"
   /webhooks/{webhook_gid}:
     parameters:
     - $ref: '#/components/parameters/webhook_path_gid'
     - $ref: '#/components/parameters/pretty'
+    - $ref: '#/components/parameters/fields'
     get:
-      summary: Asana Get a webhook
+      summary: Get a webhook
       description: Returns the full record for the given webhook.
       tags:
       - Webhooks
       operationId: getWebhook
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - active
-        - created_at
-        - delivery_retry_count
-        - failure_deletion_timestamp
-        - filters
-        - filters.action
-        - filters.fields
-        - filters.resource_subtype
-        - last_failure_at
-        - last_failure_content
-        - last_success_at
-        - next_attempt_after
-        - resource
-        - resource.name
-        - target
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - active
-            - created_at
-            - delivery_retry_count
-            - failure_deletion_timestamp
-            - filters
-            - filters.action
-            - filters.fields
-            - filters.resource_subtype
-            - last_failure_at
-            - last_failure_content
-            - last_success_at
-            - next_attempt_after
-            - resource
-            - resource.name
-            - target
-        style: form
-        explode: false
       responses:
         200:
           description: Successfully retrieved the requested webhook.
@@ -535,96 +311,12 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nWebhook result = client.webhooks.getWebhook(webhookGid)\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet webhooksApiInstance = new Asana.WebhooksApi();\nlet webhook_gid = \"12345\"; // String | Globally unique identifier for the webhook.\nlet opts = { \n    'opt_fields': \"active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target\"\n};\nwebhooksApiInstance.getWebhook(webhook_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.webhooks.getWebhook(webhookGid, {param: \"value\", param: \"value\", opt_pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nwebhooks_api_instance = asana.WebhooksApi(api_client)\nwebhook_gid = \"12345\" # str | Globally unique identifier for the webhook.\nopts = {\n    'opt_fields': \"active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Get a webhook\n    api_response = webhooks_api_instance.get_webhook(webhook_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling WebhooksApi->get_webhook: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.webhooks.get_webhook(webhook_gid, {''param'': ''value'', ''param'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->webhooks->getWebhook($webhook_gid, array(''param'' => ''value'', ''param'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.webhooks.get_webhook(webhook_gid: 'webhook_gid', param: \"value\", param: \"value\", options: {pretty: true})"
     put:
-      summary: Asana Update a webhook
+      summary: Update a webhook
       description: An existing webhook's filters can be updated by making a PUT request on the URL for that webhook. Note that the webhook's previous `filters` array will be completely overwritten by the `filters` sent in the PUT request.
       tags:
       - Webhooks
       operationId: updateWebhook
-      parameters:
-      - name: opt_fields
-        in: query
-        description: This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.
-        required: false
-        example:
-        - active
-        - created_at
-        - delivery_retry_count
-        - failure_deletion_timestamp
-        - filters
-        - filters.action
-        - filters.fields
-        - filters.resource_subtype
-        - last_failure_at
-        - last_failure_content
-        - last_success_at
-        - next_attempt_after
-        - resource
-        - resource.name
-        - target
-        schema:
-          type: array
-          items:
-            type: string
-            enum:
-            - active
-            - created_at
-            - delivery_retry_count
-            - failure_deletion_timestamp
-            - filters
-            - filters.action
-            - filters.fields
-            - filters.resource_subtype
-            - last_failure_at
-            - last_failure_content
-            - last_success_at
-            - next_attempt_after
-            - resource
-            - resource.name
-            - target
-        style: form
-        explode: false
       requestBody:
         description: The updated filters for the webhook.
         required: true
@@ -655,49 +347,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nWebhook result = client.webhooks.updateWebhook(webhookGid)\n    .data(\"field\", \"value\")\n    .data(\"field\", \"value\")\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet webhooksApiInstance = new Asana.WebhooksApi();\nlet body = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}}; // Object | The updated filters for the webhook.\nlet webhook_gid = \"12345\"; // String | Globally unique identifier for the webhook.\nlet opts = { \n    'opt_fields': \"active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target\"\n};\nwebhooksApiInstance.updateWebhook(body, webhook_gid, opts).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.webhooks.updateWebhook(webhookGid, {field: \"value\", field: \"value\", pretty: true})\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nwebhooks_api_instance = asana.WebhooksApi(api_client)\nbody = {\"data\": {\"<PARAM_1>\": \"<VALUE_1>\", \"<PARAM_2>\": \"<VALUE_2>\",}} # dict | The updated filters for the webhook.\nwebhook_gid = \"12345\" # str | Globally unique identifier for the webhook.\nopts = {\n    'opt_fields': \"active,created_at,delivery_retry_count,failure_deletion_timestamp,filters,filters.action,filters.fields,filters.resource_subtype,last_failure_at,last_failure_content,last_success_at,next_attempt_after,resource,resource.name,target\", # list[str] | This endpoint returns a compact resource, which excludes some properties by default. To include those optional properties, set this query parameter to a comma-separated list of the properties you wish to include.\n}\n\ntry:\n    # Update a webhook\n    api_response = webhooks_api_instance.update_webhook(body, webhook_gid, opts)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling WebhooksApi->update_webhook: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.webhooks.update_webhook(webhook_gid, {''field'': ''value'', ''field'': ''value''}, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->webhooks->updateWebhook($webhook_gid, array(''field'' => ''value'', ''field'' => ''value''), array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.webhooks.update_webhook(webhook_gid: 'webhook_gid', field: \"value\", field: \"value\", options: {pretty: true})"
     delete:
-      summary: Asana Delete a webhook
+      summary: Delete a webhook
       description: This method *permanently* removes a webhook. Note that it may be possible to receive a request that was already in flight after deleting the webhook, but no further requests will be issued.
       tags:
       - Webhooks
@@ -722,49 +373,195 @@ paths:
           $ref: '#/components/responses/NotFound'
         500:
           $ref: '#/components/responses/InternalServerError'
-      x-readme:
-        code-samples:
-        - language: java
-          install: <dependency><groupId>com.asana</groupId><artifactId>asana</artifactId><version>1.0.0</version></dependency>
-          code: "import com.asana.Client;\n\nClient client = Client.accessToken(\"PERSONAL_ACCESS_TOKEN\");\n\nJsonElement result = client.webhooks.deleteWebhook(webhookGid)\n    .option(\"pretty\", true)\n    .execute();"
-        - language: node
-          install: npm install asana
-          code: "const Asana = require('asana');\n\nlet client = Asana.ApiClient.instance;\nlet token = client.authentications['token'];\ntoken.accessToken = '<YOUR_ACCESS_TOKEN>';\n\nlet webhooksApiInstance = new Asana.WebhooksApi();\nlet webhook_gid = \"12345\"; // String | Globally unique identifier for the webhook.\n\nwebhooksApiInstance.deleteWebhook(webhook_gid).then((result) => {\n    console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));\n}, (error) => {\n    console.error(error.response.body);\n});"
-          name: node-sdk-v3
-        - language: node
-          install: npm install asana@1.0.5
-          code: "const asana = require('asana');\n\nconst client = asana.Client.create().useAccessToken('PERSONAL_ACCESS_TOKEN');\n\nclient.webhooks.deleteWebhook(webhookGid)\n    .then((result) => {\n        console.log(result);\n    });"
-          name: node-sdk-v1
-        - language: python
-          install: pip install asana
-          code: "import asana\nfrom asana.rest import ApiException\nfrom pprint import pprint\n\nconfiguration = asana.Configuration()\nconfiguration.access_token = '<YOUR_ACCESS_TOKEN>'\napi_client = asana.ApiClient(configuration)\n\n# create an instance of the API class\nwebhooks_api_instance = asana.WebhooksApi(api_client)\nwebhook_gid = \"12345\" # str | Globally unique identifier for the webhook.\n\n\ntry:\n    # Delete a webhook\n    api_response = webhooks_api_instance.delete_webhook(webhook_gid)\n    pprint(api_response)\nexcept ApiException as e:\n    print(\"Exception when calling WebhooksApi->delete_webhook: %s\\n\" % e)"
-          name: python-sdk-v5
-        - language: python
-          install: pip install asana==3.2.3
-          code: 'import asana
-
-
-            client = asana.Client.access_token(''PERSONAL_ACCESS_TOKEN'')
-
-
-            result = client.webhooks.delete_webhook(webhook_gid, opt_pretty=True)'
-          name: python-sdk-v3
-        - language: php
-          install: composer require asana/asana
-          code: '<?php
-
-            require ''vendor/autoload.php'';
-
-
-            $client = Asana\Client::accessToken(''PERSONAL_ACCESS_TOKEN'');
-
-
-            $result = $client->webhooks->deleteWebhook($webhook_gid, array(''opt_pretty'' => ''true''))'
-        - language: ruby
-          install: gem install asana
-          code: "require 'asana'\n\nclient = Asana::Client.new do |c|\n    c.authentication :access_token, 'PERSONAL_ACCESS_TOKEN'\nend\n\nresult = client.webhooks.delete_webhook(webhook_gid: 'webhook_gid', options: {pretty: true})"
 components:
+  parameters:
+    webhook_path_gid:
+      name: webhook_gid
+      in: path
+      description: Globally unique identifier for the webhook.
+      required: true
+      schema:
+        type: string
+      example: '12345'
+      x-env-variable: webhook
+    limit:
+      name: limit
+      in: query
+      description: 'Results per page.
+
+        The number of objects to return per page. The value must be between 1 and 100.'
+      example: 50
+      schema:
+        type: integer
+    fields:
+      name: opt_fields
+      in: query
+      description: 'Defines fields to return.
+
+        Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below.
+
+        The id of included objects will always be returned, regardless of the field options.'
+      example:
+      - followers
+      - assignee
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: false
+    pretty:
+      name: opt_pretty
+      in: query
+      description: 'Provides “pretty” output.
+
+        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: boolean
+      style: form
+      example: true
+    offset:
+      name: offset
+      in: query
+      description: 'Offset token.
+
+        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
+
+        ''Note: You can only pass in an offset that was returned to you via a previously paginated request.'''
+      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
+      schema:
+        type: string
+  responses:
+    InternalServerError:
+      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: Message providing more detail about the error that occurred, if available.
+          example: 'project: Missing input'
+        help:
+          type: string
+          readOnly: true
+          description: Additional information directing developers to resources on how to address and fix the problem, if available.
+          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
+        phrase:
+          type: string
+          readOnly: true
+          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
+          example: 6 sad squid snuggle softly
+    WebhookRequest:
+      type: object
+      properties:
+        resource:
+          description: A resource ID to subscribe to. Many Asana resources are valid to create webhooks on, but higher-level resources require filters.
+          type: string
+          example: '12345'
+        target:
+          description: The URL to receive the HTTP POST. The full URL will be used to deliver events from this webhook (including parameters) which allows encoding of application-specific state when the webhook is created.
+          type: string
+          format: uri
+          example: https://example.com/receive-webhook/7654?app_specific_param=app_specific_value
+        filters:
+          type: array
+          description: An array of WebhookFilter objects to specify a whitelist of filters to apply to events from this webhook. If a webhook event passes any of the filters the event will be delivered; otherwise no event will be sent to the receiving server.
+          items:
+            allOf:
+            - $ref: '#/components/schemas/WebhookFilter'
+            - description: A set of filters to specify a whitelist for what types of events will be delivered.
+            - type: object
+      required:
+      - resource
+      - target
+    AsanaNamedResource:
+      allOf:
+      - $ref: '#/components/schemas/AsanaResource'
+      - type: object
+        properties:
+          name:
+            description: The name of the object.
+            type: string
+            example: Bug Task
+    WebhookFilter:
+      type: object
+      description: A WebhookFilter can be passed on creation of a webhook in order to filter the types of actions that trigger delivery of an [Event](/docs/tocS_Event)
+      properties:
+        resource_type:
+          type: string
+          description: The type of the resource which created the event when modified; for example, to filter to changes on regular tasks this field should be set to `task`.
+          example: task
+        resource_subtype:
+          description: The resource subtype of the resource that the filter applies to. This should be set to the same value as is returned on the `resource_subtype` field on the resources themselves.
+          type: string
+          example: milestone
+        action:
+          type: string
+          description: The type of change on the **resource** to pass through the filter. For more information refer to `Event.action` in the [Event](/docs/tocS_Event) schema. This can be one of `changed`, `added`, `removed`, `deleted`, and `undeleted` depending on the nature of what has occurred on the resource.
+          example: changed
+        fields:
+          type: array
+          description: '*Conditional.* A whitelist of fields for events which will pass the filter when the resource is changed. These can be any combination of the fields on the resources themselves. This field is only valid for `action` of type `changed`'
+          items:
+            type: string
+          example:
+          - due_at
+          - due_on
+          - dependencies
+    WebhookCompact:
+      allOf:
+      - $ref: '#/components/schemas/AsanaResource'
+      - type: object
+        description: Webhook objects represent the state of an active subscription for a server to be updated with information from Asana. This schema represents the subscription itself, not the objects that are sent to the server. For information on those please refer to the [Event](/docs/tocS_Event) schema.
+        x-docs-overrides:
+          properties.resource_type.example: webhook
+        properties:
+          active:
+            description: If true, the webhook will send events - if false it is considered inactive and will not generate events.
+            type: boolean
+            readOnly: true
+            example: false
+          resource:
+            $ref: '#/components/schemas/AsanaNamedResource'
+          target:
+            description: The URL to receive the HTTP POST.
+            type: string
+            format: uri
+            readOnly: true
+            example: https://example.com/receive-webhook/7654
     WebhookResponse:
       allOf:
       - $ref: '#/components/schemas/WebhookCompact'
@@ -793,23 +590,6 @@ components:
             format: date-time
             readOnly: true
             example: '2012-02-22T02:06:58.147Z'
-          delivery_retry_count:
-            description: The number of times the webhook has retried delivery of events to the target (resets after a successful attempt).
-            type: integer
-            readOnly: true
-            example: 3
-          next_attempt_after:
-            description: The timestamp after which the webhook will next attempt to deliver an event to the target.
-            type: string
-            format: date-time
-            readOnly: true
-            example: '2012-02-22T02:06:58.147Z'
-          failure_deletion_timestamp:
-            description: The timestamp when the webhook will be deleted if there is no successful attempt to deliver events to the target
-            type: string
-            format: date-time
-            readOnly: true
-            example: '2012-02-22T02:06:58.147Z'
           filters:
             description: Whitelist of filters to apply to events from this webhook. If a webhook event passes any of the filters the event will be delivered; otherwise no event will be sent to the receiving server.
             type: array
@@ -818,35 +598,22 @@ components:
               - $ref: '#/components/schemas/WebhookFilter'
               - description: A set of filters to specify a whitelist for what types of events will be delivered.
               - type: object
-    WebhookFilter:
+    WebhookUpdateRequest:
       type: object
-      description: A WebhookFilter can be passed on creation of a webhook in order to filter the types of actions that trigger delivery of an [event](/reference/events)
       properties:
-        resource_type:
-          type: string
-          description: The type of the resource which created the event when modified; for example, to filter to changes on regular tasks this field should be set to `task`.
-          example: task
-        resource_subtype:
-          description: The resource subtype of the resource that the filter applies to. This should be set to the same value as is returned on the `resource_subtype` field on the resources themselves.
-          type: string
-          example: milestone
-        action:
-          type: string
-          description: The type of change on the **resource** to pass through the filter. For more information refer to `Event.action` in the [event](/reference/events) schema. This can be one of `changed`, `added`, `removed`, `deleted`, and `undeleted` depending on the nature of what has occurred on the resource.
-          example: changed
-        fields:
+        filters:
           type: array
-          description: '*Conditional.* A whitelist of fields for events which will pass the filter when the resource is changed. These can be any combination of the fields on the resources themselves. This field is only valid for `action` of type `changed`
-
-            *Note: Subscriptions created on higher-level resources such as a Workspace, Team, or Portfolio do not support fields.*'
+          description: An array of WebhookFilter objects to specify a whitelist of filters to apply to events from this webhook. If a webhook event passes any of the filters the event will be delivered; otherwise no event will be sent to the receiving server.
           items:
-            type: string
-          example:
-          - due_at
-          - due_on
-          - dependencies
-    WebhookCompact:
-      description: Webhook objects represent the state of an active subscription for a server to be updated with information from Asana. This schema represents the subscription itself, not the objects that are sent to the server. For information on those please refer to the [event](/reference/events) schema.
+            allOf:
+            - $ref: '#/components/schemas/WebhookFilter'
+            - description: A set of filters to specify a whitelist for what types of events will be delivered.
+            - type: object
+    EmptyResponse:
+      type: object
+      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
+    AsanaResource:
+      description: A generic Asana Resource, containing a globally unique identifier.
       type: object
       properties:
         gid:
@@ -859,21 +626,8 @@ components:
           description: The base type of this resource.
           type: string
           readOnly: true
-          example: webhook
+          example: task
           x-insert-after: gid
-        active:
-          description: If true, the webhook will send events - if false it is considered inactive and will not generate events.
-          type: boolean
-          readOnly: true
-          example: false
-        resource:
-          $ref: '#/components/schemas/AsanaNamedResource'
-        target:
-          description: The URL to receive the HTTP POST.
-          type: string
-          format: uri
-          readOnly: true
-          example: https://example.com/receive-webhook/7654
     ErrorResponse:
       description: 'Sadly, sometimes requests to the API are not successful. Failures can
 
@@ -902,178 +656,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Error'
-    NextPage:
-      type:
-      - object
-      - 'null'
-      description: '*Conditional*. This property is only present when a limit query parameter is provided in the request. When making a paginated request, the API will return a number of results as specified by the limit parameter. If more results exist, then the response will contain a next_page attribute, which will include an offset, a relative path attribute, and a full uri attribute. If there are no more pages available, next_page will be null and no offset will be provided. Note that an offset token will expire after some time, as data may have changed.'
-      properties:
-        offset:
-          type: string
-          readOnly: true
-          description: Pagination offset for the request.
-          example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        path:
-          type: string
-          readOnly: true
-          description: A relative path containing the query parameters to fetch for next_page
-          example: /tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-        uri:
-          type: string
-          format: uri
-          readOnly: true
-          description: A full uri containing the query parameters to fetch for next_page
-          example: https://app.asana.com/api/1.0/tasks/12345/attachments?limit=2&offset=eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-    AsanaNamedResource:
-      description: A generic Asana Resource, containing a globally unique identifier.
-      type: object
-      properties:
-        gid:
-          description: Globally unique identifier of the resource, as a string.
-          type: string
-          readOnly: true
-          example: '12345'
-          x-insert-after: false
-        resource_type:
-          description: The base type of this resource.
-          type: string
-          readOnly: true
-          example: task
-          x-insert-after: gid
-        name:
-          description: The name of the object.
-          type: string
-          example: Bug Task
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: Message providing more detail about the error that occurred, if available.
-          example: 'project: Missing input'
-        help:
-          type: string
-          readOnly: true
-          description: Additional information directing developers to resources on how to address and fix the problem, if available.
-          example: 'For more information on API status codes and how to handle them, read the docs on errors: https://asana.github.io/developer-docs/#errors'''
-        phrase:
-          type: string
-          readOnly: true
-          description: '*500 errors only*. A unique error phrase which can be used when contacting developer support to help identify the exact occurrence of the problem in Asana’s logs.'
-          example: 6 sad squid snuggle softly
-    EmptyResponse:
-      type: object
-      description: An empty object. Some endpoints do not return an object on success. The success is conveyed through a 2-- status code and returning an empty object.
-    WebhookRequest:
-      type: object
-      properties:
-        resource:
-          description: A resource ID to subscribe to. Many Asana resources are valid to create webhooks on, but higher-level resources require filters.
-          type: string
-          example: '12345'
-        target:
-          description: The URL to receive the HTTP POST. The full URL will be used to deliver events from this webhook (including parameters) which allows encoding of application-specific state when the webhook is created.
-          type: string
-          format: uri
-          example: https://example.com/receive-webhook/7654?app_specific_param=app_specific_value
-        filters:
-          type: array
-          description: An array of WebhookFilter objects to specify a whitelist of filters to apply to events from this webhook. If a webhook event passes any of the filters the event will be delivered; otherwise no event will be sent to the receiving server.
-          items:
-            allOf:
-            - $ref: '#/components/schemas/WebhookFilter'
-            - description: A set of filters to specify a whitelist for what types of events will be delivered.
-            - type: object
-      required:
-      - resource
-      - target
-    WebhookUpdateRequest:
-      type: object
-      properties:
-        filters:
-          type: array
-          description: An array of WebhookFilter objects to specify a whitelist of filters to apply to events from this webhook. If a webhook event passes any of the filters the event will be delivered; otherwise no event will be sent to the receiving server.
-          items:
-            allOf:
-            - $ref: '#/components/schemas/WebhookFilter'
-            - description: A set of filters to specify a whitelist for what types of events will be delivered.
-            - type: object
-  responses:
-    InternalServerError:
-      description: There was a problem on Asana’s end. In the event of a server error the response body should contain an error phrase. These phrases can be used by Asana support to quickly look up the incident that caused the server error. Some errors are due to server load, and will not supply an error phrase.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: The authentication and request syntax was valid but the server is refusing to complete the request. This can happen if you try to read or write to objects or properties that the user does not have access to.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: This usually occurs because of a missing or malformed parameter. Check the documentation and the syntax of your request and try again.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: A valid authentication token was not provided with the request, so the API could not associate a user with the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Either the request method and path supplied do not specify a known action in the API, or the object specified by the request does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    pretty:
-      name: opt_pretty
-      in: query
-      description: 'Provides “pretty” output.
-
-        Provides the response in a “pretty” format. In the case of JSON this means doing proper line breaking and indentation to make it readable. This will take extra time and increase the response size so it is advisable only to use this during debugging.'
-      required: false
-      allowEmptyValue: true
-      schema:
-        type: boolean
-      style: form
-      example: true
-    webhook_path_gid:
-      name: webhook_gid
-      in: path
-      description: Globally unique identifier for the webhook.
-      required: true
-      schema:
-        type: string
-      example: '12345'
-      x-env-variable: webhook
-    offset:
-      name: offset
-      in: query
-      description: 'Offset token.
-
-        An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results.
-
-        *Note: You can only pass in an offset that was returned to you via a previously paginated request.*'
-      example: eyJ0eXAiOJiKV1iQLCJhbGciOiJIUzI1NiJ9
-      schema:
-        type: string
-    limit:
-      name: limit
-      in: query
-      description: 'Results per page.
-
-        The number of objects to return per page. The value must be between 1 and 100.'
-      example: 50
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
   securitySchemes:
     personalAccessToken:
       type: http
@@ -1094,19 +676,5 @@ components:
             openid: Provides access to OpenID Connect ID tokens and the OpenID Connect user info endpoint.
             email: Provides access to the user’s email through the OpenID Connect user info endpoint.
             profile: Provides access to the user’s name and profile photo through the OpenID Connect user info endpoint.
-            attachments:write: Create and modify access to attachments
-            goals:read: View access to goals
-            tasks:read: View access to tasks
-            tasks:write: Create and modify access to tasks
-            tasks:delete: Delete access to tasks
-            portfolios:read: View access to portfolios
-            project_templates:read: View access to project templates
-            projects:delete: Delete access to projects
-            projects:read: View access to projects
-            projects:write: Create and modify access to projects
-            users:read: View access to users
-            teams:read: View access to teams
-            stories:read: View access to stories
-            workspaces:read: View access to workspaces
 x-readme:
   proxy-enabled: false
